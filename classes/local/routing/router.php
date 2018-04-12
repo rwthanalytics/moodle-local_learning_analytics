@@ -27,6 +27,8 @@
 
 namespace local_learning_analytics\local\routing;
 
+use moodle_url;
+
 class router {
 
     /**
@@ -43,7 +45,24 @@ class router {
         $this->routes = $routes;
     }
 
+    /**
+     * @return route
+     * @throws \moodle_exception
+     */
     public function get_active_route() : route {
+        $uri = new moodle_url($_SERVER['REQUEST_URI']);
 
+        $slashargs = str_replace(
+                $uri->get_path(false),
+                '',
+                $uri->get_path(true)
+        );
+
+        foreach ($this->routes as $route) {
+            if ($route->match($slashargs)) {
+                return $route;
+            }
+        }
+        return $this->routes[0];
     }
 }

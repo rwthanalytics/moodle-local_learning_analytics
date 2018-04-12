@@ -28,4 +28,14 @@ namespace local_learning_analytics;
 
 abstract class report_base {
 
+    /**
+     * @var bool
+     */
+    protected $restricted = false;
+
+    public function get_parameter() {
+        return [];
+    }
+
+    public abstract function run() : output_base;
 }

@@ -22,11 +22,91 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 namespace local_learning_analytics\local\routing;
 
-class route {
-    public function __construct($target, $handler) {
+use block_rss_client\output\feed;
+use repository_onedrive\access;
 
+class route {
+    /**
+     * @var string
+     */
+    private $url;
+
+    /**
+     * @var callable
+     */
+    private $handler;
+
+    /**
+     * @var string
+     */
+    private $reverse;
+
+    /**
+     * @var array
+     */
+    public $params = [];
+
+    /**
+     * route constructor.
+     *
+     * @param string $target
+     * @param string|callable $handler
+     * @throws \Exception
+     */
+    public function __construct(string $target, $handler) {
+        $this->url = $target;
+
+        if (is_string($handler)) {
+            throw new \Exception("Not yet implemeted");
+        } else {
+            $this->handler = $handler;
+        }
+    }
+
+    private function get_regex() : string {
+        $regex = "/";
+
+        $parts = explode('/', $this->url);
+
+        array_shift($parts);
+
+        foreach ($parts as $part) {
+
+            $p = explode(':', $part);
+
+            if(isset($p[1])) {
+                $regex .= "(?P<$p[1]>\/[a-zA-Z0-9]+)";
+            } else {
+
+                $regex .= '\/' . $part;
+            }
+        }
+        var_dump($regex);
+
+        return $regex . '\/?/';
+    }
+
+    public function get_handler() {
+        return $this->handler;
+    }
+
+    public function match(string $url) : bool {
+        if (preg_match($this->get_regex(), $url, $this->params)) {
+            if($this->params[0] === $url) {
+                $this->reverse = $url;
+                array_shift($this->params);
+
+                $this->params = array_map(function ($e) {
+                    return substr($e, 1);
+                }, $this->params);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 }

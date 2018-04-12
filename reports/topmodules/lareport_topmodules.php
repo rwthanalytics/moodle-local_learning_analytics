@@ -26,8 +26,24 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+use local_learning_analytics\local\outputs\table;
+
+use local_learning_analytics\output_base;
 use local_learning_analytics\report_base;
 
 class lareport_topmodules extends report_base {
 
+    public function get_parameter() { // Moodle Form ?
+        return []; // Form ?
+    }
+
+    public function run(): output_base {
+        global $DB;
+
+        $output = new table();
+
+        $output->set_header(['A', 'B', 'C']);
+
+        return $output;
+    }
 }

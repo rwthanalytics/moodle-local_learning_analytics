@@ -26,5 +26,4 @@
 
 $subplugins = [
     'lareport' => 'local/learning_analytics/reports',
-    'laoutput' => 'local/learning_analytics/outputs'
 ];

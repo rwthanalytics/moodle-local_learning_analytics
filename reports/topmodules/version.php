@@ -28,9 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'lareport_topmodules';
 
-$plugin->version = '2018041204';
+$plugin->version = '2018041205';
 $plugin->requires = '2017111302';
-
-$plugin->dependencies = [
-    'laoutput_table' => 2018041200,
-];

@@ -36,24 +36,41 @@ require_login();
 
 global $PAGE;
 
-$output = $PAGE->get_renderer('local_learning_analytics');
+$PAGE->set_context(context_system::instance());
 
 $reports = core_component::get_plugin_list('lareport');
 
-echo $output->header();
-echo $output->render_from_template('local_learning_analytics/base', ['reports' => $reports]);
-echo $output->footer();
-
-
-
-
 /*
+foreach ($reports as $report => $path) {
+    $cp = $path . DIRECTORY_SEPARATOR . "lareport_${report}.php";
+    if(file_exists($cp)) {
+        require ($cp);
+    }
+}
+*/
+
 $router = new router([
     new route('/', function () {
-
+        return 'HOME';
+    }),
+    new route('/courses', function() {
+        return "COURSE";
+    }),
+    new route('/reports/:report', function() {
+        return "REPORTS";
     })
 ]);
 
-$router->get_active_route();
+$route = $router->get_active_route();
 
-*/
+$handler = $route->get_handler();
+
+$output = $PAGE->get_renderer('local_learning_analytics');
+
+echo $output->header();
+echo $output->render_from_template('local_learning_analytics/base', [
+    'reports' => array_keys($reports),
+    'content' => $handler()
+]);
+var_dump($route->params);
+echo $output->footer();
