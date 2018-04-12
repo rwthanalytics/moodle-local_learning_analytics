@@ -56,22 +56,17 @@ $router = new router([
     new route('/courses', function() {
         return "COURSE";
     }),
-    new route('/reports/:report', function() {
-        return "REPORTS";
-    })
+    new route('/reports/:report', 'local_learning_analytics\\local\\controller\\controller_report@run')
 ]);
 
 $route = $router->get_active_route();
-
-$handler = $route->get_handler();
 
 $output = $PAGE->get_renderer('local_learning_analytics');
 
 echo $output->header();
 echo $output->render_from_template('local_learning_analytics/base', [
     'reports' => array_keys($reports),
-    'content' => $handler(),
+    'content' => $route->execute(),
     'prefix' => new moodle_url('/local/learning_analytics/index.php')
 ]);
-var_dump($route->params);
 echo $output->footer();

@@ -33,9 +33,9 @@ abstract class report_base {
      */
     protected $restricted = false;
 
-    public function get_parameter() {
+    public function get_parameter() : array {
         return [];
     }
 
-    public abstract function run() : output_base;
+    public abstract function run(array $params) : array;
 }

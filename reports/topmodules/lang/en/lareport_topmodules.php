@@ -25,3 +25,6 @@
  */
 
 $string['pluginname'] = 'Top Modules';
+
+$string['eventname'] = 'Event';
+$string['hits'] = 'Hits';

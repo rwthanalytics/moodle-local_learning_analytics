@@ -26,6 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+use local_learning_analytics\form;
 use local_learning_analytics\local\outputs\table;
 
 use local_learning_analytics\output_base;
@@ -33,17 +34,35 @@ use local_learning_analytics\report_base;
 
 class lareport_topmodules extends report_base {
 
-    public function get_parameter() { // Moodle Form ?
-        return []; // Form ?
+    public function get_parameter() : array { // Moodle Form ?
+        return [
+                'course' => [
+                        'required' => true,
+                        'type' => 'select',
+                        'filter' => FILTER_SANITIZE_NUMBER_INT
+                ]
+        ];
     }
 
-    public function run(): output_base {
+    public function run(array $params): array {
         global $DB;
 
         $output = new table();
 
-        $output->set_header(['A', 'B', 'C']);
+        $records = $DB->get_records_sql("
+        SELECT COUNT('id') as hits, eventname
+        FROM {logstore_standard_log}
+        WHERE courseid = {$params['course']}
+        GROUP BY eventname
+        ORDER BY hits DESC
+        ");
 
-        return $output;
+        $output->set_header_local(['hits', 'eventname'], 'topmodules');
+
+        foreach ($records as $row) {
+            $output->add_row([$row->hits, $row->eventname]);
+        }
+
+        return [html_writer::tag('h2', get_string('pluginname', 'lareport_topmodules')), $output];
     }
 }

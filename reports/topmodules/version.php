@@ -28,5 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'lareport_topmodules';
 
-$plugin->version = '2018041205';
+$plugin->version = '2018041208';
 $plugin->requires = '2017111302';

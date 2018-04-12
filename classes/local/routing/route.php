@@ -56,7 +56,15 @@ class route {
         $this->url = $target;
 
         if (is_string($handler)) {
-            throw new \Exception("Not yet implemeted");
+            $parts = explode('@', $handler);
+
+            var_dump($parts);
+
+            $this->handler = function ($params) use ($parts) {
+                $class = $parts[0];
+                $method = $parts[1];
+                return (new $class($params))->$method();
+            };
         } else {
             $this->handler = $handler;
         }
@@ -66,17 +74,14 @@ class route {
         $regex = "/";
 
         $parts = explode('/', $this->url);
-
         array_shift($parts);
 
         foreach ($parts as $part) {
-
             $p = explode(':', $part);
 
             if(isset($p[1])) {
                 $regex .= "(?P<$p[1]>\/[a-zA-Z0-9]+)";
             } else {
-
                 $regex .= '\/' . $part;
             }
         }
@@ -87,6 +92,11 @@ class route {
 
     public function get_handler() {
         return $this->handler;
+    }
+
+    public function execute() {
+        $h = $this->handler;
+        return $h($this->params);
     }
 
     public function match(string $url) : bool {
