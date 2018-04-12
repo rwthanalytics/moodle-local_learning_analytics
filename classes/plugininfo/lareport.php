@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Learning Analytics Report plugin definition
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -24,14 +24,14 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+namespace local_learning_analytics\plugininfo;
 
-$plugin->component = 'local_learning_analytics';
+use core\plugininfo\base;
 
-$plugin->version = '2018041204';
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
+defined('MOODLE_INTERNAL') || die();
 
-$plugin->requires = '2017111302';
-
-$plugin->dependencies = [];
+class lareport extends base {
+    public function is_uninstall_allowed() {
+        return true;
+    }
+}

@@ -26,5 +26,9 @@
 
 $string['pluginname'] = 'Learning Analytics';
 
-$string['subplugintype_learning_analytics_report'] = 'Learning Analytics Report';
-$string['subplugintype_learning_analytics_report'] = 'Learning Analytics Reports';
+$string['learning_analytics'] = 'Learning Analytics';
+
+$string['subplugintype_lareport'] = 'Report';
+$string['subplugintype_lareport_plural'] = 'Reports';
+$string['subplugintype_laoutput'] = 'Output';
+$string['subplugintype_laoutput_plural'] = 'Outputs';

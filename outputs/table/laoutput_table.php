@@ -13,9 +13,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+use local_learning_analytics\output_base;
 
 /**
- * Version details.
+ * Learning Analytics Table Output
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -24,14 +25,32 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+class laoutput_table extends output_base {
 
-$plugin->component = 'local_learning_analytics';
+    private $table;
 
-$plugin->version = '2018041204';
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
+    public function __construct() {
+        $this->table = new html_table();
+    }
 
-$plugin->requires = '2017111302';
+    public function set_header(array $header) {
+        $this->table->head = $header;
+    }
 
-$plugin->dependencies = [];
+    /**
+     * @param array $header
+     * @param $report
+     * @throws coding_exception
+     */
+    public function set_header_local(array $header, $report) {
+        $this->table->head = [];
+
+        foreach ($header as $head) {
+            $this->table->head[] = get_string($head, $report);
+        }
+    }
+
+    function print(): string {
+        return html_writer::table($this->table);
+    }
+}

@@ -24,4 +24,36 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-echo 'Hallo Welt';
+use local_learning_analytics\local\routing\router;
+use local_learning_analytics\local\routing\route;
+
+
+require(__DIR__ . '/../../config.php');
+
+defined('MOODLE_INTERNAL') || die;
+
+require_login();
+
+global $PAGE;
+
+$output = $PAGE->get_renderer('local_learning_analytics');
+
+$reports = core_component::get_plugin_list('lareport');
+
+echo $output->header();
+echo $output->render_from_template('local_learning_analytics/base', ['reports' => $reports]);
+echo $output->footer();
+
+
+
+
+/*
+$router = new router([
+    new route('/', function () {
+
+    })
+]);
+
+$router->get_active_route();
+
+*/

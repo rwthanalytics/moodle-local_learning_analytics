@@ -14,9 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Version details.
- *
+/*
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @author      Marcel Behrmann <behrmann@lfi.rwth-aachen.de>
@@ -24,14 +22,11 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'local_learning_analytics';
+namespace local_learning_analytics\local\routing;
 
-$plugin->version = '2018041204';
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
+class route {
+    public function __construct($target, $handler) {
 
-$plugin->requires = '2017111302';
-
-$plugin->dependencies = [];
+    }
+}

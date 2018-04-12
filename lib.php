@@ -25,3 +25,25 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+// Callback to extend navigation
+/**
+ * @param global_navigation $nav
+ * @throws coding_exception
+ * @throws moodle_exception
+ */
+function local_learning_analytics_extend_navigation(global_navigation $nav) {
+    global $PAGE;
+
+    // Only extend navigation inside courses - 1 is the base system 'course'
+    if ($PAGE->context->contextlevel === CONTEXT_COURSE) {
+        $node = $nav->find($PAGE->context->instanceid, navigation_node::TYPE_COURSE);
+
+        if ($node) {
+            $node->add_node(navigation_node::create(
+                    get_string('learning_analytics'),
+                    new moodle_url('/local/learning_analytics/index.php')
+            ));
+        }
+    }
+}
