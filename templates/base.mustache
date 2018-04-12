@@ -1,17 +1,16 @@
 <nav class="navbar navbar-dark bg-primary">
     <ul class="nav navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="{{prefix}}/">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Courses</a>
+            <a class="nav-link" href="{{prefix}}/courses">Courses</a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Reports</a>
             <div class="dropdown-menu">
                 {{#reports}}
-                    <!-- TODO: Remove Fixed moodle prefix. -->
-                    <a class="dropdown-item" href="/moodle/local/learning_analytics/index.php/reports/{{.}}">{{.}}</a>
+                    <a class="dropdown-item" href="{{prefix}}/reports/{{.}}">{{.}}</a>
                 {{/reports}}
             </div>
         </li>
@@ -21,6 +20,6 @@
     </ul>
 </nav>
 
-<div class="learning_analytics-content">
+<div class="learning_analytics-content" style="margin-top: 20px">
     {{content}}
 </div>

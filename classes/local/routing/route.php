@@ -24,9 +24,6 @@
 
 namespace local_learning_analytics\local\routing;
 
-use block_rss_client\output\feed;
-use repository_onedrive\access;
-
 class route {
     /**
      * @var string

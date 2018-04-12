@@ -70,7 +70,8 @@ $output = $PAGE->get_renderer('local_learning_analytics');
 echo $output->header();
 echo $output->render_from_template('local_learning_analytics/base', [
     'reports' => array_keys($reports),
-    'content' => $handler()
+    'content' => $handler(),
+    'prefix' => new moodle_url('/local/learning_analytics/index.php')
 ]);
 var_dump($route->params);
 echo $output->footer();
