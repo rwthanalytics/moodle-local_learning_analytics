@@ -39,20 +39,22 @@ class local_learning_analytics_external extends external_api {
     }
 
     public static function report_returns() {
-        return new external_single_structure([
-                'output' => new external_value(PARAM_CLEANHTML)
-        ]);
+        return new external_multiple_structure(
+                new external_single_structure([
+                        'type' => new external_value(PARAM_TEXT),
+                        'content' => new external_value(PARAM_CLEANHTML),
+                        'params' => new external_value(PARAM_TEXT)
+                ])
+        );
     }
 
     public static function report(string $report, string $type, string $params = "{}") {
-        global $PAGE;
 
         $report = controller_report::get_report($report);
 
         $eparams = json_decode($params, true);
 
         $outputs = [];
-        $output = "";
 
         if ($type == 'block') {
             if ($report->supports_block()) {
@@ -62,20 +64,13 @@ class local_learning_analytics_external extends external_api {
                         $eparams
                 );
                 $outputs = $report->run($params);
-            } else {
-                $output = "error";
             }
         } else {
             $outputs = $report->run($eparams);
         }
 
-        foreach ($outputs as $out) {
-            $output .= $out->print();
-        }
-
-        return [
-                'output' => $output
-        ];
-
+        return array_map(function ($e) {
+            return $e->external()->to_array();
+        }, $outputs);
     }
 }

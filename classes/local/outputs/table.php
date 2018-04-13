@@ -34,6 +34,7 @@ use html_table;
 use html_writer;
 
 use local_learning_analytics\output_base;
+use local_learning_analytics\output_external;
 
 class table extends output_base {
 
@@ -66,5 +67,12 @@ class table extends output_base {
 
     function print(): string {
         return html_writer::table($this->table);
+    }
+
+    function external(): output_external {
+        return new output_external(
+                'table',
+                $this->print()
+        );
     }
 }

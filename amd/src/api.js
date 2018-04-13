@@ -14,7 +14,7 @@ define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
                 ])[0];
 
                 request.done(function (response) {
-                    deferred.resolve(response.output);
+                    deferred.resolve(response);
                 });
             });
         },

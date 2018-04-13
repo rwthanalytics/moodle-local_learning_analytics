@@ -30,6 +30,7 @@ namespace local_learning_analytics\local\outputs;
 
 use html_writer;
 use local_learning_analytics\output_base;
+use local_learning_analytics\output_external;
 
 class html extends output_base {
 
@@ -50,4 +51,13 @@ class html extends output_base {
     function print(): string {
         return html_writer::div($this->content);
     }
+
+    public function external(): output_external {
+        return new output_external(
+            'html',
+            $this->print(),
+            []
+        );
+    }
+
 }

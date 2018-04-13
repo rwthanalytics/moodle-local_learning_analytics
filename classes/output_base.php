@@ -26,6 +26,10 @@
 
 namespace local_learning_analytics;
 
+defined('MOODLE_INTERNAL') || die;
+
 abstract class output_base {
     abstract function print() : string;
+
+    abstract function external() : output_external;
 }
