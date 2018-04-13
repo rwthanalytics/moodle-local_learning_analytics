@@ -27,7 +27,10 @@ namespace local_learning_analytics;
 
 class parameter {
 
-    const TYPE_STRING = 0;
+    const
+            TYPE_STRING = 'text',
+            TYPE_NUMBER = 'number',
+            TYPE_COURSE = 'course';
 
     protected $key;
 
@@ -37,26 +40,29 @@ class parameter {
 
     protected  $filter;
 
-    public function __construct(string $key, int $type, bool $required = false, int $filter = FILTER_UNSAFE_RAW) {
+    protected $options;
+
+    public function __construct(string $key, string $type, bool $required = false, int $filter = FILTER_UNSAFE_RAW, array $options = []) {
         $this->key = $key;
         $this->type = $type;
         $this->required = $required;
         $this->filter = $filter;
+        $this->options = $options;
     }
 
-    public function is_required() {
+    public function is_required() : bool {
         return $this->required;
     }
 
-    public function get_key(){
+    public function get_key() : string {
         return $this->key;
     }
 
-    public function get_type() {
+    public function get_type() : string {
         return $this->type;
     }
 
-    public function get_filter() {
+    public function get_filter() : int {
         return $this->filter;
     }
 

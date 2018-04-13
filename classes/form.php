@@ -42,15 +42,18 @@ class form {
 
     private $optional = [];
 
+    private $report;
+
     /**
      * form constructor.
      *
      * @param parameter[] $params
      * @param bool $inline
      */
-    public function __construct(array $params, bool $inline) {
+    public function __construct(array $params, bool $inline, string $report) {
 
         $this->inline = $inline;
+        $this->report = $report;
 
         foreach ($params as $param) {
             if ($param->is_required()) {
@@ -76,26 +79,32 @@ class form {
      * @return string
      * @throws \coding_exception
      */
-    public function render(string $report) {
+    public function render() {
         $class = ($this->inline) ? 'form-inline' : 'form';
 
         $output = html_writer::start_tag('form', ['method' => 'get', 'class' => $class]);
 
         foreach ($this->required as $key => $param) {
             $output .= html_writer::start_div('form-group');
+            $output .= html_writer::label(get_string("parameter:{$key}", "lareport_{$this->report}"), "param_{$key}");
 
-            $output .= html_writer::label(get_string("parameter:{$key}", "lareport_{$report}"), "param_{$key}");
-            $output .= html_writer::start_tag('input', [
-                    'type' => $param->get_type(),
-                    'class' => 'form-control',
-                    'name' => $key,
-                    'value' => $param->get(),
-                    'id' => "param_{$key}",
-                    'placeholder' => get_string("parameter:{$key}", "lareport_{$report}")
-            ]);
+            switch ($param->get_type()) {
+                case parameter::TYPE_STRING:
+                case parameter::TYPE_NUMBER:
+                    $output .= $this->render_input($param);
+                    break;
+                case parameter::TYPE_COURSE:
+                    $output .= $this->render_course_selection($param);
+                    break;
+            }
 
             $output .= html_writer::end_div();
         }
+
+        $output .= html_writer::tag('button', get_string('show_report', 'local_learning_analytics'), [
+            'type' => 'submit',
+            'class' => 'btn btn-primary'
+        ]);
 
         $output .= html_writer::end_tag('form');
         return $output;
@@ -119,5 +128,33 @@ class form {
 
     public function get_parameters() {
         return $this->params;
+    }
+
+    protected function render_input(parameter $param) : string {
+        return html_writer::start_tag('input', [
+                'type' => $param->get_type(),
+                'class' => 'form-control',
+                'name' => $param->get_key(),
+                'value' => $param->get(),
+                'id' => "param_{$param->get_key()}",
+                'placeholder' => get_string("parameter:{$param->get_key()}", "lareport_{$this->report}")
+        ]);
+    }
+
+    protected function render_select(parameter $param, array $options) : string {
+        return html_writer::select($options, $param->get_key(), [
+            'class' => 'form-control',
+            'id' => "param_{$param->get_key()}",
+        ]);
+    }
+
+    protected function render_course_selection(parameter $param) : string {
+        $courses = [];
+
+        foreach (get_courses() as $course) {
+            $courses[$course->id] = $course->fullname;
+        }
+
+        return $this->render_select($param, $courses);
     }
 }

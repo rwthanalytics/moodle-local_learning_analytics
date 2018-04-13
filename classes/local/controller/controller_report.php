@@ -41,37 +41,26 @@ class controller_report  extends controller_base {
      * @throws \coding_exception
      */
     public function run() : string {
-        $path = core_component::get_plugin_directory('lareport', $this->params['report']);
+        $instance = self::get_report($this->params['report']);
 
-        $fqp = $path . DIRECTORY_SEPARATOR . "lareport_{$this->params['report']}.php";
-
-        if (file_exists($fqp)) {
-            require ($fqp);
+        if ($instance != null) {
             $ret = html_writer::tag('h2', get_string('pluginname', "lareport_{$this->params['report']}"));
 
-            $class = "lareport_{$this->params['report']}";
-
-            /**
-             * @var report_base $instance
-             */
-            $instance = (new $class());
-
             $params = $instance->get_parameter();
-
             $outputs = [];
 
             if (sizeof($params) > 0) {
-                $fparams = new form($params, !$instance->show_param_page());
+                $fparams = new form($params, !$instance->show_param_page(), $this->params['report']);
 
                 if($fparams->get_missing_count() == 0) {
                     if($fparams->is_inline()) {
-                        $ret .= $fparams->render($this->params['report']);
+                        $ret .= $fparams->render();
                     } else {
                         // Display Info
                     }
                    $outputs = $instance->run($fparams->get_parameters());
                 } else {
-                    $ret .= $fparams->render($this->params['report']);
+                    $ret .= $fparams->render();
                 }
             } else {
                 $outputs = $instance->run([]);
@@ -88,6 +77,29 @@ class controller_report  extends controller_base {
             return $ret;
         } else {
             return get_string('reports:missing', 'local_learning_analytics');
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return report_base
+     */
+    public static function get_report(string $name) {
+        $path = core_component::get_plugin_directory('lareport', $name);
+
+        $fqp = $path . DIRECTORY_SEPARATOR . "lareport_{$name}.php";
+
+        if (file_exists($fqp)) {
+            require($fqp);
+
+            $class = "lareport_{$name}";
+
+            /**
+             * @var report_base $instance
+             */
+            return (new $class());
+        } else {
+            return null;
         }
     }
 }

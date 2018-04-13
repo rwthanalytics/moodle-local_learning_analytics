@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
+
 /**
- * Learning Analytics Base Report
+ * Learning Analytics plane HTML Output
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -24,30 +26,28 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learning_analytics;
+namespace local_learning_analytics\local\outputs;
 
-abstract class report_base {
+use html_writer;
+use local_learning_analytics\output_base;
 
-    /**
-     * @var bool
-     */
-    protected $restricted = false;
+class html extends output_base {
 
-    public function get_parameter() : array {
-        return [];
+    private $content;
+
+    public function set_content(string $html) {
+        $this->content = $html;
     }
 
-    public function supports_block() : bool {
-        return false;
+    public function append(string $html) {
+        $this->content .= $html;
     }
 
-    public function get_block_parameter() : array {
-        return [];
+    public function prepend(string $html) {
+        $this->content = $html . $this->content;
     }
 
-    public function show_param_page() : bool {
-        return false;
+    function print(): string {
+        return html_writer::div($this->content);
     }
-
-    public abstract function run(array $params) : array;
 }

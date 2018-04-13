@@ -26,37 +26,58 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-use local_learning_analytics\local\outputs\table;
+use local_learning_analytics\local\outputs\html;
 use local_learning_analytics\parameter;
 use local_learning_analytics\report_base;
 
-class lareport_topmodules extends report_base {
+class lareport_viewcount extends report_base {
 
-    public function get_parameter() : array { // Moodle Form ?
+    public function get_parameter(): array {
         return [
                 new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
+                new parameter('user', parameter::TYPE_NUMBER, true, FILTER_SANITIZE_NUMBER_INT),
         ];
     }
 
+    public function supports_block(): bool {
+        return true;
+    }
+
+    public function get_block_parameter(): array {
+        global $PAGE, $USER;
+
+        return [
+            'course' => $PAGE->context->instanceid,
+            'user' => $USER->id,
+        ];
+    }
+
+    /**
+     * @param array $params
+     * @return array
+     */
     public function run(array $params): array {
         global $DB;
 
-        $output = new table();
+        $output = new html();
 
-        $records = $DB->get_records_sql("
-        SELECT COUNT('id') as hits, eventname
-        FROM {logstore_standard_log}
-        WHERE courseid = {$params['course']}
-        GROUP BY eventname
-        ORDER BY hits DESC
+        var_dump($params);
+
+        $data = $DB->get_record_sql("
+            SELECT COUNT('id') as hits
+            FROM {logstore_standard_log}
+            WHERE 
+              courseid = {$params['course']} AND
+              userid = {$params['user']} AND
+              eventname LIKE '%course_viewed'             
+            GROUP BY eventname
         ");
 
-        $output->set_header_local(['hits', 'eventname'], 'topmodules');
+        var_dump($data);
 
-        foreach ($records as $row) {
-            $output->add_row([$row->hits, $row->eventname]);
-        }
+        $output->set_content(html_writer::tag('h2', $data->hits));
 
         return [$output];
     }
+
 }

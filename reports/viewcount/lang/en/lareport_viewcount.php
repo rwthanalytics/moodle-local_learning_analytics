@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Learning Analytics Base Report
+ * Strings for lareport_topmodules
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -24,30 +24,4 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learning_analytics;
-
-abstract class report_base {
-
-    /**
-     * @var bool
-     */
-    protected $restricted = false;
-
-    public function get_parameter() : array {
-        return [];
-    }
-
-    public function supports_block() : bool {
-        return false;
-    }
-
-    public function get_block_parameter() : array {
-        return [];
-    }
-
-    public function show_param_page() : bool {
-        return false;
-    }
-
-    public abstract function run(array $params) : array;
-}
+$string['pluginname'] = 'View Count';
