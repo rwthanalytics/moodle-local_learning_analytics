@@ -54,7 +54,7 @@ class lareport_coursetraffic extends report_base {
               DATE(FROM_UNIXTIME(timecreated)) as day,
               COUNT(timecreated) as `hits`
             FROM mdl_logstore_standard_log
-            WHERE courseid = 2
+            WHERE courseid = {$params['course']}
             GROUP BY day;";
 
         $plot->add_series_from_sql('scatter', $sql, ['x' => 'day', 'y' => 'hits']);
