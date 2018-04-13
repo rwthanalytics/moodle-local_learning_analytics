@@ -61,8 +61,6 @@ class lareport_viewcount extends report_base {
 
         $output = new html();
 
-        var_dump($params);
-
         $data = $DB->get_record_sql("
             SELECT COUNT('id') as hits
             FROM {logstore_standard_log}
@@ -72,8 +70,6 @@ class lareport_viewcount extends report_base {
               eventname LIKE '%course_viewed'             
             GROUP BY eventname
         ");
-
-        var_dump($data);
 
         $output->set_content(html_writer::tag('h2', $data->hits));
 

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * local_learning_analytics Services and Functions
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -26,12 +26,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'local_learning_analytics';
-
-$plugin->version = '2018041302';
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
-
-$plugin->requires = '2017111302';
-
-$plugin->dependencies = [];
+$functions = [
+    'local_learning_analytics_report' => [
+        'classname' => 'local_learning_analytics_external',
+        'methodname' => 'report',
+        'ajax' => 'true',
+        'description' => 'Execute report over ajax',
+        'type' => 'read',
+    ]
+];
