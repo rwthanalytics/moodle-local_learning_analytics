@@ -89,6 +89,7 @@ class form {
                     'type' => $param->get_type(),
                     'class' => 'form-control',
                     'name' => $key,
+                    'value' => $param->get(),
                     'id' => "param_{$key}",
                     'placeholder' => get_string("parameter:{$key}", "lareport_{$report}")
             ]);
