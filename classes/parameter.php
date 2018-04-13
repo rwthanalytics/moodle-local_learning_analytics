@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version info for the Top Modules Report
+ * Learning Analytics report parameter
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -23,10 +23,44 @@
  * @author      Thomas Dondorf <dondorf@lfi.rwth-aachen.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace local_learning_analytics;
 
-defined('MOODLE_INTERNAL') || die();
+class parameter {
 
-$plugin->component = 'lareport_topmodules';
+    const TYPE_STRING = 0;
 
-$plugin->version = '2018041301';
-$plugin->requires = '2017111302';
+    protected $key;
+
+    protected  $type;
+
+    protected  $required;
+
+    protected  $filter;
+
+    public function __construct(string $key, int $type, bool $required = false, int $filter = FILTER_UNSAFE_RAW) {
+        $this->key = $key;
+        $this->type = $type;
+        $this->required = $required;
+        $this->filter = $filter;
+    }
+
+    public function is_required() {
+        return $this->required;
+    }
+
+    public function get_key(){
+        return $this->key;
+    }
+
+    public function get_type() {
+        return $this->type;
+    }
+
+    public function get_filter() {
+        return $this->filter;
+    }
+
+    public function get() {
+        return filter_input(INPUT_GET, $this->key, $this->filter);
+    }
+}

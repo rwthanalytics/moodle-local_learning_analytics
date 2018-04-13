@@ -56,7 +56,7 @@ class table extends output_base {
         $this->table->head = [];
 
         foreach ($header as $head) {
-            $this->table->head[] = get_string($head, $report);
+            $this->table->head[] = get_string($head, "lareport_{$report}");
         }
     }
 

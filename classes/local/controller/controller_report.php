@@ -29,12 +29,17 @@
 namespace local_learning_analytics\local\controller;
 
 use core_component;
+use html_writer;
 use local_learning_analytics\controller_base;
 use local_learning_analytics\form;
 use local_learning_analytics\output_base;
 use local_learning_analytics\report_base;
 
 class controller_report  extends controller_base {
+    /**
+     * @return string
+     * @throws \coding_exception
+     */
     public function run() : string {
         $path = core_component::get_plugin_directory('lareport', $this->params['report']);
 
@@ -42,7 +47,7 @@ class controller_report  extends controller_base {
 
         if (file_exists($fqp)) {
             require ($fqp);
-            $ret = '';
+            $ret = html_writer::tag('h2', get_string('pluginname', "lareport_{$this->params['report']}"));
 
             $class = "lareport_{$this->params['report']}";
 
@@ -53,20 +58,21 @@ class controller_report  extends controller_base {
 
             $params = $instance->get_parameter();
 
-            /**
-             *
-             */
-            $outputs = null;
+            $outputs = [];
 
             if (sizeof($params) > 0) {
-                $fparams = new form($params);
-
-                $ret .= $fparams->render();
+                $fparams = new form($params, !$instance->show_param_page());
 
                 if($fparams->get_missing_count() == 0) {
-
+                    if($fparams->is_inline()) {
+                        $ret .= $fparams->render($this->params['report']);
+                    } else {
+                        // Display Info
+                    }
                    $outputs = $instance->run($fparams->get_parameters());
-                };
+                } else {
+                    $ret .= $fparams->render($this->params['report']);
+                }
             } else {
                 $outputs = $instance->run([]);
             }

@@ -37,5 +37,9 @@ abstract class report_base {
         return [];
     }
 
+    public function show_param_page() : bool {
+        return false;
+    }
+
     public abstract function run(array $params) : array;
 }

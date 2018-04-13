@@ -26,21 +26,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-use local_learning_analytics\form;
 use local_learning_analytics\local\outputs\table;
-
-use local_learning_analytics\output_base;
+use local_learning_analytics\parameter;
 use local_learning_analytics\report_base;
 
 class lareport_topmodules extends report_base {
 
     public function get_parameter() : array { // Moodle Form ?
         return [
-                'course' => [
-                        'required' => true,
-                        'type' => 'select',
-                        'filter' => FILTER_SANITIZE_NUMBER_INT
-                ]
+                new parameter('course', parameter::TYPE_STRING, true, FILTER_SANITIZE_NUMBER_INT),
         ];
     }
 
@@ -63,6 +57,6 @@ class lareport_topmodules extends report_base {
             $output->add_row([$row->hits, $row->eventname]);
         }
 
-        return [html_writer::tag('h2', get_string('pluginname', 'lareport_topmodules')), $output];
+        return [$output];
     }
 }
