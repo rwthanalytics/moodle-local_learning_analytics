@@ -69,12 +69,38 @@ class local_learning_analytics_external extends external_api {
             $outputs = $report->run($eparams);
         }
 
-
-
-        $finalout = array_map(function ($e) {
+        $finalout = array_map(function($e) {
             return $e->external()->to_array();
         }, $outputs);
 
         return $finalout;
+    }
+
+    public static function ajax_parameters() {
+        return new external_function_parameters([
+                'method' => new external_value(PARAM_TEXT, 'Method to run'),
+                'id' => new external_value(PARAM_TEXT, 'Identifier'),
+                'params' => new external_value(PARAM_TEXT, 'serialized parameters')
+        ]);
+    }
+
+    public static function ajax_returns() {
+        return new external_single_structure([
+                'value' => new external_value(PARAM_TEXT, 'Return value')
+        ]);
+    }
+
+    public static function ajax(string $method, string $id, string $params) {
+
+        $target = explode('@', $method);
+
+        $class = $target[0];
+        $method = $target[1];
+
+        $ret = (new $class([]))->$method($id);
+
+        return [
+                'value' => base64_encode(json_encode($ret))
+        ];
     }
 }

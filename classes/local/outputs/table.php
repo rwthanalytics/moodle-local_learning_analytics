@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 /**
  * Learning Analytics Table Output
  *
@@ -40,6 +38,8 @@ class table extends output_base {
 
     private $table;
 
+    private $ajax_rows;
+
     public function __construct() {
         $this->table = new html_table();
     }
@@ -61,12 +61,10 @@ class table extends output_base {
         }
     }
 
-    public function add_row(array $row) {
-        $this->table->data[] = $row;
-    }
+    public function add_rows_ajax(string $method, array $rows) {
+        $this->set_ajax($method, []);
 
-    function print(): string {
-        return html_writer::table($this->table);
+        $this->ajax_rows = array_values($rows);
     }
 
     function external(): output_external {
@@ -74,5 +72,41 @@ class table extends output_base {
                 'table',
                 $this->print()
         );
+    }
+
+    /**
+     * @return string
+     */
+    function print(): string {
+        global $PAGE;
+
+        $id = 'la_table-' . random_string(4);
+
+        if ($this->is_ajax) {
+            for ($i = 0; $i < count($this->ajax_rows); $i++) {
+                $r = array_fill(0, count($this->table->head), '');
+                $r[0] = $this->ajax_rows[$i]['content'];
+
+                $this->add_row($r);
+
+                $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'ajax', [
+                        'id' => $this->ajax_rows[$i]['id'],
+                        'method' => $this->ajax_method,
+                        'type' => 'table',
+                        'target' => $id,
+                        'params' => [
+                                'row' => $i
+                        ]
+                ]);
+            }
+        }
+
+        $this->table->id = $id;
+
+        return html_writer::table($this->table);
+    }
+
+    public function add_row(array $row) {
+        $this->table->data[] = $row;
     }
 }

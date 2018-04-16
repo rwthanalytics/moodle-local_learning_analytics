@@ -27,11 +27,18 @@
 defined('MOODLE_INTERNAL') || die;
 
 $functions = [
-    'local_learning_analytics_report' => [
-        'classname' => 'local_learning_analytics_external',
-        'methodname' => 'report',
-        'ajax' => 'true',
-        'description' => 'Execute report over ajax',
-        'type' => 'read',
-    ]
+        'local_learning_analytics_report' => [
+                'classname' => 'local_learning_analytics_external',
+                'methodname' => 'report',
+                'ajax' => 'true',
+                'description' => 'Execute report over ajax',
+                'type' => 'read',
+        ],
+        'local_learning_analytics_ajax' => [
+                'classname' => 'local_learning_analytics_external',
+                'methodname' => 'ajax',
+                'ajax' => true,
+                'description' => 'Execute ajax method',
+                'type' => 'read',
+        ]
 ];

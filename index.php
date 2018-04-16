@@ -54,9 +54,7 @@ $router = new router([
     new route('/', function () {
         return 'HOME';
     }),
-    new route('/courses', function() {
-        return "COURSE";
-    }),
+    new route('/courses', 'local_learning_analytics\\local\\controller\\controller_courses@run'),
     new route('/reports/:report', 'local_learning_analytics\\local\\controller\\controller_report@run')
 ]);
 

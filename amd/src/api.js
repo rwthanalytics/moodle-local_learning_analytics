@@ -30,6 +30,10 @@ define(['core/ajax', 'core/url', 'jquery', 'local_learning_analytics/outputs'], 
                 case 'plot':
                     outputs.plot(params.id);
             }
+        },
+
+        ajax: function (method, id) {
+
         }
     }
 });

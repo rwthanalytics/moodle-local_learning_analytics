@@ -29,7 +29,20 @@ namespace local_learning_analytics;
 defined('MOODLE_INTERNAL') || die;
 
 abstract class output_base {
+
+    protected $is_ajax;
+
+    protected $ajax_method;
+
+    protected $ajax_params;
+
     abstract function print() : string;
 
     abstract function external() : output_external;
+
+    public function set_ajax(string $method, array $params) {
+        $this->is_ajax = true;
+        $this->ajax_method = $method;
+        $this->ajax_params = $params;
+    }
 }
