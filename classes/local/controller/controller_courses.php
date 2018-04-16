@@ -59,7 +59,7 @@ class controller_courses extends controller_base {
 SQL;
         //  TODO: add something like this: AND `startdate` <= UNIX_TIMESTAMP() AND `enddate` > UNIX_TIMESTAMP()
 
-        $table->set_header(['course_name', 'blabla', 'blabla', 'blabla', 'blabla', 'blabla', 'blabla']);
+        $table->set_header_local(['course_name', 'category', 'student_count', 'avg_grade', 'sections', 'activities'], '');
 
         $courses = $DB->get_records_sql($query, [$USER->id]);
 
@@ -97,7 +97,6 @@ SQL;
 
         $courseQuery = <<<SQL
     SELECT
-      c.id AS courseid,
       cc.name AS category_name,
     (SELECT COUNT(DISTINCT u.id)
         FROM {user} u
