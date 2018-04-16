@@ -1,0 +1,17 @@
+{
+  "name": "laixmo/moodle-local_learning_analytics",
+  "type": "moodle-local",
+  "description": "",
+  "homepage": "https://git.rwth-aachen.de/laixmo/moodle-local_learning_analytics",
+  "license": "GPL-3.0+",
+  "require": {
+    "composer/installers": "*"
+  },
+  "extra": {
+    "installer-name": "learning_analytics"
+  },
+  "support" : {
+    "issues": "https://git.rwth-aachen.de/laixmo/moodle-local_learning_analytics/issues",
+    "source": "https://git.rwth-aachen.de/laixmo/moodle-local_learning_analytics"
+  }
+}
