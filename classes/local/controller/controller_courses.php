@@ -31,6 +31,8 @@ use local_learning_analytics\local\outputs\table;
 
 class controller_courses extends controller_base {
 
+    const MAX_GRADE = 100;
+
     /**
      * @return string
      * @throws \coding_exception
@@ -53,7 +55,7 @@ class controller_courses extends controller_base {
                     ON e.id = ue.enrolid
                     WHERE u.deleted = 0
                     AND e.courseid = c.id) as students,
-            (SELECT ROUND(AVG(g.finalgrade), 2)
+            (SELECT ROUND(AVG(g.finalgrade), 1)
                 FROM {grade_items} gi
                 JOIN {grade_grades} g
                     ON g.itemid = gi.id
@@ -90,8 +92,32 @@ SQL;
 
         $courses = $DB->get_records_sql($query, [$USER->id]);
 
+        // find max values
+        $maxStudents = 1;
+        $maxSections = 1;
+        $maxActivities = 1;
+
         foreach ($courses as $course) {
-            $table->add_row([$course->course_fullname, $course->category_name, $course->students, $course->avg_grade, $course->sections, $course->activities]);
+            $maxStudents = max($maxStudents, (int) $course->students);
+            $maxSections = max($maxSections, (int) $course->sections);
+            $maxActivities = max($maxActivities, (int) $course->activities);
+        }
+
+        foreach ($courses as $course) {
+            $avgGradeCell = '';
+            if ($course->avg_grade !== null) {
+                $avgGradeText = number_format($course->avg_grade, 1) . '%';
+                $avgGradeCell = table::fancyNumberCell((float) $course->avg_grade, self::MAX_GRADE, 'green', $avgGradeText);
+            }
+
+            $table->add_row([
+                $course->course_fullname,
+                $course->category_name,
+                table::fancyNumberCell((int) $course->students, $maxStudents, 'red'),
+                $avgGradeCell,
+                table::fancyNumberCell((int) $course->sections, $maxSections, 'orange'),
+                table::fancyNumberCell((int) $course->activities, $maxActivities, 'blue')
+            ]);
         }
 
         return $table->print();

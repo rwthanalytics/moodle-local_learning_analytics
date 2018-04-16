@@ -74,6 +74,14 @@ class table extends output_base {
         );
     }
 
+    public static function fancyNumberCell(float $value, float $maxValue, string $class, string $textValue = null) : string {
+        if ($textValue === null) {
+            $textValue = $value;
+        }
+        $width = round(100 * $value / $maxValue);
+        return "${textValue}<div class='bar'><div class='segment ${class}' style='width:${width}%'></div></div>";
+    }
+
     /**
      * @return string
      */

@@ -62,6 +62,7 @@ $route = $router->get_active_route();
 
 $output = $PAGE->get_renderer('local_learning_analytics');
 
+$PAGE->requires->css('/local/learning_analytics/static/styles.css');
 echo $output->header();
 echo $output->render_from_template('local_learning_analytics/base', [
     'reports' => array_keys($reports),

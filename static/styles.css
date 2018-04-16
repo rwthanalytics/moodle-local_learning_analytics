@@ -1,0 +1,25 @@
+.bar {
+    width: 99%;
+    height: 4px;
+}
+
+.bar .segment {
+    background: #000;
+    height: 100%;
+    min-width: 1px;
+}
+.bar .segment.red {
+    background: #EA030E;
+}
+.bar .segment.green {
+    background: #A9CF54;
+}
+.bar .segment.orange {
+    background: #F26522;
+}
+.bar .segment.yellow {
+    background: #ffda6e;
+}
+.bar .segment.blue {
+    background: #66b5ab;
+}
