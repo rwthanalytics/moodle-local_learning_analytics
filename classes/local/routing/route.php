@@ -58,8 +58,6 @@ class route {
         if (is_string($handler)) {
             $parts = explode('@', $handler);
 
-            var_dump($parts);
-
             $this->handler = function ($params) use ($parts) {
                 $class = $parts[0];
                 $method = $parts[1];
@@ -85,7 +83,6 @@ class route {
                 $regex .= '\/' . $part;
             }
         }
-        var_dump($regex);
 
         return $regex . '\/?/';
     }

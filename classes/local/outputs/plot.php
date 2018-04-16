@@ -29,6 +29,7 @@ namespace local_learning_analytics\local\outputs;
 use html_writer;
 use local_learning_analytics\output_base;
 use local_learning_analytics\output_external;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -40,10 +41,26 @@ defined('MOODLE_INTERNAL') || die;
 class plot extends output_base {
 
     private $series = [];
+
     private $id;
+
+    private $layout;
+
+    private $params;
 
     public function __construct() {
         $this->id = random_string(4);
+
+        $this->layout = new stdClass();
+        $this->params = new stdClass();
+    }
+
+    public function set_title(string $title) {
+        $this->layout->title = $title;
+    }
+
+    public function show_toolbar(bool $show) {
+        $this->params->displayModeBar = $show;
     }
 
     /**
@@ -84,6 +101,8 @@ class plot extends output_base {
         $out = html_writer::empty_tag('div', [
                 //'style' => 'visibility: collapse;',
                 'data-plot' => json_encode($this->series),
+                'data-layout' => json_encode($this->layout),
+                'data-params' => json_encode($this->params),
                 'id' => "plot-{$this->id}"
         ]);
 

@@ -57,6 +57,7 @@ class lareport_coursetraffic extends report_base {
      * @param array $params
      * @return array
      * @throws dml_exception
+     * @throws coding_exception
      */
     public function run(array $params): array {
         $plot = new plot();

@@ -37,6 +37,7 @@ require_login();
 global $PAGE;
 
 $PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('report');
 
 $reports = core_component::get_plugin_list('lareport');
 
