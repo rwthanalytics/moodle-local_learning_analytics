@@ -32,17 +32,32 @@ abstract class output_base {
 
     protected $is_ajax;
 
-    protected $ajax_method;
+    private $ajax_method;
 
-    protected $ajax_params;
+    private $ajax_type;
+
+    private $ajax_params;
 
     abstract function print() : string;
 
     abstract function external() : output_external;
 
-    public function set_ajax(string $method, array $params) {
+    public function set_ajax(string $method, string $type, array $params = []) {
         $this->is_ajax = true;
+        $this->ajax_type = $type;
         $this->ajax_method = $method;
         $this->ajax_params = $params;
+    }
+
+    public function ajax(string $id, string $target, array $params = []) {
+        global $PAGE;
+
+        $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'ajax', [
+            'id' => $id,
+            'method' => $this->ajax_method,
+            'type' => $this->ajax_type,
+            'target' => $target,
+            'params' => $params
+        ]);
     }
 }

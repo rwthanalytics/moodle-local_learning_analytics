@@ -48,11 +48,39 @@ class plot extends output_base {
 
     private $params;
 
+    private $ajax_plot_key;
+
     public function __construct() {
-        $this->id = random_string(4);
+        $this->id = 'la-plot-' . random_string(4);
 
         $this->layout = new stdClass();
         $this->params = new stdClass();
+    }
+
+    /**
+     * @param string $type
+     * @param string $query
+     * @param array $config
+     * @return array
+     * @throws \dml_exception
+     */
+    public static function sql_to_series(string $type, string $query, array $config = ['x' => 'x', 'y' => 'y']) {
+        global $DB;
+
+        $trace = [
+                'type' => $type,
+                'x' => [],
+                'y' => []
+        ];
+
+        foreach ($DB->get_records_sql($query) as $record) {
+            $x = $config['x'];
+            $y = $config['y'];
+            $trace['x'][] = $record->$x;
+            $trace['y'][] = $record->$y;
+        }
+
+        return $trace;
     }
 
     public function set_title(string $title) {
@@ -70,22 +98,20 @@ class plot extends output_base {
      * @throws \dml_exception
      */
     public function add_series_from_sql(string $type, string $query, array $config = ['x' => 'x', 'y' => 'y']) {
-        global $DB;
+        $this->series[] = self::sql_to_series($type, $query, $config);
+    }
 
-        $trace = [
-                'type' => $type,
-                'x' => [],
-                'y' => []
-        ];
+    public function load_data_ajax(string $method, string $plot_key) {
+        $this->set_ajax($method, 'plot');
 
-        foreach ($DB->get_records_sql($query) as $record) {
-            $x = $config['x'];
-            $y = $config['y'];
-            $trace['x'][] = $record->$x;
-            $trace['y'][] = $record->$y;
-        }
+        $this->ajax_plot_key = $plot_key;
+    }
 
-        $this->series[] = $trace;
+    /**
+     * @return output_external
+     */
+    function external(): output_external {
+        return new output_external('plot', $this->print(), ['id' => $this->id]);
     }
 
     /**
@@ -94,29 +120,21 @@ class plot extends output_base {
     function print(): string {
         global $PAGE;
 
-        $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'plot', [
-                'id' => $this->id
-        ]);
+        if ($this->is_ajax) {
+            $this->ajax($this->ajax_plot_key, $this->id);
+        } else {
+            $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'plot', [
+                    'id' => $this->id
+            ]);
+        }
 
         $out = html_writer::empty_tag('div', [
-                //'style' => 'visibility: collapse;',
                 'data-plot' => json_encode($this->series),
                 'data-layout' => json_encode($this->layout),
                 'data-params' => json_encode($this->params),
-                'id' => "plot-{$this->id}"
-        ]);
-
-        $out .= html_writer::empty_tag('div', [
-                'class' => 'content'
+                'id' => $this->id
         ]);
 
         return $out;
-    }
-
-    /**
-     * @return output_external
-     */
-    function external(): output_external {
-        return new output_external('plot', $this->print(), ['id' => $this->id]);
     }
 }

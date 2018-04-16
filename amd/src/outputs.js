@@ -1,7 +1,7 @@
 define(['core/ajax', 'jquery'], function (ajax, $) {
     var outputs = {
         plot: function (id) {
-            var data = $('#plot-' + id);
+            var data = $('#' + id);
 
             var plot_data = data.data();
 
@@ -11,21 +11,22 @@ define(['core/ajax', 'jquery'], function (ajax, $) {
             });
         },
 
-        plot_ajax: function () {
+        plot_ajax: function (target, value, params) {
+            var target = $('#' + target);
+            var plot_config = target.data();
 
+            require(['local_learning_analytics/plotly-lazy'], function (Plotly) {
+                console.log(atob(value))
+            });
         },
 
         table_ajax: function (target, value, params) {
             var table = $('table#'+target).get(0);
             var row = table.rows[params.row+1];
 
-            var vals = JSON.parse(atob(value));
-
-            console.log(vals);
-
             for(var i = 0; i < row.cells.length; i++) {
                 var cell = $(row.cells[i+1]);
-                cell.html(vals[i]);
+                cell.html(value[i]);
             }
 
         },
@@ -42,10 +43,9 @@ define(['core/ajax', 'jquery'], function (ajax, $) {
                 }
             ])[0];
 
-            console.log(type + "_ajax");
-
             request.done(function (response) {
-                outputs[type + "_ajax"](target, response.value, params);
+                console.log(response.value);
+                outputs[type + "_ajax"](target, JSON.parse(atob(response.value)), params);
             });
         }
     };

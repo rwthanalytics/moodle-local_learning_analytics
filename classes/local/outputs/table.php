@@ -62,7 +62,7 @@ class table extends output_base {
     }
 
     public function add_rows_ajax(string $method, array $rows) {
-        $this->set_ajax($method, []);
+        $this->set_ajax($method, 'table');
 
         $this->ajax_rows = array_values($rows);
     }
@@ -89,15 +89,7 @@ class table extends output_base {
 
                 $this->add_row($r);
 
-                $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'ajax', [
-                        'id' => $this->ajax_rows[$i]['id'],
-                        'method' => $this->ajax_method,
-                        'type' => 'table',
-                        'target' => $id,
-                        'params' => [
-                                'row' => $i
-                        ]
-                ]);
+                $this->ajax($this->ajax_rows[$i]['id'], $id, ['row' => $i]);
             }
         }
 

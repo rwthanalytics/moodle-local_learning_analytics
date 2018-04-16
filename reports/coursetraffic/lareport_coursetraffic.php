@@ -62,16 +62,31 @@ class lareport_coursetraffic extends report_base {
     public function run(array $params): array {
         $plot = new plot();
 
-        $sql = "
+        if ($this->block) {
+            $plot->add_series_from_sql('scatter', $this->get_query($params['course']), ['x' => 'day', 'y' => 'hits']);
+        } else {
+            $plot->load_data_ajax(self::class . '@ajax', $params['course']);
+        }
+
+        return [ $plot ];
+    }
+
+    protected function get_query(int $course) {
+        return  "
             SELECT 
               DATE(FROM_UNIXTIME(timecreated)) as day,
               COUNT(timecreated) as `hits`
             FROM mdl_logstore_standard_log
-            WHERE courseid = {$params['course']}
+            WHERE courseid = {$course}
             GROUP BY day;";
+    }
 
-        $plot->add_series_from_sql('scatter', $sql, ['x' => 'day', 'y' => 'hits']);
-
-        return [ $plot ];
+    /**
+     * @param string $id
+     * @return array
+     * @throws dml_exception
+     */
+    public function ajax(string $id) {
+        return plot::sql_to_series('scatter', $this->get_query((int)$id), ['x' => 'day', 'y' => 'hits']);
     }
 }

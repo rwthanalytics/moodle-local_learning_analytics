@@ -33,8 +33,14 @@ abstract class report_base {
      */
     protected $restricted = false;
 
+    protected $block = false;
+
     public function get_parameter() : array {
         return [];
+    }
+
+    public function is_block(bool $block) {
+        $this->block = $block;
     }
 
     public function supports_block() : bool {

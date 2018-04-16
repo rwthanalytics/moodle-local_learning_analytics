@@ -58,6 +58,7 @@ class local_learning_analytics_external extends external_api {
 
         if ($type == 'block') {
             if ($report->supports_block()) {
+                $report->is_block(true);
                 // Patch Parameters
                 $params = array_merge(
                         $report->get_block_parameter(),
@@ -94,10 +95,16 @@ class local_learning_analytics_external extends external_api {
 
         $target = explode('@', $method);
 
-        $class = $target[0];
+        if(strpos($target[0], 'lareport') !== false) {
+            $class = controller_report::get_report(str_replace('lareport_', '', $target[0]));
+        } else {
+            $class = $target[0];
+            $class = (new $class([]));
+        }
+
         $method = $target[1];
 
-        $ret = (new $class([]))->$method($id);
+        $ret = $class->$method($id);
 
         return [
                 'value' => base64_encode(json_encode($ret))
