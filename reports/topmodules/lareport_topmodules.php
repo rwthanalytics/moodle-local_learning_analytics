@@ -51,7 +51,7 @@ class lareport_topmodules extends report_base {
         ORDER BY hits DESC
         ");
 
-        $output->set_header_local(['hits', 'eventname'], 'topmodules');
+        $output->set_header_local(['hits', 'eventname'], 'lareport_topmodules');
 
         foreach ($records as $row) {
             $output->add_row([$row->hits, $row->eventname]);

@@ -50,14 +50,14 @@ class table extends output_base {
 
     /**
      * @param array $header
-     * @param $report
+     * @param string $component
      * @throws coding_exception
      */
-    public function set_header_local(array $header, $report) {
+    public function set_header_local(array $header, string $component = '') {
         $this->table->head = [];
 
         foreach ($header as $head) {
-            $this->table->head[] = get_string($head, "lareport_{$report}");
+            $this->table->head[] = get_string($head, $component);
         }
     }
 
