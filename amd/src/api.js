@@ -1,4 +1,4 @@
-define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
+define(['core/ajax', 'core/url', 'jquery', 'local_learning_analytics/outputs'], function (ajax, url, $, outputs) {
     return {
         getReport: function (report, type, params) {
             return $.Deferred(function (deferred) {
@@ -14,9 +14,22 @@ define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
                 ])[0];
 
                 request.done(function (response) {
+
+                    for (var i = 0; i < response.length; i++) {
+                        response[i].content = atob(response[i].content);
+                        response[i].params = JSON.parse(response[i].params);
+                    }
+
                     deferred.resolve(response);
                 });
             });
         },
+
+        run: function(type, params) {
+            switch(type) {
+                case 'plot':
+                    outputs.plot(params.id);
+            }
+        }
     }
 });

@@ -42,7 +42,7 @@ class local_learning_analytics_external extends external_api {
         return new external_multiple_structure(
                 new external_single_structure([
                         'type' => new external_value(PARAM_TEXT),
-                        'content' => new external_value(PARAM_CLEANHTML),
+                        'content' => new external_value(PARAM_TEXT),
                         'params' => new external_value(PARAM_TEXT)
                 ])
         );
@@ -69,8 +69,12 @@ class local_learning_analytics_external extends external_api {
             $outputs = $report->run($eparams);
         }
 
-        return array_map(function ($e) {
+
+
+        $finalout = array_map(function ($e) {
             return $e->external()->to_array();
         }, $outputs);
+
+        return $finalout;
     }
 }

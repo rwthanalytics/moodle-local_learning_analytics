@@ -41,6 +41,18 @@ class lareport_coursetraffic extends report_base {
         ];
     }
 
+    public function supports_block(): bool {
+        return true;
+    }
+
+    public function get_block_parameter(): array {
+        global $PAGE;
+
+        return [
+                'course' => $PAGE->context->instanceid
+        ];
+    }
+
     /**
      * @param array $params
      * @return array

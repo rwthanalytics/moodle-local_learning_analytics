@@ -40,6 +40,11 @@ defined('MOODLE_INTERNAL') || die;
 class plot extends output_base {
 
     private $series = [];
+    private $id;
+
+    public function __construct() {
+        $this->id = random_string(4);
+    }
 
     /**
      * @param string $type
@@ -68,21 +73,18 @@ class plot extends output_base {
 
     /**
      * @return string
-     * @throws \moodle_exception
      */
     function print(): string {
         global $PAGE;
 
-        $id = random_string(5);
-
         $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'plot', [
-                'id' => $id
+                'id' => $this->id
         ]);
 
         $out = html_writer::empty_tag('div', [
                 //'style' => 'visibility: collapse;',
                 'data-plot' => json_encode($this->series),
-                'id' => "plot-{$id}"
+                'id' => "plot-{$this->id}"
         ]);
 
         $out .= html_writer::empty_tag('div', [
@@ -92,7 +94,10 @@ class plot extends output_base {
         return $out;
     }
 
+    /**
+     * @return output_external
+     */
     function external(): output_external {
-        // TODO: Implement external() method.
+        return new output_external('plot', $this->print(), ['id' => $this->id]);
     }
 }

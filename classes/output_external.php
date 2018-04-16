@@ -48,7 +48,7 @@ class output_external {
     public function to_array(): array {
         return [
                 'type' => $this->type,
-                'content' => $this->content,
+                'content' => base64_encode($this->content),
                 'params' => json_encode($this->params)
         ];
     }
