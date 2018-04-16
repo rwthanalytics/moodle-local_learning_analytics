@@ -44,7 +44,6 @@ define(['core/ajax', 'jquery'], function (ajax, $) {
             ])[0];
 
             request.done(function (response) {
-                console.log(response.value);
                 outputs[type + "_ajax"](target, JSON.parse(atob(response.value)), params);
             });
         }
