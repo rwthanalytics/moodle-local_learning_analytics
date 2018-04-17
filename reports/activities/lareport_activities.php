@@ -56,7 +56,6 @@ class lareport_activities extends report_base {
         $query = <<<SQL
         SELECT
             COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modquest.name, modfolder.name, modwiki.name) AS name,
-            COALESCE(modq.id, modr.id, modas.id, modurl.id, modf.id, modpage.id, modquest.id, modfolder.id, modwiki.id) AS instanceid,
             m.name as modname,
             cm.id AS cmid,
             cm.instance AS objectid,
@@ -97,8 +96,13 @@ class lareport_activities extends report_base {
             ON modwiki.id = cm.instance
             AND m.name = 'wiki'
         LEFT JOIN {context} ctx
-            ON ctx.path LIKE (SELECT CONCAT(path, '/%') FROM {context} WHERE contextlevel = '50' AND instanceid = cm.course)
-            AND instanceid = cm.id
+            ON ctx.path LIKE (
+                SELECT CONCAT(path, '/%')
+                FROM {context} ctxin
+                    WHERE ctxin.contextlevel = '50'
+                    AND ctxin.instanceid = cm.course
+                )
+            AND ctx.instanceid = cm.id
         LEFT JOIN {logstore_standard_log} log
             ON log.courseid = cm.course
             AND log.contextid = ctx.id
