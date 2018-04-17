@@ -30,6 +30,8 @@ use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\parameter;
 use local_learning_analytics\report_base;
+use lareport_activities\query_helper;
+use local_learning_analytics\local\routing\router;
 
 class lareport_activities extends report_base {
 
@@ -49,77 +51,8 @@ class lareport_activities extends report_base {
     }
 
     public function run(array $params): array {
-        global $DB;
-
         $courseid = (int) $params['course'];
-
-        $activity = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-        $context = context_course::instance($activity->id, MUST_EXIST);
-        if ($activity->id == SITEID) {
-            throw new moodle_exception('invalidcourse');
-        }
-        // only teachers and managers
-        require_capability('moodle/course:update', $context);
-
-        $query = <<<SQL
-        SELECT
-            COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modquest.name, modfolder.name, modwiki.name) AS name,
-            m.name as modname,
-            cm.id AS cmid,
-            cm.instance AS objectid,
-            s.name AS section_name,
-            s.section AS section_pos,
-            m.visible,
-            COUNT(*) hits
-        FROM {modules} m
-        JOIN {course_modules} cm
-            ON cm.course = ?
-            AND cm.module = m.id
-        JOIN {course_sections} s
-            ON s.id = cm.section
-        LEFT JOIN {quiz} modq
-            ON modq.id = cm.instance
-            AND m.name = 'quiz'
-        LEFT JOIN {resource} modr
-            ON modr.id = cm.instance
-            AND m.name = 'resource'
-        LEFT JOIN {assign} modas
-            ON modas.id = cm.instance
-            AND m.name = 'assign'
-        LEFT JOIN {url} modurl
-            ON modurl.id = cm.instance
-            AND m.name = 'url'
-        LEFT JOIN {forum} modf
-            ON modf.id = cm.instance
-            AND m.name = 'forum'
-        LEFT JOIN {page} modpage
-            ON modpage.id = cm.instance
-            AND m.name = 'page'
-        LEFT JOIN {questionnaire} modquest
-            ON modquest.id = cm.instance
-            AND m.name = 'questionnaire'
-        LEFT JOIN {folder} modfolder
-            ON modfolder.id = cm.instance
-        LEFT JOIN {wiki} modwiki
-            ON modwiki.id = cm.instance
-            AND m.name = 'wiki'
-        LEFT JOIN {context} ctx
-            ON ctx.path LIKE (
-                SELECT CONCAT(path, '/%')
-                FROM {context} ctxin
-                    WHERE ctxin.contextlevel = '50'
-                    AND ctxin.instanceid = cm.course
-                )
-            AND ctx.instanceid = cm.id
-        LEFT JOIN {logstore_standard_log} log
-            ON log.courseid = cm.course
-            AND log.contextid = ctx.id
-        WHERE m.name <> 'label'
-        GROUP BY cm.id
-        ORDER BY section_pos, cm.id
-SQL;
-
-        $activities = $DB->get_records_sql($query, [$courseid]);
+        $activities = query_helper::query_activities($courseid);
 
         // find max values
         $maxHits = 1;
@@ -162,7 +95,23 @@ SQL;
         $markerColors = [];
 
         foreach ($activities as $activity) {
-            $nameCell = $activity->name;
+            $x[] = $activity->name;
+            $y[] = $activity->hits;
+            $markerColors[] = self::$markerColors[$activity->modname] ?? '#bbbbbb';
+        }
+
+        // reorder to show most used activities
+
+        usort($activities, function ($act1, $act2) {
+            return $act2->hits <=> $act1->hits;
+        });
+
+        $headintTopText = get_string('most_used_activities', 'lareport_activities');
+        foreach ($activities as $i => $activity) {
+            if ($i >= 5) { // stop when some reports are shown
+                break;
+            }
+            $nameCell = $activity->name . $i;
             if (!$activity->visible) {
                 $nameCell = '<del>${$nameCell}</del>';
             }
@@ -172,14 +121,18 @@ SQL;
                 $activity->section_name,
                 table::fancyNumberCell((int) $activity->hits, $maxHits, 'orange')
             ]);
-
-            $x[] = $activity->name;
-            $y[] = $activity->hits;
-            $markerColors[] = self::$markerColors[$activity->modname] ?? '#bbbbbb';
         }
+
+        $linkToFullList = router::report_page('activities', 'all', ['course' => $courseid]);
+        $linkToFullListText = get_string('show_full_list', 'lareport_activities');
+        $cell = new html_table_cell("<a href='{$linkToFullList}'>{$linkToFullListText}</a>");
+        $cell->colspan = 4;
+        $cell->attributes['class'] = 'showFullList';
+        $tableDetails->add_row([ $cell ]);
 
         $plot = new plot();
         $plot->set_height(300);
+        $plot->show_toolbar(false);
         $plot->add_series([
             'type' => 'bar',
             'x' => $x,
@@ -192,7 +145,7 @@ SQL;
         return [
             $plot,
             $tableTypes,
-            '<h3>Detailed activities</h3>',
+            "<h3>{$headintTopText}</h3>",
             $tableDetails
         ];
     }

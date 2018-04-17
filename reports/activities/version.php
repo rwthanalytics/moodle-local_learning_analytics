@@ -28,5 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'lareport_activities';
 
-$plugin->version = '2018041701';
+$plugin->version = '2018041703';
 $plugin->requires = '2017111302';
