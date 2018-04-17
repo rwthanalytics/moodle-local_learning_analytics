@@ -28,6 +28,7 @@ namespace local_learning_analytics\local\controller;
 
 use local_learning_analytics\controller_base;
 use local_learning_analytics\local\outputs\table;
+use moodle_url;
 
 class controller_courses extends controller_base {
 
@@ -110,13 +111,15 @@ SQL;
                 $avgGradeCell = table::fancyNumberCell((float) $course->avg_grade, self::MAX_GRADE, 'green', $avgGradeText);
             }
 
+            $activityLink = new moodle_url('/local/learning_analytics/index.php/reports/activities', ['course' => $course->id]);
+
             $table->add_row([
                 $course->course_fullname,
                 $course->category_name,
                 table::fancyNumberCell((int) $course->students, $maxStudents, 'red'),
                 $avgGradeCell,
                 table::fancyNumberCell((int) $course->sections, $maxSections, 'orange'),
-                table::fancyNumberCell((int) $course->activities, $maxActivities, 'blue')
+                table::fancyNumberCell((int) $course->activities, $maxActivities, 'blue', "<a href='{$activityLink}'>{$course->activities}</a>")
             ]);
         }
 
