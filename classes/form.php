@@ -68,7 +68,7 @@ class form {
             } else {
                 $this->optional[$param->get_key()] = $param;
 
-                if (isset($_GET[$param])) {
+                if (isset($_GET[$param->get_key()])) {
                     $this->params[$param->get_key()] = $param->get();
                 }
             }
