@@ -111,7 +111,7 @@ class lareport_activities extends report_base {
             if ($i >= 5) { // stop when some reports are shown
                 break;
             }
-            $nameCell = $activity->name . $i;
+            $nameCell = $activity->name;
             if (!$activity->visible) {
                 $nameCell = '<del>${$nameCell}</del>';
             }
