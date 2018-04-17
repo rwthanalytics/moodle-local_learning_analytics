@@ -56,7 +56,7 @@ class lareport_activities extends report_base {
 
         $filter = '';
         $filterValues = [];
-        if ($params['mod']) {
+        if (!empty($params['mod'])) {
             $filter = "m.name = ?";
             $filterValues[] = $params['mod'];
         }
@@ -69,7 +69,7 @@ class lareport_activities extends report_base {
 
         foreach ($activities as $activity) {
             $maxHits = max($maxHits, (int) $activity->hits);
-            if (!$hitsByTypeAssoc[$activity->modname]) {
+            if (!isset($hitsByTypeAssoc[$activity->modname])) {
                 $hitsByTypeAssoc[$activity->modname] = 0;
             }
             $hitsByTypeAssoc[$activity->modname] += $activity->hits;
@@ -96,7 +96,7 @@ class lareport_activities extends report_base {
             ]);
         }
 
-        if ($params['mod']) {
+        if (empty($params['mod'])) {
             $linkToReset = router::report('activities', ['course' => $courseid]);
             $tableTypes->add_show_more_row($linkToReset);
         }
