@@ -91,7 +91,7 @@ SQL;
 
         $table->set_header_local(['course_name', 'category', 'students', 'avg_grade', 'sections', 'activities'], 'local_learning_analytics');
 
-        $courses = $DB->get_records_sql($query, [$USER->id]);
+        $courses = $DB->get_records_sql($query, [1490]);
 
         // find max values
         $maxStudents = 1;
@@ -111,15 +111,16 @@ SQL;
                 $avgGradeCell = table::fancyNumberCell((float) $course->avg_grade, self::MAX_GRADE, 'green', $avgGradeText);
             }
 
-            $activityLink = new moodle_url('/local/learning_analytics/index.php/reports/activities', ['course' => $course->id]);
+            $sectionsUrl = new moodle_url('/local/learning_analytics/index.php/reports/sections', ['course' => $course->id]);
+            $activityUrl = new moodle_url('/local/learning_analytics/index.php/reports/activities', ['course' => $course->id]);
 
             $table->add_row([
                 $course->course_fullname,
                 $course->category_name,
                 table::fancyNumberCell((int) $course->students, $maxStudents, 'red'),
                 $avgGradeCell,
-                table::fancyNumberCell((int) $course->sections, $maxSections, 'orange'),
-                table::fancyNumberCell((int) $course->activities, $maxActivities, 'blue', "<a href='{$activityLink}'>{$course->activities}</a>")
+                table::fancyNumberCell((int) $course->sections, $maxSections, 'orange', "<a href='{$sectionsUrl}'>{$course->sections}</a>"),
+                table::fancyNumberCell((int) $course->activities, $maxActivities, 'blue', "<a href='{$activityUrl}'>{$course->activities}</a>")
             ]);
         }
 
