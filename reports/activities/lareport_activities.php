@@ -96,7 +96,7 @@ class lareport_activities extends report_base {
             ]);
         }
 
-        if (empty($params['mod'])) {
+        if (!empty($params['mod'])) {
             $linkToReset = router::report('activities', ['course' => $courseid]);
             $tableTypes->add_show_more_row($linkToReset);
         }
