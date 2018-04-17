@@ -109,4 +109,14 @@ class table extends output_base {
     public function add_row(array $row) {
         $this->table->data[] = $row;
     }
+
+    public function add_show_more_row($url, $text = null) {
+        if ($text === null) {
+            $text = get_string('show_full_list', 'local_learning_analytics');
+        }
+        $cell = new \html_table_cell("<a href='{$url}'>{$text}</a>");
+        $cell->colspan = count($this->table->head);
+        $cell->attributes['class'] = 'showFullList';
+        $this->add_row([ $cell ]);
+    }
 }

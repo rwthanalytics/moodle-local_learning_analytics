@@ -47,12 +47,20 @@ class lareport_activities extends report_base {
     public function get_parameter(): array {
         return [
             new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
+            new parameter('mod', parameter::TYPE_STRING, false),
         ];
     }
 
     public function run(array $params): array {
         $courseid = (int) $params['course'];
-        $activities = query_helper::query_activities($courseid);
+
+        $filter = '';
+        $filterValues = [];
+        if ($params['mod']) {
+            $filter = "m.name = ?";
+            $filterValues[] = $params['mod'];
+        }
+        $activities = query_helper::query_activities($courseid, $filter, $filterValues);
 
         // find max values
         $maxHits = 1;
@@ -81,10 +89,16 @@ class lareport_activities extends report_base {
         $tableTypes->set_header_local(['activity_type', 'hits'], 'lareport_activities');
 
         foreach ($hitsByType as $item) {
+            $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
             $tableTypes->add_row([
-                $item['type'],
+                "<a href='{$url}'>{$item['type']}</a>",
                 table::fancyNumberCell((int) $item['hits'], $maxHitsByType, 'green')
             ]);
+        }
+
+        if ($params['mod']) {
+            $linkToReset = router::report('activities', ['course' => $courseid]);
+            $tableTypes->add_show_more_row($linkToReset);
         }
 
         $tableDetails = new table();
@@ -124,11 +138,7 @@ class lareport_activities extends report_base {
         }
 
         $linkToFullList = router::report_page('activities', 'all', ['course' => $courseid]);
-        $linkToFullListText = get_string('show_full_list', 'lareport_activities');
-        $cell = new html_table_cell("<a href='{$linkToFullList}'>{$linkToFullListText}</a>");
-        $cell->colspan = 4;
-        $cell->attributes['class'] = 'showFullList';
-        $tableDetails->add_row([ $cell ]);
+        $tableDetails->add_show_more_row($linkToFullList);
 
         $plot = new plot();
         $plot->set_height(300);

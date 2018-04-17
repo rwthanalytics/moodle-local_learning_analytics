@@ -36,7 +36,7 @@ use context_course;
 
 class query_helper {
 
-    public static function query_activities(int $courseid, string $orderby = 'section_pos, cm.id'): array {
+    public static function query_activities(int $courseid, string $filter = '', array $values = []): array {
         global $DB;
 
         $activity = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -46,6 +46,14 @@ class query_helper {
         }
         // only teachers and managers
         require_capability('moodle/course:update', $context);
+
+        $valuesStatemt = [$courseid];
+
+        $filterSql = '';
+        if ($filter) {
+            $filterSql = ' AND ' . $filter;
+            $valuesStatemt = array_merge($valuesStatemt, $values);
+        }
 
         $query = <<<SQL
         SELECT
@@ -97,11 +105,11 @@ class query_helper {
         LEFT JOIN {logstore_standard_log} log
             ON log.courseid = cm.course
             AND log.contextid = ctx.id
-        WHERE m.name <> 'label'
+        WHERE m.name <> 'label' {$filterSql}
         GROUP BY cm.id
-        ORDER BY {$orderby}
+        ORDER BY section_pos, cm.id
 SQL;
 
-        return $DB->get_records_sql($query, [$courseid]);
+        return $DB->get_records_sql($query, $valuesStatemt);
     }
 }
