@@ -64,7 +64,7 @@ class plot extends output_base {
      * @return array
      * @throws \dml_exception
      */
-    public static function sql_to_series(string $type, string $query, array $config = ['x' => 'x', 'y' => 'y']) {
+    public static function sql_to_series(string $type, array $rows, array $config = ['x' => 'x', 'y' => 'y']) {
         global $DB;
 
         $trace = [
@@ -73,9 +73,9 @@ class plot extends output_base {
                 'y' => []
         ];
 
-        foreach ($DB->get_records_sql($query) as $record) {
-            $x = $config['x'];
-            $y = $config['y'];
+        $x = $config['x'];
+        $y = $config['y'];
+        foreach ($rows as $record) {
             $trace['x'][] = $record->$x;
             $trace['y'][] = $record->$y;
         }
@@ -98,7 +98,16 @@ class plot extends output_base {
      * @throws \dml_exception
      */
     public function add_series_from_sql(string $type, string $query, array $config = ['x' => 'x', 'y' => 'y']) {
-        $this->series[] = self::sql_to_series($type, $query, $config);
+        global $DB;
+        $this->series[] = self::sql_to_series($type, $DB->get_records_sql($query), $config);
+    }
+
+    public function add_series_from_sql_records(string $type, $rows, array $config = ['x' => 'x', 'y' => 'y']) {
+        $this->series[] = self::sql_to_series($type, $rows, $config);
+    }
+
+    public function add_series(array $series) {
+        $this->series[] = $series;
     }
 
     public function load_data_ajax(string $method, string $plot_key) {

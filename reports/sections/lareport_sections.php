@@ -57,7 +57,7 @@ class lareport_sections extends report_base {
             COUNT(*) AS y
         FROM {modules} m
         JOIN {course_modules} cm
-            ON cm.course = {$courseid}
+            ON cm.course = ?
             AND cm.module = m.id
         JOIN {course_sections} s
             ON s.id = cm.section
@@ -77,9 +77,10 @@ class lareport_sections extends report_base {
         ORDER BY s.section, cm.id;
 SQL;
 
-        $plot = new plot();
+        $sections = $DB->get_records_sql($query, [$courseid]);
 
-        $plot->add_series_from_sql('bar', $query);
+        $plot = new plot();
+        $plot->add_series_from_sql_records('bar', $sections);
 
         return [ $plot ];
     }
