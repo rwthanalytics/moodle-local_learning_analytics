@@ -33,6 +33,15 @@ use local_learning_analytics\report_base;
 
 class lareport_activities extends report_base {
 
+    private static $markerColors = [
+        'quiz' => '#A9CF54', // green
+        'resource' => '#66b5ab', // blue
+        'page' => '#EA030E', // red
+        'url' => '#F26522', // orange
+        'forum' => '#ffda6e', // yellow
+        'wiki' => '#ffda6e', // yellow
+    ];
+
     public function get_parameter(): array {
         return [
             new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
@@ -148,6 +157,10 @@ SQL;
         $tableDetails = new table();
         $tableDetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 
+        $x = [];
+        $y = [];
+        $markerColors = [];
+
         foreach ($activities as $activity) {
             $nameCell = $activity->name;
             if (!$activity->visible) {
@@ -159,11 +172,22 @@ SQL;
                 $activity->section_name,
                 table::fancyNumberCell((int) $activity->hits, $maxHits, 'orange')
             ]);
+
+            $x[] = $activity->name;
+            $y[] = $activity->hits;
+            $markerColors[] = self::$markerColors[$activity->modname] ?? '#bbbbbb';
         }
 
         $plot = new plot();
         $plot->set_height(300);
-        $plot->add_series_from_sql_records('bar', $activities, ['x' => 'name', 'y' => 'hits']);
+        $plot->add_series([
+            'type' => 'bar',
+            'x' => $x,
+            'y' => $y,
+            'marker' => [
+                'color' => $markerColors
+            ]
+        ]);
 
         return [
             $plot,
