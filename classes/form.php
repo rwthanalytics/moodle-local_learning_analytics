@@ -49,6 +49,7 @@ class form {
      *
      * @param parameter[] $params
      * @param bool $inline
+     * @param string $report
      */
     public function __construct(array $params, bool $inline, string $report) {
 

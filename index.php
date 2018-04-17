@@ -55,7 +55,8 @@ $router = new router([
         return 'HOME';
     }),
     new route('/courses', 'local_learning_analytics\\local\\controller\\controller_courses@run'),
-    new route('/reports/:report', 'local_learning_analytics\\local\\controller\\controller_report@run')
+    new route('/reports/:report', 'local_learning_analytics\\local\\controller\\controller_report@run'),
+    new route('/reports/:report/:page', 'local_learning_analytics\\local\\controller\\controller_report@run_page'),
 ]);
 
 $route = $router->get_active_route();

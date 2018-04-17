@@ -65,4 +65,23 @@ class router {
         }
         return $this->routes[0];
     }
+
+    private static function get_url(string $slash, array $query) : moodle_url {
+        $params = empty($query) ? '' : '?' . http_build_query($query);
+        return new moodle_url("/local/learning_analytics/index.php{$slash}{$params}");
+    }
+
+    /**
+     * @param string $report
+     * @param array $params
+     * @return moodle_url
+     * @throws \moodle_exception
+     */
+    public static function report(string $report, array $params = []) : moodle_url {
+        return self::get_url("/{$report}", $params);
+    }
+
+    public static function report_page(string $report, string $page, array $params = []) : moodle_url {
+        return self::get_url("/$report/$page", $params);
+    }
 }
