@@ -54,7 +54,7 @@ class lareport_activities extends report_base {
         $table = new table();
 
         $query = <<<SQL
-        SELECT SQL_NO_CACHE
+        SELECT
             COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modquest.name, modfolder.name, modwiki.name) AS name,
             COALESCE(modq.id, modr.id, modas.id, modurl.id, modf.id, modpage.id, modquest.id, modfolder.id, modwiki.id) AS instanceid,
             m.name as modname,
@@ -64,42 +64,42 @@ class lareport_activities extends report_base {
             s.section AS section_pos,
             m.visible,
             COUNT(*) hits
-        FROM mdl_modules m
-        JOIN mdl_course_modules cm
+        FROM {modules} m
+        JOIN {course_modules} cm
             ON cm.course = ?
             AND cm.module = m.id
-        JOIN mdl_course_sections s
+        JOIN {course_sections} s
             ON s.id = cm.section
-        LEFT JOIN mdl_quiz modq
+        LEFT JOIN {quiz} modq
             ON modq.id = cm.instance
             AND m.name = 'quiz'
-        LEFT JOIN mdl_resource modr
+        LEFT JOIN {resource} modr
             ON modr.id = cm.instance
             AND m.name = 'resource'
-        LEFT JOIN mdl_assign modas
+        LEFT JOIN {assign} modas
             ON modas.id = cm.instance
             AND m.name = 'assign'
-        LEFT JOIN mdl_url modurl
+        LEFT JOIN {url} modurl
             ON modurl.id = cm.instance
             AND m.name = 'url'
-        LEFT JOIN mdl_forum modf
+        LEFT JOIN {forum} modf
             ON modf.id = cm.instance
             AND m.name = 'forum'
-        LEFT JOIN mdl_page modpage
+        LEFT JOIN {page} modpage
             ON modpage.id = cm.instance
             AND m.name = 'page'
-        LEFT JOIN mdl_questionnaire modquest
+        LEFT JOIN {questionnaire} modquest
             ON modquest.id = cm.instance
             AND m.name = 'questionnaire'
-        LEFT JOIN mdl_folder modfolder
+        LEFT JOIN {folder} modfolder
             ON modfolder.id = cm.instance
-        LEFT JOIN mdl_wiki modwiki
+        LEFT JOIN {wiki} modwiki
             ON modwiki.id = cm.instance
             AND m.name = 'wiki'
-        LEFT JOIN mdl_context ctx
-            ON ctx.path LIKE (SELECT CONCAT(path, '/%') FROM mdl_context WHERE contextlevel = '50' AND instanceid = cm.course)
+        LEFT JOIN {context} ctx
+            ON ctx.path LIKE (SELECT CONCAT(path, '/%') FROM {context} WHERE contextlevel = '50' AND instanceid = cm.course)
             AND instanceid = cm.id
-        LEFT JOIN mdl_logstore_standard_log log
+        LEFT JOIN {logstore_standard_log} log
             ON log.courseid = cm.course
             AND log.contextid = ctx.id
         WHERE m.name <> 'label'
