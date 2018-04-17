@@ -50,11 +50,15 @@ class plot extends output_base {
 
     private $ajax_plot_key;
 
+    private $height;
+
     public function __construct() {
         $this->id = 'la-plot-' . random_string(4);
 
         $this->layout = new stdClass();
         $this->params = new stdClass();
+
+        $this->height = 'auto';
     }
 
     /**
@@ -89,6 +93,10 @@ class plot extends output_base {
 
     public function show_toolbar(bool $show) {
         $this->params->displayModeBar = $show;
+    }
+
+    public function set_height($height) : void {
+        $this->height = $height;
     }
 
     /**
@@ -137,11 +145,21 @@ class plot extends output_base {
             ]);
         }
 
-        $out = html_writer::empty_tag('div', [
-                'data-plot' => json_encode($this->series),
-                'data-layout' => json_encode($this->layout),
-                'data-params' => json_encode($this->params),
-                'id' => $this->id
+        $style = '';
+        if ($this->height !== 'auto') {
+            if (gettype($this->height) === 'integer') {
+                $style .= "height: {$this->height}px;";
+            } else {
+                $style .= "height: {$this->height};";
+            }
+        }
+
+        $out = html_writer::div('', '', [
+            'data-plot' => json_encode($this->series),
+            'data-layout' => json_encode($this->layout),
+            'data-params' => json_encode($this->params),
+            'id' => $this->id,
+            'style' => $style
         ]);
 
         return $out;

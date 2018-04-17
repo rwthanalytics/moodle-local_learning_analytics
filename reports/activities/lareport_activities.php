@@ -26,6 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\parameter;
 use local_learning_analytics\report_base;
@@ -160,7 +161,12 @@ SQL;
             ]);
         }
 
+        $plot = new plot();
+        $plot->set_height(300);
+        $plot->add_series_from_sql_records('bar', $activities, ['x' => 'name', 'y' => 'hits']);
+
         return [
+            $plot,
             $tableTypes,
             '<h3>Detailed activities</h3>',
             $tableDetails
