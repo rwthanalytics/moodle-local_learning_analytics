@@ -51,8 +51,6 @@ class lareport_activities extends report_base {
         // only teachers and managers
         require_capability('moodle/course:update', $context);
 
-        $table = new table();
-
         $query = <<<SQL
         SELECT
             COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modquest.name, modfolder.name, modwiki.name) AS name,
@@ -111,30 +109,61 @@ class lareport_activities extends report_base {
         ORDER BY section_pos, cm.id
 SQL;
 
-        $table->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
-
         $activities = $DB->get_records_sql($query, [$courseid]);
 
         // find max values
         $maxHits = 1;
 
+        $hitsByTypeAssoc = [];
+
         foreach ($activities as $activity) {
             $maxHits = max($maxHits, (int) $activity->hits);
+            if (!$hitsByTypeAssoc[$activity->modname]) {
+                $hitsByTypeAssoc[$activity->modname] = 0;
+            }
+            $hitsByTypeAssoc[$activity->modname] += $activity->hits;
         }
+        $hitsByType = [];
+        $maxHitsByType = 1;
+        foreach ($hitsByTypeAssoc as $type => $hits) {
+            $hitsByType[] = ['type' => $type, 'hits' => $hits];
+            $maxHitsByType = max($maxHitsByType, $hits);
+        }
+
+        usort($hitsByType, function ($item1, $item2) {
+            return $item2['hits'] <=> $item1['hits'];
+        });
+
+        $tableTypes = new table();
+        $tableTypes->set_header_local(['activity_type', 'hits'], 'lareport_activities');
+
+        foreach ($hitsByType as $item) {
+            $tableTypes->add_row([
+                $item['type'],
+                table::fancyNumberCell((int) $item['hits'], $maxHitsByType, 'green')
+            ]);
+        }
+
+        $tableDetails = new table();
+        $tableDetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 
         foreach ($activities as $activity) {
             $nameCell = $activity->name;
             if (!$activity->visible) {
                 $nameCell = '<del>${$nameCell}</del>';
             }
-            $table->add_row([
+            $tableDetails->add_row([
                 $nameCell,
                 $activity->modname,
                 $activity->section_name,
-                table::fancyNumberCell((int) $activity->hits, $maxHits, 'red')
+                table::fancyNumberCell((int) $activity->hits, $maxHits, 'orange')
             ]);
         }
 
-        return [$table];
+        return [
+            $tableTypes,
+            '<h3>Detailed activities</h3>',
+            $tableDetails
+        ];
     }
 }
