@@ -16,7 +16,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="courseid_userid_idx" UNIQUE="false" FIELDS="courseid, userid"/>
+        <INDEX NAME="courseid_userid_idx" UNIQUE="true" FIELDS="courseid, userid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="local_learning_analytics_ses" COMMENT="Sessions per Summary">

@@ -40,7 +40,7 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        $index = new xmldb_index('courseid_userid_idx', XMLDB_INDEX_NOTUNIQUE, array('courseid', 'userid'));
+        $index = new xmldb_index('courseid_userid_idx', XMLDB_INDEX_UNIQUE, array('courseid', 'userid'));
         if (!$dbman->index_exists($table, $index)) {
             $dbman->add_index($table, $index);
         }
