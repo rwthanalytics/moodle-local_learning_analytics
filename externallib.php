@@ -113,41 +113,48 @@ class local_learning_analytics_external extends external_api {
     }
 
     public static function ajax_import_parameters() {
-        return new external_function_parameters([]);
+        return new external_function_parameters([
+            'action' => new external_value(PARAM_TEXT, 'action to perform'),
+            'userid' => new external_value(PARAM_INT, 'Userid'),
+            'offset' => new external_value(PARAM_INT, 'Database offset for user')
+        ]);
     }
 
     public static function ajax_import_returns() {
         return new external_single_structure([
-            'user' => new external_value(PARAM_INT, 'Current imported userid'),
-            'offset' => new external_value(PARAM_INT, 'Current imported offset for userid'),
-            'perc' => new external_value(PARAM_FLOAT, 'Current progress'),
+            'userid' => new external_value(PARAM_INT, 'Handled user'),
+            'offset' => new external_value(PARAM_INT, 'Database offset for user'),
+            'maxUserid' => new external_value(PARAM_INT, 'Highest userid in database'),
+            'nextOffset' => new external_value(PARAM_INT, 'Offset for next request for the same userid'),
+            'perc' => new external_value(PARAM_FLOAT, 'Current progress'), // TODO remove, this should be done via JavaScript
         ]);
     }
 
-    public static function ajax_import() {
+    public static function ajax_import(string $action, int $userid, int $offset) {
 
         if (!is_siteadmin()) {
             throw new moodle_exception('Only admins can import data.');
         }
-
-        $userid = ((int) get_config('local_learning_analytics', 'import_userid'));
-        $offset = ((int) get_config('local_learning_analytics', 'import_offset'));
+        session_write_close(); // allow parallel ajax requests
 
         $import = new import();
         $maxUserid = $import->maxUserid();
-        $progress = ['user' => $userid, 'offset' => $offset, 'perc' => ($userid / $maxUserid)];
+        $nextOffset = -1;
 
-        $result = $import->import_user($userid, $offset);
-
-        if ($result['completed']) {
-            $userid++;
-            $offset = 0;
+        if ($action === 'savepoint') {
+            set_config('import_userid', $userid, 'local_learning_analytics');
         } else {
-            $offset = $result['nextOffset'];
+            $result = $import->import_user($userid, $offset);
+            if (!$result['completed']) {
+                $nextOffset = $result['nextOffset'];
+            }
         }
-        set_config('import_userid', $userid, 'local_learning_analytics');
-        set_config('import_offset', $offset, 'local_learning_analytics');
-
-        return $progress;
+        return [
+            'userid' => $userid,
+            'offset' => $offset,
+            'maxUserid' => $maxUserid,
+            'nextOffset' => $nextOffset,
+            'perc' => ($userid / $maxUserid)
+        ];
     }
 }

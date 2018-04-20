@@ -49,8 +49,10 @@ $import = new import();
 $tableIsEmpty = $import->table_is_empty();
 $estimation = $import->estimate();
 
+$lastUserid = (int) get_config('local_learning_analytics', 'import_userid');
+
 $PAGE->requires->css('/local/learning_analytics/static/styles_import.css');
-$PAGE->requires->js_call_amd('local_learning_analytics/import', 'init');
+$PAGE->requires->js_call_amd('local_learning_analytics/import', 'init', [ $lastUserid, $estimation['users'] ]);
 echo $output->header();
 
 echo $output->render_from_template('local_learning_analytics/settings_import', [
