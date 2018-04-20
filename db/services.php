@@ -34,6 +34,13 @@ $functions = [
                 'description' => 'Execute report over ajax',
                 'type' => 'read',
         ],
+        'local_learning_analytics_ajax_import' => [
+            'classname' => 'local_learning_analytics_external',
+            'methodname' => 'ajax_import',
+            'ajax' => 'true',
+            'description' => 'Run import via AJAX',
+            'type' => 'write',
+        ],
         'local_learning_analytics_ajax' => [
                 'classname' => 'local_learning_analytics_external',
                 'methodname' => 'ajax',

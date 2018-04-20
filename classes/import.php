@@ -62,8 +62,18 @@ SQL;
         );
     }
 
+    public function maxUserid() : int {
+        global $DB;
+
+        $query = <<<SQL
+        SELECT id FROM {user} ORDER BY id DESC LIMIT 1;
+SQL;
+        $results = $DB->get_records_sql($query);
+        return (int) reset($results)->id;
+    }
+
     // returns last id to continue
-    public function import_user(int $userid, int $offset = 0, int $line_limit = 5000) : array {
+    public function import_user(int $userid, int $offset = 0, int $line_limit = 2000) : array {
         global $DB;
 
         $query = <<<SQL
@@ -108,16 +118,12 @@ SQL;
             // also save last session as this is the last session of the user
             $totalHits += $hits;
             $this->saveSession($userid, $courseid, $hits, $firstaccess, $lastaccess);
-            echo ' max LIMIT!!';
             return ['records' => $totalHits, 'completed' => true];
         }
-
-        // TODO: if number of lines is smaller than $lines_limit, also save the last session as it has already ended
 
         if ($savedSessions === 0) {
             // user has a session that is bigger than our interval (this should happen only in extreme cases)
             // rerun, but increase number of lines
-            echo 'EXTREME CASE!!!!'; // TODO remove
             return $this->import_user($userid, $offset, $line_limit * 2);
         }
 
