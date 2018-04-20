@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Learning Analytics Import script
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -24,14 +24,37 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require(__DIR__ . '/../../../config.php');
+
+use local_learning_analytics\import;
+
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'local_learning_analytics';
+require_login();
+if (!is_siteadmin()) {
+    throw new moodle_exception('Only admins can import data.');
+}
 
-$plugin->version = '2018041901';
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
+global $PAGE;
 
-$plugin->requires = '2017111302';
+$PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('admin');
+$PAGE->set_title(get_string('import_title', 'local_learning_analytics'));
+$PAGE->set_heading(get_string('import_title', 'local_learning_analytics'));
 
-$plugin->dependencies = [];
+$output = $PAGE->get_renderer('local_learning_analytics');
+
+$import = new import();
+
+$tableIsEmpty = $import->table_is_empty();
+$estimation = $import->estimate();
+
+$PAGE->requires->css('/local/learning_analytics/static/styles_import.css');
+$PAGE->requires->js_call_amd('local_learning_analytics/import', 'init');
+echo $output->header();
+
+echo $output->render_from_template('local_learning_analytics/settings_import', [
+    'tableIsEmpty' => $tableIsEmpty,
+    'estimation' => $estimation
+]);
+echo $output->footer();

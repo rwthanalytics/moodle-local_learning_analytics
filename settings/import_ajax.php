@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Learning Analytics Import script
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -24,14 +24,28 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+require(__DIR__ . '/../../../config.php');
+
+use local_learning_analytics\import;
+
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'local_learning_analytics';
+require_login();
+if (!is_siteadmin()) {
+    throw new moodle_exception('Only admins can import data.');
+}
 
-$plugin->version = '2018041901';
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
+// get current import state
+$state = get_config('local_learning_analytics', 'import_userid');
+// $state = get_config('local_learning_analytics', 'import_offset');
 
-$plugin->requires = '2017111302';
+die(gettype($state) . ' - ' . ($state === false));
 
-$plugin->dependencies = [];
+$userid = optional_param('userid', 0, PARAM_INT);
+$offset = optional_param('offset', 0, PARAM_INT);
+
+$import = new import();
+
+$result = $import->import_user($userid, $offset);
+
+echo ' // ' . json_encode($result);
