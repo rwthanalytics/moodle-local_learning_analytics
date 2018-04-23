@@ -59,7 +59,7 @@ define(['core/ajax', 'core/url', 'jquery', 'local_learning_analytics/outputs'], 
         if (userid > maxUserid) {
             runImport = false;
         }
-        if (!runImport) {
+        if (!runImport && offset === 0) {
             showStatus();
             return;
         }
@@ -98,7 +98,6 @@ define(['core/ajax', 'core/url', 'jquery', 'local_learning_analytics/outputs'], 
             }(userid, offset));
             if (offset === 0) {
                 activeUserImports.push(userid);
-                activeUserImports.sort(numberSort);
                 nextUserid++;
                 showStatus();
             }
