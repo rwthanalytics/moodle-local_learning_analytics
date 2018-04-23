@@ -33,6 +33,7 @@ use local_learning_analytics\form;
 use local_learning_analytics\output_base;
 use local_learning_analytics\report_base;
 use local_learning_analytics\report_page_base;
+use renderable;
 
 class controller_report extends controller_base {
     /**
@@ -65,13 +66,7 @@ class controller_report extends controller_base {
                 $outputs = $instance->run([]);
             }
 
-            foreach ($outputs as $output) {
-                if ($output instanceof output_base) {
-                    $ret .= $output->print();
-                } else {
-                    $ret .= $output;
-                }
-            }
+            $ret .= $this->renderer->render_output_list($outputs);
 
             return $ret;
         } else {
@@ -107,6 +102,7 @@ class controller_report extends controller_base {
      * @throws \coding_exception
      */
     public function run_page(): string {
+
         $instance = self::get_report_page($this->params['report'], $this->params['page']);
 
         if ($instance) {
@@ -116,8 +112,9 @@ class controller_report extends controller_base {
             if (count($params) > 0) {
                 $fparams = new form($params, true, $this->params['report']);
 
-                if($fparams->get_missing_count() === 0) {
+                if ($fparams->get_missing_count() === 0) {
                     $outputs = $instance->run($fparams->get_parameters());
+
                 } else {
                     return get_string('error:wrong_link', 'local_learning_analytics');
                 }
@@ -126,13 +123,7 @@ class controller_report extends controller_base {
                 $outputs = $instance->run([]);
             }
 
-            foreach ($outputs as $output) {
-                if ($output instanceof output_base) {
-                    $ret .= $output->print();
-                } else {
-                    $ret .= $output;
-                }
-            }
+            $ret .= $this->renderer->render_output_list($outputs);
 
             return $ret;
         } else {

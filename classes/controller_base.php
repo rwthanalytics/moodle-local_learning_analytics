@@ -33,7 +33,16 @@ abstract class controller_base {
      */
     protected $params;
 
+    /**
+     * @var \renderer_base
+     */
+    protected $renderer;
+
     public function __construct(array $params) {
+        global $PAGE;
+
         $this->params = $params;
+
+        $this->renderer = $PAGE->get_renderer('local_learning_analytics');
     }
 }

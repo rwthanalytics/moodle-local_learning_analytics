@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
+/**
+ *
+ *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @author      Marcel Behrmann <behrmann@lfi.rwth-aachen.de>
@@ -22,12 +24,31 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learning_analytics\output;
+defined('MOODLE_INTERNAL') || die;
 
-use plugin_renderer_base;
+/**
+ * Class renderer
+ */
+class local_learning_analytics_renderer extends plugin_renderer_base {
 
-defined('MOODLE_INTERNAL') || die();
+    /**
+     * @param array $list
+     * @return string
+     * @throws coding_exception
+     */
+    public function render_output_list(array $list) {
+        $ret = "";
 
-class renderer extends plugin_renderer_base {
+        foreach ($list as $output) {
+            if ($output instanceof output_base) {
+                $ret .= $output->print();
+            } else if ($output instanceof renderable) {
+                $ret .= $this->output->render($output);
+            } else {
+                $ret .= $output;
+            }
+        }
 
+        return $ret;
+    }
 }
