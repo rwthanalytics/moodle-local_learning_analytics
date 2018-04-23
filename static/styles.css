@@ -23,6 +23,9 @@
 .bar .segment.blue {
     background: #66b5ab;
 }
+.bar .segment.gray {
+    background: #bbbbbb;
+}
 
 .showFullList {
     text-align: center;

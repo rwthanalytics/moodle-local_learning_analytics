@@ -43,6 +43,16 @@ class lareport_activities extends report_base {
         'forum' => '#ffda6e', // yellow
         'wiki' => '#ffda6e', // yellow
     ];
+    private static $markerColorDefault = '#bbbbbb';
+    private static $markerColorsText = [
+        'quiz' => 'green', // green
+        'resource' => 'blue', // blue
+        'page' => 'red', // red
+        'url' => 'orange', // orange
+        'forum' => 'yellow', // yellow
+        'wiki' => 'yellow', // yellow
+    ];
+    private static $markerColorTextDefault = 'gray';
 
     public function get_parameter(): array {
         return [
@@ -92,7 +102,11 @@ class lareport_activities extends report_base {
             $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
             $tableTypes->add_row([
                 "<a href='{$url}'>{$item['type']}</a>",
-                table::fancyNumberCell((int) $item['hits'], $maxHitsByType, 'green')
+                table::fancyNumberCell(
+                    (int) $item['hits'],
+                    $maxHitsByType,
+                    self::$markerColorsText[$item['type']] ?? self::$markerColorTextDefault
+                )
             ]);
         }
 
@@ -111,7 +125,7 @@ class lareport_activities extends report_base {
         foreach ($activities as $activity) {
             $x[] = $activity->name;
             $y[] = $activity->hits;
-            $markerColors[] = self::$markerColors[$activity->modname] ?? '#bbbbbb';
+            $markerColors[] = self::$markerColors[$activity->modname] ?? self::$markerColorDefault;
         }
 
         // reorder to show most used activities
@@ -133,7 +147,11 @@ class lareport_activities extends report_base {
                 $nameCell,
                 $activity->modname,
                 $activity->section_name,
-                table::fancyNumberCell((int) $activity->hits, $maxHits, 'orange')
+                table::fancyNumberCell(
+                    (int) $activity->hits,
+                    $maxHits,
+                    self::$markerColorsText[$activity->modname] ?? self::$markerColorTextDefault
+                )
             ]);
         }
 
