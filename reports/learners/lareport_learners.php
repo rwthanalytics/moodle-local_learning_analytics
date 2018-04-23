@@ -33,14 +33,18 @@ use lareport_learners\query_helper;
 
 class lareport_learners extends report_base {
 
+    private static $USER_PER_PAGE = 20;
+
     public function get_parameter(): array {
         return [
             new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
+            new parameter('page', parameter::TYPE_NUMBER, false, FILTER_SANITIZE_NUMBER_INT),
         ];
     }
 
     public function run(array $params): array {
         $courseid = (int) $params['course'];
+        $page = (int) ($params['page'] ?? 0);
 
         $learners = query_helper::query_learners($courseid);
         $table = new table();
@@ -52,7 +56,10 @@ class lareport_learners extends report_base {
             $maxSessions = max($maxSessions, $learner->sessions);
         }
 
-        foreach ($learners as $learner) {
+        // TODO: pages should be implemented via database not in PHP
+        $learnersPage = array_slice($learners, $page * self::$USER_PER_PAGE, self::$USER_PER_PAGE);
+
+        foreach ($learnersPage as $learner) {
             $table->add_row([
                 $learner->firstname,
                 $learner->lastname,
@@ -71,7 +78,10 @@ class lareport_learners extends report_base {
             ]);
         }
 
-        return [ $table ];
+        $pageUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', ['course' => $courseid]);
+        $pagingbar = new paging_bar(count($learners), $page, self::$USER_PER_PAGE, $pageUrl);
+
+        return [ $pagingbar, $table, $pagingbar ];
     }
 
 }
