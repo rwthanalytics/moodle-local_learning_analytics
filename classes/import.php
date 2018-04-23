@@ -76,6 +76,24 @@ SQL;
     public function import_user(int $userid, int $offset = 0, int $line_limit = 2000) : array {
         global $DB;
 
+        if ($offset === 0) {
+            // clean any already existing data (in case the import is run multiple times or continued)
+
+            $sumRows = $DB->get_fieldset_sql('SELECT ses.id
+            FROM {local_learning_analytics_sum} sum
+            JOIN {local_learning_analytics_ses} ses
+                ON ses.summaryid = sum.id
+            WHERE userid = ?', [$userid]);
+
+            if (count($sumRows) !== 0) {
+                // delete one by one
+                foreach ($sumRows as $sumId) {
+                    $DB->delete_records('local_learning_analytics_ses', array('summaryid' => $sumId));
+                }
+                $DB->delete_records('local_learning_analytics_sum', array('userid' => $userid));
+            }
+        }
+
         $query = <<<SQL
         SELECT
             id, timecreated, courseid

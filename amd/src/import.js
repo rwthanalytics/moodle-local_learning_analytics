@@ -53,12 +53,16 @@ define(['core/ajax', 'core/url', 'jquery', 'local_learning_analytics/outputs'], 
     }
 
     function callAjaxParallel(userid, offset) {
+        userid = userid || nextUserid;
+        offset = offset || 0;
+
+        if (userid > maxUserid) {
+            runImport = false;
+        }
         if (!runImport) {
             showStatus();
             return;
         }
-        userid = userid || nextUserid;
-        offset = offset || 0;
 
         if (activeUserImports.length < PARALLEL_REQUESTS || offset !== 0) {
             (function(userid, offset) {
