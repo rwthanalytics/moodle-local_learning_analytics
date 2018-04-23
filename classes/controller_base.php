@@ -26,6 +26,8 @@
 
 namespace local_learning_analytics;
 
+use local_learning_analytics_renderer;
+
 abstract class controller_base {
 
     /**
@@ -34,7 +36,7 @@ abstract class controller_base {
     protected $params;
 
     /**
-     * @var \renderer_base
+     * @var local_learning_analytics_renderer
      */
     protected $renderer;
 
