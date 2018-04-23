@@ -49,6 +49,9 @@ define(['core/ajax', 'core/url', 'jquery', 'local_learning_analytics/outputs'], 
             }
         }])[0].done(function (response) {
             lastSavePoint = userid;
+        }).fail(function (err) {
+            alert('An unrevolerable error occured during import. Check the browser console.');
+            console.log(err);
         });
     }
 
