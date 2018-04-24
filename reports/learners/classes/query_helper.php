@@ -44,30 +44,46 @@ class query_helper {
         require_capability('moodle/course:update', $context);
 
         $query = <<<SQL
-        SELECT
-            su.id,
+        SELECT SQL_NO_CACHE
+            u.id, 
             u.firstname,
             u.lastname,
+            (SELECT GROUP_CONCAT(r.shortname SEPARATOR ', ')
+                FROM mdl_role_assignments ra
+                JOIN mdl_context c
+                    ON c.id = ra.contextid
+                LEFT JOIN mdl_role r
+                    ON ra.roleid = r.id
+                WHERE ra.userid = u.id
+                    AND c.instanceid = e.courseid
+                GROUP BY ra.userid
+            ) role,
             (SELECT ses2.firstaccess
-                FROM {local_learning_analytics_ses} ses2
+                FROM mdl_local_learning_analytics_ses ses2
                 WHERE ses2.summaryid = su.id
                 ORDER BY ses2.id
                 LIMIT 1) firstaccess,
             (SELECT ses3.lastaccess
-                FROM {local_learning_analytics_ses} ses3
+                FROM mdl_local_learning_analytics_ses ses3
                 WHERE ses3.summaryid = su.id
                 ORDER BY ses3.id DESC
                 LIMIT 1) lastaccess,
-            su.hits,
+            COALESCE(su.hits, 0) hits,
             COUNT(ses.id) sessions
-        FROM {local_learning_analytics_sum} su
-        JOIN {user} u
-            ON u.id = su.userid
-        JOIN {local_learning_analytics_ses} ses
+        FROM mdl_user u
+        JOIN mdl_user_enrolments ue
+            ON ue.userid = u.id
+        JOIN mdl_enrol e
+            ON e.id = ue.enrolid
+        LEFT JOIN mdl_local_learning_analytics_sum su
+            ON su.userid = u.id
+            AND su.courseid = e.courseid
+        LEFT JOIN mdl_local_learning_analytics_ses ses
             ON ses.summaryid = su.id
-            WHERE su.courseid = ?
-        GROUP BY su.userid
-        ORDER BY su.hits DESC;
+        WHERE u.deleted = 0
+            AND e.courseid = ?
+        GROUP BY u.id
+        ORDER BY su.hits DESC
 SQL;
 
         return $DB->get_records_sql($query, [$courseid]);

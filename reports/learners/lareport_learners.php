@@ -48,7 +48,7 @@ class lareport_learners extends report_base {
 
         $learners = query_helper::query_learners($courseid);
         $table = new table();
-        $table->set_header_local(['firstname', 'lastname', 'firstaccess', 'lastaccess', 'hits', 'sessions'], 'lareport_learners');
+        $table->set_header_local(['firstname', 'lastname', 'role', 'firstaccess', 'lastaccess', 'hits', 'sessions'], 'lareport_learners');
 
         $maxHits = reset($learners)->hits;
         $maxSessions = 1;
@@ -60,11 +60,15 @@ class lareport_learners extends report_base {
         $learnersPage = array_slice($learners, $page * self::$USER_PER_PAGE, self::$USER_PER_PAGE);
 
         foreach ($learnersPage as $learner) {
+            $firstaccess = !empty($learner->firstaccess) ? userdate($learner->firstaccess) : '-';
+            $lastaccess = !empty($learner->lastaccess) ? userdate($learner->lastaccess) : '-';
+
             $table->add_row([
                 $learner->firstname,
                 $learner->lastname,
-                userdate($learner->firstaccess),
-                userdate($learner->lastaccess),
+                $learner->role,
+                $firstaccess,
+                $lastaccess,
                 table::fancyNumberCell(
                     (int) $learner->hits,
                     $maxHits,
