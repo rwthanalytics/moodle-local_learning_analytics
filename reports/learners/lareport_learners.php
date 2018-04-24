@@ -48,7 +48,9 @@ class lareport_learners extends report_base {
         $page = (int) ($params['page'] ?? 0);
         $roleFilter = $params['role'] ?? '';
 
-        $learners = query_helper::query_learners($courseid, $roleFilter);
+        $learnersCount = query_helper::query_learners_count($courseid, $roleFilter);
+
+        $learners = query_helper::query_learners($courseid, $roleFilter, $page * self::$USER_PER_PAGE, self::$USER_PER_PAGE);
         $table = new table();
         $table->set_header_local(['firstname', 'lastname', 'role', 'firstaccess', 'lastaccess', 'hits', 'sessions'], 'lareport_learners');
 
@@ -58,10 +60,7 @@ class lareport_learners extends report_base {
             $maxSessions = max($maxSessions, $learner->sessions);
         }
 
-        // TODO: pages should be implemented via database not in PHP
-        $learnersPage = array_slice($learners, $page * self::$USER_PER_PAGE, self::$USER_PER_PAGE);
-
-        foreach ($learnersPage as $learner) {
+        foreach ($learners as $learner) {
             $firstaccess = !empty($learner->firstaccess) ? userdate($learner->firstaccess) : '-';
             $lastaccess = !empty($learner->lastaccess) ? userdate($learner->lastaccess) : '-';
 
@@ -84,8 +83,12 @@ class lareport_learners extends report_base {
             ]);
         }
 
-        $pageUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', ['course' => $courseid]);
-        $pagingbar = new paging_bar(count($learners), $page, self::$USER_PER_PAGE, $pageUrl);
+        $pageParams = ['course' => $courseid];
+        if ($roleFilter !== '') {
+            $pageParams['role'] = $roleFilter;
+        }
+        $pageUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', $pageParams);
+        $pagingbar = new paging_bar($learnersCount, $page, self::$USER_PER_PAGE, $pageUrl);
 
         return [ $pagingbar, $table, $pagingbar ];
     }
