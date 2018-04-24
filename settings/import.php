@@ -25,20 +25,17 @@
  */
 
 require(__DIR__ . '/../../../config.php');
+require_once($CFG->libdir . '/adminlib.php');
 
 use local_learning_analytics\import;
 
 defined('MOODLE_INTERNAL') || die;
 
-require_login();
-if (!is_siteadmin()) {
-    throw new moodle_exception('Only admins can import data.');
-}
-
 global $PAGE;
 
-$PAGE->set_context(context_system::instance());
-$PAGE->set_pagelayout('admin');
+$PAGE->set_url(new moodle_url('/local/learning_analytics/settings/import.php'));
+admin_externalpage_setup('local_learning_analytics_import');
+
 $PAGE->set_title(get_string('import_title', 'local_learning_analytics'));
 $PAGE->set_heading(get_string('import_title', 'local_learning_analytics'));
 
