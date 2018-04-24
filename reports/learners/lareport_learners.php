@@ -39,14 +39,16 @@ class lareport_learners extends report_base {
         return [
             new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
             new parameter('page', parameter::TYPE_NUMBER, false, FILTER_SANITIZE_NUMBER_INT),
+            new parameter('role', parameter::TYPE_STRING, false),
         ];
     }
 
     public function run(array $params): array {
         $courseid = (int) $params['course'];
         $page = (int) ($params['page'] ?? 0);
+        $roleFilter = $params['role'] ?? '';
 
-        $learners = query_helper::query_learners($courseid);
+        $learners = query_helper::query_learners($courseid, $roleFilter);
         $table = new table();
         $table->set_header_local(['firstname', 'lastname', 'role', 'firstaccess', 'lastaccess', 'hits', 'sessions'], 'lareport_learners');
 

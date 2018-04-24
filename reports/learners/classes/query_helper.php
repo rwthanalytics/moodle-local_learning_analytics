@@ -32,7 +32,7 @@ use context_course;
 
 class query_helper {
 
-    public static function query_learners(int $courseid): array {
+    public static function query_learners(int $courseid, string $role_filter = ''): array {
         global $DB;
 
         $activity = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -42,6 +42,24 @@ class query_helper {
         }
         // only teachers and managers
         require_capability('moodle/course:update', $context);
+
+        $sqlParams = [$courseid];
+
+        $roleFilterSql = '';
+        if ($role_filter !== '') {
+            $roleFilterSql = <<<SQL
+            JOIN mdl_context c
+                ON c.instanceid = e.courseid
+                AND c.contextlevel = 50
+            JOIN mdl_role_assignments ra
+                ON ra.userid = u.id
+                AND ra.contextid = c.id
+            JOIN mdl_role r
+                ON ra.roleid = r.id
+                AND r.shortname = ?
+SQL;
+            $sqlParams = [$role_filter, $courseid];
+        }
 
         $query = <<<SQL
         SELECT SQL_NO_CACHE
@@ -80,12 +98,13 @@ class query_helper {
             AND su.courseid = e.courseid
         LEFT JOIN mdl_local_learning_analytics_ses ses
             ON ses.summaryid = su.id
+        {$roleFilterSql}
         WHERE u.deleted = 0
             AND e.courseid = ?
         GROUP BY u.id
         ORDER BY su.hits DESC
 SQL;
 
-        return $DB->get_records_sql($query, [$courseid]);
+        return $DB->get_records_sql($query, $sqlParams);
     }
 }
