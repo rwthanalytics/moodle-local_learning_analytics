@@ -27,15 +27,30 @@
 defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\html;
-use local_learning_analytics\parameter;
+use local_learning_analytics\local\parameter\parameter_course;
+use local_learning_analytics\local\parameter\parameter_input;
+use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 
 class lareport_viewcount extends report_base {
 
+    /**
+     * @return array
+     * @throws dml_exception
+     */
     public function get_parameter(): array {
+        global $USER;
         return [
-                new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
-                new parameter('user', parameter::TYPE_NUMBER, true, FILTER_SANITIZE_NUMBER_INT),
+                new parameter_course('course'),
+                new parameter_input('user', 'number', parameter_base::REQUIRED_ALWAYS, FILTER_SANITIZE_NUMBER_INT),
+        ];
+    }
+
+    public function get_parameter_defaults(): array {
+        global $USER;
+
+        return [
+            'user' => $USER->id
         ];
     }
 
@@ -43,7 +58,7 @@ class lareport_viewcount extends report_base {
         return true;
     }
 
-    public function get_block_parameter(): array {
+    public function get_parameter_block(): array {
         global $PAGE, $USER;
 
         return [

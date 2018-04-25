@@ -27,7 +27,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\table;
-use local_learning_analytics\parameter;
+use local_learning_analytics\local\parameter\parameter_course;
+use local_learning_analytics\local\parameter\parameter_input;
+use local_learning_analytics\local\parameter\parameter_select;
+use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 use lareport_learners\query_helper;
 
@@ -35,11 +38,21 @@ class lareport_learners extends report_base {
 
     private static $USER_PER_PAGE = 20;
 
+    /**
+     * @return array
+     * @throws dml_exception
+     */
     public function get_parameter(): array {
         return [
-            new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
-            new parameter('page', parameter::TYPE_NUMBER, false, FILTER_SANITIZE_NUMBER_INT),
-            new parameter('role', parameter::TYPE_STRING, false),
+                new parameter_course('course', false),
+                new parameter_select('role', ['manager' => 'Manager', 'student' => 'Student'], parameter_base::REQUIRED_OPTIONAL),
+                new parameter_input('page', 'number', parameter_base::REQUIRED_HIDDEN, FILTER_SANITIZE_NUMBER_INT),
+        ];
+    }
+
+    public function get_parameter_defaults(): array {
+        return [
+                'role' => ''
         ];
     }
 
@@ -52,7 +65,8 @@ class lareport_learners extends report_base {
 
         $learners = query_helper::query_learners($courseid, $roleFilter, $page * self::$USER_PER_PAGE, self::$USER_PER_PAGE);
         $table = new table();
-        $table->set_header_local(['firstname', 'lastname', 'role', 'firstaccess', 'lastaccess', 'hits', 'sessions'], 'lareport_learners');
+        $table->set_header_local(['firstname', 'lastname', 'role', 'firstaccess', 'lastaccess', 'hits', 'sessions'],
+                'lareport_learners');
 
         $maxHits = reset($learners)->hits;
         $maxSessions = 1;
@@ -65,21 +79,21 @@ class lareport_learners extends report_base {
             $lastaccess = !empty($learner->lastaccess) ? userdate($learner->lastaccess) : '-';
 
             $table->add_row([
-                $learner->firstname,
-                $learner->lastname,
-                $learner->role,
-                $firstaccess,
-                $lastaccess,
-                table::fancyNumberCell(
-                    (int) $learner->hits,
-                    $maxHits,
-                    'green'
-                ),
-                table::fancyNumberCell(
-                    (int) $learner->sessions,
-                    $maxSessions,
-                    'red'
-                )
+                    $learner->firstname,
+                    $learner->lastname,
+                    $learner->role,
+                    $firstaccess,
+                    $lastaccess,
+                    table::fancyNumberCell(
+                            (int) $learner->hits,
+                            $maxHits,
+                            'green'
+                    ),
+                    table::fancyNumberCell(
+                            (int) $learner->sessions,
+                            $maxSessions,
+                            'red'
+                    )
             ]);
         }
 
@@ -90,7 +104,7 @@ class lareport_learners extends report_base {
         $pageUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', $pageParams);
         $pagingbar = new paging_bar($learnersCount, $page, self::$USER_PER_PAGE, $pageUrl);
 
-        return [ $pagingbar, $table, $pagingbar ];
+        return [$pagingbar, $table, $pagingbar];
     }
 
 }

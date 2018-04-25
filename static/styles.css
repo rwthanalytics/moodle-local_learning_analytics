@@ -30,3 +30,12 @@
 .showFullList {
     text-align: center;
 }
+
+.la_params_form {
+    margin: 5px;
+}
+
+.la_params_form  input,select {
+    margin-left: 2px;
+    margin-right: 2px;
+}

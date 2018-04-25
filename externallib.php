@@ -62,7 +62,7 @@ class local_learning_analytics_external extends external_api {
                 $report->is_block(true);
                 // Patch Parameters
                 $params = array_merge(
-                        $report->get_block_parameter(),
+                        $report->get_parameter_block(),
                         $eparams
                 );
                 $outputs = $report->run($params);

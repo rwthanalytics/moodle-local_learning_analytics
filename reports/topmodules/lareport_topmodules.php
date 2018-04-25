@@ -27,14 +27,18 @@
 defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\table;
-use local_learning_analytics\parameter;
+use local_learning_analytics\local\parameter\parameter_course;
 use local_learning_analytics\report_base;
 
 class lareport_topmodules extends report_base {
 
+    /**
+     * @return array
+     * @throws dml_exception
+     */
     public function get_parameter() : array { // Moodle Form ?
         return [
-                new parameter('course', parameter::TYPE_COURSE, true, FILTER_SANITIZE_NUMBER_INT),
+                new parameter_course('course'),
         ];
     }
 

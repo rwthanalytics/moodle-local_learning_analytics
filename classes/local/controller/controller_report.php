@@ -50,18 +50,14 @@ class controller_report extends controller_base {
             $outputs = [];
 
             if (sizeof($params) > 0) {
-                $fparams = new form($params, !$instance->show_param_page(), $this->params['report']);
+                $fparams = new form($params, $instance->get_parameter_defaults(), $this->params['report']);
+
+                $ret .= $this->renderer->render($fparams);
 
                 if ($fparams->get_missing_count() == 0) {
-                    if ($fparams->is_inline()) {
-                        $ret .= $fparams->render();
-                    } else {
-                        // Display Info
-                    }
                     $outputs = $instance->run($fparams->get_parameters());
-                } else {
-                    $ret .= $fparams->render();
                 }
+                // TODO: Error message when missing requireds ?
             } else {
                 $outputs = $instance->run([]);
             }

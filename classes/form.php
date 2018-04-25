@@ -27,135 +27,83 @@
 namespace local_learning_analytics;
 
 use html_writer;
+use renderable;
 
-class form {
-
-    private $inline;
+class form implements renderable {
 
     private $params = [];
 
-    private $required = [];
+    private $render = [];
 
-    private $missing = [];
+    private $required_count = 0;
 
     private $missing_count = 0;
-
-    private $optional = [];
 
     private $report;
 
     /**
      * form constructor.
      *
-     * @param parameter[] $params
-     * @param bool $inline
+     * @param parameter_base[] $params
+     * @param array $defaults
      * @param string $report
      */
-    public function __construct(array $params, bool $inline, string $report) {
-
-        $this->inline = $inline;
+    public function __construct(array $params, array $defaults, string $report) {
         $this->report = $report;
 
+        $this->params = $defaults;
+
+        $values = [];
+
         foreach ($params as $param) {
+            $param->set_report_name($report);
+            $param->set_form($this);
+
             if ($param->is_required()) {
-                $this->required[$param->get_key()] = $param;
+                $this->render[$param->get_key()] = $param;
+                $this->required_count++;
+
                 if (isset($_GET[$param->get_key()])) {
-                    $this->params[$param->get_key()] = $param->get();
+                    $values[$param->get_key()] = $param->get();
                 } else {
-                    $this->missing[] = $param->get_key();
                     $this->missing_count++;
                 }
             } else {
-                $this->optional[$param->get_key()] = $param;
+
+                if (!$param->is_hidden()) {
+                    $this->render[$param->get_key()] = $param;
+                }
 
                 if (isset($_GET[$param->get_key()])) {
-                    $this->params[$param->get_key()] = $param->get();
+                    $values[$param->get_key()] = $param->get();
                 }
             }
         }
+
+        $this->params = $this->params + $values;
     }
 
-    /**
-     * @param string $report
-     * @return string
-     * @throws \coding_exception
-     */
-    public function render() {
-        $class = ($this->inline) ? 'form-inline' : 'form';
-
-        $output = html_writer::start_tag('form', ['method' => 'get', 'class' => $class]);
-
-        foreach ($this->required as $key => $param) {
-            $output .= html_writer::start_div('form-group');
-            $output .= html_writer::label(get_string("parameter:{$key}", "lareport_{$this->report}"), "param_{$key}");
-
-            switch ($param->get_type()) {
-                case parameter::TYPE_STRING:
-                case parameter::TYPE_NUMBER:
-                    $output .= $this->render_input($param);
-                    break;
-                case parameter::TYPE_COURSE:
-                    $output .= $this->render_course_selection($param);
-                    break;
-            }
-
-            $output .= html_writer::end_div();
-        }
-
-        $output .= html_writer::tag('button', get_string('show_report', 'local_learning_analytics'), [
-            'type' => 'submit',
-            'class' => 'btn btn-primary'
-        ]);
-
-        $output .= html_writer::end_tag('form');
-        return $output;
+    public function get(string $key) {
+        return isset($this->params[$key]) ? $this->params[$key] : '';
     }
 
-    public function is_inline() {
-        return $this->inline;
+    public function get_render(): array {
+        return $this->render;
     }
 
-    public function get_required() {
-        return $this->required;
+    public function get_report_name(): string {
+        return $this->report;
     }
 
-    public function get_missing() {
-        return $this->missing;
+    public function get_required_count(): int {
+        return $this->required_count;
     }
 
-    public function get_missing_count() {
+    public function get_missing_count(): int {
         return $this->missing_count;
     }
 
-    public function get_parameters() {
+    public function get_parameters(): array {
         return $this->params;
-    }
-
-    protected function render_input(parameter $param) : string {
-        return html_writer::start_tag('input', [
-                'type' => $param->get_type(),
-                'class' => 'form-control',
-                'name' => $param->get_key(),
-                'value' => $param->get(),
-                'id' => "param_{$param->get_key()}",
-                'placeholder' => get_string("parameter:{$param->get_key()}", "lareport_{$this->report}")
-        ]);
-    }
-
-    protected function render_select(parameter $param, array $options) : string {
-        return html_writer::select($options, $param->get_key(), [
-            'class' => 'form-control',
-            'id' => "param_{$param->get_key()}",
-        ]);
-    }
-
-    protected function render_course_selection(parameter $param) : string {
-        $courses = [];
-
-        foreach (get_courses() as $course) {
-            $courses[$course->id] = $course->fullname;
-        }
-
-        return $this->render_select($param, $courses);
     }
 }

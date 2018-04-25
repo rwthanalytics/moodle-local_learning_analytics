@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Learning Analytics report parameter
+ *
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -23,50 +23,48 @@
  * @author      Thomas Dondorf <dondorf@lfi.rwth-aachen.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace local_learning_analytics;
 
-class parameter {
+namespace local_learning_analytics\local\parameter;
 
-    const
-            TYPE_STRING = 'text',
-            TYPE_NUMBER = 'number',
-            TYPE_COURSE = 'course';
+use html_writer;
+use local_learning_analytics\parameter_base;
 
-    protected $key;
+defined('MOODLE_INTERNAL') || die;
 
-    protected  $type;
+/**
+ * Class parameter_select
+ *
+ * @package local_learning_analytics\local\parameter
+ */
+class parameter_select extends parameter_base {
 
-    protected  $required;
-
-    protected  $filter;
-
+    /***
+     * @var array
+     */
     protected $options;
 
-    public function __construct(string $key, string $type, bool $required = false, int $filter = FILTER_UNSAFE_RAW, array $options = []) {
-        $this->key = $key;
-        $this->type = $type;
-        $this->required = $required;
-        $this->filter = $filter;
+    public function __construct(string $key, array $options, int $required = self::REQUIRED_HIDDEN, int $filter = FILTER_UNSAFE_RAW) {
+        parent::__construct($key, $required, $filter);
+
         $this->options = $options;
     }
 
-    public function is_required() : bool {
-        return $this->required;
-    }
+    public function render() : string {
+        $attributes = [
+                'class' => 'form-control',
+                'id' => "param_{$this->key}",
+        ];
 
-    public function get_key() : string {
-        return $this->key;
-    }
+        if($this->is_required()) {
+            $attributes['required'] = '';
+        }
 
-    public function get_type() : string {
-        return $this->type;
-    }
-
-    public function get_filter() : int {
-        return $this->filter;
-    }
-
-    public function get() {
-        return filter_input(INPUT_GET, $this->key, $this->filter);
+        return html_writer::select(
+                $this->options,
+                $this->key,
+                $this->form->get($this->key),
+                ['' => 'choosedots'],
+                $attributes
+        );
     }
 }
