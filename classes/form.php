@@ -84,7 +84,7 @@ class form implements renderable {
     }
 
     public function get(string $key) {
-        return $this->params[$key] ?? '';
+        return isset($this->params[$key]) ? $this->params[$key] : '';
     }
 
     public function get_render(): array {
