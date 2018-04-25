@@ -45,8 +45,14 @@ class lareport_learners extends report_base {
     public function get_parameter(): array {
         return [
                 new parameter_course('course', false),
-                new parameter_select('role', ['manager' => 'Manager', 'student' => 'Student'], parameter_base::REQUIRED_OPTIONAL, ''),
+                new parameter_select('role', ['manager' => 'Manager', 'student' => 'Student'], parameter_base::REQUIRED_OPTIONAL),
                 new parameter_input('page', 'number', parameter_base::REQUIRED_HIDDEN, FILTER_SANITIZE_NUMBER_INT),
+        ];
+    }
+
+    public function get_parameter_defaults(): array {
+        return [
+                'role' => ''
         ];
     }
 

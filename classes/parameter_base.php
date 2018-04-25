@@ -43,16 +43,23 @@ abstract class parameter_base {
 
     protected $default;
 
-    public function __construct(string $key, int $required = self::REQUIRED_HIDDEN, $default = null,
-            int $filter = FILTER_UNSAFE_RAW) {
+    /**
+     * @var form
+     */
+    protected $form;
+
+    public function __construct(string $key, int $required = self::REQUIRED_HIDDEN, int $filter = FILTER_UNSAFE_RAW) {
         $this->key = $key;
         $this->required = $required;
         $this->filter = $filter;
-        $this->default = $default;
     }
 
     public function set_report_name(string $name) {
         $this->report_name = $name;
+    }
+
+    public function set_form(form $form) {
+        $this->form = $form;
     }
 
     public function is_required(): bool {
@@ -72,12 +79,7 @@ abstract class parameter_base {
     }
 
     public function get() {
-        if (isset($_GET[$this->key])) {
-            return filter_input(INPUT_GET, $this->key, $this->filter);
-        } else {
-            return $this->default;
-        }
-
+        return filter_input(INPUT_GET, $this->key, $this->filter);
     }
 
     public abstract function render(): string;

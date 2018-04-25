@@ -49,7 +49,7 @@ class lareport_coursetraffic extends report_base {
         return true;
     }
 
-    public function get_block_parameter(): array {
+    public function get_parameter_block(): array {
         global $PAGE;
 
         return [

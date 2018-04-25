@@ -43,22 +43,28 @@ class parameter_select extends parameter_base {
      */
     protected $options;
 
-    public function __construct(string $key, array $options, int $required = self::REQUIRED_HIDDEN, $default = null, int $filter = FILTER_UNSAFE_RAW) {
-        parent::__construct($key, $required, $default, $filter);
+    public function __construct(string $key, array $options, int $required = self::REQUIRED_HIDDEN, int $filter = FILTER_UNSAFE_RAW) {
+        parent::__construct($key, $required, $filter);
 
         $this->options = $options;
     }
 
     public function render() : string {
+        $attributes = [
+                'class' => 'form-control',
+                'id' => "param_{$this->key}",
+        ];
+
+        if($this->is_required()) {
+            $attributes['required'] = '';
+        }
+
         return html_writer::select(
                 $this->options,
                 $this->key,
-                $this->get(),
+                $this->form->get($this->key),
                 ['' => 'choosedots'],
-                [
-                    'class' => 'form-control',
-                    'id' => "param_{$this->key}",
-                ]
+                $attributes
         );
     }
 }

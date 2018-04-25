@@ -6,14 +6,13 @@ define(['jquery'], function ($) {
             console.log(form);
 
             if(form !== undefined) {
+
                 $('select', form).on('change', function (e) {
-                    form.submit();
-                    console.log("test");
+                    if(form.get(0).checkValidity()) {
+                        console.log("test");
+                        form.submit();
+                    }
                 });
-
-                console.log($('select', form));
-
-                console.log("Added all handler");
             }
         }
     }

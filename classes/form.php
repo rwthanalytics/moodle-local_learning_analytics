@@ -45,20 +45,26 @@ class form implements renderable {
      * form constructor.
      *
      * @param parameter_base[] $params
+     * @param array $defaults
      * @param string $report
      */
-    public function __construct(array $params, string $report) {
+    public function __construct(array $params, array $defaults, string $report) {
         $this->report = $report;
+
+        $this->params = $defaults;
+
+        $values = [];
 
         foreach ($params as $param) {
             $param->set_report_name($report);
+            $param->set_form($this);
 
             if ($param->is_required()) {
                 $this->render[$param->get_key()] = $param;
                 $this->required_count++;
 
                 if (isset($_GET[$param->get_key()])) {
-                    $this->params[$param->get_key()] = $param->get();
+                    $values[$param->get_key()] = $param->get();
                 } else {
                     $this->missing_count++;
                 }
@@ -69,10 +75,16 @@ class form implements renderable {
                 }
 
                 if (isset($_GET[$param->get_key()])) {
-                    $this->params[$param->get_key()] = $param->get();
+                    $values[$param->get_key()] = $param->get();
                 }
             }
         }
+
+        $this->params = $this->params + $values;
+    }
+
+    public function get(string $key) {
+        return $this->params[$key];
     }
 
     public function get_render(): array {

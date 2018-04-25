@@ -28,14 +28,17 @@ namespace local_learning_analytics;
 
 abstract class report_base {
 
-    /**
-     * @var bool
-     */
-    protected $restricted = false;
-
     protected $block = false;
 
-    public function get_parameter() : array {
+    public function get_parameter(): array {
+        return [];
+    }
+
+    public function get_parameter_defaults(): array {
+        return [];
+    }
+
+    public function get_parameter_block(): array {
         return [];
     }
 
@@ -47,13 +50,9 @@ abstract class report_base {
         $this->block = $block;
     }
 
-    public function supports_block() : bool {
+    public function supports_block(): bool {
         return false;
     }
 
-    public function get_block_parameter() : array {
-        return [];
-    }
-
-    public abstract function run(array $params) : array;
+    public abstract function run(array $params): array;
 }

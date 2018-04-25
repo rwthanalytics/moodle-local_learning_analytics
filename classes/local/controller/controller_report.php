@@ -50,7 +50,7 @@ class controller_report extends controller_base {
             $outputs = [];
 
             if (sizeof($params) > 0) {
-                $fparams = new form($params, $this->params['report']);
+                $fparams = new form($params, $instance->get_parameter_defaults(), $this->params['report']);
 
                 $ret .= $this->renderer->render($fparams);
 

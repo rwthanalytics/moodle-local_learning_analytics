@@ -70,7 +70,7 @@ class parameter_course extends parameter_select {
             $opts[$option->id] = $option->fullname;
         }
 
-        parent::__construct($key, $opts, self::REQUIRED_ALWAYS, null, FILTER_SANITIZE_NUMBER_INT);
+        parent::__construct($key, $opts, self::REQUIRED_ALWAYS, FILTER_SANITIZE_NUMBER_INT);
 
         $this->restricted = $restricted;
     }

@@ -42,7 +42,15 @@ class lareport_viewcount extends report_base {
         global $USER;
         return [
                 new parameter_course('course'),
-                new parameter_input('user', 'number', parameter_base::REQUIRED_ALWAYS, $USER->id, FILTER_SANITIZE_NUMBER_INT),
+                new parameter_input('user', 'number', parameter_base::REQUIRED_ALWAYS, FILTER_SANITIZE_NUMBER_INT),
+        ];
+    }
+
+    public function get_parameter_defaults(): array {
+        global $USER;
+
+        return [
+            'user' => $USER->id
         ];
     }
 
@@ -50,7 +58,7 @@ class lareport_viewcount extends report_base {
         return true;
     }
 
-    public function get_block_parameter(): array {
+    public function get_parameter_block(): array {
         global $PAGE, $USER;
 
         return [

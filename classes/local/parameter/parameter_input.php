@@ -40,20 +40,26 @@ class parameter_input extends parameter_base {
 
     protected $type;
 
-    public function __construct(string $key, string $type, int $required = self::REQUIRED_HIDDEN, $default = null, int $filter = FILTER_UNSAFE_RAW) {
-        parent::__construct($key, $required, $default, $filter);
+    public function __construct(string $key, string $type, int $required = self::REQUIRED_HIDDEN, int $filter = FILTER_UNSAFE_RAW) {
+        parent::__construct($key, $required, $filter);
 
         $this->type = $type;
     }
 
     public function render(): string {
-        return html_writer::start_tag('input', [
+        $attributes = [
                 'type' => $this->type,
                 'class' => 'form-control',
                 'name' => $this->key,
-                'value' => $this->get(),
+                'value' => $this->form->get($this->key),
                 'id' => "param_{$this->key}",
-                'placeholder' => get_string("parameter:{$this->key}", "lareport_{$this->report_name}")
-        ]);
+                'placeholder' => get_string("parameter:{$this->key}", "lareport_{$this->report_name}"),
+                'required' => $this->is_required()
+        ];
+
+        if($this->is_required()) {
+            $attributes['required'] = '';
+        }
+        return html_writer::start_tag('input', $attributes);
     }
 }
