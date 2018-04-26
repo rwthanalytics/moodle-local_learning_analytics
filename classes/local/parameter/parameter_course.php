@@ -26,6 +26,9 @@
 
 namespace local_learning_analytics\local\parameter;
 
+use context_course;
+use moodle_exception;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -75,11 +78,22 @@ class parameter_course extends parameter_select {
         $this->restricted = $restricted;
     }
 
+    /**
+     * @return int|mixed
+     * @throws \coding_exception
+     * @throws moodle_exception
+     */
     public function get() {
         $value = (int)parent::get();
 
         if ($this->restricted) {
-            // Check capability
+            $hascap = has_capability('local/learning_analytics:view_restricted_statistics', context_course::instance($value));
+        } else {
+            $hascap = has_capability('local/learning_analytics:view_statistics', context_course::instance($value));
+        }
+
+        if(!$hascap) {
+            throw new moodle_exception('403', 'local_learning_analytics', '', 'User not allowed to view report');
         }
 
         return $value;
