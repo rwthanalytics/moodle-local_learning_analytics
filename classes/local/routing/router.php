@@ -36,6 +36,8 @@ class router {
      */
     private $routes;
 
+    private $active_route;
+
     /**
      * router constructor.
      *
@@ -60,10 +62,21 @@ class router {
 
         foreach ($this->routes as $route) {
             if ($route->match($slashargs)) {
-                return $route;
+                $this->active_route = $route;
+                break;
             }
         }
-        return $this->routes[0];
+
+        return $this->active_route ?? $this->routes[0];
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     * @throws \moodle_exception
+     */
+    public function is_active_route(string $name) : bool {
+        return $this->get_active_route()->get_name() == $name;
     }
 
     private static function get_url(string $slash, array $query) : moodle_url {

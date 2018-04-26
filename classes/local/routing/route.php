@@ -40,6 +40,8 @@ class route {
      */
     private $reverse;
 
+    private $name;
+
     /**
      * @var array
      */
@@ -50,10 +52,11 @@ class route {
      *
      * @param string $target
      * @param string|callable $handler
-     * @throws \Exception
+     * @param string $name
      */
-    public function __construct(string $target, $handler) {
+    public function __construct(string $target, $handler, string $name = '') {
         $this->url = $target;
+        $this->name = $name;
 
         if (is_string($handler)) {
             $parts = explode('@', $handler);
@@ -66,6 +69,10 @@ class route {
         } else {
             $this->handler = $handler;
         }
+    }
+
+    public function get_name() : string {
+        return $this->name;
     }
 
     private function get_regex() : string {

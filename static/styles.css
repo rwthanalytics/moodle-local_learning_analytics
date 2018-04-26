@@ -39,3 +39,7 @@
     margin-left: 2px;
     margin-right: 2px;
 }
+
+.la_nav li.active > a{
+    color: #000000 !important;
+}

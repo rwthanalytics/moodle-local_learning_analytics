@@ -37,6 +37,7 @@ require_login();
 global $PAGE;
 
 $PAGE->set_context(context_system::instance());
+$PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('report');
 
 $reports = core_component::get_plugin_list('lareport');
@@ -53,10 +54,10 @@ foreach ($reports as $report => $path) {
 $router = new router([
     new route('/', function () {
         return 'HOME';
-    }),
-    new route('/courses', 'local_learning_analytics\\local\\controller\\controller_courses@run'),
-    new route('/reports/:report', 'local_learning_analytics\\local\\controller\\controller_report@run'),
-    new route('/reports/:report/:page', 'local_learning_analytics\\local\\controller\\controller_report@run_page'),
+    }, 'home'),
+    new route('/courses', 'local_learning_analytics\\local\\controller\\controller_courses@run', 'courses'),
+    new route('/reports/:report', 'local_learning_analytics\\local\\controller\\controller_report@run', 'reports'),
+    new route('/reports/:report/:page', 'local_learning_analytics\\local\\controller\\controller_report@run_page', 'reports'),
 ]);
 
 $route = $router->get_active_route();
@@ -68,6 +69,9 @@ echo $output->header();
 echo $output->render_from_template('local_learning_analytics/base', [
     'reports' => array_keys($reports),
     'content' => $route->execute(),
-    'prefix' => new moodle_url('/local/learning_analytics/index.php')
+    'prefix' => new moodle_url('/local/learning_analytics/index.php'),
+    'active_home' => $router->is_active_route('home') ? 'active' : '',
+    'active_courses' => $router->is_active_route('courses') ? 'active' : '',
+    'active_reports' => $router->is_active_route('reports') ? 'active' : '',
 ]);
 echo $output->footer();
