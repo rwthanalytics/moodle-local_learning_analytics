@@ -42,15 +42,6 @@ $PAGE->set_pagelayout('report');
 
 $reports = core_component::get_plugin_list('lareport');
 
-/*
-foreach ($reports as $report => $path) {
-    $cp = $path . DIRECTORY_SEPARATOR . "lareport_${report}.php";
-    if(file_exists($cp)) {
-        require ($cp);
-    }
-}
-*/
-
 $router = new router([
     new route('/', function () {
         return 'HOME';
