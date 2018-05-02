@@ -157,4 +157,24 @@ class local_learning_analytics_external extends external_api {
             'perc' => ($userid / $maxUserid)
         ];
     }
+
+    public static function keep_alive_parameters() {
+        return new external_function_parameters([
+                'session' => new external_value(PARAM_INT, 'session id')
+        ]);
+    }
+
+    public static function keep_alive_returns() {
+        return new external_single_structure([]);
+    }
+
+    /**
+     * @param int $session
+     * @return array
+     * @throws dml_exception
+     */
+    public static function keep_alive(int $session) {
+        \local_learning_analytics\tracker::keep_alive($session);
+        return [];
+    }
 }

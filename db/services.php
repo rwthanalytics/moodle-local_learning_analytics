@@ -47,5 +47,12 @@ $functions = [
                 'ajax' => true,
                 'description' => 'Execute ajax method',
                 'type' => 'read',
+        ],
+        'local_learning_analytics_keep_alive' => [
+                'classname' => 'local_learning_analytics_external',
+                'methodname' => 'keep_alive',
+                'ajax' => true,
+                'description' => 'Handle Keep Alive Information',
+                'type' => 'write'
         ]
 ];

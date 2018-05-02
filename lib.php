@@ -35,6 +35,8 @@ defined('MOODLE_INTERNAL') || die();
 function local_learning_analytics_extend_navigation(global_navigation $nav) {
     global $PAGE;
 
+    \local_learning_analytics\tracker::track_request();
+
     // Only extend navigation inside courses - 1 is the base system 'course'
     if ($PAGE->context->contextlevel === CONTEXT_COURSE) {
         $node = $nav->find($PAGE->context->instanceid, navigation_node::TYPE_COURSE);
