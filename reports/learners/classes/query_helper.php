@@ -70,6 +70,47 @@ SQL;
         return (int) $DB->get_field_sql($query, $sqlParams, MUST_EXIST);
     }
 
+    public static function query_courseparticipation(int $courseid) : array {
+        global $DB;
+
+        $query = <<<SQL
+            SELECT SQL_NO_CACHE
+                co.id, co.fullname, co.startdate, COUNT(*) users
+            FROM mdl_user u
+            JOIN mdl_user_enrolments ue
+                ON ue.userid = u.id
+            JOIN mdl_enrol e
+                ON e.id = ue.enrolid
+                
+            JOIN mdl_user_enrolments ue2
+                ON ue2.userid = u.id
+            JOIN mdl_enrol e2
+                ON e2.id = ue2.enrolid
+                AND e2.courseid <> e.courseid
+            JOIN mdl_course co
+                ON co.id = e2.courseid
+            
+            # only people enroled as students into the course
+            JOIN mdl_context c
+                ON c.instanceid = e.courseid
+                AND c.contextlevel = 50
+            JOIN mdl_role_assignments ra
+                ON ra.userid = u.id
+                AND ra.contextid = c.id
+            JOIN mdl_role r
+                ON ra.roleid = r.id
+                AND r.shortname = 'student'
+                
+            WHERE u.deleted = 0
+                AND e.courseid = ?
+            GROUP BY co.id
+            HAVING users > 1
+            ORDER BY users DESC;
+SQL;
+
+        return $DB->get_records_sql($query, [$courseid]);
+    }
+
     public static function query_learners(int $courseid, string $role_filter = '', int $offset = 0, int $limit = 20) : array {
         global $DB;
 

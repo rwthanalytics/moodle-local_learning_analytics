@@ -38,6 +38,10 @@ class lareport_learners extends report_base {
 
     private static $USER_PER_PAGE = 20;
 
+    // if abs($other_course_startdate - $this_course_startdate) < $PARALLEL_COURSE_BUFFER
+    // they are considered being parallel, otherwise before (or after)
+    private static $PARALLEL_COURSE_BUFFER = 31 * 24 * 60 * 60;
+
     /**
      * @return array
      * @throws dml_exception
@@ -56,17 +60,55 @@ class lareport_learners extends report_base {
         ];
     }
 
-    public function run(array $params): array {
-        $courseid = (int) $params['course'];
-        $page = (int) ($params['page'] ?? 0);
-        $roleFilter = $params['role'] ?? '';
+    private function courseParticipation(int $courseid): array {
+        $learnersCount = query_helper::query_learners_count($courseid, 'student');
 
+        $courses = query_helper::query_courseparticipation($courseid);
+
+        $tablePrevious = new table();
+        $tablePrevious->set_header_local(['coursename', 'participated_before'],
+            'lareport_learners');
+
+        $tableParallel = new table();
+        $tableParallel->set_header_local(['coursename', 'participating_now'],
+            'lareport_learners');
+
+        $courseStartdate = get_course($courseid)->startdate;
+
+        foreach ($courses as $course) {
+            $perc = round(100 * $course->users / $learnersCount);
+
+            $row = [
+                $course->fullname,
+                table::fancyNumberCell(
+                    $perc,
+                    100,
+                    'red',
+                    $perc . '%'
+                )
+            ];
+
+            if ($course->startdate < ($courseStartdate - self::$PARALLEL_COURSE_BUFFER)) {
+                $tablePrevious->add_row($row);
+            } else if ($course->startdate < ($courseStartdate + self::$PARALLEL_COURSE_BUFFER)) {
+                $tableParallel->add_row($row);
+            } else {
+                // course is happening after the current course, might be interesting for the future
+            }
+        }
+
+        // TODO: shorten list, but make another page to see full list
+
+        return [$tablePrevious, $tableParallel];
+    }
+
+    private function list(int $courseid, int $page = 0, string $roleFilter = '') : array {
         $learnersCount = query_helper::query_learners_count($courseid, $roleFilter);
 
         $learners = query_helper::query_learners($courseid, $roleFilter, $page * self::$USER_PER_PAGE, self::$USER_PER_PAGE);
         $table = new table();
         $table->set_header_local(['firstname', 'lastname', 'role', 'firstaccess', 'lastaccess', 'hits', 'sessions'],
-                'lareport_learners');
+            'lareport_learners');
 
         $maxHits = reset($learners)->hits;
         $maxSessions = 1;
@@ -79,21 +121,21 @@ class lareport_learners extends report_base {
             $lastaccess = !empty($learner->lastaccess) ? userdate($learner->lastaccess) : '-';
 
             $table->add_row([
-                    $learner->firstname,
-                    $learner->lastname,
-                    $learner->role,
-                    $firstaccess,
-                    $lastaccess,
-                    table::fancyNumberCell(
-                            (int) $learner->hits,
-                            $maxHits,
-                            'green'
-                    ),
-                    table::fancyNumberCell(
-                            (int) $learner->sessions,
-                            $maxSessions,
-                            'red'
-                    )
+                $learner->firstname,
+                $learner->lastname,
+                $learner->role,
+                $firstaccess,
+                $lastaccess,
+                table::fancyNumberCell(
+                    (int) $learner->hits,
+                    $maxHits,
+                    'green'
+                ),
+                table::fancyNumberCell(
+                    (int) $learner->sessions,
+                    $maxSessions,
+                    'red'
+                )
             ]);
         }
 
@@ -105,6 +147,17 @@ class lareport_learners extends report_base {
         $pagingbar = new paging_bar($learnersCount, $page, self::$USER_PER_PAGE, $pageUrl);
 
         return [$pagingbar, $table, $pagingbar];
+    }
+
+    public function run(array $params): array {
+        $courseid = (int) $params['course'];
+        $page = (int) ($params['page'] ?? 0);
+        $roleFilter = $params['role'] ?? '';
+
+        return array_merge(
+            $this->courseParticipation($courseid, $page, $roleFilter),
+            $this->list($courseid, $page, $roleFilter)
+        );
     }
 
 }
