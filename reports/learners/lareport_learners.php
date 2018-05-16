@@ -35,6 +35,7 @@ use local_learning_analytics\report_base;
 use lareport_learners\query_helper;
 use local_learning_analytics\local\routing\router;
 use lareport_learners\learners_list;
+use lareport_learners\outputs\split;
 
 class lareport_learners extends report_base {
 
@@ -100,7 +101,7 @@ class lareport_learners extends report_base {
         $headingTable = get_string('most_active_learners', 'lareport_learners');
 
         return array_merge(
-            $this->courseParticipation($courseid),
+            [new split($this->courseParticipation($courseid))],
             [ "<h2>{$headingTable}</h2>" ],
             learners_list::generate($courseid)
         );
