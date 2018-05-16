@@ -67,11 +67,15 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2018041801, 'local', 'learning_analytics');
     }
 
-    if($oldversion < 2018050201) {
+    if($oldversion < 2018051603) {
         $table = new xmldb_table('local_learning_analytics_ses');
-        $table->add_field('time', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        $field = new xmldb_field('time', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0);
 
-        upgrade_plugin_savepoint(true, 2018050201, 'local', 'learning_analytics');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2018051603, 'local', 'learning_analytics');
     }
 
     return true;
