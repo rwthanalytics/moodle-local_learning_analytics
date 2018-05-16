@@ -44,7 +44,7 @@ class controller_report extends controller_base {
         $instance = self::get_report($this->params['report']);
 
         if ($instance != null) {
-            $ret = html_writer::tag('h2', get_string('pluginname', "lareport_{$this->params['report']}"));
+            $ret = '';
 
             $params = $instance->get_parameter();
             $outputs = [];
@@ -61,6 +61,8 @@ class controller_report extends controller_base {
             } else {
                 $outputs = $instance->run([]);
             }
+
+            $ret .= html_writer::tag('h2', get_string('pluginname', "lareport_{$this->params['report']}"));
 
             $ret .= $this->renderer->render_output_list($outputs);
 

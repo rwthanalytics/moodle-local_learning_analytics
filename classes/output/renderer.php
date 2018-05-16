@@ -63,7 +63,7 @@ class local_learning_analytics_renderer extends plugin_renderer_base {
      * @throws coding_exception
      */
     public function render_form(form $form) {
-        $output = html_writer::start_tag('form', ['method' => 'get', 'class' => 'la_params_form form-inline pull-right']);
+        $output = html_writer::start_tag('form', ['method' => 'get', 'class' => 'la_params_form form-inline m-y-0 pull-right']); // TODO change m-y-0 to my-0 when bootstrap 4 hits
 
         /**
          * @var $param parameter_base
