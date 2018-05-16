@@ -39,5 +39,9 @@ abstract class report_page_base {
         return [];
     }
 
+    public function get_parameter_defaults(): array {
+        return [];
+    }
+
     public abstract function run(array $params) : array;
 }

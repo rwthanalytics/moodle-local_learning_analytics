@@ -106,7 +106,7 @@ class controller_report extends controller_base {
             $params = $instance->get_parameter();
 
             if (count($params) > 0) {
-                $fparams = new form($params, true, $this->params['report']);
+                $fparams = new form($params, $instance->get_parameter_defaults(), $this->params['report']);
 
                 if ($fparams->get_missing_count() === 0) {
                     $outputs = $instance->run($fparams->get_parameters());
