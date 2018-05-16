@@ -33,10 +33,10 @@ use local_learning_analytics\local\parameter\parameter_select;
 use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 use lareport_learners\query_helper;
+use local_learning_analytics\local\routing\router;
+use lareport_learners\learners_list;
 
 class lareport_learners extends report_base {
-
-    private static $USER_PER_PAGE = 20;
 
     // if abs($other_course_startdate - $this_course_startdate) < $PARALLEL_COURSE_BUFFER
     // they are considered being parallel, otherwise before (or after)
@@ -48,15 +48,7 @@ class lareport_learners extends report_base {
      */
     public function get_parameter(): array {
         return [
-                new parameter_course('course', false),
-                new parameter_select('role', ['manager' => 'Manager', 'student' => 'Student'], parameter_base::REQUIRED_OPTIONAL),
-                new parameter_input('page', 'number', parameter_base::REQUIRED_HIDDEN, FILTER_SANITIZE_NUMBER_INT),
-        ];
-    }
-
-    public function get_parameter_defaults(): array {
-        return [
-                'role' => ''
+                new parameter_course('course', false)
         ];
     }
 
@@ -102,61 +94,15 @@ class lareport_learners extends report_base {
         return [$tablePrevious, $tableParallel];
     }
 
-    private function list(int $courseid, int $page = 0, string $roleFilter = '') : array {
-        $learnersCount = query_helper::query_learners_count($courseid, $roleFilter);
-
-        $learners = query_helper::query_learners($courseid, $roleFilter, $page * self::$USER_PER_PAGE, self::$USER_PER_PAGE);
-        $table = new table();
-        $table->set_header_local(['firstname', 'lastname', 'role', 'firstaccess', 'lastaccess', 'hits', 'sessions'],
-            'lareport_learners');
-
-        $maxHits = reset($learners)->hits;
-        $maxSessions = 1;
-        foreach ($learners as $learner) {
-            $maxSessions = max($maxSessions, $learner->sessions);
-        }
-
-        foreach ($learners as $learner) {
-            $firstaccess = !empty($learner->firstaccess) ? userdate($learner->firstaccess) : '-';
-            $lastaccess = !empty($learner->lastaccess) ? userdate($learner->lastaccess) : '-';
-
-            $table->add_row([
-                $learner->firstname,
-                $learner->lastname,
-                $learner->role,
-                $firstaccess,
-                $lastaccess,
-                table::fancyNumberCell(
-                    (int) $learner->hits,
-                    $maxHits,
-                    'green'
-                ),
-                table::fancyNumberCell(
-                    (int) $learner->sessions,
-                    $maxSessions,
-                    'red'
-                )
-            ]);
-        }
-
-        $pageParams = ['course' => $courseid];
-        if ($roleFilter !== '') {
-            $pageParams['role'] = $roleFilter;
-        }
-        $pageUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', $pageParams);
-        $pagingbar = new paging_bar($learnersCount, $page, self::$USER_PER_PAGE, $pageUrl);
-
-        return [$pagingbar, $table, $pagingbar];
-    }
-
     public function run(array $params): array {
         $courseid = (int) $params['course'];
-        $page = (int) ($params['page'] ?? 0);
-        $roleFilter = $params['role'] ?? '';
+
+        $headingTable = get_string('most_active_learners', 'lareport_learners');
 
         return array_merge(
-            $this->courseParticipation($courseid, $page, $roleFilter),
-            $this->list($courseid, $page, $roleFilter)
+            $this->courseParticipation($courseid),
+            [ "<h2>{$headingTable}</h2>" ],
+            learners_list::generate($courseid)
         );
     }
 
