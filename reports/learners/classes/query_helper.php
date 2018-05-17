@@ -40,13 +40,13 @@ class query_helper {
         $roleFilterSql = '';
         if ($role_filter !== '') {
             $roleFilterSql = <<<SQL
-                JOIN mdl_context c
+                JOIN {context} c
                     ON c.instanceid = e.courseid
                     AND c.contextlevel = 50
-                JOIN mdl_role_assignments ra
+                JOIN {role_assignments} ra
                     ON ra.userid = u.id
                     AND ra.contextid = c.id
-                JOIN mdl_role r
+                JOIN {role} r
                     ON ra.roleid = r.id
                     AND r.shortname = ?
 SQL;
@@ -55,10 +55,10 @@ SQL;
 
         $query = <<<SQL
             SELECT COUNT(DISTINCT u.id) count
-            FROM mdl_user u
-            JOIN mdl_user_enrolments ue
+            FROM {user} u
+            JOIN {user_enrolments} ue
                 ON ue.userid = u.id
-            JOIN mdl_enrol e
+            JOIN {enrol} e
                 ON e.id = ue.enrolid
             {$roleFilterSql}
             WHERE 
@@ -76,28 +76,28 @@ SQL;
         $query = <<<SQL
             SELECT SQL_NO_CACHE
                 co.id, co.fullname, co.startdate, COUNT(*) users
-            FROM mdl_user u
-            JOIN mdl_user_enrolments ue
+            FROM {user} u
+            JOIN {user_enrolments} ue
                 ON ue.userid = u.id
-            JOIN mdl_enrol e
+            JOIN {enrol} e
                 ON e.id = ue.enrolid
                 
-            JOIN mdl_user_enrolments ue2
+            JOIN {user_enrolments} ue2
                 ON ue2.userid = u.id
-            JOIN mdl_enrol e2
+            JOIN {enrol} e2
                 ON e2.id = ue2.enrolid
                 AND e2.courseid <> e.courseid
-            JOIN mdl_course co
+            JOIN {course} co
                 ON co.id = e2.courseid
             
             # only people enroled as students into the course
-            JOIN mdl_context c
+            JOIN {context} c
                 ON c.instanceid = e.courseid
                 AND c.contextlevel = 50
-            JOIN mdl_role_assignments ra
+            JOIN {role_assignments} ra
                 ON ra.userid = u.id
                 AND ra.contextid = c.id
-            JOIN mdl_role r
+            JOIN {role} r
                 ON ra.roleid = r.id
                 AND r.shortname = 'student'
                 
@@ -127,13 +127,13 @@ SQL;
         $roleFilterSql = '';
         if ($role_filter !== '') {
             $roleFilterSql = <<<SQL
-            JOIN mdl_context c
+            JOIN {context} c
                 ON c.instanceid = e.courseid
                 AND c.contextlevel = 50
-            JOIN mdl_role_assignments ra
+            JOIN {role_assignments} ra
                 ON ra.userid = u.id
                 AND ra.contextid = c.id
-            JOIN mdl_role r
+            JOIN {role} r
                 ON ra.roleid = r.id
                 AND r.shortname = ?
 SQL;
@@ -146,36 +146,36 @@ SQL;
             u.firstname,
             u.lastname,
             (SELECT GROUP_CONCAT(r.shortname SEPARATOR ', ')
-                FROM mdl_role_assignments ra
-                JOIN mdl_context c
+                FROM {role_assignments} ra
+                JOIN {context} c
                     ON c.id = ra.contextid
-                LEFT JOIN mdl_role r
+                LEFT JOIN {role} r
                     ON ra.roleid = r.id
                 WHERE ra.userid = u.id
                     AND c.instanceid = e.courseid
                 GROUP BY ra.userid
             ) role,
             (SELECT ses2.firstaccess
-                FROM mdl_local_learning_analytics_ses ses2
+                FROM {local_learning_analytics_ses} ses2
                 WHERE ses2.summaryid = su.id
                 ORDER BY ses2.id
                 LIMIT 1) firstaccess,
             (SELECT ses3.lastaccess
-                FROM mdl_local_learning_analytics_ses ses3
+                FROM {local_learning_analytics_ses} ses3
                 WHERE ses3.summaryid = su.id
                 ORDER BY ses3.id DESC
                 LIMIT 1) lastaccess,
             COALESCE(su.hits, 0) hits,
             COUNT(ses.id) sessions
-        FROM mdl_user u
-        JOIN mdl_user_enrolments ue
+        FROM {user} u
+        JOIN {user_enrolments} ue
             ON ue.userid = u.id
-        JOIN mdl_enrol e
+        JOIN {enrol} e
             ON e.id = ue.enrolid
-        LEFT JOIN mdl_local_learning_analytics_sum su
+        LEFT JOIN {local_learning_analytics_sum} su
             ON su.userid = u.id
             AND su.courseid = e.courseid
-        LEFT JOIN mdl_local_learning_analytics_ses ses
+        LEFT JOIN {local_learning_analytics_ses} ses
             ON ses.summaryid = su.id
         {$roleFilterSql}
         WHERE u.deleted = 0
