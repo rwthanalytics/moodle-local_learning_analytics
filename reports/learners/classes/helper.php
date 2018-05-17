@@ -26,6 +26,7 @@
 
 namespace lareport_learners;
 
+use lareport_learners\outputs\split;
 use local_learning_analytics\local\outputs\table;
 use lareport_learners\query_helper;
 use local_learning_analytics\local\routing\router;
@@ -34,12 +35,80 @@ use paging_bar;
 
 defined('MOODLE_INTERNAL') || die;
 
-class learners_list {
+class helper {
 
     private static $USER_PER_FULL_PAGE = 20;
     private static $USER_PREVIEW = 5;
 
-    public static function generate(int $courseid, int $page = -1, string $roleFilter = ''): array {
+    // if abs($other_course_startdate - $this_course_startdate) < $PARALLEL_COURSE_BUFFER
+    // they are considered being parallel, otherwise before (or after)
+    private static $PARALLEL_COURSE_BUFFER = 31 * 24 * 60 * 60;
+
+    public static function generateCourseParticipationList(int $courseid, int $limit = -1) {
+
+        $learnersCount = query_helper::query_learners_count($courseid, 'student');
+
+        $courses = query_helper::query_courseparticipation($courseid);
+
+        $tablePrevious = new table();
+        $tablePrevious->set_header_local(['coursename', 'participated_before'],
+            'lareport_learners');
+
+        $tableParallel = new table();
+        $tableParallel->set_header_local(['coursename', 'participating_now'],
+            'lareport_learners');
+
+        $courseStartdate = get_course($courseid)->startdate;
+
+        $previousRows = 0;
+        $parallelRows = 0;
+
+        foreach ($courses as $course) {
+            $perc = round(100 * $course->users / $learnersCount);
+
+            $row = [
+                $course->fullname,
+                table::fancyNumberCell(
+                    $perc,
+                    100,
+                    'red',
+                    $perc . '%'
+                )
+            ];
+
+            if ($course->startdate < ($courseStartdate - self::$PARALLEL_COURSE_BUFFER)) {
+                if ($limit === -1 || $previousRows < $limit) {
+                    $tablePrevious->add_row($row);
+                    $previousRows++;
+                }
+            } else if ($course->startdate < ($courseStartdate + self::$PARALLEL_COURSE_BUFFER)) {
+                if ($limit === -1 || $parallelRows < $limit) {
+                    $tableParallel->add_row($row);
+                    $parallelRows++;
+                }
+            } else {
+                // course is happening after the current course, might be interesting for the future
+            }
+        }
+
+        if ($limit !== -1) {
+            $linkToFullList = router::report_page('learners', 'courseparticipation', ['course' => $courseid]);
+            $tablePrevious->add_show_more_row($linkToFullList);
+            $tableParallel->add_show_more_row($linkToFullList);
+        }
+
+        $headingPrevious = get_string('courses_heard_before', 'lareport_learners');
+        $headingParallel = get_string('parallel_courses', 'lareport_learners');
+
+        return [
+            new split(
+                ["<h3>{$headingPrevious}</h3>", $tablePrevious],
+                ["<h3>{$headingParallel}</h3>", $tableParallel]
+            )
+        ];
+    }
+
+    public static function generateLearnersList(int $courseid, int $page = -1, string $roleFilter = ''): array {
 
         $fullPage = true;
         $perPage = self::$USER_PER_FULL_PAGE;

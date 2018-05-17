@@ -34,14 +34,10 @@ use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 use lareport_learners\query_helper;
 use local_learning_analytics\local\routing\router;
-use lareport_learners\learners_list;
+use lareport_learners\helper;
 use lareport_learners\outputs\split;
 
 class lareport_learners extends report_base {
-
-    // if abs($other_course_startdate - $this_course_startdate) < $PARALLEL_COURSE_BUFFER
-    // they are considered being parallel, otherwise before (or after)
-    private static $PARALLEL_COURSE_BUFFER = 31 * 24 * 60 * 60;
 
     /**
      * @return array
@@ -54,45 +50,7 @@ class lareport_learners extends report_base {
     }
 
     private function courseParticipation(int $courseid): array {
-        $learnersCount = query_helper::query_learners_count($courseid, 'student');
-
-        $courses = query_helper::query_courseparticipation($courseid);
-
-        $tablePrevious = new table();
-        $tablePrevious->set_header_local(['coursename', 'participated_before'],
-            'lareport_learners');
-
-        $tableParallel = new table();
-        $tableParallel->set_header_local(['coursename', 'participating_now'],
-            'lareport_learners');
-
-        $courseStartdate = get_course($courseid)->startdate;
-
-        foreach ($courses as $course) {
-            $perc = round(100 * $course->users / $learnersCount);
-
-            $row = [
-                $course->fullname,
-                table::fancyNumberCell(
-                    $perc,
-                    100,
-                    'red',
-                    $perc . '%'
-                )
-            ];
-
-            if ($course->startdate < ($courseStartdate - self::$PARALLEL_COURSE_BUFFER)) {
-                $tablePrevious->add_row($row);
-            } else if ($course->startdate < ($courseStartdate + self::$PARALLEL_COURSE_BUFFER)) {
-                $tableParallel->add_row($row);
-            } else {
-                // course is happening after the current course, might be interesting for the future
-            }
-        }
-
-        // TODO: shorten list, but make another page to see full list
-
-        return [$tablePrevious, $tableParallel];
+        return helper::generateCourseParticipationList($courseid, 5);
     }
 
     public function run(array $params): array {
@@ -101,9 +59,9 @@ class lareport_learners extends report_base {
         $headingTable = get_string('most_active_learners', 'lareport_learners');
 
         return array_merge(
-            [new split($this->courseParticipation($courseid))],
+            helper::generateCourseParticipationList($courseid, 5),
             [ "<h2>{$headingTable}</h2>" ],
-            learners_list::generate($courseid)
+            helper::generateLearnersList($courseid)
         );
     }
 

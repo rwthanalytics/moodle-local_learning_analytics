@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ *
  *
  * @package     local_learning_analytics
  * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -24,14 +24,28 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace lareport_learners;
+
+use local_learning_analytics\local\parameter\parameter_course;
+use local_learning_analytics\local\parameter\parameter_select;
+use local_learning_analytics\local\parameter\parameter_input;
+use local_learning_analytics\report_page_base;
+use local_learning_analytics\parameter_base;
+use lareport_learners\helper;
+
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'local_learning_analytics';
+class courseparticipation extends report_page_base {
 
-$plugin->version = '2018051700';
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
+    public function get_parameter(): array {
+        return [
+            new parameter_course('course', false)
+        ];
+    }
 
-$plugin->requires = '2017111302';
+    public function run(array $params): array {
+        $courseid = (int) $params['course'];
 
-$plugin->dependencies = [];
+        return helper::generateCourseParticipationList($courseid);
+    }
+}

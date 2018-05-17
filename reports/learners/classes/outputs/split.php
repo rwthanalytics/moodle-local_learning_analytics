@@ -36,10 +36,12 @@ use local_learning_analytics\output_external;
 
 class split extends output_base {
 
-    private $elements;
+    private $left;
+    private $right;
 
-    public function __construct(array $elements) {
-        $this->elements = $elements;
+    public function __construct(array $left, array $right) {
+        $this->left = $left;
+        $this->right = $right;
     }
 
     function external(): output_external {
@@ -54,9 +56,8 @@ class split extends output_base {
         global $PAGE;
 
         $renderer = $PAGE->get_renderer('local_learning_analytics');
-        $code1 = $renderer->render_output_list([$this->elements[0]]);
-        $code2 = $renderer->render_output_list([$this->elements[1]]);
-        // TODO support more than two columns
+        $code1 = $renderer->render_output_list($this->left);
+        $code2 = $renderer->render_output_list($this->right);
 
         $html = "<div class='container-fluid'>
             <div class='row'>

@@ -31,7 +31,7 @@ use local_learning_analytics\local\parameter\parameter_select;
 use local_learning_analytics\local\parameter\parameter_input;
 use local_learning_analytics\report_page_base;
 use local_learning_analytics\parameter_base;
-use lareport_learners\learners_list;
+use lareport_learners\helper;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -56,6 +56,6 @@ class all extends report_page_base {
         $page = (int) ($params['page'] ?? 0);
         $roleFilter = $params['role'] ?? '';
 
-        return learners_list::generate($courseid, $page, $roleFilter);
+        return helper::generateLearnersList($courseid, $page, $roleFilter);
     }
 }
