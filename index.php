@@ -40,6 +40,10 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('report');
 
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('learning_analytics', 'local_learning_analytics'),
+    new moodle_url('/local/learning_analytics/index.php'));
+
 $reports = core_component::get_plugin_list('lareport');
 
 $router = new router([
@@ -56,8 +60,7 @@ $route = $router->get_active_route();
 $output = $PAGE->get_renderer('local_learning_analytics');
 
 $PAGE->requires->css('/local/learning_analytics/static/styles.css');
-echo $output->header();
-echo $output->render_from_template('local_learning_analytics/base', [
+$mainOutput =  $output->render_from_template('local_learning_analytics/base', [
     'reports' => array_keys($reports),
     'content' => $route->execute(),
     'prefix' => new moodle_url('/local/learning_analytics/index.php'),
@@ -65,4 +68,7 @@ echo $output->render_from_template('local_learning_analytics/base', [
     'active_courses' => $router->is_active_route('courses') ? 'active' : '',
     'active_reports' => $router->is_active_route('reports') ? 'active' : '',
 ]);
+
+echo $output->header();
+echo $mainOutput;
 echo $output->footer();

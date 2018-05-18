@@ -34,35 +34,58 @@ use local_learning_analytics\output_base;
 use local_learning_analytics\report_base;
 use local_learning_analytics\report_page_base;
 use renderable;
+use moodle_url;
+use context_course;
+use local_learning_analytics\local\routing\router;
 
 class controller_report extends controller_base {
-    /**
-     * @return string
-     * @throws \coding_exception
-     */
-    public function run(): string {
-        $instance = self::get_report($this->params['report']);
 
-        if ($instance != null) {
+    public function run_report_or_page($instance, bool $is_page = false): string {
+        global $PAGE, $CFG;
+
+        if ($instance) {
             $ret = '';
 
             $params = $instance->get_parameter();
             $outputs = [];
+            $fparamsList = [];
 
-            if (sizeof($params) > 0) {
+            if (count($params) > 0) {
+
                 $fparams = new form($params, $instance->get_parameter_defaults(), $this->params['report']);
+
+                $fparamsList = $fparams->get_parameters();
+
+                if (!empty($fparamsList['course'])) {
+                    $course = get_course($fparamsList['course']);
+
+                    $coursecontext = context_course::instance($course->id, MUST_EXIST);
+                    $coursename = empty($CFG->navshowfullcoursenames) ?
+                        format_string($course->shortname, true, array('context' => $coursecontext)) :
+                        format_string($course->fullname, true, array('context' => $coursecontext));
+
+                    // TODO: Link this to LA course dashboard
+                    $PAGE->navbar->add($coursename);
+                }
 
                 $ret .= $this->renderer->render($fparams);
 
                 if ($fparams->get_missing_count() == 0) {
-                    $outputs = $instance->run($fparams->get_parameters());
+                    $outputs = $instance->run($fparamsList);
+                } else {
+                    return get_string('error:wrong_link', 'local_learning_analytics');
                 }
-                // TODO: Error message when missing requireds ?
             } else {
                 $outputs = $instance->run([]);
             }
 
-            $ret .= html_writer::tag('h2', get_string('pluginname', "lareport_{$this->params['report']}"));
+            $reportname = get_string('pluginname', "lareport_{$this->params['report']}");
+            $PAGE->navbar->add($reportname,
+                router::report($this->params['report'], $fparamsList)
+            );
+
+            // TODO remove h2 tag? (least for pages)
+            $ret .= html_writer::tag('h2', $reportname);
 
             $ret .= $this->renderer->render_output_list($outputs);
 
@@ -70,6 +93,16 @@ class controller_report extends controller_base {
         } else {
             return get_string('reports:missing', 'local_learning_analytics');
         }
+    }
+
+    /**
+     * @return string
+     * @throws \coding_exception
+     */
+    public function run(): string {
+        $instance = self::get_report($this->params['report']);
+
+        return $this->run_report_or_page($instance);
     }
 
     /**
@@ -100,33 +133,9 @@ class controller_report extends controller_base {
      * @throws \coding_exception
      */
     public function run_page(): string {
-
         $instance = self::get_report_page($this->params['report'], $this->params['page']);
 
-        if ($instance) {
-            $ret = '';
-            $params = $instance->get_parameter();
-
-            if (count($params) > 0) {
-                $fparams = new form($params, $instance->get_parameter_defaults(), $this->params['report']);
-
-                if ($fparams->get_missing_count() === 0) {
-                    $outputs = $instance->run($fparams->get_parameters());
-
-                } else {
-                    return get_string('error:wrong_link', 'local_learning_analytics');
-                }
-
-            } else {
-                $outputs = $instance->run([]);
-            }
-
-            $ret .= $this->renderer->render_output_list($outputs);
-
-            return $ret;
-        } else {
-            return get_string('error:page_not_found', 'local_learning_analytics');
-        }
+        return $this->run_report_or_page($instance, true);
     }
 
     /**
