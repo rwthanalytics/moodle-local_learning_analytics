@@ -51,12 +51,11 @@ class lareport_learners extends report_base {
     }
 
     private static $BAR_COLORS = [
-        '#A9CF54',
-        '#EA030E',
         '#66b5ab',
         '#F26522',
         '#ffda6e',
-        '#ffda6e'
+        '#A9CF54',
+        '#EA030E'
     ];
 
     private static function createSeries($users, $lang, $i) {
@@ -76,6 +75,7 @@ class lareport_learners extends report_base {
         $languages = query_helper::query_localization($courseid, 'lang');
 
         $plot = new plot();
+        $langs = get_string_manager()->get_list_of_languages();
 
         $percSoFar = 0;
         $i = 0;
@@ -97,14 +97,15 @@ class lareport_learners extends report_base {
             $annotations[] = [
                 'x' => ($percSoFar + ($perc / 2)),
                 'y' => 'lang',
-                'yshift' => 40,
-                'text' => $lang->x,
+                'yshift' => 15,
+                'text' => $langs[$lang->x],
                 'font' => [
                     'color' => '#000',
-                    'size' => 18,
+                    'size' => 16,
                 ],
                 'showarrow' => false,
-                'xanchor' => 'center'
+                'xanchor' => 'center',
+                'yanchor' => 'bottom'
             ];
             $percSoFar += $perc;
             $series = self::createSeries($perc, $lang->x, $i);
@@ -118,10 +119,10 @@ class lareport_learners extends report_base {
         $layout->xaxis = ['visible' => false, 'range' => [0, 100] ];
         $layout->yaxis = ['visible' => false];
         $layout->showlegend = false;
-        $layout->margin = ['l' => 0, 'r' => 0, 't' => 30, 'b' => 0];
+        $layout->margin = ['l' => 0, 'r' => 0, 't' => 10, 'b' => 0];
 
         $plot->set_layout($layout);
-        $plot->set_height(80);
+        $plot->set_height(70);
         $plot->set_static_plot(true);
 
         $heading = get_string('languages_of_learners', 'lareport_learners');
