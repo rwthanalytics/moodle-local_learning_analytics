@@ -58,24 +58,28 @@ class lareport_learners extends report_base {
         '#EA030E'
     ];
 
-    private static function createSeries($users, $lang, $i) {
+    private static function createSeries($perc, $text, $i) {
         return [
             'y' => ['lang'],
-            'x' => [$users],
+            'x' => [$perc],
             'orientation' => 'h',
-            'marker' => ['color' => (self::$BAR_COLORS[$i % count(self::$BAR_COLORS)])],
-            'name' => $lang,
-            'type' => 'bar'
+            'hoverinfo' => 'none', // change to "text" to provide onhover information and make sure its not static
+            'marker' => [
+                'color' => (self::$BAR_COLORS[$i % count(self::$BAR_COLORS)])
+            ],
+            'name' => $text,
+            'type' => 'bar',
+            'text' => $text
         ];
     }
 
-    private function languages(int $courseid): array {
+    private function langAndCountryPlot(int $courseid, string $type) {
         $learnersCount = query_helper::query_learners_count($courseid, 'student');
 
-        $languages = query_helper::query_localization($courseid, 'lang');
+        $languages = query_helper::query_localization($courseid, $type);
 
         $plot = new plot();
-        $langs = get_string_manager()->get_list_of_languages();
+        $langList = get_string_manager()->get_list_of_languages();
 
         $percSoFar = 0;
         $i = 0;
@@ -94,11 +98,16 @@ class lareport_learners extends report_base {
                     'xanchor' => 'center'
                 ];
             }
+            if ($type === 'lang') {
+                $annotText = $langList[$lang->x];
+            } else { // then its country
+                $annotText = get_string($lang->x, 'countries');
+            }
             $annotations[] = [
                 'x' => ($percSoFar + ($perc / 2)),
                 'y' => 'lang',
                 'yshift' => 15,
-                'text' => $langs[$lang->x],
+                'text' => $annotText,
                 'font' => [
                     'color' => '#000',
                     'size' => 16,
@@ -108,7 +117,7 @@ class lareport_learners extends report_base {
                 'yanchor' => 'bottom'
             ];
             $percSoFar += $perc;
-            $series = self::createSeries($perc, $lang->x, $i);
+            $series = self::createSeries($perc, $annotText, $i);
             $plot->add_series($series);
             $i++;
         }
@@ -116,8 +125,8 @@ class lareport_learners extends report_base {
         $layout = new stdClass();
         $layout->barmode = 'stack';
         $layout->annotations = $annotations;
-        $layout->xaxis = ['visible' => false, 'range' => [0, 100] ];
-        $layout->yaxis = ['visible' => false];
+        $layout->xaxis = ['visible' => false, 'range' => [0, 100], 'fixedrange' => true ];
+        $layout->yaxis = ['visible' => false, 'fixedrange' => true];
         $layout->showlegend = false;
         $layout->margin = ['l' => 0, 'r' => 0, 't' => 10, 'b' => 0];
 
@@ -125,11 +134,18 @@ class lareport_learners extends report_base {
         $plot->set_height(70);
         $plot->set_static_plot(true);
 
-        $heading = get_string('languages_of_learners', 'lareport_learners');
+        return $plot;
+    }
+
+    private function languagesAndCountries(int $courseid): array {
+        $heading1 = get_string('languages_of_learners', 'lareport_learners');
+        $heading2 = get_string('countries_of_learners', 'lareport_learners');
 
         return [
-            "<h2>{$heading}</h2>",
-            $plot
+            "<h2>{$heading1}</h2>",
+            $this->langAndCountryPlot($courseid, 'lang'),
+            "<h2>{$heading2}</h2>",
+            $this->langAndCountryPlot($courseid, 'country')
         ];
     }
 
@@ -140,7 +156,7 @@ class lareport_learners extends report_base {
 
         return array_merge(
             helper::generateCourseParticipationList($courseid, 5),
-            $this->languages($courseid),
+            $this->languagesAndCountries($courseid),
             [ "<h2>{$headingTable}</h2>" ],
             helper::generateLearnersList($courseid)
         );
