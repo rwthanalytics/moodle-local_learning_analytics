@@ -57,6 +57,7 @@ class plot extends output_base {
 
         $this->layout = new stdClass();
         $this->params = new stdClass();
+        $this->params->displayModeBar = false;
 
         $this->height = 'auto';
     }
@@ -87,12 +88,20 @@ class plot extends output_base {
         return $trace;
     }
 
+    public function set_layout(stdClass $layout) {
+        $this->layout = $layout;
+    }
+
     public function set_title(string $title) {
         $this->layout->title = $title;
     }
 
     public function show_toolbar(bool $show) {
         $this->params->displayModeBar = $show;
+    }
+
+    public function set_static_plot(bool $static) {
+        $this->params->staticPlot = $static;
     }
 
     public function set_height($height) : void {

@@ -111,6 +111,39 @@ SQL;
         return $DB->get_records_sql($query, [$courseid]);
     }
 
+    public static function query_localization(int $courseid, string $type) : array {
+        global $DB;
+
+        $query = <<<SQL
+            SELECT
+                u.{$type} AS x,
+                COUNT(DISTINCT u.id) users
+            FROM {user} u
+            JOIN {user_enrolments} ue
+                ON ue.userid = u.id
+            JOIN {enrol} e
+                ON e.id = ue.enrolid
+            JOIN {context} c
+                ON c.instanceid = e.courseid
+                AND c.contextlevel = 50
+            
+            # only students
+            JOIN {role_assignments} ra
+                ON ra.userid = u.id
+                AND ra.contextid = c.id
+            JOIN {role} r
+                ON ra.roleid = r.id
+                AND r.shortname = 'student'
+            
+            WHERE u.deleted = 0
+                AND e.courseid = ?
+            GROUP BY u.{$type}
+            ORDER BY users DESC;
+SQL;
+
+        return $DB->get_records_sql($query, [$courseid]);
+    }
+
     public static function query_learners(int $courseid, string $role_filter = '', int $offset = 0, int $limit = 20) : array {
         global $DB;
 

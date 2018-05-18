@@ -36,6 +36,7 @@ use lareport_learners\query_helper;
 use local_learning_analytics\local\routing\router;
 use lareport_learners\helper;
 use lareport_learners\outputs\split;
+use local_learning_analytics\local\outputs\plot;
 
 class lareport_learners extends report_base {
 
@@ -49,8 +50,86 @@ class lareport_learners extends report_base {
         ];
     }
 
-    private function courseParticipation(int $courseid): array {
-        return helper::generateCourseParticipationList($courseid, 5);
+    private static $BAR_COLORS = [
+        '#A9CF54',
+        '#EA030E',
+        '#66b5ab',
+        '#F26522',
+        '#ffda6e',
+        '#ffda6e'
+    ];
+
+    private static function createSeries($users, $lang, $i) {
+        return [
+            'y' => ['lang'],
+            'x' => [$users],
+            'orientation' => 'h',
+            'marker' => ['color' => (self::$BAR_COLORS[$i % count(self::$BAR_COLORS)])],
+            'name' => $lang,
+            'type' => 'bar'
+        ];
+    }
+
+    private function languages(int $courseid): array {
+        $learnersCount = query_helper::query_learners_count($courseid, 'student');
+
+        $languages = query_helper::query_localization($courseid, 'lang');
+
+        $plot = new plot();
+
+        $percSoFar = 0;
+        $i = 0;
+        foreach ($languages as $lang) {
+            $perc = round(100 * $lang->users / $learnersCount);
+            if ($perc > 3) { // otherwise it might be too small to display
+                $annotations[] = [
+                    'x' => ($percSoFar + ($perc / 2)),
+                    'y' => 'lang',
+                    'text' => $perc . '%',
+                    'font' => [
+                        'color' => '#fff',
+                        'size' => 14,
+                    ],
+                    'showarrow' => false,
+                    'xanchor' => 'center'
+                ];
+            }
+            $annotations[] = [
+                'x' => ($percSoFar + ($perc / 2)),
+                'y' => 'lang',
+                'yshift' => 40,
+                'text' => $lang->x,
+                'font' => [
+                    'color' => '#000',
+                    'size' => 18,
+                ],
+                'showarrow' => false,
+                'xanchor' => 'center'
+            ];
+            $percSoFar += $perc;
+            $series = self::createSeries($perc, $lang->x, $i);
+            $plot->add_series($series);
+            $i++;
+        }
+
+        $layout = new stdClass();
+        $layout->barmode = 'stack';
+        $layout->annotations = $annotations;
+        $layout->xaxis = ['visible' => false, 'range' => [0, 100] ];
+        $layout->yaxis = ['visible' => false];
+        $layout->showlegend = false;
+        $layout->margin = ['l' => 0, 'r' => 0, 't' => 30, 'b' => 0];
+
+        $plot->set_layout($layout);
+        $plot->set_height(80);
+        $plot->set_static_plot(true);
+
+        $heading = get_string('languages_of_learners', 'lareport_learners');
+
+        return [
+            "<h2>{$heading}</h2>",
+            $plot
+        ];
     }
 
     public function run(array $params): array {
@@ -60,6 +139,7 @@ class lareport_learners extends report_base {
 
         return array_merge(
             helper::generateCourseParticipationList($courseid, 5),
+            $this->languages($courseid),
             [ "<h2>{$headingTable}</h2>" ],
             helper::generateLearnersList($courseid)
         );
