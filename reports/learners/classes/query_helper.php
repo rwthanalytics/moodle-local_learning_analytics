@@ -74,7 +74,7 @@ SQL;
         global $DB;
 
         $query = <<<SQL
-            SELECT SQL_NO_CACHE
+            SELECT
                 co.id, co.fullname, co.startdate, COUNT(*) users
             FROM {user} u
             JOIN {user_enrolments} ue
@@ -141,7 +141,7 @@ SQL;
         }
 
         $query = <<<SQL
-        SELECT SQL_NO_CACHE
+        SELECT
             u.id, 
             u.firstname,
             u.lastname,
