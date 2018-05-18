@@ -25,3 +25,4 @@
  */
 
 $string['pluginname'] = 'Activities';
+$string['pagename_all'] = 'Full List';

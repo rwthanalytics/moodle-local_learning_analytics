@@ -47,7 +47,6 @@ class controller_report extends controller_base {
             $ret = '';
 
             $params = $instance->get_parameter();
-            $outputs = [];
             $fparamsList = [];
 
             if (count($params) > 0) {
@@ -80,12 +79,22 @@ class controller_report extends controller_base {
             }
 
             $reportname = get_string('pluginname', "lareport_{$this->params['report']}");
+            $title = $reportname;
             $PAGE->navbar->add($reportname,
                 router::report($this->params['report'], $fparamsList)
             );
 
+            if ($is_page) {
+                $pagename = get_string('pagename_' . $this->params['page'],
+                    "lareport_{$this->params['report']}");
+                $title = $pagename;
+                $PAGE->navbar->add($pagename,
+                    router::report_page($this->params['report'], $this->params['page'], $fparamsList)
+                );
+            }
+
             // TODO remove h2 tag? (least for pages)
-            $ret .= html_writer::tag('h2', $reportname);
+            $ret .= html_writer::tag('h2', $title);
 
             $ret .= $this->renderer->render_output_list($outputs);
 

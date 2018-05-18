@@ -25,3 +25,5 @@
  */
 
 $string['pluginname'] = 'Learners';
+$string['pagename_courseparticipation'] = 'Course Participation';
+$string['pagename_all'] = 'Full List';
