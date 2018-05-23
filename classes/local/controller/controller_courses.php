@@ -105,15 +105,17 @@ SQL;
         }
 
         foreach ($courses as $course) {
+
+            $learnersUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', ['course' => $course->id]);
+            $gradesUrl = new moodle_url('/local/learning_analytics/index.php/reports/grades', ['course' => $course->id]);
+            $sectionsUrl = new moodle_url('/local/learning_analytics/index.php/reports/sections', ['course' => $course->id]);
+            $activityUrl = new moodle_url('/local/learning_analytics/index.php/reports/activities', ['course' => $course->id]);
+
             $avgGradeCell = '';
             if ($course->avg_grade !== null) {
                 $avgGradeText = number_format($course->avg_grade, 1) . '%';
-                $avgGradeCell = table::fancyNumberCell((float) $course->avg_grade, self::MAX_GRADE, 'green', $avgGradeText);
+                $avgGradeCell = table::fancyNumberCell((float) $course->avg_grade, self::MAX_GRADE, 'green', "<a href='{$gradesUrl}'>{$avgGradeText}</a>");
             }
-
-            $learnersUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', ['course' => $course->id]);
-            $sectionsUrl = new moodle_url('/local/learning_analytics/index.php/reports/sections', ['course' => $course->id]);
-            $activityUrl = new moodle_url('/local/learning_analytics/index.php/reports/activities', ['course' => $course->id]);
 
             $table->add_row([
                 $course->course_fullname,
