@@ -117,6 +117,7 @@ SQL;
         $plot->add_series([
             'type' => 'scatter',
             'mode' => 'markers',
+            'name' => get_string('scatter_students', 'lareport_grades'),
             'x' => $xRandomized,
             'y' => $yRandomized,
             'marker' => [
@@ -133,6 +134,7 @@ SQL;
         $plot->add_series([
             'type' => 'scatter',
             'mode' => 'lines',
+            'name' => get_string('trend_line', 'lareport_grades'),
             'x' => [$xMin, $xMax],
             'y' => [
                 ($eq['c'] + $xMin * $eq['m']),
@@ -140,7 +142,26 @@ SQL;
             ]
         ]);
 
-        return [ $plot ];
+        $layout = new stdClass();
+        $layout->xaxis = [
+            'title' => get_string('number_of_sessions', 'lareport_grades'),
+            'range' => [ 0, $xMax * 1.05 ]
+        ];
+        $layout->yaxis = [
+            'title' => get_string('course_grade', 'lareport_grades'),
+            'range' => [ 0, 110 ]
+        ];
+        $layout->margin = ['t' => 10];
+
+        $plot->set_layout($layout);
+        $plot->set_height(400);
+
+        $heading1 = get_string('correlation_of_grades_and_work', 'lareport_grades');
+
+        return [
+            "<h2>{$heading1}</h2>",
+            $plot
+        ];
     }
 
 }
