@@ -56,7 +56,7 @@ class controller_courses extends controller_base {
                     ON e.id = ue.enrolid
                     WHERE u.deleted = 0
                     AND e.courseid = c.id) as students,
-            (SELECT ROUND(AVG(g.finalgrade), 1)
+            (SELECT ROUND(100 * (AVG(g.finalgrade) - gi.grademin)/gi.grademax, 1)
                 FROM {grade_items} gi
                 JOIN {grade_grades} g
                     ON g.itemid = gi.id

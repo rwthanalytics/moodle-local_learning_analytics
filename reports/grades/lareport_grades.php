@@ -55,7 +55,9 @@ class lareport_grades extends report_base {
             u.lastname,
             COALESCE(su.hits, 0) hits,
             COUNT(ses.id) sessions,
-            g.finalgrade
+            g.finalgrade,
+            gi.grademin AS ymin,
+            gi.grademax As ymax
         FROM mdl_user u
         # enroled users
         JOIN mdl_user_enrolments ue
@@ -104,15 +106,25 @@ SQL;
         $xRandomized = [];
         $yRandomized = [];
 
+        $yMin = reset($students)->ymin;
+        $yMax = reset($students)->ymax;
+        $yDiff = $yMax - $yMin;
+
+        $xMin = 0;
+        $xMax = end($students)->sessions * 1.05;
+        $xDiff = $xMax - $xMin;
+
+        $random_jitter = 0.02; // 0 -> no random, 1 -> super random (0.01-0.05 is reasonable)
+
         foreach ($students as $student) {
             $x = $student->sessions;
             $y = $student->finalgrade;
 
             $xOrig[] = $x;
-            $xRandomized[] = $x + (1 * rand(-100, 100) / 100);
+            $xRandomized[] = $x + ($random_jitter * $xDiff * rand(-100, 100) / 100);
 
             $yOrig[] = $y;
-            $yRandomized[] = $y + (1 * rand(-100, 100) / 100);
+            $yRandomized[] = $y + ($random_jitter * $yDiff * rand(-100, 100) / 100);
         }
         $plot->add_series([
             'type' => 'scatter',
@@ -123,11 +135,9 @@ SQL;
             'marker' => [
                 'size' => 12,
                 'color' => 'rgba(102, 181, 171, 0.8)'
-            ]
+            ],
+            'hoverinfo' => 'none'
         ]);
-
-        $xMin = 0;
-        $xMax = end($students)->sessions * 1.05;
 
         $eq = regression::linear($xOrig, $yOrig);
 
@@ -139,7 +149,8 @@ SQL;
             'y' => [
                 ($eq['c'] + $xMin * $eq['m']),
                 ($eq['c'] + $xMax * $eq['m'])
-            ]
+            ],
+            'hoverinfo' => 'none'
         ]);
 
         $layout = new stdClass();
@@ -149,7 +160,7 @@ SQL;
         ];
         $layout->yaxis = [
             'title' => get_string('course_grade', 'lareport_grades'),
-            'range' => [ 0, 110 ]
+            'range' => [ 0, $yMax * 1.05 ]
         ];
         $layout->margin = ['t' => 10];
 
