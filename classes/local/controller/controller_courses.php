@@ -106,6 +106,7 @@ SQL;
 
         foreach ($courses as $course) {
 
+            $coursedashboardUrl = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $course->id]);
             $learnersUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', ['course' => $course->id]);
             $gradesUrl = new moodle_url('/local/learning_analytics/index.php/reports/grades', ['course' => $course->id]);
             $sectionsUrl = new moodle_url('/local/learning_analytics/index.php/reports/sections', ['course' => $course->id]);
@@ -118,7 +119,7 @@ SQL;
             }
 
             $table->add_row([
-                $course->course_fullname,
+                "<a href='{$coursedashboardUrl}'>{$course->course_fullname}</a>",
                 $course->category_name,
                 table::fancyNumberCell((int) $course->students, $maxStudents, 'red', "<a href='{$learnersUrl}'>{$course->students}</a>"),
                 $avgGradeCell,
