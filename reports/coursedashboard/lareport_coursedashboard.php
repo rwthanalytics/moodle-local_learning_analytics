@@ -67,7 +67,7 @@ class lareport_coursedashboard extends report_base {
             ON su.id = ses.summaryid
         WHERE su.courseid = ?
         GROUP BY week
-            HAVING week > 0
+        #    HAVING week > 0
         ORDER BY week;
 SQL;
 
@@ -77,27 +77,41 @@ SQL;
         $x = [];
         $ySessions = [];
         $yUsers = [];
+        $shapes = [];
+
+        $yMax = 1;
+
+        foreach ($weeks as $week) {
+            $yMax = max($yMax, $week->sessions);
+        }
+        $yMax = $yMax * 1.1;
 
         $lastweekIndex = 0;
 
         // TODO: just run from startdate to enddate* 1.1 or something like that
 
-        foreach ($weeks as $week) {
-            $weekIndex = $week->week;
-            while ($lastweekIndex + 1 < $weekIndex) {
-                $lastweekIndex++;
-                $x[] = $startdate->format('Y-m-d H:i:s');
-                $ySessions[] = 0;
-                $yUsers[] = 0;
-                $startdate->modify('+1 week');
-            }
-            $x[] = $startdate->format('Y-m-d H:i:s');
-            $ySessions[] = $week->sessions;
-            $yUsers[] = $week->users;
-            $lastweekIndex = $weekIndex;
+        for ($i = 0; $i < 30; $i++) {
+            $week = $weeks[$i] ?? new stdClass();
 
-            $startdate->modify('+1 week');
+            $x[] = $i; // $startdate->format('Y-m-d H:i:s');
+            $ySessions[] = $week->sessions ?? 0;
+            $yUsers[] = $week->users ?? 0;
+            $shapes[] = [
+                'type' => 'rect',
+                'xref' => 'x',
+                'yref' => 'paper',
+                'x0' => ($i - 0.45),
+                'x1' => ($i + 0.45),
+                'y0' => 0,
+                'y1' => 1,
+                'fillcolor' => '#eee',
+                'opacity' => 0.2,
+                'line' => [ 'width' => 0 ]
+            ];
         }
+
+        // TODO, show dates: $startdate->format('Y-m-d H:i:s'); $startdate->modify('+1 week');
+
         $plot->add_series([
             'type' => 'scatter',
             'mode' => 'lines+markers',
@@ -115,6 +129,18 @@ SQL;
 
         $layout = new stdClass();
         $layout->margin = ['t' => 10];
+        $layout->xaxis = [
+            'tick0' => 1,
+            'dtick' => 1,
+            'ticklen' => 0,
+            'ticks' => 'inside',
+            'showgrid' => false
+        ];
+        $layout->yaxis = [
+            'range' => [ 0, $yMax ]
+        ];
+
+        $layout->shapes = $shapes;
 
         $plot->set_layout($layout);
         $plot->set_height(400);
