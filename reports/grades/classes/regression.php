@@ -4,7 +4,7 @@ namespace lareport_grades;
 
 class regression {
 
-    public static function linear ($x, $y) {
+    public static function linear($x, $y) {
         $sumX = array_sum($x);
         $sumY = array_sum($y);
 

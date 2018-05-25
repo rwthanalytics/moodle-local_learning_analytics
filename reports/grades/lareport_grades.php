@@ -48,16 +48,33 @@ class lareport_grades extends report_base {
 
         $courseid = (int) $params['course'];
 
+        $gradeItem = $DB->get_record('grade_items', [
+            'courseid' => $courseid,
+            'itemtype' => 'course'
+        ], 'id, grademin, grademax, scaleid');
+
+        $gradeItemsId = $gradeItem->id; // TODO use this in the query below
+
+        $yMin = $gradeItem->grademin;
+        $yMax = $gradeItem->grademax;
+        $yDiff = $yMax - $yMin;
+
+        $scaleId = $gradeItem->scaleid;
+
+        $scale = null;
+        if ($scaleId !== NULL) {
+            $scaleRow = $DB->get_record('scale', ['id' => $scaleId], 'scale');
+            $scale = array_map('trim', explode(',', $scaleRow->scale));
+        }
+
         $query = <<<SQL
-        SELECT SQL_NO_CACHE
+        SELECT
             u.id, 
             u.firstname,
             u.lastname,
             COALESCE(su.hits, 0) hits,
             COUNT(ses.id) sessions,
-            g.finalgrade,
-            gi.grademin AS ymin,
-            gi.grademax As ymax
+            g.finalgrade
         FROM mdl_user u
         # enroled users
         JOIN mdl_user_enrolments ue
@@ -73,11 +90,8 @@ class lareport_grades extends report_base {
             ON ses.summaryid = su.id
         
         # get grades
-        LEFT JOIN mdl_grade_items gi
-            ON gi.courseid = e.courseid
-            AND gi.itemtype = 'course'
         LEFT JOIN mdl_grade_grades g
-            ON g.itemid = gi.id
+            ON g.itemid = ?
             AND g.userid = u.id
         
         # only students
@@ -98,17 +112,13 @@ class lareport_grades extends report_base {
         ORDER BY sessions;
 SQL;
 
-        $students = $DB->get_records_sql($query, [$courseid]);
+        $students = $DB->get_records_sql($query, [$gradeItemsId, $courseid]);
 
         $plot = new plot();
         $xOrig = [];
         $yOrig = [];
         $xRandomized = [];
         $yRandomized = [];
-
-        $yMin = reset($students)->ymin;
-        $yMax = reset($students)->ymax;
-        $yDiff = $yMax - $yMin;
 
         $xMin = 0;
         $xMax = end($students)->sessions * 1.05;
@@ -162,6 +172,10 @@ SQL;
             'title' => get_string('course_grade', 'lareport_grades'),
             'range' => [ 0, $yMax * 1.05 ]
         ];
+        if ($scale !== NULL) {
+            $layout->yaxis['tickvals'] = range($yMin, $yMax);
+            $layout->yaxis['ticktext'] = $scale;
+        }
         $layout->margin = ['t' => 10];
 
         $plot->set_layout($layout);
