@@ -53,7 +53,7 @@ class lareport_grades extends report_base {
             'itemtype' => 'course'
         ], 'id, grademin, grademax, scaleid');
 
-        $gradeItemsId = $gradeItem->id; // TODO use this in the query below
+        $gradeItemsId = $gradeItem->id;
 
         $yMin = $gradeItem->grademin;
         $yMax = $gradeItem->grademax;
