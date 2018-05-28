@@ -77,7 +77,22 @@ SQL;
         $x = [];
         $ySessions = [];
         $yUsers = [];
-        $shapes = [];
+        $shapes = [
+            [ // Line showing the start of the lecture
+                'type' => 'line',
+                'xref' => 'x',
+                'yref' => 'paper',
+                'x0' => 0.5,
+                'x1' => 0.5,
+                'y0' => 0,
+                'y1' => 1,
+                'line' => [
+                    'color' => 'rgb(0, 0, 0)',
+                    'width' => 1,
+                    'dash' => 'dot'
+                ]
+            ]
+        ];
 
         $yMax = 1;
 
@@ -86,14 +101,21 @@ SQL;
         }
         $yMax = $yMax * 1.1;
 
+        $xMin = -1;
+        $xMax = 30;
+
         $lastweekIndex = 0;
 
-        // TODO: just run from startdate to enddate* 1.1 or something like that
+        $tickVals = [];
+        $tickText = [];
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = $xMin; $i <= $xMax; $i++) {
             $week = $weeks[$i] ?? new stdClass();
 
             $x[] = $i; // $startdate->format('Y-m-d H:i:s');
+            $tickVals[] = $i;
+            $tickText[] = ($i <= 0) ? ($i - 1) : $i;
+
             $ySessions[] = $week->sessions ?? 0;
             $yUsers[] = $week->users ?? 0;
             $shapes[] = [
@@ -130,11 +152,14 @@ SQL;
         $layout = new stdClass();
         $layout->margin = ['t' => 10];
         $layout->xaxis = [
-            'tick0' => 1,
-            'dtick' => 1,
             'ticklen' => 0,
-            'ticks' => 'inside',
-            'showgrid' => false
+            'showgrid' => false,
+            'zeroline' => false,
+            'range' => [ ($xMin - 0.5), ($xMax + 0.5) ],
+            'tickmode' => 'array',
+            'tickvals' => $tickVals,
+            'ticktext' => $tickText,
+            'title' => get_string('week', 'lareport_coursedashboard')
         ];
         $layout->yaxis = [
             'range' => [ 0, $yMax ]
