@@ -29,6 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\parameter\parameter_course;
 use local_learning_analytics\report_base;
+use lareport_coursedashboard\query_helper;
 
 class lareport_coursedashboard extends report_base {
 
@@ -42,39 +43,7 @@ class lareport_coursedashboard extends report_base {
         ];
     }
 
-    private function getStats($courseid) {
-        global $DB;
-
-        $course = get_course($courseid);
-
-        $startdate = new DateTime();
-        $startdate->setTimestamp($course->startdate);
-        $startdate->modify('Monday this week'); // get start of week
-
-        $mondayTimestamp = $startdate->format('U');
-
-        $query = <<<SQL
-        SELECT
-            (FLOOR((ses.firstaccess - {$mondayTimestamp}) / (7 * 60 * 60 * 24)) + 1) AS week,
-            COUNT(*) sessions,
-            COUNT(DISTINCT su.userid) users,
-            su.*,
-            ses.*
-        FROM {local_learning_analytics_sum} su
-        JOIN {local_learning_analytics_ses} ses
-            ON su.id = ses.summaryid
-        WHERE su.courseid = ?
-        GROUP BY week
-        #    HAVING week > 0
-        ORDER BY week;
-SQL;
-
-        return $DB->get_records_sql($query, [$courseid]);
-    }
-
-    public function run(array $params): array {
-        $courseid = (int) $params['course'];
-
+    private function activiyOverWeeks(int $courseid) : array {
         $course = get_course($courseid);
 
         $date = new DateTime();
@@ -86,11 +55,10 @@ SQL;
 
         $endOfLastWeek = new DateTime();
         $endOfLastWeek->modify('Sunday last week');
-        $endOfLastWeekTimestamp = $endOfLastWeek->getTimestamp();
 
-        $weeks = $this->getStats($courseid);
+        $weeks = query_helper::query_weekly_activity($courseid);
 
-        $weeksLastYear = $this->getStats(72);
+        $weeksLastYear = query_helper::query_weekly_activity(72);
 
         $plot = new plot();
         $x = [];
@@ -274,6 +242,44 @@ SQL;
             "<h2>{$heading1}</h2>",
             $plot
         ];
+    }
+
+    private function boxOutput(string $title, int $number, int $diff) {
+
+        $diffText = $diff;
+        if ($diff === 0) {
+            $diffText = 'no difference';
+        } else if ($diff > 0) {
+            $diffText = '+' . $diff;
+        }
+
+        return [
+            "{$title}: {$number} ({$diffText})<br />"
+        ];
+    }
+
+    private function registeredUserCount(int $courseid) : array {
+        $userCounts = query_helper::query_users($courseid);
+        $total = $userCounts[0] + $userCounts[1];
+        $diff = $userCounts[1];
+
+        return $this->boxOutput('registered_users', $total, $diff);
+    }
+
+    private function clickCount(int $courseid) : array {
+        $counts = query_helper::query_click_count($courseid);
+
+        return $this->boxOutput('click_count', $counts[1], ($counts[1] - $counts[0]));
+    }
+
+    public function run(array $params): array {
+        $courseid = (int) $params['course'];
+
+        return array_merge(
+            $this->activiyOverWeeks($courseid),
+            $this->registeredUserCount($courseid),
+            $this->clickCount($courseid)
+        );
     }
 
 }
