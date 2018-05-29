@@ -100,6 +100,7 @@ SQL;
 
         $query = <<<SQL
         SELECT SQL_NO_CACHE
+            COUNT(DISTINCT su.id) users,
             COALESCE(SUM(ses.hits), 0) hits
         FROM {local_learning_analytics_sum} su
         JOIN {local_learning_analytics_ses} ses
@@ -110,10 +111,10 @@ SQL;
 SQL;
 
         $res = $DB->get_records_sql($query, [$courseid, $from, $to]);
-        return reset($res)->hits;
+        return reset($res);
     }
 
-    // return counts: [previous week, this week]
+    // return counts: ['users' => [previous week, this week], 'hits' => [prev, this]]
     public static function query_click_count(int $courseid) : array {
 
         $date = new \DateTime();
@@ -128,8 +129,14 @@ SQL;
         $thisWeek = self::click_count_helper($courseid, $oneweekago, $today);
 
         return [
-            $previousWeek,
-            $thisWeek
+            'users' => [
+                $previousWeek->users,
+                $thisWeek->users
+            ],
+            'hits' => [
+                $previousWeek->hits,
+                $thisWeek->hits
+            ]
         ];
     }
 

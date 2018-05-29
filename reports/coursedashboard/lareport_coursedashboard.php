@@ -120,7 +120,7 @@ class lareport_coursedashboard extends report_base {
 
             $weekNumber = ($i <= 0) ? ($i - 1) : $i;
 
-            $opacity = 0.1; // opacity of background stripes
+            $opacity = 0.3; // opacity of background stripes
 
             $x[] = $i; //
             $tickVals[] = $i;
@@ -136,7 +136,7 @@ class lareport_coursedashboard extends report_base {
 
             if ($startOfWeekTimestamp < $now) {
                 // date is in the past
-                $opacity = 0.75;
+                $opacity = 0.8;
 
                 $ySessions[] = $sessionCount;
                 $yUsers[] = $userCount;
@@ -144,7 +144,7 @@ class lareport_coursedashboard extends report_base {
                 $weekstarttext = userdate($startOfWeekTimestamp, $dateformat);
                 $weekendtext = userdate($date->getTimestamp(), $dateformat);
                 $sessionsPerUser = ($userCount === 0) ? 0 : number_format(($sessionCount / $userCount), 1, $decsep, $thousandssep);
-                $texts[] = "<b>{$strWeek} {$weekNumber}</b> ({$weekstarttext} - {$weekendtext})<br><br>{$userCount} {$strLearners}<br>{$sessionCount} {$strSessions}<br>{$sessionsPerUser} {$strSessionsPerUser}";
+                $texts[] = "<b>{$strWeek} {$weekNumber}</b> ({$weekstarttext} - {$weekendtext})<br><br>{$sessionCount} {$strSessions}<br>{$userCount} {$strLearners}<br>{$sessionsPerUser} {$strSessionsPerUser}";
             }
 
             $date->modify('+1 day');
@@ -164,7 +164,7 @@ class lareport_coursedashboard extends report_base {
             ];
         }
 
-        // sessions series
+        // current course
         $plot->add_series([
             'type' => 'scatter',
             'mode' => 'lines+markers',
@@ -180,20 +180,9 @@ class lareport_coursedashboard extends report_base {
                 'font' => [
                     'size' => 15
                 ]
-            ]
+            ],
+            'legendgroup' => 'a'
         ]);
-        $plot->add_series([
-            'type' => 'scatter',
-            'mode' => 'lines+markers',
-            'name' => get_string('sessions_compare', 'lareport_coursedashboard'),
-            'x' => $x,
-            'y' => $yLYSessions,
-            'marker' => [ 'color' => 'rgba(31, 119, 180, 0.35)' ],
-            'line' => [ 'color' => 'rgba(31, 119, 180, 0.35)', 'dash' => 'dot' ],
-            'hoverinfo' => 'none'
-        ]);
-
-        // users series
         $plot->add_series([
             'type' => 'scatter',
             'mode' => 'lines+markers',
@@ -202,7 +191,22 @@ class lareport_coursedashboard extends report_base {
             'y' => $yUsers,
             'marker' => [ 'color' => 'rgb(255, 127, 14)' ],
             'line' => [ 'color' => 'rgb(255, 127, 14)' ],
-            'hoverinfo' => 'none'
+            'hoverinfo' => 'none',
+            'legendgroup' => 'a'
+        ]);
+
+        // compare course
+        $plot->add_series([
+            'type' => 'scatter',
+            'mode' => 'lines+markers',
+            'name' => get_string('sessions_compare', 'lareport_coursedashboard'),
+            'x' => $x,
+            'y' => $yLYSessions,
+            'marker' => [ 'color' => 'rgb(31, 119, 180)' ],
+            'line' => [ 'color' => 'rgb(31, 119, 180)', 'dash' => 'dot' ],
+            'hoverinfo' => 'none',
+            'opacity' => 0.35,
+            'legendgroup' => 'b'
         ]);
         $plot->add_series([
             'type' => 'scatter',
@@ -210,13 +214,20 @@ class lareport_coursedashboard extends report_base {
             'name' => get_string('learners_compare', 'lareport_coursedashboard'),
             'x' => $x,
             'y' => $yLYUsers,
-            'marker' => [ 'color' => 'rgba(255, 127, 14, 0.35)' ],
-            'line' => [ 'color' => 'rgba(255, 127, 14, 0.35)', 'dash' => 'dot' ],
-            'hoverinfo' => 'none'
+            'marker' => [ 'color' => 'rgb(255, 127, 14)' ],
+            'line' => [ 'color' => 'rgb(255, 127, 14)', 'dash' => 'dot' ],
+            'hoverinfo' => 'none',
+            'opacity' => 0.35,
+            'legendgroup' => 'b'
         ]);
 
         $layout = new stdClass();
-        $layout->margin = ['t' => 10];
+        $layout->margin = [
+            't' => 10,
+            'r' => 0,
+            'l' => 40,
+            'b' => 40
+        ];
         $layout->xaxis = [
             'ticklen' => 0,
             'showgrid' => false,
@@ -224,17 +235,29 @@ class lareport_coursedashboard extends report_base {
             'range' => [ ($xMin - 0.5), ($xMax + 0.5) ],
             'tickmode' => 'array',
             'tickvals' => $tickVals,
-            'ticktext' => $tickText,
-            'title' => get_string('week', 'lareport_coursedashboard')
+            'fixedrange' => true
         ];
         $layout->yaxis = [
-            'range' => [ (-1 * $yMax * 0.01), $yMax ]
+            'range' => [ (-1 * $yMax * 0.01), $yMax ],
+            'fixedrange' => true
+        ];
+        $layout->showlegend = true;
+        $layout->legend = [
+            'bgcolor' => 'rgba(255, 255, 255, 0.8)',
+            'orientation' => 'v',
+            'xanchor' => 'right',
+            'yanchor' => 'top',
+            'x' => (1 - 0.0021),
+            'y' => 1,
+            'bordercolor' => 'rgba(255, 255, 255, 0)',
+            'borderwidth' => 10,
+            'traceorder' => 'grouped'
         ];
 
         $layout->shapes = $shapes;
 
         $plot->set_layout($layout);
-        $plot->set_height(350);
+        $plot->set_height(300);
 
         $heading1 = get_string('activity_over_weeks', 'lareport_coursedashboard');
 
@@ -253,9 +276,7 @@ class lareport_coursedashboard extends report_base {
             $diffText = '+' . $diff;
         }
 
-        return [
-            "{$title}: {$number} ({$diffText})<br />"
-        ];
+        return "{$title}: {$number} ({$diffText})<br />";
     }
 
     private function registeredUserCount(int $courseid) : array {
@@ -263,13 +284,21 @@ class lareport_coursedashboard extends report_base {
         $total = $userCounts[0] + $userCounts[1];
         $diff = $userCounts[1];
 
-        return $this->boxOutput('registered_users', $total, $diff);
+        return [
+            $this->boxOutput('registered_users', $total, $diff)
+        ];
     }
 
     private function clickCount(int $courseid) : array {
         $counts = query_helper::query_click_count($courseid);
 
-        return $this->boxOutput('click_count', $counts[1], ($counts[1] - $counts[0]));
+        $learners = $counts['users'];
+        $hits = $counts['hits'];
+
+        return [
+            $this->boxOutput('active_learners', $learners[1], ($learners[1] - $learners[0])),
+            $this->boxOutput('click_count', $hits[1], ($hits[1] - $hits[0]))
+        ];
     }
 
     public function run(array $params): array {
