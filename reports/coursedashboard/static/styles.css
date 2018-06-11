@@ -1,0 +1,34 @@
+.dashboardbox {
+    border: 1px solid #ccc;
+    padding: 20px 20px;
+}
+.dashboardbox-icon {
+    padding-right: 20px;
+    float: left;
+    opacity: 0.4;
+}
+.dashboardbox-icon svg {
+    position: relative;
+    top: -15px;
+}
+.dashboardbox-content {
+}
+.dashboardbox-title {
+    font-size: 250%;
+    font-weight: bold;
+    margin: 0 0 0 0;
+    line-height: 100%;
+}
+.dashboardbox-timespan {
+    color: #666;
+    font-size: 85%;
+}
+.dashboardbox-change {
+    color: #666;
+}
+.dashboardbox-change-up {
+    color: #00d600;
+}
+.dashboardbox-change-down {
+    color: #d30000;
+}

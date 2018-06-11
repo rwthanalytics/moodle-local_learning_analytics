@@ -267,16 +267,49 @@ class lareport_coursedashboard extends report_base {
         ];
     }
 
+    private static $icons = [
+        'registered_users' => '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>',
+        'active_learners' => '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/>
+        </svg>',
+        'click_count' => '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110" viewBox="0 0 24 24">
+            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+            <path fill="none" d="M0 0h24v24H0z"/>
+        </svg>'
+    ];
+
     private function boxOutput(string $title, int $number, int $diff) {
+
+        $diffTriangle = '';
 
         $diffText = $diff;
         if ($diff === 0) {
             $diffText = 'no difference';
         } else if ($diff > 0) {
             $diffText = '+' . $diff;
+            $diffTriangle = '<span class="dashboardbox-change-up">▲</span>';
+        } else {
+            $diffTriangle = '<span class="dashboardbox-change-down">▼</span>';
         }
 
-        return "{$title}: {$number} ({$diffText})<br />";
+        $icon = self::$icons[$title];
+
+        // TODO: for new bootstrap version -> make pull-left float-left
+        return "
+            <div class='col-sm-4'>
+                <div class='dashboardbox'>
+                    <div class='dashboardbox-icon'>
+                        {$icon}
+                    </div>
+                    <div class='dashboardbox-content'>
+                        <div>{$title} <span class='dashboardbox-timespan'>(last 7 days)</span></div>
+                        <div class='dashboardbox-title'>{$number}</div>
+                        <div class='dashboardbox-change'>{$diffTriangle} {$diffText}</div>
+                    </div>
+                </div>
+            </div>
+        ";
     }
 
     private function registeredUserCount(int $courseid) : array {
@@ -302,12 +335,17 @@ class lareport_coursedashboard extends report_base {
     }
 
     public function run(array $params): array {
+        global $PAGE;
+        $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
+
         $courseid = (int) $params['course'];
 
         return array_merge(
             $this->activiyOverWeeks($courseid),
+            ["<div class='container-fluid'><div class='row'>"],
             $this->registeredUserCount($courseid),
-            $this->clickCount($courseid)
+            $this->clickCount($courseid),
+            ["</div></div>"]
         );
     }
 
