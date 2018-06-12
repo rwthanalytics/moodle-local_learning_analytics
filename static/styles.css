@@ -43,3 +43,8 @@
 .la_nav li.active > a{
     color: #000000 !important;
 }
+
+.courses-view-course {
+    font-size: 110%;
+    margin-left: 3px;
+}

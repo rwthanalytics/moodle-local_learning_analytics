@@ -34,6 +34,8 @@ class controller_courses extends controller_base {
 
     const MAX_GRADE = 100;
 
+    const SEMESTER_SECONDS = 60 * 60 * 24 * 180; // roughly a half year
+
     /**
      * @return string
      * @throws \coding_exception
@@ -48,6 +50,8 @@ class controller_courses extends controller_base {
             c.id,
             c.fullname AS course_fullname,
             cc.name AS category_name,
+            c.startdate,
+            c.enddate,
             (SELECT COUNT(DISTINCT u.id)
                 FROM {user} u
                 JOIN {user_enrolments} ue
@@ -86,10 +90,8 @@ class controller_courses extends controller_base {
             ) AND contextlevel = 50
         )
         GROUP BY c.id
-        ORDER BY cc.sortorder, c.fullname
+        ORDER BY c.startdate DESC, cc.sortorder, c.fullname
 SQL;
-
-        $table->set_header_local(['course_name', 'category', 'learners', 'avg_grade', 'sections', 'activities'], 'local_learning_analytics');
 
         $courses = $DB->get_records_sql($query, [1490]);
 
@@ -104,8 +106,17 @@ SQL;
             $maxActivities = max($maxActivities, (int) $course->activities);
         }
 
-        foreach ($courses as $course) {
+        $activeCourses = [];
+        $oldCourses = [];
 
+        $date = new \DateTime();
+        $date->modify('-1 day');
+        $now = $date->getTimestamp();
+
+        $gotoCourseText = get_string('go_to_course', 'local_learning_analytics');
+
+        foreach ($courses as $course) {
+            $courseUrl = new moodle_url('/course/view.php', ['id' => $course->id]);
             $coursedashboardUrl = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $course->id]);
             $learnersUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners', ['course' => $course->id]);
             $gradesUrl = new moodle_url('/local/learning_analytics/index.php/reports/grades', ['course' => $course->id]);
@@ -118,17 +129,60 @@ SQL;
                 $avgGradeCell = table::fancyNumberCell((float) $course->avg_grade, self::MAX_GRADE, 'green', "<a href='{$gradesUrl}'>{$avgGradeText}</a>");
             }
 
-            $table->add_row([
-                "<a href='{$coursedashboardUrl}'>{$course->course_fullname}</a>",
+            $row = [
+                "<a href='{$coursedashboardUrl}'>{$course->course_fullname}</a> <a href='{$courseUrl}' title='{$gotoCourseText}' class='courses-view-course'>↗️</a>",
                 $course->category_name,
                 table::fancyNumberCell((int) $course->students, $maxStudents, 'red', "<a href='{$learnersUrl}'>{$course->students}</a>"),
                 $avgGradeCell,
                 table::fancyNumberCell((int) $course->sections, $maxSections, 'orange', "<a href='{$sectionsUrl}'>{$course->sections}</a>"),
                 table::fancyNumberCell((int) $course->activities, $maxActivities, 'blue', "<a href='{$activityUrl}'>{$course->activities}</a>")
-            ]);
+            ];
+
+            $enddate = (int) $course->enddate;
+            $startdate = (int) $course->startdate;
+
+            if ($enddate > $now || ($enddate === 0 && ($startdate + self::SEMESTER_SECONDS) > $now)) {
+                // course is running right now
+                $activeCourses[] = $row;
+            } else {
+                $oldCourses[] = $row;
+            }
         }
 
-        return $table->print();
+        if (count($activeCourses) !== 0) {
+            $table->set_header_local(['active_course_name', 'category', 'learners', 'avg_grade', 'sections', 'activities'], 'local_learning_analytics');
+            foreach ($activeCourses as $oldCourseRow) {
+                $table->add_row($oldCourseRow);
+            }
+        }
+
+        if (count($oldCourses) !== 0) {
+            if (count($activeCourses) === 0) {
+                $table->set_header_local(['old_course_name', 'category', 'learners', 'avg_grade', 'sections', 'activities'], 'local_learning_analytics');
+            } else {
+                $oldCoursesHeaderStrings = ['old_course_name', 'category', 'learners', 'avg_grade', 'sections', 'activities'];
+                $oldCoursesHeader = array_map(function (&$key) {
+                    $cell = new \html_table_cell();
+                    $cell->text = get_string($key, 'local_learning_analytics');
+                    $cell->header = true;
+                    $cell->attributes['class'] = 'p-t-2';
+                    return $cell;
+                }, $oldCoursesHeaderStrings);
+
+                $table->add_row($oldCoursesHeader);
+            }
+
+            foreach ($oldCourses as $oldCourseRow) {
+                $table->add_row($oldCourseRow);
+            }
+        }
+
+        if (count($activeCourses) === 0 && count($oldCourses) === 0) {
+            return get_string('unable_to_find_courses_for_user', 'local_learning_analytics');
+        } else {
+            return $table->print();
+        }
+
     }
 
 }
