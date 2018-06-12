@@ -64,7 +64,7 @@ class controller_report extends controller_base {
                         format_string($course->fullname, true, array('context' => $coursecontext));
 
                     // TODO: Link this to LA course dashboard
-                    $PAGE->navbar->add($coursename);
+                    $PAGE->navbar->add($coursename, new moodle_url('/course/view.php', ['id' => $course->id]));
                 }
 
                 $ret .= $this->renderer->render($fparams);
