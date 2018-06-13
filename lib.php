@@ -54,9 +54,3 @@ function local_learning_analytics_extend_navigation(global_navigation $nav) {
         }
     }
 }
-
-/* Alternative: implement as part of the course navigation (on the right) TODO remove this */
-function local_learning_analytics_extend_navigation_course(navigation_node $parentnode, stdClass $course, context_course $context) {
-    $url = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', array('course' => $course->id));
-    $parentnode->add(get_string('learning_analytics'), $url, navigation_node::TYPE_SETTING, null, null, new pix_icon('i/report', ''));
-}
