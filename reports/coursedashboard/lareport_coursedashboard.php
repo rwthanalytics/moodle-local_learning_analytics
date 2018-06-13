@@ -43,6 +43,9 @@ class lareport_coursedashboard extends report_base {
         ];
     }
 
+    const X_MIN = -1;
+    const X_MAX = 30;
+
     private function activiyOverWeeks(int $courseid) : array {
         $course = get_course($courseid);
 
@@ -81,8 +84,7 @@ class lareport_coursedashboard extends report_base {
                 'y1' => 1,
                 'line' => [
                     'color' => 'rgb(0, 0, 0)',
-                    'width' => 1,
-                    'dash' => 'dot'
+                    'width' => 1.5
                 ]
             ]
         ];
@@ -97,8 +99,8 @@ class lareport_coursedashboard extends report_base {
         }
         $yMax = $yMax * 1.1;
 
-        $xMin = -1;
-        $xMax = 30;
+        $xMin = self::X_MIN;
+        $xMax = self::X_MAX;
 
         $tickVals = [];
         $tickText = [];
@@ -114,13 +116,13 @@ class lareport_coursedashboard extends report_base {
 
         $date->modify(($xMin - 1) . ' week');
 
+        $lastWeekInPast = -100;
+
         for ($i = $xMin; $i <= $xMax; $i++) {
             $week = $weeks[$i] ?? new stdClass();
             $weekLY = $weeksLastYear[$i] ?? new stdClass();
 
             $weekNumber = ($i <= 0) ? ($i - 1) : $i;
-
-            $opacity = 0.3; // opacity of background stripes
 
             $x[] = $i; //
             $tickVals[] = $i;
@@ -136,8 +138,6 @@ class lareport_coursedashboard extends report_base {
 
             if ($startOfWeekTimestamp < $now) {
                 // date is in the past
-                $opacity = 0.8;
-
                 $ySessions[] = $sessionCount;
                 $yUsers[] = $userCount;
 
@@ -145,22 +145,51 @@ class lareport_coursedashboard extends report_base {
                 $weekendtext = userdate($date->getTimestamp(), $dateformat);
                 $sessionsPerUser = ($userCount === 0) ? 0 : number_format(($sessionCount / $userCount), 1, $decsep, $thousandssep);
                 $texts[] = "<b>{$strWeek} {$weekNumber}</b> ({$weekstarttext} - {$weekendtext})<br><br>{$sessionCount} {$strSessions}<br>{$userCount} {$strLearners}<br>{$sessionsPerUser} {$strSessionsPerUser}";
+                $lastWeekInPast = $i;
             }
 
             $date->modify('+1 day');
 
             $shapes[] = [
-                'type' => 'rect',
+                'type' => 'line',
                 'xref' => 'x',
                 'yref' => 'paper',
-                'x0' => ($i - 0.46),
-                'x1' => ($i + 0.46),
+                'x0' => ($i - 0.5),
+                'x1' => ($i - 0.5),
                 'y0' => -0.07,
                 'y1' => 1,
-                'fillcolor' => '#ddd',
-                'opacity' => $opacity,
-                'line' => [ 'width' => 0 ],
+                'line' => [ 'color' => '#aaa', 'width' => 1 ],
                 'layer' => 'below'
+            ];
+        }
+
+        $shapes[] = [
+            'type' => 'rect',
+            'xref' => 'x',
+            'yref' => 'paper',
+            'x0' => (self::X_MIN - 0.5),
+            'x1' => ($lastWeekInPast + 0.5),
+            'y0' => -0.07,
+            'y1' => 1,
+            'opacity' => '0.25',
+            'fillcolor' => '#ddd',
+            'line' => [ 'width' => 0 ],
+            'layer' => 'below'
+        ];
+        if ($lastWeekInPast !== self::X_MIN && $lastWeekInPast !== self::X_MAX) {
+            $shapes[] = [ // Line shows in which week are currently are
+                'type' => 'line',
+                'xref' => 'x',
+                'yref' => 'paper',
+                'x0' => ($lastWeekInPast + 0.5),
+                'x1' => ($lastWeekInPast + 0.5),
+                'y0' => -0.07,
+                'y1' => 1,
+                'line' => [
+                    'color' => 'rgb(0, 0, 0)',
+                    'width' => 1,
+                    'dash' => 'dot'
+                ]
             ];
         }
 
@@ -235,6 +264,7 @@ class lareport_coursedashboard extends report_base {
             'range' => [ ($xMin - 0.5), ($xMax + 0.5) ],
             'tickmode' => 'array',
             'tickvals' => $tickVals,
+            'ticktext' => $tickText,
             'fixedrange' => true
         ];
         $layout->yaxis = [
