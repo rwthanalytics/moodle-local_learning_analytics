@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'local_learning_analytics';
 
-$plugin->version = '2018051700';
+$plugin->version = '2018061300';
 $plugin->release = 'v0.1.0-dev';
 $plugin->maturity = MATURITY_ALPHA;
 

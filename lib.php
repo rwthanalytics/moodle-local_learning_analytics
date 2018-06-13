@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @throws moodle_exception
  */
 function local_learning_analytics_extend_navigation(global_navigation $nav) {
-    global $PAGE;
+    global $PAGE, $COURSE;
 
     \local_learning_analytics\tracker::track_request();
 
@@ -44,8 +44,19 @@ function local_learning_analytics_extend_navigation(global_navigation $nav) {
         if ($node) {
             $node->add_node(navigation_node::create(
                     get_string('learning_analytics'),
-                    new moodle_url('/local/learning_analytics/index.php')
-            ));
+                    new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', array('course' => $COURSE->id)),
+                    navigation_node::TYPE_CUSTOM,
+                    null, 'learning_analytics',
+                    new pix_icon('i/report', '')
+                ),
+                'grades'
+            );
         }
     }
+}
+
+/* Alternative: implement as part of the course navigation (on the right) TODO remove this */
+function local_learning_analytics_extend_navigation_course(navigation_node $parentnode, stdClass $course, context_course $context) {
+    $url = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', array('course' => $course->id));
+    $parentnode->add(get_string('learning_analytics'), $url, navigation_node::TYPE_SETTING, null, null, new pix_icon('i/report', ''));
 }
