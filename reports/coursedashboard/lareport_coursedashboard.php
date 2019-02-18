@@ -306,7 +306,7 @@ class lareport_coursedashboard extends report_base {
         </svg>'
     ];
 
-    private function boxOutput(string $title, int $number, int $diff) {
+    private function boxOutput(string $title, int $number, int $diff, int $courseid, string $report = null) {
 
         $diffTriangle = '';
 
@@ -323,6 +323,11 @@ class lareport_coursedashboard extends report_base {
         $icon = self::$icons[$title];
 
         $title_str = get_string($title, 'lareport_coursedashboard');
+        if ($report !== null) {
+            $link = new moodle_url("/local/learning_analytics/course.php/reports/{$report}", ['course' => $courseid]);
+            $title_str = "<a href='{$link}'>{$title_str}</a>";
+            $icon = "<a href='{$link}'>{$icon}</a>";
+        }
 
         return "
             <div class='col-sm-4'>
@@ -346,7 +351,7 @@ class lareport_coursedashboard extends report_base {
         $diff = $userCounts[1];
 
         return [
-            $this->boxOutput('registered_users', $total, $diff)
+            $this->boxOutput('registered_users', $total, $diff, $courseid, 'learners')
         ];
     }
 
@@ -357,8 +362,8 @@ class lareport_coursedashboard extends report_base {
         $hits = $counts['hits'];
 
         return [
-            $this->boxOutput('active_learners', $learners[1], ($learners[1] - $learners[0])),
-            $this->boxOutput('click_count', $hits[1], ($hits[1] - $hits[0]))
+            $this->boxOutput('active_learners', $learners[1], ($learners[1] - $learners[0]), $courseid),
+            $this->boxOutput('click_count', $hits[1], ($hits[1] - $hits[0]), $courseid, 'dummy')
         ];
     }
 
