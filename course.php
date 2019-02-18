@@ -26,7 +26,7 @@
 
 use local_learning_analytics\local\routing\router;
 use local_learning_analytics\local\routing\route;
-
+use local_learning_analytics\local\parameter\parameter_course;
 
 require(__DIR__ . '/../../config.php');
 
@@ -36,18 +36,16 @@ require_login();
 
 global $PAGE;
 
-$context = context_course::instance(69, MUST_EXIST);
+$courseIdReader = new parameter_course('course');
+$courseid = $courseIdReader->get();
+$context = context_course::instance($courseid, MUST_EXIST);
 
 $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
 
-$course = get_course(69);
+$course = get_course($courseid);
 $PAGE->set_course($course);
-
-
-$PAGE->navbar->add(get_string('learning_analytics', 'local_learning_analytics'),
-    new moodle_url('/local/learning_analytics/index.php'));
 
 $reports = core_component::get_plugin_list('lareport');
 
@@ -65,13 +63,10 @@ $route = $router->get_active_route();
 $output = $PAGE->get_renderer('local_learning_analytics');
 
 $PAGE->requires->css('/local/learning_analytics/static/styles.css');
-$mainOutput =  $output->render_from_template('local_learning_analytics/base', [
+$mainOutput =  $output->render_from_template('local_learning_analytics/course', [
     'reports' => array_keys($reports),
     'content' => $route->execute(),
-    'prefix' => new moodle_url('/local/learning_analytics/index.php'),
-    'active_home' => $router->is_active_route('home') ? 'active' : '',
-    'active_courses' => $router->is_active_route('courses') ? 'active' : '',
-    'active_reports' => $router->is_active_route('reports') ? 'active' : '',
+    'prefix' => new moodle_url('/local/learning_analytics/course.php'),
 ]);
 
 echo $output->header();

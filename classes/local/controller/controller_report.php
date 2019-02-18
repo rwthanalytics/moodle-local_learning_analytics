@@ -64,7 +64,7 @@ class controller_report extends controller_base {
                         format_string($course->fullname, true, array('context' => $coursecontext));
 
                     // TODO: Link this to LA course dashboard
-                    $PAGE->navbar->add($coursename, new moodle_url('/course/view.php', ['id' => $course->id]));
+                    // $PAGE->navbar->add($coursename, new moodle_url('/course/view.php', ['id' => $course->id]));
                 }
 
                 $ret .= $this->renderer->render($fparams);
@@ -80,17 +80,17 @@ class controller_report extends controller_base {
 
             $reportname = get_string('pluginname', "lareport_{$this->params['report']}");
             $title = $reportname;
-            $PAGE->navbar->add($reportname,
+            /*$PAGE->navbar->add($reportname,
                 router::report($this->params['report'], $fparamsList)
-            );
+            );*/
 
             if ($is_page) {
                 $pagename = get_string('pagename_' . $this->params['page'],
                     "lareport_{$this->params['report']}");
                 $title = $pagename;
-                $PAGE->navbar->add($pagename,
+                /*$PAGE->navbar->add($pagename,
                     router::report_page($this->params['report'], $this->params['page'], $fparamsList)
-                );
+                );*/
             }
 
             // TODO remove h2 tag? (least for pages)

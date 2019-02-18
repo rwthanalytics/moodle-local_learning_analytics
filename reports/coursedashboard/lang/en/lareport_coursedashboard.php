@@ -25,3 +25,7 @@
  */
 
 $string['pluginname'] = 'Course Dashboard';
+
+$string['registered_users'] = 'Registered users';
+$string['active_learners'] = 'Active learners';
+$string['click_count'] = 'Number of clicks';

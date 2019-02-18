@@ -289,10 +289,7 @@ class lareport_coursedashboard extends report_base {
         $plot->set_layout($layout);
         $plot->set_height(300);
 
-        $heading1 = get_string('activity_over_weeks', 'lareport_coursedashboard');
-
         return [
-            "<h2>{$heading1}</h2>",
             $plot
         ];
     }
@@ -325,6 +322,8 @@ class lareport_coursedashboard extends report_base {
 
         $icon = self::$icons[$title];
 
+        $title_str = get_string($title, 'lareport_coursedashboard');
+
         // TODO: for new bootstrap version -> make pull-left float-left
         return "
             <div class='col-sm-4'>
@@ -333,7 +332,7 @@ class lareport_coursedashboard extends report_base {
                         {$icon}
                     </div>
                     <div class='dashboardbox-content'>
-                        <div>{$title} <span class='dashboardbox-timespan'>(last 7 days)</span></div>
+                        <div>{$title_str} <span class='dashboardbox-timespan'>(last 7 days)</span></div>
                         <div class='dashboardbox-title'>{$number}</div>
                         <div class='dashboardbox-change'>{$diffTriangle} {$diffText}</div>
                     </div>
