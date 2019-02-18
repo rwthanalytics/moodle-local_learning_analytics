@@ -324,7 +324,6 @@ class lareport_coursedashboard extends report_base {
 
         $title_str = get_string($title, 'lareport_coursedashboard');
 
-        // TODO: for new bootstrap version -> make pull-left float-left
         return "
             <div class='col-sm-4'>
                 <div class='dashboardbox'>
