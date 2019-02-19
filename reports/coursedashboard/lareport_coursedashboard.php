@@ -61,7 +61,12 @@ class lareport_coursedashboard extends report_base {
 
         $weeks = query_helper::query_weekly_activity($courseid);
 
-        $weeksLastYear = query_helper::query_weekly_activity(72);
+        // TODO Set to [] if we dont want to compare
+        $prevId = query_helper::getCurrentPrevCourse($courseid);
+        $weeksLastYear = [];
+        if ($prevId !== -1) {
+            $weeksLastYear = query_helper::query_weekly_activity($prevId);
+        }
 
         $plot = new plot();
         $x = [];
@@ -225,30 +230,32 @@ class lareport_coursedashboard extends report_base {
         ]);
 
         // compare course
-        $plot->add_series([
-            'type' => 'scatter',
-            'mode' => 'lines+markers',
-            'name' => get_string('sessions_compare', 'lareport_coursedashboard'),
-            'x' => $x,
-            'y' => $yLYSessions,
-            'marker' => [ 'color' => 'rgb(31, 119, 180)' ],
-            'line' => [ 'color' => 'rgb(31, 119, 180)', 'dash' => 'dot' ],
-            'hoverinfo' => 'none',
-            'opacity' => 0.35,
-            'legendgroup' => 'b'
-        ]);
-        $plot->add_series([
-            'type' => 'scatter',
-            'mode' => 'lines+markers',
-            'name' => get_string('learners_compare', 'lareport_coursedashboard'),
-            'x' => $x,
-            'y' => $yLYUsers,
-            'marker' => [ 'color' => 'rgb(255, 127, 14)' ],
-            'line' => [ 'color' => 'rgb(255, 127, 14)', 'dash' => 'dot' ],
-            'hoverinfo' => 'none',
-            'opacity' => 0.35,
-            'legendgroup' => 'b'
-        ]);
+        if (count($weeksLastYear) !== 0) {
+            $plot->add_series([
+                'type' => 'scatter',
+                'mode' => 'lines+markers',
+                'name' => get_string('sessions_compare', 'lareport_coursedashboard'),
+                'x' => $x,
+                'y' => $yLYSessions,
+                'marker' => [ 'color' => 'rgb(31, 119, 180)' ],
+                'line' => [ 'color' => 'rgb(31, 119, 180)', 'dash' => 'dot' ],
+                'hoverinfo' => 'none',
+                'opacity' => 0.35,
+                'legendgroup' => 'b'
+            ]);
+            $plot->add_series([
+                'type' => 'scatter',
+                'mode' => 'lines+markers',
+                'name' => get_string('learners_compare', 'lareport_coursedashboard'),
+                'x' => $x,
+                'y' => $yLYUsers,
+                'marker' => [ 'color' => 'rgb(255, 127, 14)' ],
+                'line' => [ 'color' => 'rgb(255, 127, 14)', 'dash' => 'dot' ],
+                'hoverinfo' => 'none',
+                'opacity' => 0.35,
+                'legendgroup' => 'b'
+            ]);
+        }
 
         $layout = new stdClass();
         $layout->margin = [
@@ -372,9 +379,11 @@ class lareport_coursedashboard extends report_base {
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
 
         $courseid = (int) $params['course'];
+        $setCompareLink = new moodle_url('/local/learning_analytics/course.php/reports/coursedashboard/set_previous_course', ['course' => $courseid]);
 
         return array_merge(
             $this->activiyOverWeeks($courseid),
+            ["<div class='coursedashboard-compare'><a href='{$setCompareLink}'>Set course to compare</a></div>"],
             ["<div class='container-fluid'><div class='row'>"],
             $this->registeredUserCount($courseid),
             $this->clickCount($courseid),

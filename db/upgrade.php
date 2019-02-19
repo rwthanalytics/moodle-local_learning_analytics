@@ -78,5 +78,24 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2018051603, 'local', 'learning_analytics');
     }
 
+    if($oldversion < 2019021801) {
+        $table = new xmldb_table('local_learning_analytics_pre');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        $table->add_field('prevcourseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        $index3 = new xmldb_index('courseid_prevcourseid_idx', XMLDB_INDEX_UNIQUE, array('courseid', 'prevcourseid'));
+        if (!$dbman->index_exists($table, $index3)) {
+            $dbman->add_index($table, $index3);
+        }
+
+        upgrade_plugin_savepoint(true, 2019021801, 'local', 'learning_analytics');
+    }
+
     return true;
 }

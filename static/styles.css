@@ -48,3 +48,10 @@
     font-size: 110%;
     margin-left: 3px;
 }
+
+.coursedashboard-compare {
+    position: relative;
+    top: -10px;
+    text-align: right;
+    padding-right: 20px;
+}

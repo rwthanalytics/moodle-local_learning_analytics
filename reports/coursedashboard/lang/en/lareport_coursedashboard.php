@@ -29,3 +29,17 @@ $string['pluginname'] = 'Course Dashboard';
 $string['registered_users'] = 'Registered users';
 $string['active_learners'] = 'Active learners';
 $string['click_count'] = 'Number of clicks';
+$string['pagename_set_previous_course'] = 'Set previous course';
+
+$string['sessions'] = 'Sessions';
+$string['learners'] = 'Learners';
+
+$string['sessions_compare'] = 'Sessions (compared)';
+$string['learners_compare'] = 'Learners (compared)';
+$string['sessions_per_user'] = 'Sessions per Learner';
+
+$string['week'] = 'Week';
+$string['parameter:course'] = 'Course';
+$string['parameter:prev_course'] = 'Previous course';
+
+$string['set'] = 'Set';

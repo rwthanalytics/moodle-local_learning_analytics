@@ -37,5 +37,18 @@
         <INDEX NAME="summaryid_idx" UNIQUE="false" FIELDS="summaryid"/>
       </INDEXES>
     </TABLE>
+    <TABLE NAME="local_learning_analytics_pre" COMMENT="Previous course">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="prevcourseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="courseid_prevcourseid_idx" UNIQUE="true" FIELDS="courseid, prevcourseid"/>
+      </INDEXES>
+    </TABLE>
   </TABLES>
 </XMLDB>

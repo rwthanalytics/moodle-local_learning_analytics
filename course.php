@@ -43,6 +43,7 @@ $context = context_course::instance($courseid, MUST_EXIST);
 $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
+$PAGE->set_url('/local/learning_analytics/course.php/reports/coursedashboard/set_previous_course?course=74'); // TODO CHANGE THIS!!
 
 $course = get_course($courseid);
 $PAGE->set_course($course);

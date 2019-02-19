@@ -85,7 +85,7 @@ class route {
             $p = explode(':', $part);
 
             if(isset($p[1])) {
-                $regex .= "(?P<$p[1]>\/[a-zA-Z0-9]+)";
+                $regex .= "(?P<$p[1]>\/[a-zA-Z0-9_]+)";
             } else {
                 $regex .= '\/' . $part;
             }

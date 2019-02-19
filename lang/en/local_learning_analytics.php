@@ -32,3 +32,6 @@ $string['subplugintype_lareport'] = 'Report';
 $string['subplugintype_lareport_plural'] = 'Reports';
 $string['subplugintype_laoutput'] = 'Output';
 $string['subplugintype_laoutput_plural'] = 'Outputs';
+
+$string['learners'] = 'Learners';
+$string['sessions'] = 'Sessions';
