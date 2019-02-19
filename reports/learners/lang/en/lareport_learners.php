@@ -26,4 +26,23 @@
 
 $string['pluginname'] = 'Learners';
 $string['pagename_courseparticipation'] = 'Course Participation';
+$string['parameter:course'] = 'Course';
 $string['pagename_all'] = 'Full List';
+
+$string['courses_heard_before'] = 'Courses heard before';
+$string['parallel_courses'] = 'Countries heard in parallel';
+$string['coursename'] = 'Course';
+$string['participated_before'] = 'Percentage';
+$string['participating_now'] = 'Percentage';
+
+$string['most_active_learners'] = 'Most active learners';
+$string['countries_of_learners'] = 'Countries of learners';
+$string['languages_of_learners'] = 'Languages of learners';
+
+$string['firstname'] = 'First name';
+$string['lastname'] = 'Last name';
+$string['role'] = 'Rolle';
+$string['firstaccess'] = 'First access';
+$string['lastaccess'] = 'Last access';
+$string['hits'] = 'Clicks';
+$string['sessions'] = 'Sessions';

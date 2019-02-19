@@ -35,3 +35,5 @@ $string['subplugintype_laoutput_plural'] = 'Outputs';
 
 $string['learners'] = 'Learners';
 $string['sessions'] = 'Sessions';
+
+$string['show_full_list'] = 'Expand list';
