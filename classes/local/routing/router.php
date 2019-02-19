@@ -81,7 +81,7 @@ class router {
 
     private static function get_url(string $slash, array $query) : moodle_url {
         $params = empty($query) ? '' : '?' . http_build_query($query);
-        return new moodle_url("/local/learning_analytics/index.php/reports{$slash}{$params}");
+        return new moodle_url("/local/learning_analytics/course.php/reports{$slash}{$params}");
     }
 
     /**

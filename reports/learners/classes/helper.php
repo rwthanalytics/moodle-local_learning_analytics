@@ -160,7 +160,7 @@ class helper {
             if ($roleFilter !== '') {
                 $pageParams['role'] = $roleFilter;
             }
-            $pageUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners/all', $pageParams);
+            $pageUrl = new moodle_url('/local/learning_analytics/course.php/reports/learners/all', $pageParams);
             $pagingbar = new paging_bar($learnersCount, $page, $perPage, $pageUrl);
 
             return [$pagingbar, $table, $pagingbar];
