@@ -93,7 +93,7 @@ class controller_courses extends controller_base {
         ORDER BY c.startdate DESC, cc.sortorder, c.fullname
 SQL;
 
-        $courses = $DB->get_records_sql($query, [1490]);
+        $courses = $DB->get_records_sql($query, [$USER->id]);
 
         // find max values
         $maxStudents = 1;

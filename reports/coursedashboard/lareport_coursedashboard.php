@@ -46,7 +46,7 @@ class lareport_coursedashboard extends report_base {
     const X_MIN = -1;
     const X_MAX = 30;
 
-    private function activiyOverWeeks(int $courseid) : array {
+    private function activiyOverWeeks(int $courseid, int $prevCourseId) : array {
         $course = get_course($courseid);
 
         $date = new DateTime();
@@ -62,10 +62,9 @@ class lareport_coursedashboard extends report_base {
         $weeks = query_helper::query_weekly_activity($courseid);
 
         // TODO Set to [] if we dont want to compare
-        $prevId = query_helper::getCurrentPrevCourse($courseid);
         $weeksLastYear = [];
-        if ($prevId !== -1) {
-            $weeksLastYear = query_helper::query_weekly_activity($prevId);
+        if ($prevCourseId !== -1) {
+            $weeksLastYear = query_helper::query_weekly_activity($prevCourseId);
         }
 
         $plot = new plot();
@@ -336,6 +335,8 @@ class lareport_coursedashboard extends report_base {
             $icon = "<a href='{$link}'>{$icon}</a>";
         }
 
+        $appendedText = ($title === 'registered_users') ? '' : " <span class='dashboardbox-timespan'>(last 7 days)</span>";
+
         return "
             <div class='col-sm-4'>
                 <div class='dashboardbox'>
@@ -343,7 +344,7 @@ class lareport_coursedashboard extends report_base {
                         {$icon}
                     </div>
                     <div class='dashboardbox-content'>
-                        <div>{$title_str} <span class='dashboardbox-timespan'>(last 7 days)</span></div>
+                        <div>{$title_str}{$appendedText}</div>
                         <div class='dashboardbox-title'>{$number}</div>
                         <div class='dashboardbox-change'>{$diffTriangle} {$diffText}</div>
                     </div>
@@ -375,15 +376,22 @@ class lareport_coursedashboard extends report_base {
     }
 
     public function run(array $params): array {
-        global $PAGE;
+        global $PAGE, $DB;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
 
         $courseid = (int) $params['course'];
+        $prevId = query_helper::getCurrentPrevCourse($courseid);
         $setCompareLink = new moodle_url('/local/learning_analytics/course.php/reports/coursedashboard/set_previous_course', ['course' => $courseid]);
 
+        $setCompareLinkText = 'Set course to compare';
+        if ($prevId !== -1) {
+            $prevCourse = $DB->get_record('course', ['id' => $prevId]);
+            $setCompareLinkText = "Comparing to: {$prevCourse->fullname}";
+        }
+
         return array_merge(
-            $this->activiyOverWeeks($courseid),
-            ["<div class='coursedashboard-compare'><a href='{$setCompareLink}'>Set course to compare</a></div>"],
+            $this->activiyOverWeeks($courseid, $prevId),
+            ["<div class='coursedashboard-compare'><a href='{$setCompareLink}'>{$setCompareLinkText}</a></div>"],
             ["<div class='container-fluid'><div class='row'>"],
             $this->registeredUserCount($courseid),
             $this->clickCount($courseid),

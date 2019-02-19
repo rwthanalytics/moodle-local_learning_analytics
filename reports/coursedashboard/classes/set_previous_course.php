@@ -51,22 +51,31 @@ class set_previous_course extends report_page_base {
     private function getUserCourses() {
         global $DB, $USER;
 
-        $options = $DB->get_records_sql("
-          SELECT id, fullname 
-          FROM {course} 
-          WHERE id IN ( 
-            SELECT instanceid 
-            FROM {context}
-            WHERE 
-              id IN (
-                SELECT contextid
-                FROM {role_assignments}
+        if (is_siteadmin()) {
+            // if user is admin, allow to set any course
+            $options = $DB->get_records_sql("
+            SELECT id, fullname 
+            FROM {course}
+            ORDER BY id DESC", [$USER->id]);
+        } else {
+            $options = $DB->get_records_sql("
+              SELECT id, fullname 
+              FROM {course} 
+              WHERE id IN ( 
+                SELECT instanceid 
+                FROM {context}
                 WHERE 
-                  userid = ? AND 
-                  roleid <= 4
-            ) AND 
-            contextlevel = 50
-        )", [$USER->id]);
+                  id IN (
+                    SELECT contextid
+                    FROM {role_assignments}
+                    WHERE 
+                      userid = ? AND roleid <= 4
+                ) AND 
+                contextlevel = 50
+            )
+            ORDER BY id DESC", [$USER->id]);
+        }
+
         foreach ($options as $option) {
             $opts[$option->id] = $option->fullname;
         }
