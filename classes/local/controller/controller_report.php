@@ -80,9 +80,11 @@ class controller_report extends controller_base {
 
             $reportname = get_string('pluginname', "lareport_{$this->params['report']}");
             $title = $reportname;
-            /*$PAGE->navbar->add($reportname,
-                router::report($this->params['report'], $fparamsList)
-            );*/
+            if ($this->params['report'] !== 'coursedashboard') {
+                $PAGE->navbar->add($reportname,
+                    router::report($this->params['report'], $fparamsList)
+                );
+            }
 
             if ($is_page) {
                 $pagename = get_string('pagename_' . $this->params['page'],
