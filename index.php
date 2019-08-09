@@ -34,15 +34,17 @@ defined('MOODLE_INTERNAL') || die;
 
 require_login();
 
+$course_id = $_GET['course'];
+
 global $PAGE;
 
-$context = context_course::instance(69, MUST_EXIST);
+$context = context_course::instance($course_id, MUST_EXIST);
 
 $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
 
-$course = get_course(69);
+$course = get_course($course_id);
 $PAGE->set_course($course);
 
 
