@@ -47,3 +47,5 @@ $string['firstaccess'] = 'First access';
 $string['lastaccess'] = 'Last access';
 $string['hits'] = 'Clicks';
 $string['sessions'] = 'Sessions';
+
+$string['countries'] = 'Countries';
