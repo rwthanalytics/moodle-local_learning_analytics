@@ -1,10 +1,14 @@
 # Created by https://www.gitignore.io/api/osx,windows,phpstorm,visualstudiocode
 
+#xdebug
+.vscode/*
+
 #node.js files
 node_modules/*
 package-lock.json
 
 #grunted files
+amd/build/scripts.js
 amd/build/*
 
 ### OSX ###

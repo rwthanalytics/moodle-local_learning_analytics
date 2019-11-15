@@ -1,4 +1,8 @@
+/*eslint linebreak-style: ["error", "windows"]*/
+
+// eslint-disable-next-line no-undef
 module.exports = function(grunt) {
+
 	// Configuration
 	
 	grunt.initConfig({
@@ -27,7 +31,7 @@ module.exports = function(grunt) {
 	// Load plugins
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-watch')
+	grunt.loadNpmTasks('grunt-contrib-watch');
 	
 	// Register tasks
 	//grunt.registerTask('concat', ['concat:js']);

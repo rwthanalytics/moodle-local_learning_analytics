@@ -9,13 +9,13 @@
     min-width: 1px;
 }
 .bar .segment.red {
-    background: #EA030E;
+    background: #ea030e;
 }
 .bar .segment.green {
-    background: #A9CF54;
+    background: #a9cf54;
 }
 .bar .segment.orange {
-    background: #F26522;
+    background: #f26522;
 }
 .bar .segment.yellow {
     background: #ffda6e;
@@ -24,7 +24,7 @@
     background: #66b5ab;
 }
 .bar .segment.gray {
-    background: #bbbbbb;
+    background: #bbb;
 }
 
 .showFullList {
@@ -35,13 +35,14 @@
     margin: 5px;
 }
 
-.la_params_form  input,select {
+.la_params_form  input,
+select {
     margin-left: 2px;
     margin-right: 2px;
 }
 
-.la_nav li.active > a{
-    color: #000000 !important;
+.la_nav li.active > a {
+    color: #000;
 }
 
 .courses-view-course {
