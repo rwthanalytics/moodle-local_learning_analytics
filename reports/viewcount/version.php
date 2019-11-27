@@ -28,5 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'lareport_viewcount';
 
-$plugin->version = '2018041600';
+$plugin->version = '2019112702';
 $plugin->requires = '2017111302';
