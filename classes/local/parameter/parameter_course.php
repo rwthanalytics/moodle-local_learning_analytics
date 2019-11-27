@@ -92,8 +92,7 @@ class parameter_course extends parameter_select {
             $hascap = has_capability('local/learning_analytics:view_statistics', context_course::instance($value));
         }
 
-        //if(!$hascap) {
-		if(false) {
+        if(!$hascap) {
             throw new moodle_exception('403', 'local_learning_analytics', '', 'User not allowed to view report');
         }
 
