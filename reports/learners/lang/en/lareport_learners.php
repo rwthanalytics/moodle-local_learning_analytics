@@ -31,7 +31,7 @@ $string['parameter:role'] = 'Role';
 $string['pagename_all'] = 'Full List';
 
 $string['courses_heard_before'] = 'Courses heard before';
-$string['parallel_courses'] = 'Countries heard in parallel';
+$string['parallel_courses'] = 'Courses heard in parallel';
 $string['coursename'] = 'Course';
 $string['participated_before'] = 'Percentage';
 $string['participating_now'] = 'Percentage';
