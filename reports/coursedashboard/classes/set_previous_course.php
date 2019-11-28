@@ -24,15 +24,9 @@
 
 namespace lareport_coursedashboard;
 
-use local_learning_analytics\local\outputs\html;
-use local_learning_analytics\local\parameter\parameter_course;
-use local_learning_analytics\local\parameter\parameter_select;
-use local_learning_analytics\local\parameter\parameter_input;
 use local_learning_analytics\report_page_base;
 use lareport_coursedashboard\query_helper;
-use local_learning_analytics\parameter_base;
 use local_learning_analytics\local\outputs\table;
-use local_learning_analytics\local\parameter;
 use html_writer;
 use moodle_url;
 use stdClass;
@@ -40,12 +34,6 @@ use stdClass;
 defined('MOODLE_INTERNAL') || die;
 
 class set_previous_course extends report_page_base {
-
-    public function get_parameter(): array {
-        return [
-            new parameter_course('course', parameter_base::REQUIRED_ALWAYS)
-        ];
-    }
 
     private function getUserCourses() {
         global $DB, $USER;
@@ -108,7 +96,7 @@ class set_previous_course extends report_page_base {
                 } else {
                     $DB->set_field('local_learning_analytics_pre', 'prevcourseid', $selectedPrevCourse, ['courseid' => $courseid]);
                 }
-                $backUrl = new moodle_url('/local/learning_analytics/course.php/reports/coursedashboard', ['course' => $courseid]);
+                $backUrl = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $courseid]);
                 redirect($backUrl);
                 exit;
             }

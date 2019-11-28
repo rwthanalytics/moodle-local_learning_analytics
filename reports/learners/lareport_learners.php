@@ -25,28 +25,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\table;
-use local_learning_analytics\local\parameter\parameter_course;
-use local_learning_analytics\local\parameter\parameter_input;
-use local_learning_analytics\local\parameter\parameter_select;
-use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 use lareport_learners\query_helper;
-use local_learning_analytics\local\routing\router;
 use lareport_learners\helper;
 use lareport_learners\outputs\split;
 use local_learning_analytics\local\outputs\plot;
 
 class lareport_learners extends report_base {
-
-    /**
-     * @return array
-     * @throws dml_exception
-     */
-    public function get_parameter(): array {
-        return [
-                new parameter_course('course', false)
-        ];
-    }
 
     private static $BAR_COLORS = [
         '#66b5ab',
@@ -148,7 +133,7 @@ class lareport_learners extends report_base {
     }
 
     public function run(array $params): array {
-        $courseid = (int) $params['course'];
+        $courseid = (int) $params['course']; // TODO: CLEANUP
 
         $headingTable = get_string('most_active_learners', 'lareport_learners');
 

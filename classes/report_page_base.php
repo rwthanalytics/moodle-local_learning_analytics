@@ -32,14 +32,5 @@ defined('MOODLE_INTERNAL') || die;
  * @package local_learning_analytics
  */
 abstract class report_page_base {
-
-    public function get_parameter() : array {
-        return [];
-    }
-
-    public function get_parameter_defaults(): array {
-        return [];
-    }
-
     public abstract function run(array $params) : array;
 }

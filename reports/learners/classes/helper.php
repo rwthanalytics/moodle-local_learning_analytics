@@ -27,7 +27,7 @@ namespace lareport_learners;
 use lareport_learners\outputs\split;
 use local_learning_analytics\local\outputs\table;
 use lareport_learners\query_helper;
-use local_learning_analytics\local\routing\router;
+use local_learning_analytics\router;
 use moodle_url;
 use paging_bar;
 
@@ -158,7 +158,7 @@ class helper {
             if ($roleFilter !== '') {
                 $pageParams['role'] = $roleFilter;
             }
-            $pageUrl = new moodle_url('/local/learning_analytics/course.php/reports/learners/all', $pageParams);
+            $pageUrl = new moodle_url('/local/learning_analytics/index.php/reports/learners/all', $pageParams);
             $pagingbar = new paging_bar($learnersCount, $page, $perPage, $pageUrl);
 
             return [$pagingbar, $table, $pagingbar];

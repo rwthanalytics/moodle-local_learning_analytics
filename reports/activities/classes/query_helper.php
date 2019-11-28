@@ -28,7 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\table;
-use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 use context_course;
 

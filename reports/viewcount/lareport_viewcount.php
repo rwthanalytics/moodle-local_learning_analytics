@@ -24,45 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-use local_learning_analytics\local\outputs\html;
-use local_learning_analytics\local\parameter\parameter_course;
-use local_learning_analytics\local\parameter\parameter_input;
-use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 
 class lareport_viewcount extends report_base {
 
-    /**
-     * @return array
-     * @throws dml_exception
-     */
-    public function get_parameter(): array {
-        global $USER;
-        return [
-                new parameter_course('course'),
-                new parameter_input('user', 'number', parameter_base::REQUIRED_ALWAYS, FILTER_SANITIZE_NUMBER_INT),
-        ];
-    }
-
-    public function get_parameter_defaults(): array {
-        global $USER;
-
-        return [
-            'user' => $USER->id
-        ];
-    }
-
     public function supports_block(): bool {
         return true;
-    }
-
-    public function get_parameter_block(): array {
-        global $PAGE, $USER;
-
-        return [
-            'course' => $PAGE->context->instanceid,
-            'user' => $USER->id,
-        ];
     }
 
     /**
@@ -71,8 +38,6 @@ class lareport_viewcount extends report_base {
      */
     public function run(array $params): array {
         global $DB;
-
-        $output = new html();
 
         $data = $DB->get_record_sql("
             SELECT COUNT('id') as hits
@@ -84,9 +49,7 @@ class lareport_viewcount extends report_base {
             GROUP BY eventname
         ");
 
-        $output->set_content(html_writer::tag('h2', $data->hits));
-
-        return [$output];
+        return [html_writer::tag('h2', $data->hits)];
     }
 
 }

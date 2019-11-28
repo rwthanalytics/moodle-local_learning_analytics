@@ -24,22 +24,13 @@
 
 namespace lareport_activities;
 
-use local_learning_analytics\local\outputs\html;
-use local_learning_analytics\local\parameter\parameter_course;
 use local_learning_analytics\report_page_base;
 use lareport_activities\query_helper;
-use local_learning_analytics\parameter_base;
 use local_learning_analytics\local\outputs\table;
 
 defined('MOODLE_INTERNAL') || die;
 
 class all extends report_page_base {
-
-    public function get_parameter(): array {
-        return [
-                new parameter_course('course'),
-        ];
-    }
 
     public function run(array $params): array {
 

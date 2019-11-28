@@ -30,7 +30,6 @@ use html_table;
 use html_writer;
 
 use local_learning_analytics\output_base;
-use local_learning_analytics\output_external;
 
 class table extends output_base {
 
@@ -59,19 +58,6 @@ class table extends output_base {
         }
     }
 
-    public function add_rows_ajax(string $method, array $rows) {
-        $this->set_ajax($method, 'table');
-
-        $this->ajax_rows = array_values($rows);
-    }
-
-    function external(): output_external {
-        return new output_external(
-                'table',
-                $this->print()
-        );
-    }
-
     public static function fancyNumberCell(float $value, float $maxValue, string $class, string $textValue = null) : string {
         if ($textValue === null) {
             $textValue = $value;
@@ -87,17 +73,6 @@ class table extends output_base {
         global $PAGE;
 
         $id = 'la_table-' . random_string(4);
-
-        if ($this->is_ajax) {
-            for ($i = 0; $i < count($this->ajax_rows); $i++) {
-                $r = array_fill(0, count($this->table->head), '');
-                $r[0] = $this->ajax_rows[$i]['content'];
-
-                $this->add_row($r);
-
-                $this->ajax($this->ajax_rows[$i]['id'], $id, ['row' => $i]);
-            }
-        }
 
         $this->table->id = $id;
 

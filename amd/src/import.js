@@ -1,4 +1,4 @@
-define(['core/ajax', 'core/url', 'jquery', 'local_learning_analytics/outputs'], function (ajax, url, $, outputs) {
+define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
 
     var importInfo;
     var textInfo;
