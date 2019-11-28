@@ -18,9 +18,7 @@
  *
  *
  * @package     local_learning_analytics
- * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
- * @author      Marcel Behrmann <behrmann@lfi.rwth-aachen.de>
- * @author      Thomas Dondorf <dondorf@lfi.rwth-aachen.de>
+ * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -92,8 +90,7 @@ class parameter_course extends parameter_select {
             $hascap = has_capability('local/learning_analytics:view_statistics', context_course::instance($value));
         }
 
-        //if(!$hascap) {
-		if(false) {
+        if(!$hascap) {
             throw new moodle_exception('403', 'local_learning_analytics', '', 'User not allowed to view report');
         }
 

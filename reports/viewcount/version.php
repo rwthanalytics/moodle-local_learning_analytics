@@ -18,9 +18,7 @@
  * Version info for the Top Modules Report
  *
  * @package     local_learning_analytics
- * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
- * @author      Marcel Behrmann <behrmann@lfi.rwth-aachen.de>
- * @author      Thomas Dondorf <dondorf@lfi.rwth-aachen.de>
+ * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,5 +26,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'lareport_viewcount';
 
-$plugin->version = '2018041600';
+$plugin->version = '2019112702';
 $plugin->requires = '2017111302';

@@ -18,9 +18,7 @@
  * Upgrade for local_learning_analytics
  *
  * @package     local_learning_analytics
- * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
- * @author      Marcel Behrmann <behrmann@lfi.rwth-aachen.de>
- * @author      Thomas Dondorf <dondorf@lfi.rwth-aachen.de>
+ * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

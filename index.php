@@ -18,14 +18,13 @@
  * Main entry point for Learning Analytics UI
  *
  * @package     local_learning_analytics
- * @copyright   2018 Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
- * @author      Marcel Behrmann <behrmann@lfi.rwth-aachen.de>
- * @author      Thomas Dondorf <dondorf@lfi.rwth-aachen.de>
+ * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use local_learning_analytics\local\routing\router;
 use local_learning_analytics\local\routing\route;
+use local_learning_analytics\local\parameter\parameter_course;
 
 
 require(__DIR__ . '/../../config.php');
@@ -34,10 +33,10 @@ defined('MOODLE_INTERNAL') || die;
 
 require_login();
 
-$course_id = $_GET['course'];
-
 global $PAGE;
 
+$courseIdReader = new parameter_course('course');
+$course_id = $courseIdReader->get();
 $context = context_course::instance($course_id, MUST_EXIST);
 
 $PAGE->set_context($context);
