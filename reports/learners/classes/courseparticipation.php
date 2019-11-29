@@ -24,22 +24,12 @@
 
 namespace lareport_learners;
 
-use local_learning_analytics\local\parameter\parameter_course;
-use local_learning_analytics\local\parameter\parameter_select;
-use local_learning_analytics\local\parameter\parameter_input;
 use local_learning_analytics\report_page_base;
-use local_learning_analytics\parameter_base;
 use lareport_learners\helper;
 
 defined('MOODLE_INTERNAL') || die;
 
 class courseparticipation extends report_page_base {
-
-    public function get_parameter(): array {
-        return [
-            new parameter_course('course', false)
-        ];
-    }
 
     public function run(array $params): array {
         $courseid = (int) $params['course'];

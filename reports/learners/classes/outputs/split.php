@@ -30,7 +30,6 @@ use html_table;
 use html_writer;
 
 use local_learning_analytics\output_base;
-use local_learning_analytics\output_external;
 
 class split extends output_base {
 
@@ -40,14 +39,6 @@ class split extends output_base {
     public function __construct(array $left, array $right) {
         $this->left = $left;
         $this->right = $right;
-    }
-
-    function external(): output_external {
-        return new output_external(
-            'html',
-            $this->print(),
-            []
-        );
     }
 
     function print(): string {

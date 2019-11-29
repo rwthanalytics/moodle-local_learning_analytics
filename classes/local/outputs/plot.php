@@ -26,7 +26,6 @@ namespace local_learning_analytics\local\outputs;
 
 use html_writer;
 use local_learning_analytics\output_base;
-use local_learning_analytics\output_external;
 use stdClass;
 
 defined('MOODLE_INTERNAL') || die;
@@ -45,8 +44,6 @@ class plot extends output_base {
     private $layout;
 
     private $params;
-
-    private $ajax_plot_key;
 
     private $height;
 
@@ -125,32 +122,15 @@ class plot extends output_base {
         $this->series[] = $series;
     }
 
-    public function load_data_ajax(string $method, string $plot_key) {
-        $this->set_ajax($method, 'plot');
-
-        $this->ajax_plot_key = $plot_key;
-    }
-
-    /**
-     * @return output_external
-     */
-    function external(): output_external {
-        return new output_external('plot', $this->print(), ['id' => $this->id]);
-    }
-
     /**
      * @return string
      */
     function print(): string {
         global $PAGE;
 
-        if ($this->is_ajax) {
-            $this->ajax($this->ajax_plot_key, $this->id);
-        } else {
-            $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'plot', [
-                    'id' => $this->id
-            ]);
-        }
+        $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'plot', [
+            'id' => $this->id
+        ]);
 
         $style = '';
         if ($this->height !== 'auto') {

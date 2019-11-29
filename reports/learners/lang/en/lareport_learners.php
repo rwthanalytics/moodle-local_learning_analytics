@@ -24,8 +24,6 @@
 
 $string['pluginname'] = 'Learners';
 $string['pagename_courseparticipation'] = 'Course Participation';
-$string['parameter:course'] = 'Course';
-$string['parameter:role'] = 'Role';
 $string['pagename_all'] = 'Full List';
 
 $string['courses_heard_before'] = 'Courses heard before';

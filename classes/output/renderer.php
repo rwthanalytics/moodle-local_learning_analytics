@@ -22,10 +22,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_learning_analytics\form;
-use local_learning_analytics\local\parameter\parameter_select;
 use local_learning_analytics\output_base;
-use local_learning_analytics\parameter_base;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -53,40 +50,5 @@ class local_learning_analytics_renderer extends plugin_renderer_base {
         }
 
         return $ret;
-    }
-
-    /**
-     * @param form $form
-     * @return string
-     * @throws coding_exception
-     */
-    public function render_form(form $form) {
-        $output = html_writer::start_tag('form', ['method' => 'get', 'class' => 'la_params_form form-inline m-0 pull-right']);
-
-        /**
-         * @var $param parameter_base
-         */
-        foreach ($form->get_render() as $key => $param) {
-            $output .= html_writer::start_div('form-group');
-
-            $output .= html_writer::label(get_string("parameter:{$key}", "lareport_{$form->get_report_name()}"), "param_{$key}", '', ['class' => 'sr-only']);
-            $output .= $param->render();
-
-            $output .= html_writer::end_div();
-        }
-
-        $this->page->requires->js_call_amd('local_learning_analytics/form', 'init', []);
-
-        /*
-
-        $output .= html_writer::tag('button', get_string('show_report', 'local_learning_analytics'), [
-                'type' => 'submit',
-                'class' => 'btn btn-primary'
-        ]);
-
-        */
-
-        $output .= html_writer::end_tag('form');
-        return $output;
     }
 }

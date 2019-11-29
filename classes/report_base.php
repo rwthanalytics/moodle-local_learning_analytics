@@ -28,22 +28,6 @@ abstract class report_base {
 
     protected $block = false;
 
-    public function get_parameter(): array {
-        return [];
-    }
-
-    public function get_parameter_defaults(): array {
-        return [];
-    }
-
-    public function get_parameter_block(): array {
-        return [];
-    }
-
-    public function is_long_running(): bool {
-        return false;
-    }
-
     public function is_block(bool $block) {
         $this->block = $block;
     }

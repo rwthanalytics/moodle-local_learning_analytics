@@ -27,35 +27,5 @@ namespace local_learning_analytics;
 defined('MOODLE_INTERNAL') || die;
 
 abstract class output_base {
-
-    protected $is_ajax;
-
-    private $ajax_method;
-
-    private $ajax_type;
-
-    private $ajax_params;
-
     abstract function print() : string;
-
-    abstract function external() : output_external;
-
-    public function set_ajax(string $method, string $type, array $params = []) {
-        $this->is_ajax = true;
-        $this->ajax_type = $type;
-        $this->ajax_method = $method;
-        $this->ajax_params = $params;
-    }
-
-    public function ajax(string $id, string $target, array $params = []) {
-        global $PAGE;
-
-        $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'ajax', [
-            'id' => $id,
-            'method' => $this->ajax_method,
-            'type' => $this->ajax_type,
-            'target' => $target,
-            'params' => $params
-        ]);
-    }
 }

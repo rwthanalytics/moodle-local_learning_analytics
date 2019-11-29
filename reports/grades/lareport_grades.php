@@ -25,21 +25,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\plot;
-use local_learning_analytics\local\parameter\parameter_course;
 use local_learning_analytics\report_base;
 use lareport_grades\regression;
 
 class lareport_grades extends report_base {
-
-    /**
-     * @return array
-     * @throws dml_exception
-     */
-    public function get_parameter(): array {
-        return [
-            new parameter_course('course')
-        ];
-    }
 
     public function run(array $params): array {
         global $DB;

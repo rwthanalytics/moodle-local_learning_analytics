@@ -26,12 +26,9 @@ defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\table;
-use local_learning_analytics\local\parameter\parameter_course;
-use local_learning_analytics\local\parameter\parameter_input;
-use local_learning_analytics\parameter_base;
 use local_learning_analytics\report_base;
 use lareport_activities\query_helper;
-use local_learning_analytics\local\routing\router;
+use local_learning_analytics\router;
 
 class lareport_activities extends report_base {
 
@@ -53,17 +50,6 @@ class lareport_activities extends report_base {
         'wiki' => 'yellow', // yellow
     ];
     private static $markerColorTextDefault = 'gray';
-
-    /**
-     * @return array
-     * @throws dml_exception
-     */
-    public function get_parameter(): array {
-        return [
-            new parameter_course('course', parameter_base::REQUIRED_ALWAYS),
-            new parameter_input('mod', 'text', parameter_base::REQUIRED_HIDDEN),
-        ];
-    }
 
     public function run(array $params): array {
         $courseid = (int) $params['course'];

@@ -26,5 +26,3 @@ $string['pluginname'] = 'Top Modules';
 
 $string['eventname'] = 'Event';
 $string['hits'] = 'Hits';
-
-$string['parameter:course'] = 'Course';

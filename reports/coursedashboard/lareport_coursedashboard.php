@@ -25,21 +25,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 use local_learning_analytics\local\outputs\plot;
-use local_learning_analytics\local\parameter\parameter_course;
 use local_learning_analytics\report_base;
 use lareport_coursedashboard\query_helper;
 
 class lareport_coursedashboard extends report_base {
-
-    /**
-     * @return array
-     * @throws dml_exception
-     */
-    public function get_parameter(): array {
-        return [
-            new parameter_course('course')
-        ];
-    }
 
     const X_MIN = -1;
     const X_MAX = 30;
@@ -329,7 +318,7 @@ class lareport_coursedashboard extends report_base {
 
         $title_str = get_string($title, 'lareport_coursedashboard');
         if ($report !== null) {
-            $link = new moodle_url("/local/learning_analytics/course.php/reports/{$report}", ['course' => $courseid]);
+            $link = new moodle_url("/local/learning_analytics/index.php/reports/{$report}", ['course' => $courseid]);
             $title_str = "<a href='{$link}'>{$title_str}</a>";
             $icon = "<a href='{$link}'>{$icon}</a>";
         }
@@ -378,9 +367,9 @@ class lareport_coursedashboard extends report_base {
         global $PAGE, $DB;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
 
-        $courseid = (int) $params['course'];
+        $courseid = (int) $params['course']; // TODO
         $prevId = query_helper::getCurrentPrevCourse($courseid);
-        $setCompareLink = new moodle_url('/local/learning_analytics/course.php/reports/coursedashboard/set_previous_course', ['course' => $courseid]);
+        $setCompareLink = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard/set_previous_course', ['course' => $courseid]);
 
         $setCompareLinkText = 'Set course to compare';
         if ($prevId !== -1) {
