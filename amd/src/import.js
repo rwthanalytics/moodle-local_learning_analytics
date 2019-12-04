@@ -1,6 +1,4 @@
-define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
-
-    var importInfo;
+define(['core/ajax', 'jquery'], function (ajax, $) {
     var textInfo;
     var progressBar;
 
@@ -47,11 +45,10 @@ define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
                 userid: userid,
                 offset: 0
             }
-        }])[0].done(function (response) {
+        }])[0].done(function () {
             lastSavePoint = userid;
         }).fail(function (err) {
-            alert('An unrevolerable error occured during import. Check the browser console.');
-            console.log(err);
+            alert('An unrevolerable error occured during import: ' + err.message);
         });
     }
 
@@ -124,7 +121,7 @@ define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
             progressBar = $('<progress class="progress progress-striped progress-animated" value="0" max="100"></progress>');
             textInfo = $('<div></div>');
 
-            importInfo = $('#import_info')
+            $('#import_info')
                 .append(progressBar)
                 .append(textInfo);
 
@@ -137,5 +134,5 @@ define(['core/ajax', 'core/url', 'jquery'], function (ajax, url, $) {
 
             showStatus();
         }
-    }
+    };
 });

@@ -84,7 +84,11 @@ class lareport_learners extends report_base {
             if ($type === 'lang') {
                 $annotText = $langList[$lang->x];
             } else { // then its country
-                $annotText = get_string($lang->x, 'countries');
+                if (empty($lang->x)) {
+                    $annotText = 'Unknown'; // no country set
+                } else {
+                    $annotText = get_string($lang->x, 'countries');
+                }
             }
             $annotations[] = [
                 'x' => ($percSoFar + ($perc / 2)),

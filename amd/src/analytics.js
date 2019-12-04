@@ -12,10 +12,9 @@ define(['core/ajax'], function (ajax) {
     return {
         init: function (session) {
             keep_alive();
-
             setInterval(function () {
                 keep_alive(session);
             }, 60 * 1000);
         }
-    }
+    };
 });
