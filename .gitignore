@@ -7,10 +7,6 @@
 node_modules/*
 package-lock.json
 
-#grunted files
-amd/build/scripts.js
-amd/build/*
-
 ### OSX ###
 *.DS_Store
 .AppleDouble
