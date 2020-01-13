@@ -23,3 +23,8 @@
  */
 
 $string['pluginname'] = 'Grades';
+$string['scatter_students'] = 'scatter students';
+$string['trend_line'] = 'trend line';
+$string['correlation_of_grades_and_work'] = 'correlation of grades and work';
+$string['course_grade'] = 'course grade';
+$string['number_of_sessions'] = 'number of sessions';
