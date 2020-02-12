@@ -26,12 +26,5 @@ defined('MOODLE_INTERNAL') || die;
 $settings_folder = new admin_category('local_learning_analytics', get_string('pluginname', 'local_learning_analytics'), false);
 
 $ADMIN->add('localplugins', $settings_folder);
-$ADMIN->add('local_learning_analytics',
-        new admin_externalpage(
-                'local_learning_analytics_import',
-                get_string('import', 'local_learning_analytics'),
-                new moodle_url('/local/learning_analytics/settings/import.php')
-        )
-);
 
 $settings = null;

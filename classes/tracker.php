@@ -71,7 +71,7 @@ class tracker {
     public static function track_request() {
         global $DB, $PAGE, $USER;
 
-        $time = time();
+        /*$time = time();
 
         $sum = $DB->get_record('local_learning_analytics_sum', ['courseid' => $PAGE->course->id, 'userid' => $USER->id]);
 
@@ -121,22 +121,8 @@ class tracker {
 #
         $PAGE->requires->js_call_amd('local_learning_analytics/analytics', 'init', [
                 'session' => $session->id
-        ]);
+        ]);*/
 
-    }
-
-    /**
-     * @param int $session
-     * @throws \dml_exception
-     */
-    public static function keep_alive(int $session) {
-        global $DB;
-
-        $session = $DB->get_record('local_learning_analytics_ses', ['id' => $session]);
-
-        $session->time += 60;
-
-        $DB->update_record('local_learning_analytics_ses', $session);
     }
 
     private static function get_browser() {
