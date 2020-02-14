@@ -30,15 +30,12 @@ defined('MOODLE_INTERNAL') || die();
  * @throws coding_exception
  * @throws moodle_exception
  */
-function local_learning_analytics_extend_navigation(global_navigation $nav) {
+function local_learning_analytics_extend_navigation(global_navigation $navigation) {
     global $PAGE, $COURSE;
 
-    \local_learning_analytics\tracker::track_request();
-
     // Only extend navigation inside courses - 1 is the base system 'course'
-    if ($PAGE->context->contextlevel === CONTEXT_COURSE) {
-        $node = $nav->find($PAGE->context->instanceid, navigation_node::TYPE_COURSE);
-
+    if (isset($COURSE->id) && $COURSE->id !== SITEID) {
+        $node = $navigation->find($COURSE->id, navigation_node::TYPE_COURSE);
         if ($node) {
             $node->add_node(navigation_node::create(
                     get_string('learning_analytics', 'local_learning_analytics'),
