@@ -56,11 +56,8 @@ class lareport_coursedashboard extends report_base {
 
         $plot = new plot();
         $x = [];
-        $ySessions = [];
-        $yUsers = [];
-
-        $yLYSessions = [];
-        $yLYUsers = [];
+        $yClicks = [];
+        $yLYClicks = [];
 
         $texts = [];
 
@@ -83,10 +80,10 @@ class lareport_coursedashboard extends report_base {
         $yMax = 1;
 
         foreach ($weeks as $week) {
-            $yMax = max($yMax, $week->sessions);
+            $yMax = max($yMax, $week->clicks);
         }
         foreach ($weeksLastYear as $weekLY) {
-            $yMax = max($yMax, $weekLY->sessions);
+            $yMax = max($yMax, $weekLY->clicks);
         }
         $yMax = $yMax * 1.1;
 
@@ -101,9 +98,7 @@ class lareport_coursedashboard extends report_base {
         $decsep = get_string('decsep', 'langconfig');
 
         $strWeek = get_string('week', 'lareport_coursedashboard');
-        $strLearners = get_string('learners', 'local_learning_analytics');
-        $strSessions = get_string('sessions', 'local_learning_analytics');
-        $strSessionsPerUser = get_string('sessions_per_user', 'lareport_coursedashboard');
+        $strClicks = get_string('clicks', 'lareport_coursedashboard');
 
         $date->modify(($xMin - 1) . ' week');
 
@@ -119,23 +114,19 @@ class lareport_coursedashboard extends report_base {
             $tickVals[] = $i;
             $tickText[] = $weekNumber;
 
-            $sessionCount = $week->sessions ?? 0;
-            $yLYSessions[] = $weekLY->sessions ?? 0;
-            $userCount = $week->users ?? 0;
-            $yLYUsers[] = $weekLY->users ?? 0;
+            $clickCount = $week->clicks ?? 0;
+            $yLYClicks[] = $weekLY->clicks ?? 0;
 
             $startOfWeekTimestamp = $date->getTimestamp();
             $date->modify('+6 days');
 
             if ($startOfWeekTimestamp < $now) {
                 // date is in the past
-                $ySessions[] = $sessionCount;
-                $yUsers[] = $userCount;
+                $yClicks[] = $clickCount;
 
                 $weekstarttext = userdate($startOfWeekTimestamp, $dateformat);
                 $weekendtext = userdate($date->getTimestamp(), $dateformat);
-                $sessionsPerUser = ($userCount === 0) ? 0 : number_format(($sessionCount / $userCount), 1, $decsep, $thousandssep);
-                $texts[] = "<b>{$strWeek} {$weekNumber}</b> ({$weekstarttext} - {$weekendtext})<br><br>{$sessionCount} {$strSessions}<br>{$userCount} {$strLearners}<br>{$sessionsPerUser} {$strSessionsPerUser}";
+                $texts[] = "<b>{$strWeek} {$weekNumber}</b> ({$weekstarttext} - {$weekendtext})<br><br>{$clickCount} {$strClicks}";
                 $lastWeekInPast = $i;
             }
 
@@ -188,9 +179,9 @@ class lareport_coursedashboard extends report_base {
         $plot->add_series([
             'type' => 'scatter',
             'mode' => 'lines+markers',
-            'name' => get_string('sessions', 'lareport_coursedashboard'),
+            'name' => get_string('clicks', 'lareport_coursedashboard'),
             'x' => $x,
-            'y' => $ySessions,
+            'y' => $yClicks,
             'text' => $texts,
             'marker' => [ 'color' => 'rgb(31, 119, 180)' ],
             'line' => [ 'color' => 'rgb(31, 119, 180)' ],
@@ -203,40 +194,17 @@ class lareport_coursedashboard extends report_base {
             ],
             'legendgroup' => 'a'
         ]);
-        $plot->add_series([
-            'type' => 'scatter',
-            'mode' => 'lines+markers',
-            'name' => get_string('learners', 'lareport_coursedashboard'),
-            'x' => $x,
-            'y' => $yUsers,
-            'marker' => [ 'color' => 'rgb(255, 127, 14)' ],
-            'line' => [ 'color' => 'rgb(255, 127, 14)' ],
-            'hoverinfo' => 'none',
-            'legendgroup' => 'a'
-        ]);
 
         // compare course
         if (count($weeksLastYear) !== 0) {
             $plot->add_series([
                 'type' => 'scatter',
                 'mode' => 'lines+markers',
-                'name' => get_string('sessions_compare', 'lareport_coursedashboard'),
+                'name' => get_string('clicks_compare', 'lareport_coursedashboard'),
                 'x' => $x,
-                'y' => $yLYSessions,
+                'y' => $yLYClicks,
                 'marker' => [ 'color' => 'rgb(31, 119, 180)' ],
                 'line' => [ 'color' => 'rgb(31, 119, 180)', 'dash' => 'dot' ],
-                'hoverinfo' => 'none',
-                'opacity' => 0.35,
-                'legendgroup' => 'b'
-            ]);
-            $plot->add_series([
-                'type' => 'scatter',
-                'mode' => 'lines+markers',
-                'name' => get_string('learners_compare', 'lareport_coursedashboard'),
-                'x' => $x,
-                'y' => $yLYUsers,
-                'marker' => [ 'color' => 'rgb(255, 127, 14)' ],
-                'line' => [ 'color' => 'rgb(255, 127, 14)', 'dash' => 'dot' ],
                 'hoverinfo' => 'none',
                 'opacity' => 0.35,
                 'legendgroup' => 'b'

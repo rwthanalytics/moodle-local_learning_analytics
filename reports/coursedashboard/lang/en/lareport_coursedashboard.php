@@ -29,12 +29,11 @@ $string['active_learners'] = 'Active learners';
 $string['click_count'] = 'Number of clicks';
 $string['pagename_set_previous_course'] = 'Set previous course';
 
+$string['clicks'] = 'Clicks';
 $string['sessions'] = 'Sessions';
 $string['learners'] = 'Learners';
 
-$string['sessions_compare'] = 'Sessions (compared)';
-$string['learners_compare'] = 'Learners (compared)';
-$string['sessions_per_user'] = 'Sessions per Learner';
+$string['clicks_compare'] = 'Sessions (compared)';
 
 $string['week'] = 'Week';
 $string['parameter:course'] = 'Course';

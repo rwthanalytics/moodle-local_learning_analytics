@@ -54,15 +54,24 @@ class query_helper {
         SELECT
             (FLOOR((ses.firstaccess - {$mondayTimestamp}) / (7 * 60 * 60 * 24)) + 1) AS week,
             COUNT(*) sessions,
-            COUNT(DISTINCT su.userid) users,
-            su.*,
-            ses.*
+            COUNT(DISTINCT su.userid) users
         FROM {local_learning_analytics_sum} su
         JOIN {local_learning_analytics_ses} ses
             ON su.id = ses.summaryid
         WHERE su.courseid = ?
         GROUP BY week
         #    HAVING week > 0
+        ORDER BY week;
+SQL;
+
+        $query = <<<SQL
+        SELECT
+            (FLOOR((l.timecreated - {$mondayTimestamp}) / (7 * 60 * 60 * 24)) + 1) AS WEEK,
+            COUNT(*) clicks,
+            1 users
+        FROM {logstore_lanalytics_log} l
+        WHERE l.courseid = ?
+        GROUP BY week
         ORDER BY week;
 SQL;
 
