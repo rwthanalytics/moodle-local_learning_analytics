@@ -322,11 +322,9 @@ class lareport_coursedashboard extends report_base {
     private function clickCount(int $courseid) : array {
         $counts = query_helper::query_click_count($courseid);
 
-        $learners = $counts['users'];
         $hits = $counts['hits'];
 
         return [
-            $this->boxOutput('active_learners', $learners[1], ($learners[1] - $learners[0]), $courseid),
             $this->boxOutput('click_count', $hits[1], ($hits[1] - $hits[0]), $courseid, 'dummy')
         ];
     }

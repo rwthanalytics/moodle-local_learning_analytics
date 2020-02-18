@@ -52,23 +52,8 @@ class query_helper {
 
         $query = <<<SQL
         SELECT
-            (FLOOR((ses.firstaccess - {$mondayTimestamp}) / (7 * 60 * 60 * 24)) + 1) AS week,
-            COUNT(*) sessions,
-            COUNT(DISTINCT su.userid) users
-        FROM {local_learning_analytics_sum} su
-        JOIN {local_learning_analytics_ses} ses
-            ON su.id = ses.summaryid
-        WHERE su.courseid = ?
-        GROUP BY week
-        #    HAVING week > 0
-        ORDER BY week;
-SQL;
-
-        $query = <<<SQL
-        SELECT
             (FLOOR((l.timecreated - {$mondayTimestamp}) / (7 * 60 * 60 * 24)) + 1) AS WEEK,
-            COUNT(*) clicks,
-            1 users
+            COUNT(*) clicks
         FROM {logstore_lanalytics_log} l
         WHERE l.courseid = ?
         GROUP BY week
@@ -114,11 +99,8 @@ SQL;
     private static function click_count_helper(int $courseid, int $from, int $to) {
         global $DB;
 
-        // TODO: we can put the active users in by using COUNT(DISTINCT su.id) users
-
         $query = <<<SQL
-        SELECT SQL_NO_CACHE
-            COUNT(DISTINCT su.id) users,
+        SELECT
             COALESCE(SUM(ses.hits), 0) hits
         FROM {local_learning_analytics_sum} su
         JOIN {local_learning_analytics_ses} ses
@@ -132,7 +114,6 @@ SQL;
         return reset($res);
     }
 
-    // return counts: ['users' => [previous week, this week], 'hits' => [prev, this]]
     public static function query_click_count(int $courseid) : array {
 
         $date = new \DateTime();
@@ -147,10 +128,6 @@ SQL;
         $thisWeek = self::click_count_helper($courseid, $oneweekago, $today);
 
         return [
-            'users' => [
-                $previousWeek->users,
-                $thisWeek->users
-            ],
             'hits' => [
                 $previousWeek->hits,
                 $thisWeek->hits
