@@ -15,21 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Version info for daily actions lalog
  *
- * @package     local_learning_analytics
+ * @package     logstore_lanalytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_learning_analytics';
+$plugin->component = 'lalog_course_mobile';
 
-$plugin->version = 2020021800;
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
-
-$plugin->requires = 2017111302;
-
-$plugin->dependencies = [];
+$plugin->version = 2020021700;
+$plugin->requires = '2017111302';
