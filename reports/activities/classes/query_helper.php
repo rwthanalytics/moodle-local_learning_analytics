@@ -44,7 +44,7 @@ class query_helper {
         // only teachers and managers
         require_capability('moodle/course:update', $context);
 
-        $valuesStatemt = [$courseid];
+        $valuesStatemt = [$courseid, CONTEXT_MODULE];
 
         $filterSql = '';
         if ($filter) {
@@ -92,12 +92,7 @@ class query_helper {
             ON modwiki.id = cm.instance
             AND m.name = 'wiki'
         LEFT JOIN {context} ctx
-            ON ctx.path LIKE (
-                SELECT CONCAT(path, '/%')
-                FROM {context} ctxin
-                    WHERE ctxin.contextlevel = '50'
-                    AND ctxin.instanceid = cm.course
-                )
+            ON ctx.contextlevel = ?
             AND ctx.instanceid = cm.id
         LEFT JOIN {logstore_lanalytics_log} log
             ON log.courseid = cm.course
