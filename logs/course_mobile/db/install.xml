@@ -7,15 +7,15 @@
     <TABLE NAME="lalog_course_mobile" COMMENT="Daily Actions">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mobile" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="event_count" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="desktop_events" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mobile_events" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="courseid_mobile_idx" UNIQUE="true" FIELDS="courseid, mobile"/>
+        <INDEX NAME="courseid_idx" UNIQUE="true" FIELDS="courseid"/>
       </INDEXES>
     </TABLE>
   </TABLES>
