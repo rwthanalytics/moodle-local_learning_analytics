@@ -26,10 +26,11 @@ $string['pluginname'] = 'Course Dashboard';
 
 $string['registered_users'] = 'Registered users';
 $string['active_learners'] = 'Active learners';
-$string['click_count'] = 'Number of clicks';
+$string['click_count'] = 'Number of hits';
 $string['pagename_set_previous_course'] = 'Set previous course';
+$string['most_clicked_module'] = 'Most used activity';
 
-$string['clicks'] = 'Clicks';
+$string['clicks'] = 'hits';
 $string['sessions'] = 'Sessions';
 $string['learners'] = 'Learners';
 

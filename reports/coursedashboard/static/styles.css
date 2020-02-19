@@ -14,10 +14,13 @@
 /*.dashboardbox-content {
 }*/
 .dashboardbox-title {
-    font-size: 250%;
+    font-size: 220%;
     font-weight: bold;
     margin: 0 0 0 0;
     line-height: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .dashboardbox-timespan {
     color: #666;

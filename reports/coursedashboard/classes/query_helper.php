@@ -157,4 +157,45 @@ SQL;
         return $percentage;
     }
 
+    public static function query_most_clicked_activity(int $courseid) {
+        global $DB;
+
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // include today
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+
+        $query = <<<SQL
+        SELECT SQL_NO_CACHE
+            m.name as modname,
+            cm.id AS cmid,
+            COUNT(*) hits
+        FROM mdl_modules m
+        JOIN mdl_course_modules cm
+            ON cm.course = ?
+        AND cm.module = m.id
+            LEFT JOIN mdl_context ctx
+        ON ctx.contextlevel = 70
+            AND ctx.instanceid = cm.id
+        LEFT JOIN mdl_logstore_lanalytics_log l
+            ON l.courseid = cm.course
+            AND l.contextid = ctx.id
+        WHERE l.timecreated > ?
+        GROUP BY cm.id
+        ORDER BY hits DESC
+        LIMIT 1
+SQL;
+
+        $row = $DB->get_record_sql($query, [$courseid, $oneweekago]);
+        if (!$row) {
+            return NULL;
+        }
+
+        return [
+            'modname' => $row->modname,
+            'cmid' => $row->cmid,
+            'hits' => $row->hits
+        ];
+    }
+
 }
