@@ -47,31 +47,6 @@ class provider implements
      * @return  collection     A listing of user data stored through this system.
      */
     public static function get_metadata(collection $collection): collection {
-
-        $collection->add_database_table(
-                'local_learning_analytics_sum',
-                [
-                        'id' => 'privacy:metadata:local_learning_analytics_sum:id',
-                        'courseid' => 'privacy:metadata:local_learning_analytics_sum:courseid',
-                        'userid' => 'privacy:metadata:local_learning_analytics_sum:userid',
-                        'hits' => 'privacy:metadata:local_learning_analytics_sum:hits',
-                ],
-                'privacy:metadata:local_learning_analytics_sum');
-
-        $collection->add_database_table(
-                'local_learning_analytics_ses',
-                [
-                        'id' => 'privacy:metadata:local_learning_analytics_ses:id',
-                        'summaryid' => 'privacy:metadata:local_learning_analytics_ses:summaryid',
-                        'hits' => 'privacy:metadata:local_learning_analytics_ses:hits',
-                        'firstaccess' => 'privacy:metadata:local_learning_analytics_ses:firstaccess',
-                        'lastaccess' => 'privacy:metadata:local_learning_analytics_ses:lastaccess',
-                        'device' => 'privacy:metadata:local_learning_analytics_ses:device',
-                        'browser' => 'privacy:metadata:local_learning_analytics_ses:browser',
-                        'os' => 'privacy:metadata:local_learning_analytics_ses:os'
-                ],
-                'privacy:metadata:local_learning_analytics_ses');
-
         return $collection;
     }
 

@@ -96,18 +96,17 @@ SQL;
         ];
     }
 
-    private static function click_count_helper(int $courseid, int $from, int $to) {
+    private static function click_count_helper(int $courseid, int $from, int $to = NULL) {
         global $DB;
 
         $query = <<<SQL
         SELECT
-            COALESCE(SUM(ses.hits), 0) hits
-        FROM {local_learning_analytics_sum} su
-        JOIN {local_learning_analytics_ses} ses
-            ON ses.summaryid = su.id
-        WHERE su.courseid = ?
-            AND ses.firstaccess > ?
-            AND ses.firstaccess <= ?;
+            COUNT(*) hits
+        FROM {logstore_lanalytics_log}
+        WHERE
+            courseid = ?
+            AND timecreated > ?
+            AND timecreated <= ?
 SQL;
 
         $res = $DB->get_records_sql($query, [$courseid, $from, $to]);
@@ -117,7 +116,7 @@ SQL;
     public static function query_click_count(int $courseid) : array {
 
         $date = new \DateTime();
-        $date->setTime(0, 0, 0); // exclude today
+        $date->setTime(23, 59, 59); // include today
         $today = $date->getTimestamp();
         $date->modify('-1 week');
         $oneweekago = $date->getTimestamp();
