@@ -265,13 +265,41 @@ class lareport_coursedashboard extends report_base {
         'click_count' => '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110" viewBox="0 0 24 24">
             <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
             <path fill="none" d="M0 0h24v24H0z"/>
+        </svg>',
+        'mobile_use' => '<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 24 24" style="margin-top:10px">
+            <path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
         </svg>'
     ];
 
+    private function boxOutputRaw(string $titlekey, string $titleappend, string $maintext, string $change, int $courseid, string $report = null) {
+        $icon = self::$icons[$titlekey];
+
+        $title_str = get_string($titlekey, 'lareport_coursedashboard');
+        if ($report !== null) {
+            $link = new moodle_url("/local/learning_analytics/index.php/reports/{$report}", ['course' => $courseid]);
+            $title_str = "<a href='{$link}'>{$title_str}</a>";
+            $icon = "<a href='{$link}'>{$icon}</a>";
+        }
+
+        return "
+            <div class='col-sm-4'>
+                <div class='dashboardbox'>
+                    <div class='dashboardbox-icon'>
+                        {$icon}
+                    </div>
+                    <div class='dashboardbox-content'>
+                        <div>{$title_str}{$titleappend}</div>
+                        <div class='dashboardbox-title'>{$maintext}</div>
+                        <div class='dashboardbox-change'>{$change}</div>
+                    </div>
+                </div>
+            </div>
+        ";
+    }
+
     private function boxOutput(string $title, int $number, int $diff, int $courseid, string $report = null) {
-
         $diffTriangle = '';
-
         $diffText = $diff;
         if ($diff === 0) {
             $diffText = 'no difference';
@@ -282,31 +310,8 @@ class lareport_coursedashboard extends report_base {
             $diffTriangle = '<span class="dashboardbox-change-down">▼</span>';
         }
 
-        $icon = self::$icons[$title];
-
-        $title_str = get_string($title, 'lareport_coursedashboard');
-        if ($report !== null) {
-            $link = new moodle_url("/local/learning_analytics/index.php/reports/{$report}", ['course' => $courseid]);
-            $title_str = "<a href='{$link}'>{$title_str}</a>";
-            $icon = "<a href='{$link}'>{$icon}</a>";
-        }
-
         $appendedText = ($title === 'registered_users') ? '' : " <span class='dashboardbox-timespan'>(last 7 days)</span>";
-
-        return "
-            <div class='col-sm-4'>
-                <div class='dashboardbox'>
-                    <div class='dashboardbox-icon'>
-                        {$icon}
-                    </div>
-                    <div class='dashboardbox-content'>
-                        <div>{$title_str}{$appendedText}</div>
-                        <div class='dashboardbox-title'>{$number}</div>
-                        <div class='dashboardbox-change'>{$diffTriangle} {$diffText}</div>
-                    </div>
-                </div>
-            </div>
-        ";
+        return $this->boxOutputRaw($title, $appendedText, $number, "{$diffTriangle} {$diffText}", $courseid, $report);
     }
 
     private function registeredUserCount(int $courseid) : array {
@@ -326,6 +331,20 @@ class lareport_coursedashboard extends report_base {
 
         return [
             $this->boxOutput('click_count', $hits[1], ($hits[1] - $hits[0]), $courseid, 'dummy')
+        ];
+    }
+
+    private function mobileEvents(int $courseid) : array {
+        $percentage = query_helper::query_mobile_percentage($courseid);
+
+        $perctext = 'N/A';
+        if ($percentage !== NULL) {
+            $perctext = round($percentage) . '%';
+        }
+        $posttext = get_string('mobile_use_post_text', 'lareport_coursedashboard');
+
+        return [
+            $this->boxOutputRaw('mobile_use', '', $perctext, $posttext, $courseid)
         ];
     }
 
@@ -349,6 +368,7 @@ class lareport_coursedashboard extends report_base {
             ["<div class='container-fluid'><div class='row'>"],
             $this->registeredUserCount($courseid),
             $this->clickCount($courseid),
+            $this->mobileEvents($courseid),
             ["</div></div>"]
         );
     }

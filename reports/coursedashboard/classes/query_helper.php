@@ -134,4 +134,27 @@ SQL;
         ];
     }
 
+    public static function query_mobile_percentage(int $courseid) {
+        global $DB;
+
+        $query = <<<SQL
+        SELECT
+            desktop_events, mobile_events
+        FROM {lalog_course_mobile}
+        WHERE
+            courseid = ?
+SQL;
+
+        $row = $DB->get_record_sql($query, [$courseid]);
+        if (!$row) {
+            return NULL;
+        }
+
+        $mobile = (float) $row->mobile_events;
+        $desktop = (float) $row->desktop_events;
+
+        $percentage = 100 * $mobile / max(1.0, $desktop + $mobile);
+        return $percentage;
+    }
+
 }
