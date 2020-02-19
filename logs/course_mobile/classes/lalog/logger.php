@@ -7,11 +7,15 @@ use \stdClass;
 const MOBILE_OS = 10000; // see devices.php of logstore plugin
 
 class logger {
+
     public static function log(array $eventrecords) {
         global $DB;
 
         $byCourse = [];
         foreach ($eventrecords as $record) {
+            if ($record->os === 0 || $record->os === '0') { // unknown os
+                continue;
+            }
             if (!isset($byCourse[$record->courseid])) {
                 $byCourse[$record->courseid] = [0, 0]; // [desktop, mobile]
             }
@@ -46,5 +50,10 @@ SQL;
                 $DB->execute($sql, $courestats);
             }
         }
+    }
+
+    public static function truncate() {
+        global $DB;
+        $DB->execute("TRUNCATE {lalog_course_mobile}");
     }
 }
