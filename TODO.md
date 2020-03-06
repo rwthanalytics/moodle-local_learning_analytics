@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] **Add title to page**
+- [x] **Add title to page**
 - [ ] **Add English text for all missing strings**
 - [ ] Create report "Weekly heatmap"
 - [ ] **Make sure only people enrolled can see the statistics**
