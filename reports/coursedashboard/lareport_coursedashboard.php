@@ -355,7 +355,7 @@ class lareport_coursedashboard extends report_base {
     private function mostClickedActivity(int $courseid) : array {
         $module = query_helper::query_most_clicked_activity($courseid);
         if ($module === NULL) {
-            return [ $this->boxOutputRaw('most_clicked_module', 'N/A', '', $courseid) ];
+            return [ $this->boxOutputRaw('most_clicked_module', 'N/A', get_string('no_clicks', 'lareport_coursedashboard'), $courseid) ];
         }
 
         $mod = \context_module::instance($module['cmid']);
