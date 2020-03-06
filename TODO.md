@@ -5,7 +5,7 @@
 - [ ] Create report "Weekly heatmap"
 - [ ] **Make sure only people enrolled can see the statistics**
   - [ ] use capabilities for this
-- [ ] **Make `logstore_lanalytics` a dependency of this plugin**
+- [x] **Make `logstore_lanalytics` a dependency of this plugin**
 - [ ] **Add event `view_analytics` (or a similar event)**
 - [ ] Figure out how we need to shift dates when showing hourly data: https://docs.moodle.org/dev/Time_API
 - [ ] Check if the `requires` version in the plugins (and subplugins) are correct (check for which Moodle version the plugin still works)
