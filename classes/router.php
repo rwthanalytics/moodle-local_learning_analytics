@@ -33,20 +33,20 @@ class router {
 
     public static function run_report_or_page(
         $instance,
+        $params,
         string $report_name,
-        string $page_name = null
+        string $page_name = NULL
     ) : string {
         global $PAGE;
 
-        $params = $instance->params();
         $outputs = $instance->run($params);
 
         $title = get_string('pluginname', "lareport_{$report_name}");
-        if ($report_name !== 'coursedashboard') { // TODO dont hardcode this
+        if ($report_name !== 'coursedashboard') { // TODO dont hardcode this, set default for main report somewhere
             $PAGE->navbar->add($title, self::report($report_name, $params));
         }
 
-        if ($page_name !== null) {
+        if ($page_name !== NULL) {
             $pagename = get_string("pagename_{$page_name}", "lareport_{$report_name}");
             $title = $pagename;
         }
@@ -71,26 +71,29 @@ class router {
         $uri = new moodle_url($url);
         $slashargs = str_replace($uri->get_path(false), '', $uri->get_path(true));
 
+        $instance = NULL;
+        $report_name = NULL;
+        $page_name = NULL;
         if (preg_match($report_page_regex, $slashargs, $matches)) { // page of report was called
             $report_name = $matches[1];
             $page_name = $matches[2];
-
             $fqcn = "\\lareport_{$report_name}\\{$page_name}";
             if (class_exists($fqcn)) {
-                $page_instance = new $fqcn();
-                return self::run_report_or_page($page_instance, $report_name, $page_name);
+                $instance = new $fqcn();
             }
         } else if (preg_match($report_regex, $slashargs, $matches)) { // report was called
             $report_name = $matches[1];
-
             $path = core_component::get_plugin_directory('lareport', $report_name);
             $fqp = $path . DIRECTORY_SEPARATOR . "lareport_{$report_name}.php";
             if (file_exists($fqp)) {
                 require($fqp);
                 $class = "lareport_{$report_name}";
-                $report_instance = (new $class());
-                return self::run_report_or_page($report_instance, $report_name);
+                $instance = (new $class());
             }
+        }
+        if ($instance) {
+            $params = $instance->params();
+            return self::run_report_or_page($instance, $params, $report_name, $page_name);
         }
         return get_string('reports:missing', 'local_learning_analytics');
     }

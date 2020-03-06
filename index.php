@@ -39,7 +39,9 @@ $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
 
-$PAGE->set_url($_SERVER['REQUEST_URI']); // TODO CHANGE THIS!!
+// Set URL to main path of analytics
+$url = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $courseid]);
+$PAGE->set_url($url);
 
 // For now, all statistics are shown on course level
 $course = get_course($courseid);
