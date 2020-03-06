@@ -34,20 +34,5 @@ $capabilities = [
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ]
-    ],
-    'local/learning_analytics:view_restricted_statistics' => [
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ]
-    ],
-    'local/learning_analytics:view_global_statistics' => [
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
     ]
 ];

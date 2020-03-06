@@ -30,11 +30,12 @@ defined('MOODLE_INTERNAL') || die;
 
 require_login();
 
-global $PAGE;
+global $PAGE, $USER;
 
 $courseid = required_param('course', PARAM_INT);
 $context = context_course::instance($courseid, MUST_EXIST);
 
+require_capability('local/learning_analytics:view_statistics', $context, $USER->id);
 $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
