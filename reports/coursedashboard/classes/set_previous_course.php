@@ -77,8 +77,8 @@ class set_previous_course extends report_page_base {
 
     public function run(array $params): array {
         global $DB;
-        $selectedPrevCourse = (int) ($_POST['prev_course'] ?? -1);
-        $courseid = (int) $params['course'];
+        $selectedPrevCourse = $params['prev_course'];
+        $courseid = $params['course'];
         $prevId = query_helper::getCurrentPrevCourse($courseid);
 
         if ($selectedPrevCourse !== -1) {
@@ -121,6 +121,13 @@ class set_previous_course extends report_page_base {
 
         return [
             $output
+        ];
+    }
+
+    public function params(): array {
+        return [
+            'course' => required_param('course', PARAM_INT),
+            'prev_course' => optional_param('prev_course', -1, PARAM_INT)
         ];
     }
 }

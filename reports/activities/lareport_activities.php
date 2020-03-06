@@ -167,4 +167,11 @@ class lareport_activities extends report_base {
             $tableDetails
         ];
     }
+
+    public function params(): array {
+        return [
+            'course' => required_param('course', PARAM_INT),
+            'prev_course' => optional_param('mod', NULL, PARAM_INT)
+        ];
+    }
 }

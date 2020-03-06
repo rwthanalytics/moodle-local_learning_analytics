@@ -32,8 +32,14 @@ defined('MOODLE_INTERNAL') || die;
 class courseparticipation extends report_page_base {
 
     public function run(array $params): array {
-        $courseid = (int) $params['course'];
+        $courseid = $params['course'];
 
         return helper::generateCourseParticipationList($courseid);
+    }
+
+    public function params(): array {
+        return [
+            'course' => required_param('course', PARAM_INT)
+        ];
     }
 }

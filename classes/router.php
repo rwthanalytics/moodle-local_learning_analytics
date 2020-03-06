@@ -33,16 +33,16 @@ class router {
 
     public static function run_report_or_page(
         $instance,
-        $params,
         string $report_name,
         string $page_name = null
     ) : string {
         global $PAGE;
 
+        $params = $instance->params();
         $outputs = $instance->run($params);
 
         $title = get_string('pluginname', "lareport_{$report_name}");
-        if ($report_name !== 'coursedashboard') {
+        if ($report_name !== 'coursedashboard') { // TODO dont hardcode this
             $PAGE->navbar->add($title, self::report($report_name, $params));
         }
 
@@ -78,7 +78,7 @@ class router {
             $fqcn = "\\lareport_{$report_name}\\{$page_name}";
             if (class_exists($fqcn)) {
                 $page_instance = new $fqcn();
-                return self::run_report_or_page($page_instance, $uri->params(), $report_name, $page_name);
+                return self::run_report_or_page($page_instance, $report_name, $page_name);
             }
         } else if (preg_match($report_regex, $slashargs, $matches)) { // report was called
             $report_name = $matches[1];
@@ -89,7 +89,7 @@ class router {
                 require($fqp);
                 $class = "lareport_{$report_name}";
                 $report_instance = (new $class());
-                return self::run_report_or_page($report_instance, $uri->params(), $report_name);
+                return self::run_report_or_page($report_instance, $report_name);
             }
         }
         return get_string('reports:missing', 'local_learning_analytics');

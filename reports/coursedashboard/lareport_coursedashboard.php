@@ -373,7 +373,7 @@ class lareport_coursedashboard extends report_base {
         global $PAGE, $DB;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
 
-        $courseid = (int) $params['course']; // TODO
+        $courseid = $params['course'];
         $prevId = query_helper::getCurrentPrevCourse($courseid);
         $setCompareLink = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard/set_previous_course', ['course' => $courseid]);
 
@@ -392,6 +392,12 @@ class lareport_coursedashboard extends report_base {
             $this->mostClickedActivity($courseid),
             ["</div></div>"]
         );
+    }
+
+    public function params(): array {
+        return [
+            'course' => required_param('course', PARAM_INT)
+        ];
     }
 
 }

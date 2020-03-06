@@ -66,4 +66,10 @@ class all extends report_page_base {
             $tableDetails
         ];
     }
+
+    public function params(): array {
+        return [
+            'course' => required_param('course', PARAM_INT)
+        ];
+    }
 }

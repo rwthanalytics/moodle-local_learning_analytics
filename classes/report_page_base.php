@@ -33,4 +33,5 @@ defined('MOODLE_INTERNAL') || die;
  */
 abstract class report_page_base {
     public abstract function run(array $params) : array;
+    public abstract function params(): array;
 }

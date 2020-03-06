@@ -24,17 +24,12 @@
 
 namespace local_learning_analytics;
 
+/**
+ * Class report_base
+ *
+ * @package local_learning_analytics
+ */
 abstract class report_base {
-
-    protected $block = false;
-
-    public function is_block(bool $block) {
-        $this->block = $block;
-    }
-
-    public function supports_block(): bool {
-        return false;
-    }
-
     public abstract function run(array $params): array;
+    public abstract function params(): array;
 }

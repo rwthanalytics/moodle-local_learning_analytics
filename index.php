@@ -32,7 +32,7 @@ require_login();
 
 global $PAGE;
 
-$courseid = (int) $_GET['course']; // TODO Cleanup
+$courseid = required_param('course', PARAM_INT);
 $context = context_course::instance($courseid, MUST_EXIST);
 
 $PAGE->set_context($context);
@@ -41,6 +41,7 @@ $PAGE->set_pagelayout('course');
 
 $PAGE->set_url($_SERVER['REQUEST_URI']); // TODO CHANGE THIS!!
 
+// For now, all statistics are shown on course level
 $course = get_course($courseid);
 $PAGE->set_course($course);
 

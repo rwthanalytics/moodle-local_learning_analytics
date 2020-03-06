@@ -37,10 +37,10 @@ class lareport_topmodules extends report_base {
         $records = $DB->get_records_sql("
         SELECT COUNT('id') as hits, eventname
         FROM {logstore_standard_log}
-        WHERE courseid = {$params['course']}
+        WHERE courseid = ?
         GROUP BY eventname
         ORDER BY hits DESC
-        ");
+        ", [$params['course']]);
 
         $output->set_header_local(['hits', 'eventname'], 'lareport_topmodules');
 
@@ -49,5 +49,11 @@ class lareport_topmodules extends report_base {
         }
 
         return [$output];
+    }
+
+    public function params(): array {
+        return [
+            'course' => required_param('course', PARAM_INT)
+        ];
     }
 }

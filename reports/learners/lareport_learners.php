@@ -137,7 +137,7 @@ class lareport_learners extends report_base {
     }
 
     public function run(array $params): array {
-        $courseid = (int) $params['course']; // TODO: CLEANUP
+        $courseid = $params['course'];
 
         $headingTable = get_string('most_active_learners', 'lareport_learners');
 
@@ -145,6 +145,12 @@ class lareport_learners extends report_base {
             helper::generateCourseParticipationList($courseid, 5),
             $this->languagesAndCountries($courseid)
         );
+    }
+
+    public function params(): array {
+        return [
+            'course' => required_param('course', PARAM_INT)
+        ];
     }
 
 }
