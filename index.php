@@ -25,6 +25,7 @@
 use local_learning_analytics\router;
 
 require(__DIR__ . '/../../config.php');
+require('./classes/event/course_module_viewed.php');
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -65,3 +66,11 @@ $mainOutput =  $output->render_from_template('local_learning_analytics/course', 
 echo $output->header();
 echo $mainOutput;
 echo $output->footer();
+$event = \learning_analytics\event\course_module_viewed::create(array(
+    'objectid' => $PAGE->cm->instance,
+    'context' => $PAGE->context,
+));
+$event->add_record_snapshot('course', $PAGE->course);
+// In the next line you can use $PAGE->activityrecord if you have set it, or skip this line if you don't have a record.
+$event->add_record_snapshot($PAGE->cm->modname, $activityrecord);
+$event->trigger();

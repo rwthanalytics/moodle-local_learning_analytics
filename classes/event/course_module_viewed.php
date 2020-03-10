@@ -13,25 +13,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+ 
 /**
- * Version details.
+ * The report_viewed event.
  *
- * @package     local_learning_analytics
- * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    learning_analytics
+ * @copyright  2014 YOUR NAME
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die;
-
-$plugin->component = 'local_learning_analytics';
-
-$plugin->version = 2020031001;
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
-
-$plugin->requires = 2017111302;
-
-$plugin->dependencies = [
-    'logstore_lanalytics' => ANY_VERSION,
-];
+namespace learning_analytics\event;
+defined('MOODLE_INTERNAL') || die();
+class course_module_viewed extends \core\event\course_module_viewed {
+    protected function init() {
+        $this->data['objecttable'] = 'learning_analytics';
+        parent::init();
+    }
+}
