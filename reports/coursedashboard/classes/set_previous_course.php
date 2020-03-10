@@ -35,29 +35,29 @@ defined('MOODLE_INTERNAL') || die;
 
 class set_previous_course extends report_page_base {
 
-    private function getUserCourses() {
+    private function getusercourses() {
         global $DB, $USER;
 
         if (is_siteadmin()) {
-            // if user is admin, allow to set any course
+            // If user is admin, allow to set any course.
             $options = $DB->get_records_sql("
-            SELECT id, fullname 
+            SELECT id, fullname
             FROM {course}
             ORDER BY id DESC", [$USER->id]);
         } else {
             $options = $DB->get_records_sql("
-              SELECT id, fullname 
-              FROM {course} 
-              WHERE id IN ( 
-                SELECT instanceid 
+              SELECT id, fullname
+              FROM {course}
+              WHERE id IN (
+                SELECT instanceid
                 FROM {context}
-                WHERE 
+                WHERE
                   id IN (
                     SELECT contextid
                     FROM {role_assignments}
-                    WHERE 
+                    WHERE
                       userid = ? AND roleid <= 4
-                ) AND 
+                ) AND
                 contextlevel = 50
             )
             ORDER BY id DESC", [$USER->id]);
@@ -69,47 +69,47 @@ class set_previous_course extends report_page_base {
         return $opts;
     }
 
-    private function setPrevCourse(int $courseid, int $prevCourseId) {
+    private function setprevcourse(int $courseid, int $prevcourseid) {
         global $DB, $USER;
 
-        $allowedCourses = $this->getUserCourses();
+        $allowedcourses = $this->getusercourses();
     }
 
     public function run(array $params): array {
         global $DB;
-        $selectedPrevCourse = $params['prev_course'];
+        $selectedprevcourse = $params['prev_course'];
         $courseid = $params['course'];
-        $prevId = query_helper::getCurrentPrevCourse($courseid);
+        $previd = query_helper::getCurrentPrevCourse($courseid);
 
-        if ($selectedPrevCourse !== -1) {
-            // user set a new previous course
-            echo '-- ' . $selectedPrevCourse . '--';
-            $userCourses = $this->getUserCourses();
-            if (array_key_exists($selectedPrevCourse, $userCourses)) {
-                // user is allowed to set this
-                if ($prevId === -1) {
-                    // there is no value set yet
+        if ($selectedprevcourse !== -1) {
+            // User set a new previous course.
+            echo '-- ' . $selectedprevcourse . '--';
+            $usercourses = $this->getusercourses();
+            if (array_key_exists($selectedprevcourse, $usercourses)) {
+                // User is allowed to set this.
+                if ($previd === -1) {
+                    // There is no value set yet.
                     $record = new stdClass();
                     $record->courseid  = $courseid;
-                    $record->prevcourseid = $selectedPrevCourse;
+                    $record->prevcourseid = $selectedprevcourse;
                     $DB->insert_record('local_learning_analytics_pre', $record);
                 } else {
-                    $DB->set_field('local_learning_analytics_pre', 'prevcourseid', $selectedPrevCourse, ['courseid' => $courseid]);
+                    $DB->set_field('local_learning_analytics_pre', 'prevcourseid', $selectedprevcourse, ['courseid' => $courseid]);
                 }
-                $backUrl = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $courseid]);
-                redirect($backUrl);
+                $backurl = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $courseid]);
+                redirect($backurl);
                 exit;
             }
         }
 
-        $courses = $this->getUserCourses();
+        $courses = $this->getusercourses();
 
         $output = html_writer::start_tag('form', ['method' => 'post']);
         $output .= html_writer::start_div('form-group');
         $output .= html_writer::select(
             $courses,
             'prev_course',
-            $prevId,
+            $previd,
             false
         );
         $output .= html_writer::tag('button', get_string('set', 'lareport_coursedashboard'), [

@@ -59,7 +59,8 @@ class provider implements
     public static function get_contexts_for_userid(int $userid): contextlist {
         $list = new contextlist();
 
-        $sql = "SELECT ctx.id
+        $sql = <<<SQL
+                SELECT ctx.id
                 FROM {course} c
                 JOIN (
                     SELECT DISTINCT e.courseid
@@ -67,7 +68,8 @@ class provider implements
                     JOIN {user_enrolments} ue ON (ue.enrolid = e.id AND ue.userid = :userid)
                 ) en ON (en.courseid = c.id)
                 LEFT JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = :contextlevel)
-                WHERE c.id <> :siteid";
+                WHERE c.id <> :siteid
+SQL;
 
         $params = [
                 'siteid' => SITEID,

@@ -31,11 +31,13 @@ use html_writer;
 
 use local_learning_analytics\output_base;
 
+defined('MOODLE_INTERNAL') || die;
+
 class table extends output_base {
 
     private $table;
 
-    private $ajax_rows;
+    private $ajaxrows;
 
     public function __construct() {
         $this->table = new html_table();
@@ -58,18 +60,18 @@ class table extends output_base {
         }
     }
 
-    public static function fancyNumberCell(float $value, float $maxValue, string $class, string $textValue = null) : string {
-        if ($textValue === null) {
-            $textValue = $value;
+    public static function fancynumbercell(float $value, float $maxvalue, string $class, string $textvalue = null) : string {
+        if ($textvalue === null) {
+            $textvalue = $value;
         }
-        $width = round(100 * $value / $maxValue);
-        return "${textValue}<div class='bar'><div class='segment ${class}' style='width:${width}%'></div></div>";
+        $width = round(100 * $value / $maxvalue);
+        return "${textvalue}<div class='bar'><div class='segment ${class}' style='width:${width}%'></div></div>";
     }
 
     /**
      * @return string
      */
-    function print(): string {
+    public function print(): string {
         global $PAGE;
 
         $id = 'la_table-' . random_string(4);

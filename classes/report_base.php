@@ -24,6 +24,8 @@
 
 namespace local_learning_analytics;
 
+defined('MOODLE_INTERNAL') || die;
+
 /**
  * Class report_base
  *

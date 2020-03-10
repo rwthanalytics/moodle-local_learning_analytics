@@ -31,7 +31,9 @@ use html_writer;
 
 use local_learning_analytics\output_base;
 
-class split extends output_base {
+defined('MOODLE_INTERNAL') || die;
+
+class splitter extends output_base {
 
     private $left;
     private $right;
@@ -41,7 +43,7 @@ class split extends output_base {
         $this->right = $right;
     }
 
-    function print(): string {
+    public function print(): string {
         global $PAGE;
 
         $renderer = $PAGE->get_renderer('local_learning_analytics');

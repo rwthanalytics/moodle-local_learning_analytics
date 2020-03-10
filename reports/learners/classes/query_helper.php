@@ -30,14 +30,14 @@ use context_course;
 
 class query_helper {
 
-    public static function query_learners_count(int $courseid, string $role_filter = '') : int {
+    public static function query_learners_count(int $courseid, string $rolefilter = '') : int {
         global $DB;
 
-        $sqlParams = [$courseid];
+        $sqlparams = [$courseid];
 
-        $roleFilterSql = '';
-        if ($role_filter !== '') {
-            $roleFilterSql = <<<SQL
+        $rolefiltersql = '';
+        if ($rolefilter !== '') {
+            $rolefiltersql = <<<SQL
                 JOIN {context} c
                     ON c.instanceid = e.courseid
                     AND c.contextlevel = 50
@@ -48,7 +48,7 @@ class query_helper {
                     ON ra.roleid = r.id
                     AND r.shortname = ?
 SQL;
-            $sqlParams = [$role_filter, $courseid];
+            $sqlparams = [$rolefilter, $courseid];
         }
 
         $query = <<<SQL
@@ -58,14 +58,13 @@ SQL;
                 ON ue.userid = u.id
             JOIN {enrol} e
                 ON e.id = ue.enrolid
-            {$roleFilterSql}
-            WHERE 
+            {$rolefiltersql}
+            WHERE
                 u.deleted = 0
                 AND e.courseid = ?;
 SQL;
 
-
-        return (int) $DB->get_field_sql($query, $sqlParams, MUST_EXIST);
+        return (int) $DB->get_field_sql($query, $sqlparams, MUST_EXIST);
     }
 
     public static function query_courseparticipation(int $courseid) : array {
@@ -79,7 +78,6 @@ SQL;
                 ON ue.userid = u.id
             JOIN {enrol} e
                 ON e.id = ue.enrolid
-                
             JOIN {user_enrolments} ue2
                 ON ue2.userid = u.id
             JOIN {enrol} e2
@@ -87,7 +85,6 @@ SQL;
                 AND e2.courseid <> e.courseid
             JOIN {course} co
                 ON co.id = e2.courseid
-            
             # only people enroled as students into the course
             JOIN {context} c
                 ON c.instanceid = e.courseid
@@ -98,7 +95,6 @@ SQL;
             JOIN {role} r
                 ON ra.roleid = r.id
                 AND r.shortname = 'student'
-                
             WHERE u.deleted = 0
                 AND e.courseid = ?
             GROUP BY co.id
@@ -124,7 +120,6 @@ SQL;
             JOIN {context} c
                 ON c.instanceid = e.courseid
                 AND c.contextlevel = 50
-            
             # only students
             JOIN {role_assignments} ra
                 ON ra.userid = u.id
@@ -132,7 +127,6 @@ SQL;
             JOIN {role} r
                 ON ra.roleid = r.id
                 AND r.shortname = 'student'
-            
             WHERE u.deleted = 0
                 AND e.courseid = ?
             GROUP BY u.{$type}

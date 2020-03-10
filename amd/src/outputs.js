@@ -1,7 +1,7 @@
 define(['core/ajax', 'jquery'], function (ajax, $) {
 
     // Load plotly from other directory
-    // guide: https://docs.moodle.org/dev/Guide_to_adding_third_party_jQuery_for_AMD
+    // guide: https://docs.moodle.org/dev/Guide_to_adding_third_party_jQuery_for_AMD.
     window.requirejs.config({
         paths: {
             'local_learning_analytics/plotly': M.cfg.wwwroot + '/local/learning_analytics/js/plotly.min',
