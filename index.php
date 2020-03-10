@@ -40,28 +40,28 @@ $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
 
-// Set URL to main path of analytics
+// Set URL to main path of analytics.
 $url = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $courseid]);
 $PAGE->set_url($url);
 
-// For now, all statistics are shown on course level
+// For now, all statistics are shown on course level.
 $course = get_course($courseid);
 $PAGE->set_course($course);
 
-// Set title of page
+// Set title of page.
 $coursename = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
 $title = $coursename . ': ' . get_string('learning_analytics', 'local_learning_analytics');
 $PAGE->set_title($title);
 
-$resulting_html = router::run($_SERVER['REQUEST_URI']);
+$resultinghtml = router::run($_SERVER['REQUEST_URI']);
 
 $output = $PAGE->get_renderer('local_learning_analytics');
 
 $PAGE->requires->css('/local/learning_analytics/static/styles.css');
-$mainOutput =  $output->render_from_template('local_learning_analytics/course', [
-    'content' => $resulting_html
+$mainoutput = $output->render_from_template('local_learning_analytics/course', [
+    'content' => $resultinghtml
 ]);
 
 echo $output->header();
-echo $mainOutput;
+echo $mainoutput;
 echo $output->footer();

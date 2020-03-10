@@ -41,27 +41,26 @@ class query_helper {
         if ($activity->id == SITEID) {
             throw new moodle_exception('invalidcourse');
         }
-        // only teachers and managers
+        // Only teachers and managers.
         require_capability('moodle/course:update', $context);
 
-        $valuesStatemt = [$courseid, CONTEXT_MODULE];
+        $valuesstatemt = [$courseid, CONTEXT_MODULE];
 
-        $filterSql = '';
+        $filtersql = '';
         if ($filter) {
-            $filterSql = ' AND ' . $filter;
-            $valuesStatemt = array_merge($valuesStatemt, $values);
+            $filtersql = ' AND ' . $filter;
+            $valuesstatemt = array_merge($valuesstatemt, $values);
         }
 
         $query = <<<SQL
         SELECT
-            COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modfolder.name, modwiki.name, 'Unknown') AS name,
-            m.name as modname,
-            cm.id AS cmid,
-            cm.instance AS objectid,
-            s.name AS section_name,
-            s.section AS section_pos,
-            m.visible,
-            COUNT(*) hits
+        COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modfolder.name, modwiki.name, 'Unknown')
+        AS name, m.name
+        As modname, cm.id
+        AS cmid, cm.instance
+        AS objectid, s.name
+        AS section_name, s.section
+        AS section_pos, m.visible, COUNT(*) hits
         FROM {modules} m
         JOIN {course_modules} cm
             ON cm.course = ?
@@ -97,11 +96,11 @@ class query_helper {
         LEFT JOIN {logstore_lanalytics_log} log
             ON log.courseid = cm.course
             AND log.contextid = ctx.id
-        WHERE m.name <> 'label' {$filterSql}
+        WHERE m.name <> 'label' {$filtersql}
         GROUP BY cm.id
         ORDER BY section_pos, cm.id
 SQL;
 
-        return $DB->get_records_sql($query, $valuesStatemt);
+        return $DB->get_records_sql($query, $valuesstatemt);
     }
 }

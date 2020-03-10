@@ -29,25 +29,27 @@ use moodle_url;
 use core_component;
 use html_writer;
 
+defined('MOODLE_INTERNAL') || die;
+
 class router {
 
     public static function run_report_or_page(
         $instance,
         $params,
-        string $report_name,
-        string $page_name = NULL
+        string $reportname,
+        string $pagename = null
     ) : string {
         global $PAGE;
 
         $outputs = $instance->run($params);
 
-        $title = get_string('pluginname', "lareport_{$report_name}");
-        if ($report_name !== 'coursedashboard') { // TODO dont hardcode this, set default for main report somewhere
-            $PAGE->navbar->add($title, self::report($report_name, $params));
+        $title = get_string('pluginname', "lareport_{$reportname}");
+        if ($reportname !== 'coursedashboard') { // TODO dont hardcode this, set default for main report somewhere.
+            $PAGE->navbar->add($title, self::report($reportname, $params));
         }
 
-        if ($page_name !== NULL) {
-            $pagename = get_string("pagename_{$page_name}", "lareport_{$report_name}");
+        if ($pagename !== null) {
+            $pagename = get_string("pagename_{$pagename}", "lareport_{$reportname}");
             $title = $pagename;
         }
 
@@ -65,35 +67,35 @@ class router {
     public static function run(string $url) : string {
         global $PAGE;
 
-        $report_regex = '/^\/reports\/([a-zA-Z0-9_]+)(\?.*)?$/';
-        $report_page_regex = '/^\/reports\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)(\?.*)?$/';
+        $reportregex = '/^\/reports\/([a-zA-Z0-9_]+)(\?.*)?$/';
+        $reportpageregex = '/^\/reports\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)(\?.*)?$/';
 
         $uri = new moodle_url($url);
         $slashargs = str_replace($uri->get_path(false), '', $uri->get_path(true));
 
-        $instance = NULL;
-        $report_name = NULL;
-        $page_name = NULL;
-        if (preg_match($report_page_regex, $slashargs, $matches)) { // page of report was called
-            $report_name = $matches[1];
-            $page_name = $matches[2];
-            $fqcn = "\\lareport_{$report_name}\\{$page_name}";
+        $instance = null;
+        $reportname = null;
+        $pagename = null;
+        if (preg_match($reportpageregex, $slashargs, $matches)) { // Page of report was called.
+            $reportname = $matches[1];
+            $pagename = $matches[2];
+            $fqcn = "\\lareport_{$reportname}\\{$pagename}";
             if (class_exists($fqcn)) {
                 $instance = new $fqcn();
             }
-        } else if (preg_match($report_regex, $slashargs, $matches)) { // report was called
-            $report_name = $matches[1];
-            $path = core_component::get_plugin_directory('lareport', $report_name);
-            $fqp = $path . DIRECTORY_SEPARATOR . "lareport_{$report_name}.php";
+        } else if (preg_match($reportregex, $slashargs, $matches)) { // Report was called.
+            $reportname = $matches[1];
+            $path = core_component::get_plugin_directory('lareport', $reportname);
+            $fqp = $path . DIRECTORY_SEPARATOR . "lareport_{$reportname}.php";
             if (file_exists($fqp)) {
                 require($fqp);
-                $class = "lareport_{$report_name}";
+                $class = "lareport_{$reportname}";
                 $instance = (new $class());
             }
         }
         if ($instance) {
             $params = $instance->params();
-            return self::run_report_or_page($instance, $params, $report_name, $page_name);
+            return self::run_report_or_page($instance, $params, $reportname, $pagename);
         }
         return get_string('reports:missing', 'local_learning_analytics');
     }

@@ -28,12 +28,12 @@ use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
 use lareport_learners\query_helper;
 use lareport_learners\helper;
-use lareport_learners\outputs\split;
+use lareport_learners\outputs\splitter;
 use local_learning_analytics\local\outputs\plot;
 
 class lareport_learners extends report_base {
 
-    private static $BAR_COLORS = [
+    private static $barcolors = [
         '#66b5ab',
         '#F26522',
         '#ffda6e',
@@ -41,14 +41,14 @@ class lareport_learners extends report_base {
         '#EA030E'
     ];
 
-    private static function createSeries($perc, $text, $i) {
+    private static function createseries($perc, $text, $i) {
         return [
             'y' => ['lang'],
             'x' => [$perc],
             'orientation' => 'h',
-            'hoverinfo' => 'none', // change to "text" to provide onhover information and make sure its not static
+            'hoverinfo' => 'none', // Change to "text" to provide onhover information and make sure its not static.
             'marker' => [
-                'color' => (self::$BAR_COLORS[$i % count(self::$BAR_COLORS)])
+                'color' => (self::$barcolors[$i % count(self::$barcolors)])
             ],
             'name' => $text,
             'type' => 'bar',
@@ -56,21 +56,21 @@ class lareport_learners extends report_base {
         ];
     }
 
-    private function langAndCountryPlot(int $courseid, string $type) {
-        $learnersCount = query_helper::query_learners_count($courseid, 'student');
+    private function langandcountryplot(int $courseid, string $type) {
+        $learnerscount = query_helper::query_learners_count($courseid, 'student');
 
         $languages = query_helper::query_localization($courseid, $type);
 
         $plot = new plot();
-        $langList = get_string_manager()->get_list_of_languages();
+        $langlist = get_string_manager()->get_list_of_languages();
 
-        $percSoFar = 0;
+        $percsofar = 0;
         $i = 0;
         foreach ($languages as $lang) {
-            $perc = round(100 * $lang->users / $learnersCount);
-            if ($perc > 3) { // otherwise it might be too small to display
+            $perc = round(100 * $lang->users / $learnerscount);
+            if ($perc > 3) { // Otherwise it might be too small to display.
                 $annotations[] = [
-                    'x' => ($percSoFar + ($perc / 2)),
+                    'x' => ($percsofar + ($perc / 2)),
                     'y' => 'lang',
                     'text' => $perc . '%',
                     'font' => [
@@ -82,19 +82,19 @@ class lareport_learners extends report_base {
                 ];
             }
             if ($type === 'lang') {
-                $annotText = $langList[$lang->x];
-            } else { // then its country
+                $annottext = $langlist[$lang->x];
+            } else { // Then its country.
                 if (empty($lang->x)) {
-                    $annotText = 'Unknown'; // no country set
+                    $annottext = 'Unknown'; // No country set.
                 } else {
-                    $annotText = get_string($lang->x, 'countries');
+                    $annottext = get_string($lang->x, 'countries');
                 }
             }
             $annotations[] = [
-                'x' => ($percSoFar + ($perc / 2)),
+                'x' => ($percsofar + ($perc / 2)),
                 'y' => 'lang',
                 'yshift' => 15,
-                'text' => $annotText,
+                'text' => $annottext,
                 'font' => [
                     'color' => '#000',
                     'size' => 16,
@@ -103,8 +103,8 @@ class lareport_learners extends report_base {
                 'xanchor' => 'center',
                 'yanchor' => 'bottom'
             ];
-            $percSoFar += $perc;
-            $series = self::createSeries($perc, $annotText, $i);
+            $percsofar += $perc;
+            $series = self::createseries($perc, $annottext, $i);
             $plot->add_series($series);
             $i++;
         }
@@ -124,26 +124,26 @@ class lareport_learners extends report_base {
         return $plot;
     }
 
-    private function languagesAndCountries(int $courseid): array {
+    private function languagesandcountries(int $courseid): array {
         $heading1 = get_string('languages_of_learners', 'lareport_learners');
         $heading2 = get_string('countries_of_learners', 'lareport_learners');
 
         return [
             "<h2>{$heading1}</h2>",
-            $this->langAndCountryPlot($courseid, 'lang'),
+            $this->langandcountryplot($courseid, 'lang'),
             "<h2>{$heading2}</h2>",
-            $this->langAndCountryPlot($courseid, 'country')
+            $this->langandcountryplot($courseid, 'country')
         ];
     }
 
     public function run(array $params): array {
         $courseid = $params['course'];
 
-        $headingTable = get_string('most_active_learners', 'lareport_learners');
+        $headingtable = get_string('most_active_learners', 'lareport_learners');
 
         return array_merge(
             helper::generateCourseParticipationList($courseid, 5),
-            $this->languagesAndCountries($courseid)
+            $this->languagesandcountries($courseid)
         );
     }
 

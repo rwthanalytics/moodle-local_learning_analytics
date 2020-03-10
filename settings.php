@@ -23,8 +23,8 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-$settings_folder = new admin_category('local_learning_analytics', get_string('pluginname', 'local_learning_analytics'), false);
+$settingsfolder = new admin_category('local_learning_analytics', get_string('pluginname', 'local_learning_analytics'), false);
 
-$ADMIN->add('localplugins', $settings_folder);
+$ADMIN->add('localplugins', $settingsfolder);
 
 $settings = null;
