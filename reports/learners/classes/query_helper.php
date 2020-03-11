@@ -67,7 +67,7 @@ SQL;
         return (int) $DB->get_field_sql($query, $sqlparams, MUST_EXIST);
     }
 
-    public static function query_courseparticipation(int $courseid) : array {
+    public static function query_courseparticipation(int $courseid, int $privacythreshold) : array {
         global $DB;
 
         $query = <<<SQL
@@ -98,11 +98,12 @@ SQL;
             WHERE u.deleted = 0
                 AND e.courseid = ?
             GROUP BY co.id
-            HAVING users > 1
+            HAVING users > ?
             ORDER BY users DESC;
 SQL;
 
-        return $DB->get_records_sql($query, [$courseid]);
+        $threshold = max(1, $privacythreshold);
+        return $DB->get_records_sql($query, [$courseid, $threshold]);
     }
 
     public static function query_localization(int $courseid, string $type) : array {

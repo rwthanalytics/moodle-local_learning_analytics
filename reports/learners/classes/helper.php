@@ -30,6 +30,7 @@ use lareport_learners\query_helper;
 use local_learning_analytics\router;
 use moodle_url;
 use paging_bar;
+use local_learning_analytics\settings;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -43,10 +44,10 @@ class helper {
     private static $parallelcoursebuffer = 31 * 24 * 60 * 60;
 
     public static function generatecourseparticipationlist(int $courseid, int $limit = -1) {
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $learnerscount = query_helper::query_learners_count($courseid, 'student');
-
-        $courses = query_helper::query_courseparticipation($courseid);
+        $courses = query_helper::query_courseparticipation($courseid, $privacythreshold);
 
         $tableprevious = new table();
         $tableprevious->set_header_local(['coursename', 'participated_before'],
@@ -60,6 +61,7 @@ class helper {
 
         $previousrows = 0;
         $parallelrows = 0;
+        $showexpandlink = false;
 
         foreach ($courses as $course) {
             $perc = round(100 * $course->users / $learnerscount);
@@ -78,16 +80,20 @@ class helper {
                 if ($limit === -1 || $previousrows < $limit) {
                     $tableprevious->add_row($row);
                     $previousrows++;
+                } else if ($previousrows >= $limit) {
+                    $showexpandlink = true;
                 }
             } else if ($course->startdate < ($coursestartdate + self::$parallelcoursebuffer)) {
                 if ($limit === -1 || $parallelrows < $limit) {
                     $tableparallel->add_row($row);
                     $parallelrows++;
+                } else if ($previousrows >= $limit) {
+                    $showexpandlink = true;
                 }
             }
         }
 
-        if ($limit !== -1) {
+        if ($limit !== -1 && $showexpandlink) {
             $linktofulllist = router::report_page('learners', 'courseparticipation', ['course' => $courseid]);
             $tableprevious->add_show_more_row($linktofulllist);
             $tableparallel->add_show_more_row($linktofulllist);
@@ -100,7 +106,8 @@ class helper {
             new splitter(
                 ["<h3>{$headingprevious}</h3>", $tableprevious],
                 ["<h3>{$headingparallel}</h3>", $tableparallel]
-            )
+            ),
+            get_string('above_lists_only_show_courses_with_more_than_threshold_users', 'lareport_learners', $privacythreshold)
         ];
     }
 }
