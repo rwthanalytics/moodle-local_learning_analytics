@@ -33,7 +33,7 @@ abstract class settings {
     ];
 
     public static function get_config(string $configkey) {
-        $value = get_config($configkey, 'local_learning_analytics');
+        $value = get_config('local_learning_analytics', $configkey);
         if ($value === false) {
             return self::DEFAULTS[$configkey];
         }
