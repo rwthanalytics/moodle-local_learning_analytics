@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Settings page for local_learning_analytics
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
@@ -23,8 +23,16 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-$settingsfolder = new admin_category('local_learning_analytics', get_string('pluginname', 'local_learning_analytics'), false);
+if ( $hassiteconfig ){
+    $settings = new admin_settingpage('local_learning_analytics', get_string('pluginname', 'local_learning_analytics'));
 
-$ADMIN->add('localplugins', $settingsfolder);
+    $ADMIN->add('localplugins', $settings);
 
-$settings = null;
+    $settings->add(new admin_setting_configtext(
+        'local_learning_analytics/dataprivacy_threshold',
+        get_string('dataprivacy_threshold', 'local_learning_analytics'),
+        get_string('dataprivacy_threshold_description', 'local_learning_analytics'),
+        '10', // default value
+        PARAM_INT
+    ));
+}
