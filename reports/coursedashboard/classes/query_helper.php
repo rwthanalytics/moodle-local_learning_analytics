@@ -157,7 +157,7 @@ SQL;
         return $percentage;
     }
 
-    public static function query_most_clicked_activity(int $courseid) {
+    public static function query_most_clicked_activity(int $courseid, $privacythreshold) {
         global $DB;
 
         $date = new \DateTime();
@@ -182,11 +182,12 @@ SQL;
             AND l.contextid = ctx.id
         WHERE l.timecreated > ?
         GROUP BY cm.id
+        HAVING hits > ?
         ORDER BY hits DESC
         LIMIT 1
 SQL;
 
-        $row = $DB->get_record_sql($query, [$courseid, $oneweekago]);
+        $row = $DB->get_record_sql($query, [$courseid, $oneweekago, $privacythreshold]);
         if (!$row) {
             return null;
         }

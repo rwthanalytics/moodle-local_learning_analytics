@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\report_base;
 use lareport_coursedashboard\query_helper;
+use local_learning_analytics\settings;
 
 class lareport_coursedashboard extends report_base {
 
@@ -53,6 +54,7 @@ class lareport_coursedashboard extends report_base {
         if ($prevcourseid !== -1) {
             $weekslastyear = query_helper::query_weekly_activity($prevcourseid);
         }
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $plot = new plot();
         $x = [];
@@ -106,7 +108,7 @@ class lareport_coursedashboard extends report_base {
 
         for ($i = $xmin; $i <= $xmax; $i++) {
             $week = $weeks[$i] ?? new stdClass();
-            $weekly = $weekslastyear[$i] ?? new stdClass();
+            $weekly = $weekslastyear[$i] ?? new stdClass(); // weekly = "Week Last Year".
 
             $weeknumber = ($i <= 0) ? ($i - 1) : $i;
 
@@ -115,7 +117,15 @@ class lareport_coursedashboard extends report_base {
             $ticktext[] = $weeknumber;
 
             $clickcount = $week->clicks ?? 0;
-            $ylyclicks[] = $weekly->clicks ?? 0;
+            $clickcountly = $weekly->clicks ?? 0;
+            if ($clickcount < $privacythreshold) {
+                $clickcount = 0;
+            }
+            if ($clickcountly < $privacythreshold) {
+                $clickcountly = 0;
+            }
+
+            $ylyclicks[] = $clickcountly;
 
             $startofweektimestamp = $date->getTimestamp();
             $date->modify('+6 days');
@@ -126,7 +136,12 @@ class lareport_coursedashboard extends report_base {
 
                 $weekstarttext = userdate($startofweektimestamp, $dateformat);
                 $weekendtext = userdate($date->getTimestamp(), $dateformat);
-                $texts[] = "<b>{$tstrweek} {$weeknumber}</b> ({$weekstarttext} - {$weekendtext})<br><br>{$clickcount} {$strclicks}";
+                $textClicks = $clickcount;
+                if ($clickcount < $privacythreshold) {
+                    $textClicks = "< {$privacythreshold}";
+                }
+
+                $texts[] = "<b>{$tstrweek} {$weeknumber}</b> ({$weekstarttext} - {$weekendtext})<br><br>{$textClicks} {$strclicks}";
                 $lastweekinpast = $i;
             }
 
@@ -294,6 +309,9 @@ class lareport_coursedashboard extends report_base {
             $titlestr = "<a href='{$link}'>{$titlestr}</a>";
             $icon = "<a href='{$link}'>{$icon}</a>";
         }
+        if ($change === '') {
+            $change = '&nbsp;';
+        }
 
         $appendedtext = ($titlekey === 'registered_users') ? '' : " <span class='dashboardbox-timespan'>(last 7 days)</span>";
         return "
@@ -312,7 +330,7 @@ class lareport_coursedashboard extends report_base {
         ";
     }
 
-    private function boxoutput(string $title, int $number, int $diff, int $courseid, string $report = null) {
+    private function boxoutput(string $title, $value, int $diff, int $courseid, string $report = null) {
         $difftriangle = '';
         $difftext = $diff;
         if ($diff === 0) {
@@ -324,7 +342,7 @@ class lareport_coursedashboard extends report_base {
             $difftriangle = '<span class="dashboardbox-change-down">▼</span>';
         }
 
-        return $this->boxoutputraw($title, $number, "{$difftriangle} {$difftext}", $courseid, $report);
+        return $this->boxoutputraw($title, $value, "{$difftriangle} {$difftext}", $courseid, $report);
     }
 
     private function registeredusercount(int $courseid) : array {
@@ -340,11 +358,17 @@ class lareport_coursedashboard extends report_base {
     private function clickcount(int $courseid) : array {
         $counts = query_helper::query_click_count($courseid);
 
-        $hits = $counts['hits'];
+        $linkedreport = 'dummy';
 
-        return [
-            $this->boxoutput('click_count', $hits[1], ($hits[1] - $hits[0]), $courseid, 'dummy')
-        ];
+        $hits = $counts['hits'];
+        $hitsLast7Days = $hits[1];
+        $hitsdiff = $hits[1] - $hits[0];
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
+        if ($hitsLast7Days < $privacythreshold) {
+            return [ $this->boxoutputraw('click_count', '< ' . $privacythreshold, '', $courseid, $linkedreport) ];
+        }
+
+        return [ $this->boxoutput('click_count', $hitsLast7Days, $hitsdiff, $courseid, $linkedreport) ];
     }
 
     private function mobileevents(int $courseid) : array {
@@ -362,13 +386,14 @@ class lareport_coursedashboard extends report_base {
     }
 
     private function mostclickedactivity(int $courseid) : array {
-        $module = query_helper::query_most_clicked_activity($courseid);
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
+        $strclicks = get_string('clicks', 'lareport_coursedashboard');
+        $module = query_helper::query_most_clicked_activity($courseid, $privacythreshold);
         if ($module === null) {
             return [
                 $this->boxoutputraw(
                     'most_clicked_module',
-                    'N/A', get_string('no_clicks',
-                    'lareport_coursedashboard'),
+                    'N/A', "< {$privacythreshold} {$strclicks}",
                 $courseid)
             ];
         }
@@ -378,8 +403,10 @@ class lareport_coursedashboard extends report_base {
 
         $modtitle = $mod->get_context_name(false);
         $modlink = "<a href='{$modurl}'>{$modtitle}</a>";
-        $strclicks = get_string('clicks', 'lareport_coursedashboard');
         $hitsstr = $module['hits'] . " {$strclicks}";
+        if ($module['hits'] < $privacythreshold) {
+            $hitsstr = "< {$privacythreshold} {$strclicks}";
+        }
 
         return [ $this->boxoutputraw('most_clicked_module', $modlink, $hitsstr, $courseid, 'activities') ];
     }
