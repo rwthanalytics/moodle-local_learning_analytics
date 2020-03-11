@@ -49,7 +49,6 @@ class lareport_coursedashboard extends report_base {
 
         $weeks = query_helper::query_weekly_activity($courseid);
 
-        // TODO Set to [] if we dont want to compare.
         $weekslastyear = [];
         if ($prevcourseid !== -1) {
             $weekslastyear = query_helper::query_weekly_activity($prevcourseid);
@@ -414,23 +413,30 @@ class lareport_coursedashboard extends report_base {
     public function run(array $params): array {
         global $PAGE, $DB;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
+        $showcompare = settings::get_config('allow_dashboard_compare');
 
         $courseid = $params['course'];
-        $previd = query_helper::getCurrentprevcourse($courseid);
-        $setcomparelink = new moodle_url(
-            '/local/learning_analytics/index.php/reports/coursedashboard/set_previous_course',
-            ['course' => $courseid]
-        );
 
-        $setcomparelinktext = 'Set course to compare';
-        if ($previd !== -1) {
-            $prevcourse = $DB->get_record('course', ['id' => $previd]);
-            $setcomparelinktext = "Comparing to: {$prevcourse->fullname}";
+        $comparetext = [];
+        $previd = -1;
+        if ($showcompare) {
+            $previd = query_helper::getCurrentprevcourse($courseid);
+            $setcomparelink = new moodle_url(
+                '/local/learning_analytics/index.php/reports/coursedashboard/set_previous_course',
+                ['course' => $courseid]
+            );
+    
+            $setcomparelinktext = 'Set course to compare';
+            if ($previd !== -1) {
+                $prevcourse = $DB->get_record('course', ['id' => $previd]);
+                $setcomparelinktext = "Comparing to: {$prevcourse->fullname}";
+            }
+            $comparetext = ["<div class='coursedashboard-compare'><a href='{$setcomparelink}'>{$setcomparelinktext}</a></div>"];
         }
 
         return array_merge(
             $this->activiyoverweeks($courseid, $previd),
-            ["<div class='coursedashboard-compare'><a href='{$setcomparelink}'>{$setcomparelinktext}</a></div>"],
+            $comparetext,
             ["<div class='container-fluid'><div class='row'>"],
             $this->registeredusercount($courseid),
             $this->clickcount($courseid),

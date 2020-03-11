@@ -30,6 +30,7 @@ use local_learning_analytics\local\outputs\table;
 use html_writer;
 use moodle_url;
 use stdClass;
+use local_learning_analytics\settings;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -77,13 +78,18 @@ class set_previous_course extends report_page_base {
 
     public function run(array $params): array {
         global $DB;
+
+        $showcompare = settings::get_config('allow_dashboard_compare');
+        if (!$showcompare) {
+            return ['Disabled'];
+        }
+
         $selectedprevcourse = $params['prev_course'];
         $courseid = $params['course'];
         $previd = query_helper::getCurrentPrevCourse($courseid);
 
         if ($selectedprevcourse !== -1) {
             // User set a new previous course.
-            echo '-- ' . $selectedprevcourse . '--';
             $usercourses = $this->getusercourses();
             if (array_key_exists($selectedprevcourse, $usercourses)) {
                 // User is allowed to set this.

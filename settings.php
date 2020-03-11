@@ -23,7 +23,7 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-if ( $hassiteconfig ){
+if ($hassiteconfig) {
     $settings = new admin_settingpage('local_learning_analytics', get_string('pluginname', 'local_learning_analytics'));
 
     $ADMIN->add('localplugins', $settings);
@@ -35,4 +35,12 @@ if ( $hassiteconfig ){
         '10', // default value
         PARAM_INT
     ));
+
+    $settings->add(new admin_setting_configcheckbox(
+        'local_learning_analytics/allow_dashboard_compare',
+        get_string('allow_dashboard_compare', 'local_learning_analytics'),
+        get_string('allow_dashboard_compare_description', 'local_learning_analytics'),
+        0
+    ));
+
 }
