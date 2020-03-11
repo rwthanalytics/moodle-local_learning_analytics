@@ -27,15 +27,16 @@ namespace lareport_activities;
 use local_learning_analytics\report_page_base;
 use lareport_activities\query_helper;
 use local_learning_analytics\local\outputs\table;
+use local_learning_analytics\settings;
 
 defined('MOODLE_INTERNAL') || die;
 
 class all extends report_page_base {
 
     public function run(array $params): array {
-
         $courseid = (int) $params['course'];
         $activities = query_helper::query_activities($courseid);
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         // Find max values.
         $maxhits = 1;
@@ -51,11 +52,13 @@ class all extends report_page_base {
             if (!$activity->visible) {
                 $namecell = '<del>${$namecell}</del>';
             }
+            $cellcontent = ($activity->hits < $privacythreshold) ?
+                " < {$privacythreshold}" : table::fancyNumberCell((int) $activity->hits, $maxhits, 'orange');
             $tabledetails->add_row([
                 $namecell,
                 $activity->modname,
                 $activity->section_name,
-                table::fancyNumberCell((int) $activity->hits, $maxhits, 'orange')
+                $cellcontent
             ]);
         }
 

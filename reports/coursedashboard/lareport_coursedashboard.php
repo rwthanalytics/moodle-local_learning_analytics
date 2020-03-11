@@ -394,7 +394,7 @@ class lareport_coursedashboard extends report_base {
                 $this->boxoutputraw(
                     'most_clicked_module',
                     'N/A', "< {$privacythreshold} {$strclicks}",
-                $courseid)
+                $courseid, 'activities')
             ];
         }
 

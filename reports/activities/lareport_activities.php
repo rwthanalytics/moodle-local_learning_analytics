@@ -29,6 +29,7 @@ use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
 use lareport_activities\query_helper;
 use local_learning_analytics\router;
+use local_learning_analytics\settings;
 
 class lareport_activities extends report_base {
 
@@ -52,7 +53,8 @@ class lareport_activities extends report_base {
     private static $markercolortextdefault = 'gray';
 
     public function run(array $params): array {
-        $courseid = (int) $params['course'];
+        $courseid = $params['course'];
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $filter = '';
         $filtervalues = [];
@@ -90,14 +92,17 @@ class lareport_activities extends report_base {
 
         foreach ($hitsbytype as $item) {
             $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
-            $tabletypes->add_row([
-                "<a href='{$url}'>{$item['type']}</a>",
-                table::fancyNumberCell(
-                    (int) $item['hits'],
-                    $maxhitsbytype,
-                    self::$markercolorstext[$item['type']] ?? self::$markercolortextdefault
-                )
-            ]);
+            $hits = floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold;
+            if ($hits >= $privacythreshold) {
+                $tabletypes->add_row([
+                    "<a href='{$url}'>{$item['type']}</a>",
+                    table::fancyNumberCell(
+                        $hits,
+                        $maxhitsbytype,
+                        self::$markercolorstext[$item['type']] ?? self::$markercolortextdefault
+                    )
+                ]);
+            }
         }
 
         if (!empty($params['mod'])) {
@@ -110,11 +115,13 @@ class lareport_activities extends report_base {
 
         $x = [];
         $y = [];
+        $texts = [];
         $markercolors = [];
 
         foreach ($activities as $activity) {
             $x[] = $activity->name;
-            $y[] = $activity->hits;
+            $y[] = $activity->hits < $privacythreshold ? 0 : $activity->hits;
+            $texts[] = $activity->hits < $privacythreshold ? "< {$privacythreshold}" : $activity->hits;
             $markercolors[] = self::$markercolors[$activity->modname] ?? self::$markercolordefault;
         }
 
@@ -133,16 +140,18 @@ class lareport_activities extends report_base {
             if (!$activity->visible) {
                 $namecell = '<del>${$namecell}</del>';
             }
-            $tabledetails->add_row([
-                $namecell,
-                $activity->modname,
-                $activity->section_name,
-                table::fancyNumberCell(
-                    (int) $activity->hits,
-                    $maxhits,
-                    self::$markercolorstext[$activity->modname] ?? self::$markercolortextdefault
-                )
-            ]);
+            if ($activity->hits >= $privacythreshold) {
+                $tabledetails->add_row([
+                    $namecell,
+                    $activity->modname,
+                    $activity->section_name,
+                    table::fancyNumberCell(
+                        (int) $activity->hits,
+                        $maxhits,
+                        self::$markercolorstext[$activity->modname] ?? self::$markercolortextdefault
+                    )
+                ]);
+            }
         }
 
         $linktofulllist = router::report_page('activities', 'all', ['course' => $courseid]);
@@ -155,6 +164,8 @@ class lareport_activities extends report_base {
             'type' => 'bar',
             'x' => $x,
             'y' => $y,
+            'text' => $texts,
+            'hoverinfo' => 'text',
             'marker' => [
                 'color' => $markercolors
             ]
@@ -171,7 +182,7 @@ class lareport_activities extends report_base {
     public function params(): array {
         return [
             'course' => required_param('course', PARAM_INT),
-            'prev_course' => optional_param('mod', null, PARAM_INT)
+            'mod' => optional_param('mod', null, PARAM_RAW)
         ];
     }
 }
