@@ -15,16 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version info for daily actions lalog
+ * Strings for lalog_browser_os
  *
- * @package     logstore_lanalytics
+ * @package     lalog_browser_os
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component = 'lalog_course_mobile';
-
-$plugin->version = 2020021700;
-$plugin->requires = '2017111302';
+$string['pluginname'] = 'Course Browser/OS Log';
