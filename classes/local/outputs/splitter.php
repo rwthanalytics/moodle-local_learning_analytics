@@ -22,7 +22,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace lareport_learners\outputs;
+namespace local_learning_analytics\local\outputs;
 
 use coding_exception;
 

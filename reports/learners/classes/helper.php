@@ -24,7 +24,7 @@
 
 namespace lareport_learners;
 
-use lareport_learners\outputs\splitter;
+use local_learning_analytics\local\outputs\splitter;
 use local_learning_analytics\local\outputs\table;
 use lareport_learners\query_helper;
 use local_learning_analytics\router;

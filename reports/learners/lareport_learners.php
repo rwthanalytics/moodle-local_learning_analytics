@@ -28,7 +28,7 @@ use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
 use lareport_learners\query_helper;
 use lareport_learners\helper;
-use lareport_learners\outputs\splitter;
+use local_learning_analytics\local\outputs\splitter;
 use local_learning_analytics\local\outputs\plot;
 
 class lareport_learners extends report_base {
