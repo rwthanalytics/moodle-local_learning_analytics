@@ -21,11 +21,11 @@
  * @copyright  2014 YOUR NAME
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace learning_analytics\event;
+namespace local_learning_analytics\event;
 defined('MOODLE_INTERNAL') || die();
 class course_module_viewed extends \core\event\course_module_viewed {
     protected function init() {
-        $this->data['objecttable'] = 'learning_analytics';
+        $this->data['objecttable'] = 'local_learning_analytics';
         parent::init();
     }
 }
