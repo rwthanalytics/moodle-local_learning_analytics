@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
 use local_learning_analytics\local\outputs\plot;
+use local_learning_analytics\local\outputs\splitter;
 
 const STRINGS = [
     'platform' => [
@@ -142,12 +143,44 @@ class lareport_browser_os extends report_base {
         if ($i === 0) {
             return [''];
         }
-        return [$plot];
+        return [
+            "<h2>{$entrykey}</h2>", // TODO language keys
+            $plot
+        ];
     }
 
-    private function platformplot(int $courseid) {
+    private function desktop_browsers(array $browsers) {
         global $DB;
 
+        $maxhits = 0;
+        foreach ($browsers as $hits) {
+            if ($hits >= 1) { // TODO privacy
+                $maxhits += $hits;
+            }
+        }
+        $table = new table();
+        $table->set_header_local(['browser_name', 'hits'], 'lareport_activities');
+
+        foreach ($browsers as $browserkey => $hits) {
+            if ($hits < 1) { // TODO privacy
+                continue;
+            }
+            $table->add_row([
+                $browserkey,
+                $table::fancyNumberCell($hits, $maxhits, 'orange')
+            ]);
+        }
+
+        return [
+            '<h2>Desktop Browser Use</h2>',
+            $table
+        ];
+    }
+
+    public function run(array $params): array {
+        global $DB;
+
+        $courseid = $params['course'];
         $result = $DB->get_record('lalog_browser_os', ['courseid' => $courseid], '*', MUST_EXIST);
 
         $results = [
@@ -165,19 +198,22 @@ class lareport_browser_os extends report_base {
             $target = substr($key, $separatorindex + 1);
             $results[$prefix][$target] = $value;
         }
-        rsort($results['browser']);
+
+        arsort($results['browser']);
 
         return array_merge(
+            ["<div class='container-fluid'><div class='row'><div class='col-12'>"],
             self::createplot($results, 'platform'),
-            self::createplot($results, 'os'),
-            self::createplot($results, 'mobile')
+            ["</div></div></div><div class='container-fluid'><div class='row'><div class='col-12'>"],
+            self::desktop_browsers($results['browser']),
+            ["</div></div></div>"],
+            [
+                new splitter(
+                    self::createplot($results, 'os'),
+                    self::createplot($results, 'mobile')
+                )
+            ]
         );
-    }
-
-    public function run(array $params): array {
-        $courseid = $params['course'];
-
-        return $this->platformplot($courseid);
     }
 
     public function params(): array {
