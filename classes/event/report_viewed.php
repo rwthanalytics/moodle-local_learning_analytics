@@ -23,9 +23,17 @@
  */
 namespace local_learning_analytics\event;
 defined('MOODLE_INTERNAL') || die();
-class course_module_viewed extends \core\event\course_module_viewed {
+class report_viewed extends \core\event\base {
+
     protected function init() {
+        $this->data['crud'] = 'r';
+        $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'local_learning_analytics';
-        parent::init();
+    }
+
+    protected function validate_data() {
+        if (!isset($this->data['objecttable'])) {
+            throw new \coding_exception('The objecttable must be set in $data.');
+        }
     }
 }
