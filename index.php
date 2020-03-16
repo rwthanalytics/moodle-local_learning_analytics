@@ -66,14 +66,9 @@ $mainOutput =  $output->render_from_template('local_learning_analytics/course', 
 echo $output->header();
 echo $mainOutput;
 echo $output->footer();
-
-var_dump("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+var_dump(context_coursecat::instance($category->id));
 $event = report_viewed::create(array(
-    'context' => CONTEXT_MODULE,
+    'contextid' => 26 //get context id from report     https://docs.moodle.org/dev/Access_API
 ));
-var_dump("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 $event->add_record_snapshot('course', $PAGE->course);
-// In the next line you can use $PAGE->activityrecord if you have set it, or skip this line if you don't have a record.
-$event->add_record_snapshot($PAGE->cm->modname, $activityrecord);
 $event->trigger();
-var_dump("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
