@@ -6,10 +6,13 @@
 - [x] **Make `logstore_lanalytics` a dependency of this plugin**
 - [x] **Give option to disable "Set course to compare" (as this makes no sense without data currently)**
 - [x] Make "Activities" box link to activity report even if no recently used activiy exists
-- [ ] Report: Browser/mobile usage in course
-  - [ ] Integrate Moodle-API into desktop/mobile statitics
+- [x] Report: Browser/mobile usage in course
+  - [x] Integrate Moodle-API into desktop/mobile statitics
+  - [ ] Add language keys
 - [ ] **Add event `view_analytics` (or a similar event)**
-- [ ] **Add English text for all missing strings**
+- [ ] Check localization
+  - [ ] **Add English text for all missing strings**
+  - [ ] **Add German texts for all missing strings**
 - [ ] Update README
 - [ ] Add information to tables: "Only data > 10 is shown"
 

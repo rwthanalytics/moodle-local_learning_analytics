@@ -28,6 +28,7 @@ use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
 use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\splitter;
+use local_learning_analytics\settings;
 
 const STRINGS = [
     'platform' => [
@@ -83,13 +84,13 @@ class lareport_browser_os extends report_base {
         ];
     }
 
-    private static function createplot(array $results, string $entrykey) {
+    private static function createplot(array $results, string $entrykey, $privacythreshold) {
         $entries = $results[$entrykey];
 
         $annotations = [];
         $total = 0;
         foreach ($entries as $value) {
-            if ($value >= 1) { // TODO privacy
+            if ($value >= $privacythreshold) {
                 $total += $value;
             }
         }
@@ -99,7 +100,7 @@ class lareport_browser_os extends report_base {
         $i = 0;
         $percsofar = 0;
         foreach ($entries as $key => $value) {
-            if ($value < 1) { // TODO privacy
+            if ($value < $privacythreshold) {
                 continue;
             }
             $perc = round(100 * $value / $total);
@@ -149,12 +150,12 @@ class lareport_browser_os extends report_base {
         ];
     }
 
-    private function desktop_browsers(array $browsers) {
+    private function desktop_browsers(array $browsers, $privacythreshold) {
         global $DB;
 
         $maxhits = 0;
         foreach ($browsers as $hits) {
-            if ($hits >= 1) { // TODO privacy
+            if ($hits >= $privacythreshold) {
                 $maxhits += $hits;
             }
         }
@@ -162,7 +163,7 @@ class lareport_browser_os extends report_base {
         $table->set_header_local(['browser_name', 'hits'], 'lareport_activities');
 
         foreach ($browsers as $browserkey => $hits) {
-            if ($hits < 1) { // TODO privacy
+            if ($hits < $privacythreshold) {
                 continue;
             }
             $table->add_row([
@@ -172,12 +173,13 @@ class lareport_browser_os extends report_base {
         }
 
         return [
-            '<h3>Desktop Browser Use</h3>',
+            '<h3>Desktop Browser Use</h3>', // TODO language keys
             $table
         ];
     }
 
     public function run(array $params): array {
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
         global $DB;
 
         $courseid = $params['course'];
@@ -203,14 +205,14 @@ class lareport_browser_os extends report_base {
 
         return array_merge(
             ["<div class='row'><div class='col-12'>"],
-            self::createplot($results, 'platform'),
+            self::createplot($results, 'platform', $privacythreshold),
             ["</div></div><div class='row'><div class='col-12'>"],
-            self::desktop_browsers($results['browser']),
+            self::desktop_browsers($results['browser'], $privacythreshold),
             ["</div></div>"],
             [
                 new splitter(
-                    self::createplot($results, 'os'),
-                    self::createplot($results, 'mobile')
+                    self::createplot($results, 'os', $privacythreshold),
+                    self::createplot($results, 'mobile', $privacythreshold)
                 )
             ]
         );
