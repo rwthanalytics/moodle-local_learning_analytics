@@ -437,11 +437,11 @@ class lareport_coursedashboard extends report_base {
         return array_merge(
             $this->activiyoverweeks($courseid, $previd),
             $comparetext,
-            ["<div class='container-fluid'><div class='row'>"],
+            ["<div class='row'>"],
             $this->registeredusercount($courseid),
             $this->clickcount($courseid),
             $this->mostclickedactivity($courseid),
-            ["</div></div>"]
+            ["</div>"]
         );
     }
 

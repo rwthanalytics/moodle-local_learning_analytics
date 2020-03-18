@@ -129,9 +129,9 @@ class lareport_learners extends report_base {
         $heading2 = get_string('countries_of_learners', 'lareport_learners');
 
         return [
-            "<h2>{$heading1}</h2>",
+            "<h3>{$heading1}</h3>",
             $this->langandcountryplot($courseid, 'lang'),
-            "<h2>{$heading2}</h2>",
+            "<h3>{$heading2}</h3>",
             $this->langandcountryplot($courseid, 'country')
         ];
     }

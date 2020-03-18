@@ -53,10 +53,14 @@ class router {
             $title = $pagename;
         }
 
-        $ret = html_writer::tag('h2', $title);
+        $ret = "<div class='container-fluid'>"
+            . "<div class='row'><div class='col'>"
+            . html_writer::tag('h2', $title)
+            . "</div></div><div class='w-100'><hr></div>";
 
         $renderer = $PAGE->get_renderer('local_learning_analytics');
         $ret .= $renderer->render_output_list($outputs);
+        $ret .= "</div>";
         return $ret;
     }
 

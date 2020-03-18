@@ -144,7 +144,7 @@ class lareport_browser_os extends report_base {
             return [''];
         }
         return [
-            "<h2>{$entrykey}</h2>", // TODO language keys
+            "<h3>{$entrykey}</h3>", // TODO language keys
             $plot
         ];
     }
@@ -172,7 +172,7 @@ class lareport_browser_os extends report_base {
         }
 
         return [
-            '<h2>Desktop Browser Use</h2>',
+            '<h3>Desktop Browser Use</h3>',
             $table
         ];
     }
@@ -202,11 +202,11 @@ class lareport_browser_os extends report_base {
         arsort($results['browser']);
 
         return array_merge(
-            ["<div class='container-fluid'><div class='row'><div class='col-12'>"],
+            ["<div class='row'><div class='col-12'>"],
             self::createplot($results, 'platform'),
-            ["</div></div></div><div class='container-fluid'><div class='row'><div class='col-12'>"],
+            ["</div></div><div class='row'><div class='col-12'>"],
             self::desktop_browsers($results['browser']),
-            ["</div></div></div>"],
+            ["</div></div>"],
             [
                 new splitter(
                     self::createplot($results, 'os'),

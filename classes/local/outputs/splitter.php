@@ -50,14 +50,12 @@ class splitter extends output_base {
         $code1 = $renderer->render_output_list($this->left);
         $code2 = $renderer->render_output_list($this->right);
 
-        $html = "<div class='container-fluid'>
-            <div class='row'>
-                <div class='col-sm-6'>
-                {$code1}
-                </div>
-                <div class='col-sm-6'>
-                {$code2}
-                </div>
+        $html = "<div class='row'>
+            <div class='col-sm-6'>
+            {$code1}
+            </div>
+            <div class='col-sm-6'>
+            {$code2}
             </div>
         </div>";
 
