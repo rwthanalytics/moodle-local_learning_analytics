@@ -66,9 +66,23 @@ $mainOutput =  $output->render_from_template('local_learning_analytics/course', 
 echo $output->header();
 echo $mainOutput;
 echo $output->footer();
-var_dump(context_coursecat::instance($category->id));
+
+$coursecontextid = $context->id;
+$sql1 = <<<SQL
+    SELECT path
+    FROM mdl_context
+    WHERE id = '$coursecontextid'
+SQL;
+$coursepath = $DB->get_record_sql($sql1);
+$sqlhelper = '%'.$coursepath->path.'/'.'%';
+$sql2 = <<<SQL
+    SELECT id
+    FROM mdl_context
+    WHERE path LIKE '$sqlhelper'
+SQL;
+$realcontextid = $DB->get_record_sql($sql2)->id;
 $event = report_viewed::create(array(
-    'contextid' => 26 //get context id from report     https://docs.moodle.org/dev/Access_API
+    'contextid' => $realcontextid
 ));
 $event->add_record_snapshot('course', $PAGE->course);
 $event->trigger();
