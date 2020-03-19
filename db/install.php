@@ -22,20 +22,25 @@
      * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
      */
 
-    define('CLI_SCRIPT', true);
+    //define('CLI_SCRIPT', true);
 
-    $insertarray = array();
-    $reports = array(1 => 'coursedashboard', 2 => 'activities', 3 => 'learners', 4 => 'topmodules');
-    foreach($reports as $report) {
-        array_push($insertarray, set_entry($id, $report));
-    }
     global $DB;
-    $DB->connect($CFG->dbhost, $CFG->dbuser, $CFG->dbpass, $CFG->dbname, $CFG->prefix, ['bulkinsertsize' => 5000]);
+    $datas = $DB->get_records('local_learning_analytics_rep');
+    $dataarray = array();
+    foreach($datas as $data){
+        array_push($dataarray, $data->reportname);
+    }
+    $insertarray = array();
+    $reports = array('coursedashboard', 'activities', 'learners', 'topmodules');
+    foreach($reports as $report) {
+        if(!in_array($report, $dataarray)) {
+            array_push($insertarray, set_entry($report));
+        }
+    }
     $DB->insert_records('local_learning_analytics_rep', $insertarray);
 
-    function set_entry($id, $report) {
+    function set_entry($report) {
         $entr = new \stdClass();
-        $entr->id = $id;
         $entr->reportname = $report;
         return $entr;
     }
