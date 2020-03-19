@@ -28,12 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 
 class query_helper {
 
-    public static function getCurrentPrevCourse(int $courseid): int {
+    public static function getcurrentprevcourse(int $courseid): int {
         global $DB;
 
-        $prevId = $DB->get_record('local_learning_analytics_pre', ['courseid' => $courseid]);
-        if (isset($prevId->prevcourseid)) {
-            return $prevId->prevcourseid;
+        $previd = $DB->get_record('local_learning_analytics_pre', ['courseid' => $courseid]);
+        if (isset($previd->prevcourseid)) {
+            return $previd->prevcourseid;
         } else {
             return -1;
         }
@@ -46,14 +46,14 @@ class query_helper {
 
         $startdate = new \DateTime();
         $startdate->setTimestamp($course->startdate);
-        $startdate->modify('Monday this week'); // get start of week
+        $startdate->modify('Monday this week'); // Get start of week.
 
-        $mondayTimestamp = $startdate->format('U');
+        $mondaytimestamp = $startdate->format('U');
 
         $query = <<<SQL
-        SELECT
-            (FLOOR((l.timecreated - {$mondayTimestamp}) / (7 * 60 * 60 * 24)) + 1) AS WEEK,
-            COUNT(*) clicks
+        SELECT (FLOOR((l.timecreated - {$mondaytimestamp}) / (7 * 60 * 60 * 24)) + 1)
+        AS WEEK,
+        COUNT(*) clicks
         FROM {logstore_lanalytics_log} l
         WHERE l.courseid = ?
         GROUP BY week
@@ -63,8 +63,8 @@ SQL;
         return $DB->get_records_sql($query, [$courseid]);
     }
 
-    // returns array like [100, 50] meaning 100 students were already registered since last week
-    // and 50 more students join in the last days
+    // Returns array like [100, 50] meaning 100 students were already registered since last week
+    // and 50 more students join in the last days.
     public static function query_users(int $courseid) : array {
         global $DB;
 
@@ -96,7 +96,7 @@ SQL;
         ];
     }
 
-    private static function click_count_helper(int $courseid, int $from, int $to = NULL) {
+    private static function click_count_helper(int $courseid, int $from, int $to = null) {
         global $DB;
 
         $query = <<<SQL
@@ -116,20 +116,20 @@ SQL;
     public static function query_click_count(int $courseid) : array {
 
         $date = new \DateTime();
-        $date->setTime(23, 59, 59); // include today
+        $date->setTime(23, 59, 59); // Include today.
         $today = $date->getTimestamp();
         $date->modify('-1 week');
         $oneweekago = $date->getTimestamp();
         $date->modify('-1 week');
         $twoweeksago = $date->getTimestamp();
 
-        $previousWeek = self::click_count_helper($courseid, $twoweeksago, $oneweekago);
-        $thisWeek = self::click_count_helper($courseid, $oneweekago, $today);
+        $previousweek = self::click_count_helper($courseid, $twoweeksago, $oneweekago);
+        $thisweek = self::click_count_helper($courseid, $oneweekago, $today);
 
         return [
             'hits' => [
-                $previousWeek->hits,
-                $thisWeek->hits
+                $previousweek->hits,
+                $thisweek->hits
             ]
         ];
     }
@@ -147,7 +147,7 @@ SQL;
 
         $row = $DB->get_record_sql($query, [$courseid]);
         if (!$row) {
-            return NULL;
+            return null;
         }
 
         $mobile = (float) $row->mobile_events;
@@ -157,11 +157,11 @@ SQL;
         return $percentage;
     }
 
-    public static function query_most_clicked_activity(int $courseid) {
+    public static function query_most_clicked_activity(int $courseid, $privacythreshold) {
         global $DB;
 
         $date = new \DateTime();
-        $date->setTime(23, 59, 59); // include today
+        $date->setTime(23, 59, 59); // Include today.
         $date->modify('-1 week');
         $oneweekago = $date->getTimestamp();
 
@@ -182,13 +182,14 @@ SQL;
             AND l.contextid = ctx.id
         WHERE l.timecreated > ?
         GROUP BY cm.id
+        HAVING hits > ?
         ORDER BY hits DESC
         LIMIT 1
 SQL;
 
-        $row = $DB->get_record_sql($query, [$courseid, $oneweekago]);
+        $row = $DB->get_record_sql($query, [$courseid, $oneweekago, $privacythreshold]);
         if (!$row) {
-            return NULL;
+            return null;
         }
 
         return [

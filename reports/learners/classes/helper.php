@@ -24,45 +24,47 @@
 
 namespace lareport_learners;
 
-use lareport_learners\outputs\split;
+use local_learning_analytics\local\outputs\splitter;
 use local_learning_analytics\local\outputs\table;
 use lareport_learners\query_helper;
 use local_learning_analytics\router;
 use moodle_url;
 use paging_bar;
+use local_learning_analytics\settings;
 
 defined('MOODLE_INTERNAL') || die;
 
 class helper {
 
-    private static $USER_PER_FULL_PAGE = 20;
-    private static $USER_PREVIEW = 5;
+    private static $userperfullpage = 20;
+    private static $userpreview = 5;
 
-    // if abs($other_course_startdate - $this_course_startdate) < $PARALLEL_COURSE_BUFFER
-    // they are considered being parallel, otherwise before (or after)
-    private static $PARALLEL_COURSE_BUFFER = 31 * 24 * 60 * 60;
+    // If abs($other_course_startdate - $this_course_startdate) < $parallelcoursebuffer
+    // they are considered being parallel, otherwise before (or after).
+    private static $parallelcoursebuffer = 31 * 24 * 60 * 60;
 
-    public static function generateCourseParticipationList(int $courseid, int $limit = -1) {
+    public static function generatecourseparticipationlist(int $courseid, int $limit = -1) {
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
 
-        $learnersCount = query_helper::query_learners_count($courseid, 'student');
+        $learnerscount = query_helper::query_learners_count($courseid, 'student');
+        $courses = query_helper::query_courseparticipation($courseid, $privacythreshold);
 
-        $courses = query_helper::query_courseparticipation($courseid);
-
-        $tablePrevious = new table();
-        $tablePrevious->set_header_local(['coursename', 'participated_before'],
+        $tableprevious = new table();
+        $tableprevious->set_header_local(['coursename', 'participated_before'],
             'lareport_learners');
 
-        $tableParallel = new table();
-        $tableParallel->set_header_local(['coursename', 'participating_now'],
+        $tableparallel = new table();
+        $tableparallel->set_header_local(['coursename', 'participating_now'],
             'lareport_learners');
 
-        $courseStartdate = get_course($courseid)->startdate;
+        $coursestartdate = get_course($courseid)->startdate;
 
-        $previousRows = 0;
-        $parallelRows = 0;
+        $previousrows = 0;
+        $parallelrows = 0;
+        $showexpandlink = false;
 
         foreach ($courses as $course) {
-            $perc = round(100 * $course->users / $learnersCount);
+            $perc = round(100 * $course->users / $learnerscount);
 
             $row = [
                 $course->fullname,
@@ -74,35 +76,38 @@ class helper {
                 )
             ];
 
-            if ($course->startdate < ($courseStartdate - self::$PARALLEL_COURSE_BUFFER)) {
-                if ($limit === -1 || $previousRows < $limit) {
-                    $tablePrevious->add_row($row);
-                    $previousRows++;
+            if ($course->startdate < ($coursestartdate - self::$parallelcoursebuffer)) {
+                if ($limit === -1 || $previousrows < $limit) {
+                    $tableprevious->add_row($row);
+                    $previousrows++;
+                } else if ($previousrows >= $limit) {
+                    $showexpandlink = true;
                 }
-            } else if ($course->startdate < ($courseStartdate + self::$PARALLEL_COURSE_BUFFER)) {
-                if ($limit === -1 || $parallelRows < $limit) {
-                    $tableParallel->add_row($row);
-                    $parallelRows++;
+            } else if ($course->startdate < ($coursestartdate + self::$parallelcoursebuffer)) {
+                if ($limit === -1 || $parallelrows < $limit) {
+                    $tableparallel->add_row($row);
+                    $parallelrows++;
+                } else if ($previousrows >= $limit) {
+                    $showexpandlink = true;
                 }
-            } else {
-                // course is happening after the current course, might be interesting for the future
             }
         }
 
-        if ($limit !== -1) {
-            $linkToFullList = router::report_page('learners', 'courseparticipation', ['course' => $courseid]);
-            $tablePrevious->add_show_more_row($linkToFullList);
-            $tableParallel->add_show_more_row($linkToFullList);
+        if ($limit !== -1 && $showexpandlink) {
+            $linktofulllist = router::report_page('learners', 'courseparticipation', ['course' => $courseid]);
+            $tableprevious->add_show_more_row($linktofulllist);
+            $tableparallel->add_show_more_row($linktofulllist);
         }
 
-        $headingPrevious = get_string('courses_heard_before', 'lareport_learners');
-        $headingParallel = get_string('parallel_courses', 'lareport_learners');
+        $headingprevious = get_string('courses_heard_before', 'lareport_learners');
+        $headingparallel = get_string('parallel_courses', 'lareport_learners');
 
         return [
-            new split(
-                ["<h3>{$headingPrevious}</h3>", $tablePrevious],
-                ["<h3>{$headingParallel}</h3>", $tableParallel]
-            )
+            new splitter(
+                ["<h3>{$headingprevious}</h3>", $tableprevious],
+                ["<h3>{$headingparallel}</h3>", $tableparallel]
+            ),
+            get_string('above_lists_only_show_courses_with_more_than_threshold_users', 'lareport_learners', $privacythreshold)
         ];
     }
 }

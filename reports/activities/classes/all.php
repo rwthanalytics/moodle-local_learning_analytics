@@ -27,43 +27,46 @@ namespace lareport_activities;
 use local_learning_analytics\report_page_base;
 use lareport_activities\query_helper;
 use local_learning_analytics\local\outputs\table;
+use local_learning_analytics\settings;
 
 defined('MOODLE_INTERNAL') || die;
 
 class all extends report_page_base {
 
     public function run(array $params): array {
-
         $courseid = (int) $params['course'];
         $activities = query_helper::query_activities($courseid);
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
 
-        // find max values
-        $maxHits = 1;
+        // Find max values.
+        $maxhits = 1;
         foreach ($activities as $activity) {
-            $maxHits = max($maxHits, (int) $activity->hits);
+            $maxhits = max($maxhits, (int) $activity->hits);
         }
 
-        $tableDetails = new table();
-        $tableDetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
+        $tabledetails = new table();
+        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 
         foreach ($activities as $activity) {
-            $nameCell = $activity->name;
+            $namecell = $activity->name;
             if (!$activity->visible) {
-                $nameCell = '<del>${$nameCell}</del>';
+                $namecell = '<del>${$namecell}</del>';
             }
-            $tableDetails->add_row([
-                $nameCell,
+            $cellcontent = ($activity->hits < $privacythreshold) ?
+                " < {$privacythreshold}" : table::fancyNumberCell((int) $activity->hits, $maxhits, 'orange');
+            $tabledetails->add_row([
+                $namecell,
                 $activity->modname,
                 $activity->section_name,
-                table::fancyNumberCell((int) $activity->hits, $maxHits, 'orange')
+                $cellcontent
             ]);
         }
 
-        $headingText = get_string('all_activities', 'lareport_activities');
+        $headingtext = get_string('all_activities', 'lareport_activities');
 
         return [
-            "<h2>{$headingText}</h2>",
-            $tableDetails
+            "<h3>{$headingtext}</h3>",
+            $tabledetails
         ];
     }
 

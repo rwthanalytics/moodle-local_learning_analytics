@@ -15,32 +15,51 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- *
+ * Learning Analytics Table Output
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace lareport_topmodules\privacy;
+namespace local_learning_analytics\local\outputs;
 
-use core_privacy\local\metadata\null_provider;
+use coding_exception;
+
+use html_table;
+use html_writer;
+
+use local_learning_analytics\output_base;
 
 defined('MOODLE_INTERNAL') || die;
 
-/**
- * Class provider
- */
-class provider implements null_provider {
+class splitter extends output_base {
 
-    /**
-     * Get the language string identifier with the component's language
-     * file to explain why this plugin stores no data.
-     *
-     * @return  string
-     * @throws \coding_exception
-     */
-    public static function get_reason(): string {
-        return get_string('privacy:metadata:subplugin', 'local_learning_analytics');
+    private $left;
+    private $right;
+
+    public function __construct(array $left, array $right) {
+        $this->left = $left;
+        $this->right = $right;
     }
+
+    public function print(): string {
+        global $PAGE;
+
+        $renderer = $PAGE->get_renderer('local_learning_analytics');
+        $code1 = $renderer->render_output_list($this->left);
+        $code2 = $renderer->render_output_list($this->right);
+
+        $html = "<div class='row'>
+            <div class='col-sm-6'>
+            {$code1}
+            </div>
+            <div class='col-sm-6'>
+            {$code2}
+            </div>
+        </div>";
+
+        return $html;
+    }
+
 }

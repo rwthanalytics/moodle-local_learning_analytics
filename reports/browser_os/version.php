@@ -15,32 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Settings page for local_learning_analytics
+ * Version info for the Sections Report
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die;
 
-if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_learning_analytics', get_string('pluginname', 'local_learning_analytics'));
+defined('MOODLE_INTERNAL') || die();
 
-    $ADMIN->add('localplugins', $settings);
+$plugin->component = 'lareport_browser_os';
 
-    $settings->add(new admin_setting_configtext(
-        'local_learning_analytics/dataprivacy_threshold',
-        get_string('dataprivacy_threshold', 'local_learning_analytics'),
-        get_string('dataprivacy_threshold_description', 'local_learning_analytics'),
-        '10', // default value
-        PARAM_INT
-    ));
-
-    $settings->add(new admin_setting_configcheckbox(
-        'local_learning_analytics/allow_dashboard_compare',
-        get_string('allow_dashboard_compare', 'local_learning_analytics'),
-        get_string('allow_dashboard_compare_description', 'local_learning_analytics'),
-        0
-    ));
-
-}
+$plugin->version = 2020021900;
+$plugin->requires = '2017111302';

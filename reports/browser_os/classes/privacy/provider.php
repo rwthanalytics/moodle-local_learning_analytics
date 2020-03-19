@@ -15,45 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version info for the Top Modules Report
+ *
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace lareport_browser_os\privacy;
 
-use local_learning_analytics\local\outputs\table;
-use local_learning_analytics\report_base;
+use core_privacy\local\metadata\null_provider;
 
-class lareport_topmodules extends report_base {
+defined('MOODLE_INTERNAL') || die;
 
-    public function run(array $params): array {
-        global $DB;
 
-        $output = new table();
+/**
+ * Class provider
+ */
+class provider implements null_provider {
 
-        $records = $DB->get_records_sql("
-        SELECT COUNT('id') as hits, eventname
-        FROM {logstore_standard_log}
-        WHERE courseid = ?
-        GROUP BY eventname
-        ORDER BY hits DESC
-        ", [$params['course']]);
-
-        $output->set_header_local(['hits', 'eventname'], 'lareport_topmodules');
-
-        foreach ($records as $row) {
-            $output->add_row([$row->hits, $row->eventname]);
-        }
-
-        return [$output];
-    }
-
-    public function params(): array {
-        return [
-            'course' => required_param('course', PARAM_INT)
-        ];
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     * @throws \coding_exception
+     */
+    public static function get_reason(): string {
+        return get_string('privacy:metadata:subplugin', 'local_learning_analytics');
     }
 }

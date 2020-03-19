@@ -125,7 +125,7 @@ class plot extends output_base {
     /**
      * @return string
      */
-    function print(): string {
+    public function print(): string {
         global $PAGE;
 
         $PAGE->requires->js_call_amd('local_learning_analytics/outputs', 'plot', [

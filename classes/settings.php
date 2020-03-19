@@ -15,16 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version info for daily actions lalog
+ * Learning Analytics Settings Values
  *
- * @package     logstore_lanalytics
+ * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_learning_analytics;
 
-$plugin->component = 'lalog_course_mobile';
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2020021700;
-$plugin->requires = '2017111302';
+abstract class settings {
+
+    const DEFAULTS = [
+        'dataprivacy_threshold' => 10,
+        'allow_dashboard_compare' => 0,
+    ];
+
+    public static function get_config(string $configkey) {
+        $value = get_config('local_learning_analytics', $configkey);
+        if ($value === false) {
+            return self::DEFAULTS[$configkey];
+        }
+        return $value;
+    }
+}

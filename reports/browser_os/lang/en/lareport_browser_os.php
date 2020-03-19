@@ -15,14 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for lareport_topmodules
+ * Strings for lareport_browser_os
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Top Modules';
-
-$string['eventname'] = 'Event';
-$string['hits'] = 'Hits';
+$string['pluginname'] = 'Browser/OS';

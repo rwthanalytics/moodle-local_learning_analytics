@@ -15,16 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version info for the Top Modules Report
+ * Strings for lalog_browser_os
  *
- * @package     local_learning_analytics
+ * @package     lalog_browser_os
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component = 'lareport_topmodules';
-
-$plugin->version = '2018041600';
-$plugin->requires = '2017111302';
+$string['pluginname'] = 'Course Browser/OS Log';

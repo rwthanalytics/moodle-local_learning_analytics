@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Callback to extend navigation
+// Callback to extend navigation.
 /**
  * @param global_navigation $nav
  * @throws coding_exception
@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
 function local_learning_analytics_extend_navigation(global_navigation $navigation) {
     global $PAGE, $COURSE;
 
-    // Only extend navigation inside courses - 1 is the base system 'course'
+    // Only extend navigation inside courses - 1 is the base system 'course'.
     if (isset($COURSE->id) && $COURSE->id !== SITEID) {
         $node = $navigation->find($COURSE->id, navigation_node::TYPE_COURSE);
         if ($node) {

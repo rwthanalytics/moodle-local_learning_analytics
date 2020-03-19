@@ -29,124 +29,133 @@ use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
 use lareport_activities\query_helper;
 use local_learning_analytics\router;
+use local_learning_analytics\settings;
 
 class lareport_activities extends report_base {
 
-    private static $markerColors = [
-        'quiz' => '#A9CF54', // green
-        'resource' => '#66b5ab', // blue
-        'page' => '#EA030E', // red
-        'url' => '#F26522', // orange
-        'forum' => '#ffda6e', // yellow
-        'wiki' => '#ffda6e', // yellow
+    private static $markercolors = [
+        'quiz' => '#A9CF54', // Green.
+        'resource' => '#66b5ab', // Blue.
+        'page' => '#EA030E', // Red.
+        'url' => '#F26522', // Orange.
+        'forum' => '#ffda6e', // Yellow.
+        'wiki' => '#ffda6e', // Yellow.
     ];
-    private static $markerColorDefault = '#bbbbbb';
-    private static $markerColorsText = [
-        'quiz' => 'green', // green
-        'resource' => 'blue', // blue
-        'page' => 'red', // red
-        'url' => 'orange', // orange
-        'forum' => 'yellow', // yellow
-        'wiki' => 'yellow', // yellow
+    private static $markercolordefault = '#bbbbbb';
+    private static $markercolorstext = [
+        'quiz' => 'green', // Green.
+        'resource' => 'blue', // Blue.
+        'page' => 'red', // Red.
+        'url' => 'orange', // Orange.
+        'forum' => 'yellow', // Yellow.
+        'wiki' => 'yellow', // Yellow.
     ];
-    private static $markerColorTextDefault = 'gray';
+    private static $markercolortextdefault = 'gray';
 
     public function run(array $params): array {
-        $courseid = (int) $params['course'];
+        $courseid = $params['course'];
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $filter = '';
-        $filterValues = [];
+        $filtervalues = [];
         if (!empty($params['mod'])) {
             $filter = "m.name = ?";
-            $filterValues[] = $params['mod'];
+            $filtervalues[] = $params['mod'];
         }
-        $activities = query_helper::query_activities($courseid, $filter, $filterValues);
+        $activities = query_helper::query_activities($courseid, $filter, $filtervalues);
 
-        // find max values
-        $maxHits = 1;
+        // Find max values.
+        $maxhits = 1;
 
-        $hitsByTypeAssoc = [];
+        $hitsbytypeassoc = [];
 
         foreach ($activities as $activity) {
-            $maxHits = max($maxHits, (int) $activity->hits);
-            if (!isset($hitsByTypeAssoc[$activity->modname])) {
-                $hitsByTypeAssoc[$activity->modname] = 0;
+            $maxhits = max($maxhits, (int) $activity->hits);
+            if (!isset($hitsbytypeassoc[$activity->modname])) {
+                $hitsbytypeassoc[$activity->modname] = 0;
             }
-            $hitsByTypeAssoc[$activity->modname] += $activity->hits;
+            $hitsbytypeassoc[$activity->modname] += $activity->hits;
         }
-        $hitsByType = [];
-        $maxHitsByType = 1;
-        foreach ($hitsByTypeAssoc as $type => $hits) {
-            $hitsByType[] = ['type' => $type, 'hits' => $hits];
-            $maxHitsByType = max($maxHitsByType, $hits);
+        $hitsbytype = [];
+        $maxhitsbytype = 1;
+        foreach ($hitsbytypeassoc as $type => $hits) {
+            $hitsbytype[] = ['type' => $type, 'hits' => $hits];
+            $maxhitsbytype = max($maxhitsbytype, $hits);
         }
 
-        usort($hitsByType, function ($item1, $item2) {
+        usort($hitsbytype, function ($item1, $item2) {
             return $item2['hits'] <=> $item1['hits'];
         });
 
-        $tableTypes = new table();
-        $tableTypes->set_header_local(['activity_type', 'hits'], 'lareport_activities');
+        $tabletypes = new table();
+        $tabletypes->set_header_local(['activity_type', 'hits'], 'lareport_activities');
 
-        foreach ($hitsByType as $item) {
+        foreach ($hitsbytype as $item) {
             $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
-            $tableTypes->add_row([
-                "<a href='{$url}'>{$item['type']}</a>",
-                table::fancyNumberCell(
-                    (int) $item['hits'],
-                    $maxHitsByType,
-                    self::$markerColorsText[$item['type']] ?? self::$markerColorTextDefault
-                )
-            ]);
+            $hits = floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold;
+            if ($hits >= $privacythreshold) {
+                $tabletypes->add_row([
+                    "<a href='{$url}'>{$item['type']}</a>",
+                    table::fancyNumberCell(
+                        $hits,
+                        $maxhitsbytype,
+                        self::$markercolorstext[$item['type']] ?? self::$markercolortextdefault
+                    )
+                ]);
+            }
         }
 
         if (!empty($params['mod'])) {
-            $linkToReset = router::report('activities', ['course' => $courseid]);
-            $tableTypes->add_show_more_row($linkToReset);
+            $linktoreset = router::report('activities', ['course' => $courseid]);
+            $tabletypes->add_show_more_row($linktoreset);
         }
 
-        $tableDetails = new table();
-        $tableDetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
+        $tabledetails = new table();
+        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 
         $x = [];
         $y = [];
-        $markerColors = [];
+        $texts = [];
+        $markercolors = [];
 
         foreach ($activities as $activity) {
             $x[] = $activity->name;
-            $y[] = $activity->hits;
-            $markerColors[] = self::$markerColors[$activity->modname] ?? self::$markerColorDefault;
+            $y[] = $activity->hits < $privacythreshold ? 0 : $activity->hits;
+            $texts[] = $activity->hits < $privacythreshold ? "< {$privacythreshold}" : $activity->hits;
+            $markercolors[] = self::$markercolors[$activity->modname] ?? self::$markercolordefault;
         }
 
-        // reorder to show most used activities
+        // Reorder to show most used activities.
 
         usort($activities, function ($act1, $act2) {
             return $act2->hits <=> $act1->hits;
         });
 
-        $headintTopText = get_string('most_used_activities', 'lareport_activities');
+        $headinttoptext = get_string('most_used_activities', 'lareport_activities');
         foreach ($activities as $i => $activity) {
-            if ($i >= 5) { // stop when some reports are shown
+            if ($i >= 5) { // Stop when some reports are shown.
                 break;
             }
-            $nameCell = $activity->name;
+            $namecell = $activity->name;
             if (!$activity->visible) {
-                $nameCell = '<del>${$nameCell}</del>';
+                $namecell = '<del>${$namecell}</del>';
             }
-            $tableDetails->add_row([
-                $nameCell,
-                $activity->modname,
-                $activity->section_name,
-                table::fancyNumberCell(
-                    (int) $activity->hits,
-                    $maxHits,
-                    self::$markerColorsText[$activity->modname] ?? self::$markerColorTextDefault
-                )
-            ]);
+            if ($activity->hits >= $privacythreshold) {
+                $tabledetails->add_row([
+                    $namecell,
+                    $activity->modname,
+                    $activity->section_name,
+                    table::fancyNumberCell(
+                        (int) $activity->hits,
+                        $maxhits,
+                        self::$markercolorstext[$activity->modname] ?? self::$markercolortextdefault
+                    )
+                ]);
+            }
         }
 
-        $linkToFullList = router::report_page('activities', 'all', ['course' => $courseid]);
-        $tableDetails->add_show_more_row($linkToFullList);
+        $linktofulllist = router::report_page('activities', 'all', ['course' => $courseid]);
+        $tabledetails->add_show_more_row($linktofulllist);
 
         $plot = new plot();
         $plot->set_height(300);
@@ -155,23 +164,25 @@ class lareport_activities extends report_base {
             'type' => 'bar',
             'x' => $x,
             'y' => $y,
+            'text' => $texts,
+            'hoverinfo' => 'text',
             'marker' => [
-                'color' => $markerColors
+                'color' => $markercolors
             ]
         ]);
 
         return [
             $plot,
-            $tableTypes,
-            "<h3>{$headintTopText}</h3>",
-            $tableDetails
+            $tabletypes,
+            "<h3>{$headinttoptext}</h3>",
+            $tabledetails
         ];
     }
 
     public function params(): array {
         return [
             'course' => required_param('course', PARAM_INT),
-            'prev_course' => optional_param('mod', NULL, PARAM_INT)
+            'mod' => optional_param('mod', null, PARAM_RAW)
         ];
     }
 }
