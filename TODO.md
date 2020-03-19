@@ -14,14 +14,15 @@
   - [ ] **Add English text for all missing strings**
   - [ ] **Add German texts for all missing strings**
 - [x] Update README
-- [ ] Improved README
-  - [ ] Add info on installation
+- [x] Improve README
+  - [x] Add info on installation
     - [x] Enable logstore
-    - [ ] Setup logstore (go over settings)
-  - [ ] Add info on settings of main plugin
-    - [ ] privacy threshold
-    - [ ] compare_options
+    - [x] Setup logstore (go over settings)
+  - [x] Add info on settings of main plugin
+    - [x] privacy threshold
+    - [x] compare_options
 - [ ] Add information to tables: "Only data >= X is shown"
+- [ ] Only show dashboard link when the user has the capability
 
 ## Logstore
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
