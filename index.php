@@ -74,7 +74,7 @@ $sql1 = <<<SQL
     WHERE id = '$coursecontextid'
 SQL;
 $coursepath = $DB->get_record_sql($sql1);
-$sqlhelper = '%'.$coursepath->path.'/'.'%';
+$sqlhelper = '%'.$context->path.'/'.'%';
 $sql2 = <<<SQL
     SELECT id
     FROM mdl_context
