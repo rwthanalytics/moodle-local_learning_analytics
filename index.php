@@ -62,27 +62,14 @@ $PAGE->requires->css('/local/learning_analytics/static/styles.css');
 $mainoutput = $output->render_from_template('local_learning_analytics/course', [
     'content' => $resultinghtml
 ]);
-
 echo $output->header();
 echo $mainoutput;
 echo $output->footer();
-
-$coursecontextid = $context->id;
-$sql1 = <<<SQL
-    SELECT path
-    FROM mdl_context
-    WHERE id = '$coursecontextid'
-SQL;
-$coursepath = $DB->get_record_sql($sql1);
 $sqlhelper = '%'.$context->path.'/'.'%';
-$sql2 = <<<SQL
-    SELECT id
-    FROM mdl_context
-    WHERE path LIKE '$sqlhelper'
-SQL;
-$realcontextid = $DB->get_record_sql($sql2)->id;
+$realcontextid = $DB->get_record_select('context', "path LIKE '{$sqlhelper}'")->id;
 $event = report_viewed::create(array(
-    'contextid' => $realcontextid
+    'contextid' => $realcontextid,
+    'objectid' => 1 //TODO
 ));
 $event->add_record_snapshot('course', $PAGE->course);
 $event->trigger();

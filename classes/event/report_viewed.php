@@ -28,7 +28,7 @@ class report_viewed extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;
-        $this->data['objecttable'] = 'local_learning_analytics';
+        $this->data['objecttable'] = 'local_learning_analytics_rep';
     }
 
     protected function validate_data() {
