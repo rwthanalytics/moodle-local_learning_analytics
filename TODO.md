@@ -13,13 +13,20 @@
 - [ ] Check localization
   - [ ] **Add English text for all missing strings**
   - [ ] **Add German texts for all missing strings**
-- [ ] Update README
-- [ ] Add information to tables: "Only data > 10 is shown"
+- [x] Update README
+- [ ] Improved README
+  - [ ] Add info on installation
+    - [x] Enable logstore
+    - [ ] Setup logstore (go over settings)
+  - [ ] Add info on settings of main plugin
+    - [ ] privacy threshold
+    - [ ] compare_options
+- [ ] Add information to tables: "Only data >= X is shown"
 
 ## Logstore
-- [ ] Implement setting to only track specific courses
-- [ ] Don't track teachers for now
-- [ ] Detect Moodle-API use
+- [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
+- [x] **Don't track teachers for now**
+- [x] Detect Moodle-API use
 
 ## GDPR
 - [ ] Create "Verfahrensverzeichnis"
