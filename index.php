@@ -23,7 +23,6 @@
  */
 
 use local_learning_analytics\router;
-use local_learning_analytics\event\report_viewed;
 
 require(__DIR__ . '/../../config.php');
 
@@ -65,11 +64,3 @@ $mainoutput = $output->render_from_template('local_learning_analytics/course', [
 echo $output->header();
 echo $mainoutput;
 echo $output->footer();
-$sqlhelper = '%'.$context->path.'/'.'%';
-$realcontextid = $DB->get_record_select('context', "path LIKE '{$sqlhelper}'")->id;
-$event = report_viewed::create(array(
-    'contextid' => $realcontextid,
-    'objectid' => 1 //TODO
-));
-$event->add_record_snapshot('course', $PAGE->course);
-$event->trigger();

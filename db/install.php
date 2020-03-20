@@ -31,7 +31,7 @@
         array_push($dataarray, $data->reportname);
     }
     $insertarray = array();
-    $reports = array('coursedashboard', 'activities', 'learners', 'topmodules');
+    $reports = array('coursedashboard', 'activities', 'learners', 'browser_os');
     foreach($reports as $report) {
         if(!in_array($report, $dataarray)) {
             array_push($insertarray, set_entry($report));
