@@ -61,7 +61,6 @@ $PAGE->requires->css('/local/learning_analytics/static/styles.css');
 $mainoutput = $output->render_from_template('local_learning_analytics/course', [
     'content' => $resultinghtml
 ]);
-
 echo $output->header();
 echo $mainoutput;
 echo $output->footer();

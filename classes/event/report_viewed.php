@@ -13,25 +13,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+ 
 /**
- * Version details.
+ * The report_viewed event.
  *
- * @package     local_learning_analytics
- * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    learning_analytics
+ * @copyright  2014 YOUR NAME
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace local_learning_analytics\event;
+defined('MOODLE_INTERNAL') || die();
+class report_viewed extends \core\event\base {
 
-defined('MOODLE_INTERNAL') || die;
+    protected function init() {
+        $this->data['crud'] = 'r';
+        $this->data['edulevel'] = self::LEVEL_OTHER;
+        $this->data['objecttable'] = 'local_learning_analytics_rep';
+    }
 
-$plugin->component = 'local_learning_analytics';
-
-$plugin->version = 2020032000;
-$plugin->release = 'v0.1.0-dev';
-$plugin->maturity = MATURITY_ALPHA;
-
-$plugin->requires = 2017111302;
-
-$plugin->dependencies = [
-    'logstore_lanalytics' => ANY_VERSION,
-];
+    protected function validate_data() {
+        if (!isset($this->data['objecttable'])) {
+            throw new \coding_exception('The objecttable must be set in $data.');
+        }
+    }
+}
