@@ -22,7 +22,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Course Dashboard';
+$string['pluginname'] = 'Learning Analytics Dashboard';
 
 $string['registered_users'] = 'Registered users';
 $string['active_learners'] = 'Active learners';
@@ -41,3 +41,6 @@ $string['parameter:course'] = 'Course';
 $string['parameter:prev_course'] = 'Previous course';
 
 $string['set'] = 'Set';
+$string['not_available'] = 'N/A';
+$string['last_7_days'] = 'last 7 days';
+$string['no_difference'] = 'No difference to last week';

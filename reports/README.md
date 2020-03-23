@@ -1,26 +1,20 @@
-## Default Reports
+# Reports
 
 
-### Used reports
+## List of reports
+- coursedashboard
+  - Dashboard report, linked from the course menu
 - activities
   - List of all activities
   - Table of most used activities and resource types
-- **coursedashboard**
-  - Dashboard report, linked from the course menu
-- grades
-  - Correlation of current grades
-  - TODO: Show distribution of grades
-- **learners**
-  - Linked from Dashboard
+- learners
   - Information about which courses are heard in parallel/before
-  - Language/Country of learners
-  - Most active learners (TODO: configure to not be shown)
+- browser_os
+  - Statistics regarding used browser/os
+  - Uses the lalog/browser_os subplugin data
 
 
-### Examples
-- sections
-  - Example how to use charts
-- topmodules
-  - Example how to use tables
-- example_viewcount
-  - Example on how to use multiple parameters
+## Process when adding a report
+You can add a report by adding a directory here. There will be a hook functionality added later to feature a link to the report in the dashboard.
+
+Also, make sure to update `classes/report_list.php` and give your report a unique ID. Later, we also need to add them to the `db/upgrade.php` script. (TODO)

@@ -8,11 +8,11 @@
 - [x] Make "Activities" box link to activity report even if no recently used activiy exists
 - [x] Report: Browser/mobile usage in course
   - [x] Integrate Moodle-API into desktop/mobile statistics
-  - [ ] Add language keys
+  - [x] Add language keys
 - [x] **Add event `view_analytics` (or a similar event)**
-- [ ] Check localization
-  - [ ] **Add English text for all missing strings**
-  - [ ] **Add German texts for all missing strings**
+- [x] Check localization
+  - [x] **Add English text for all missing strings**
+  - [x] **Add German texts for all missing strings**
 - [x] Update README
 - [x] Improve README
   - [x] Add info on installation
@@ -21,12 +21,11 @@
   - [x] Add info on settings of main plugin
     - [x] privacy threshold
     - [x] compare_options
-  - [ ] Describe subplugins
-    - [ ] `lareport`
-    - [ ] `lalog`
-- [ ] Add information to tables: "Only data >= X is shown"
+- [x] Add information to tables: "Only data >= X is shown"
+  - [ ] Mabye add this information on the dashboard (?)
 - [x] Only show dashboard link in selected courses
-- [ ] Update README.md in reports folder
+- [x] Update README.md in reports folder
+- [x] Don't show empty tables or empty data plots
 
 ## Logstore
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
@@ -63,6 +62,9 @@
 - [ ] Also generate users
 
 ## For later...
+- [ ] Describe subplugins
+  - [ ] `lareport`
+  - [ ] `lalog`
 - [ ] Check if the `requires` version in the plugins (and subplugins) are correct (check for which Moodle version the plugin still works)
 - [ ] Improve "course to compare" option of graph: Wording, preselect course if already given
 - [ ] Provide an option to allow or disable tracking teachers

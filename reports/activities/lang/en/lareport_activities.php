@@ -23,9 +23,12 @@
  */
 
 $string['pluginname'] = 'Activities';
+$string['all_activities'] = 'All Activities';
 $string['pagename_all'] = 'Full List';
 $string['activity_type'] = 'activity type';
 $string['hits'] = 'hits';
 $string['activity_name'] = 'activitie name';
 $string['section'] = 'section';
 $string['most_used_activities'] = 'most used activities';
+
+$string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding your learning modules.';

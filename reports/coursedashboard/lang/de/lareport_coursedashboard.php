@@ -15,23 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for lareport_browser_os
+ * Strings for lareport_coursedashboard
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Browser and Operating System';
+$string['pluginname'] = 'Learning Analytics Dashboard';
 
-$string['other'] = 'Other';
+$string['registered_users'] = 'Registrierte Nutzer';
+$string['active_learners'] = 'Aktive Nutzer';
+$string['click_count'] = 'Anzahl an Aufrufen';
+$string['pagename_set_previous_course'] = 'Vergleichenden Kurs festlegen';
+$string['most_clicked_module'] = 'Meist genutzte Aktivität';
 
-$string['browser_name'] = 'Browser';
-$string['hits'] = 'Hits';
+$string['clicks'] = 'Aufrufe';
+$string['sessions'] = 'Sitzungen';
+$string['learners'] = 'Lernende';
 
-$string['used_platform'] = 'Used platforms';
-$string['used_os'] = 'Used desktop operating systems';
-$string['used_mobile'] = 'Used mobile operating systems';
-$string['used_desktop_browsers'] = 'Used desktop browsers';
+$string['clicks_compare'] = 'Sitzungen (im Vergleich)';
 
-$string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding browser and user systems.';
+$string['week'] = 'Woche';
+$string['parameter:course'] = 'Kurse';
+$string['parameter:prev_course'] = 'Vorheriger Kurs';
+
+$string['set'] = 'Festlegen';
+$string['not_available'] = 'Nicht verfügbar';
+$string['last_7_days'] = 'letzte 7 Tage';
+$string['no_difference'] = 'Kein Unterschied zur vorherigen Woche';

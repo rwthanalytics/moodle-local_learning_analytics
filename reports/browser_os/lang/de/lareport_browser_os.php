@@ -22,16 +22,16 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Browser and Operating System';
+$string['pluginname'] = 'Browser und Betriebssystem';
 
-$string['other'] = 'Other';
+$string['other'] = 'Sonstige';
 
 $string['browser_name'] = 'Browser';
-$string['hits'] = 'Hits';
+$string['hits'] = 'Aufrufe';
 
-$string['used_platform'] = 'Used platforms';
-$string['used_os'] = 'Used desktop operating systems';
-$string['used_mobile'] = 'Used mobile operating systems';
-$string['used_desktop_browsers'] = 'Used desktop browsers';
+$string['used_platform'] = 'Verwendete Plattformen';
+$string['used_os'] = 'Desktop Betriebssysteme';
+$string['used_mobile'] = 'Mobile Betriebssysteme';
+$string['used_desktop_browsers'] = 'Verwendete Desktop-Browser';
 
-$string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding browser and user systems.';
+$string['no_data_to_show'] = 'Aktuell gibt es keine Daten anzuzeigen. Kommen Sie später wieder um Statistiken zur Browser- und Systemnutzung zu sehen.';

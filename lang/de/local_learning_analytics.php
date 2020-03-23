@@ -15,23 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for lareport_browser_os
+ * Strings for local_learning_analytics
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Browser and Operating System';
+$string['pluginname'] = 'Learning Analytics';
 
-$string['other'] = 'Other';
+$string['learning_analytics'] = 'Learning Analytics';
 
-$string['browser_name'] = 'Browser';
-$string['hits'] = 'Hits';
+$string['subplugintype_lareport'] = 'Report';
+$string['subplugintype_lareport_plural'] = 'Reports';
+$string['subplugintype_laoutput'] = 'Output';
+$string['subplugintype_laoutput_plural'] = 'Outputs';
 
-$string['used_platform'] = 'Used platforms';
-$string['used_os'] = 'Used desktop operating systems';
-$string['used_mobile'] = 'Used mobile operating systems';
-$string['used_desktop_browsers'] = 'Used desktop browsers';
 
-$string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding browser and user systems.';
+$string['show_full_list'] = 'Mehr anzeigen';
+
+// Terms also used by subplugins
+$string['learners'] = 'Learners';
+$string['sessions'] = 'Sessions';
+$string['hits'] = 'Hits'; // "Aufrufe"

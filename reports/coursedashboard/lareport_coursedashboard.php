@@ -312,7 +312,9 @@ class lareport_coursedashboard extends report_base {
             $change = '&nbsp;';
         }
 
-        $appendedtext = ($titlekey === 'registered_users') ? '' : " <span class='dashboardbox-timespan'>(last 7 days)</span>";
+        $last7days = get_string('last_7_days', 'lareport_coursedashboard');
+
+        $appendedtext = ($titlekey === 'registered_users') ? '' : " <span class='dashboardbox-timespan'>({$last7days})</span>";
         return "
             <div class='col-sm-4'>
                 <div class='dashboardbox'>
@@ -333,7 +335,7 @@ class lareport_coursedashboard extends report_base {
         $difftriangle = '';
         $difftext = $diff;
         if ($diff === 0) {
-            $difftext = 'no difference';
+            $difftext = get_string('no_difference', 'lareport_coursedashboard');
         } else if ($diff > 0) {
             $difftext = '+' . $diff;
             $difftriangle = '<span class="dashboardbox-change-up">▲</span>';
@@ -373,7 +375,7 @@ class lareport_coursedashboard extends report_base {
     private function mobileevents(int $courseid) : array {
         $percentage = query_helper::query_mobile_percentage($courseid);
 
-        $perctext = 'N/A';
+        $perctext = get_string('not_available', 'lareport_coursedashboard');
         if ($percentage !== null) {
             $perctext = round($percentage) . '%';
         }
@@ -392,8 +394,11 @@ class lareport_coursedashboard extends report_base {
             return [
                 $this->boxoutputraw(
                     'most_clicked_module',
-                    'N/A', "< {$privacythreshold} {$strclicks}",
-                $courseid, 'activities')
+                    get_string('not_available', 'lareport_coursedashboard'),
+                    "< {$privacythreshold} {$strclicks}",
+                    $courseid,
+                    'activities'
+                )
             ];
         }
 

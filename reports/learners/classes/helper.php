@@ -59,8 +59,8 @@ class helper {
 
         $coursestartdate = get_course($courseid)->startdate;
 
-        $previousrows = 0;
-        $parallelrows = 0;
+        $previousrowscount = 0;
+        $parallelrowscount = 0;
         $showexpandlink = false;
 
         foreach ($courses as $course) {
@@ -77,17 +77,17 @@ class helper {
             ];
 
             if ($course->startdate < ($coursestartdate - self::$parallelcoursebuffer)) {
-                if ($limit === -1 || $previousrows < $limit) {
+                if ($limit === -1 || $previousrowscount < $limit) {
                     $tableprevious->add_row($row);
-                    $previousrows++;
-                } else if ($previousrows >= $limit) {
+                    $previousrowscount++;
+                } else if ($previousrowscount >= $limit) {
                     $showexpandlink = true;
                 }
             } else if ($course->startdate < ($coursestartdate + self::$parallelcoursebuffer)) {
-                if ($limit === -1 || $parallelrows < $limit) {
+                if ($limit === -1 || $parallelrowscount < $limit) {
                     $tableparallel->add_row($row);
-                    $parallelrows++;
-                } else if ($previousrows >= $limit) {
+                    $parallelrowscount++;
+                } else if ($parallelrowscount >= $limit) {
                     $showexpandlink = true;
                 }
             }
@@ -99,6 +99,13 @@ class helper {
             $tableparallel->add_show_more_row($linktofulllist);
         }
 
+        if ($previousrowscount === 0) {
+            $tableprevious = get_string('no_courses_heard_before', 'lareport_learners');
+        }
+        if ($parallelrowscount === 0) {
+            $tableparallel = get_string('no_courses_heard_in_parallel', 'lareport_learners');
+        }
+
         $headingprevious = get_string('courses_heard_before', 'lareport_learners');
         $headingparallel = get_string('parallel_courses', 'lareport_learners');
 
@@ -107,6 +114,7 @@ class helper {
                 ["<h3>{$headingprevious}</h3>", $tableprevious],
                 ["<h3>{$headingparallel}</h3>", $tableparallel]
             ),
+            "<div class='w-100'><hr></div>",
             get_string('above_lists_only_show_courses_with_more_than_threshold_users', 'lareport_learners', $privacythreshold)
         ];
     }

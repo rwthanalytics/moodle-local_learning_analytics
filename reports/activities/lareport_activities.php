@@ -65,7 +65,7 @@ class lareport_activities extends report_base {
         $activities = query_helper::query_activities($courseid, $filter, $filtervalues);
 
         // Find max values.
-        $maxhits = 1;
+        $maxhits = 0;
 
         $hitsbytypeassoc = [];
 
@@ -76,6 +76,11 @@ class lareport_activities extends report_base {
             }
             $hitsbytypeassoc[$activity->modname] += $activity->hits;
         }
+
+        if ($maxhits === 0) {
+            return [get_string('no_data_to_show', 'lareport_activities')];
+        }
+
         $hitsbytype = [];
         $maxhitsbytype = 1;
         foreach ($hitsbytypeassoc as $type => $hits) {
@@ -92,10 +97,11 @@ class lareport_activities extends report_base {
 
         foreach ($hitsbytype as $item) {
             $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
-            $hits = floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold;
+            $hits = ($privacythreshold === 0) ? (int) $item['hits'] : (floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold);
+            $typestr = ucfirst($item['type']);
             if ($hits >= $privacythreshold) {
                 $tabletypes->add_row([
-                    "<a href='{$url}'>{$item['type']}</a>",
+                    "<a href='{$url}'>{$typestr}</a>",
                     table::fancyNumberCell(
                         $hits,
                         $maxhitsbytype,
@@ -143,7 +149,7 @@ class lareport_activities extends report_base {
             if ($activity->hits >= $privacythreshold) {
                 $tabledetails->add_row([
                     $namecell,
-                    $activity->modname,
+                    ucfirst($activity->modname),
                     $activity->section_name,
                     table::fancyNumberCell(
                         (int) $activity->hits,

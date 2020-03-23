@@ -23,7 +23,6 @@
  */
 
 $string['pluginname'] = 'Learners';
-$string['pagename_courseparticipation'] = 'Course Participation';
 $string['pagename_all'] = 'Full List';
 
 $string['courses_heard_before'] = 'Courses heard before';
@@ -38,10 +37,14 @@ $string['languages_of_learners'] = 'Languages of learners';
 
 $string['firstname'] = 'First name';
 $string['lastname'] = 'Last name';
-$string['role'] = 'Rolle';
+$string['role'] = 'Role';
 $string['firstaccess'] = 'First access';
 $string['lastaccess'] = 'Last access';
 $string['hits'] = 'Clicks';
 $string['sessions'] = 'Sessions';
 
 $string['countries'] = 'Countries';
+$string['no_courses_heard_before'] = 'There are no courses, that were heard in parallel by your audience.';
+$string['no_courses_heard_in_parallel'] = 'There are no courses, that your students are being enrolled in parallel.';
+
+$string['above_lists_only_show_courses_with_more_than_threshold_users'] = 'For privacy reasons, both lists do not show courses with less than 10 learners.';

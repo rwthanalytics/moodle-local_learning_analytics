@@ -182,6 +182,10 @@ class lareport_browser_os extends report_base {
             ]);
         }
 
+        if ($maxhits === 0) {
+            return ['']; // no data to show
+        }
+
         $langstring = get_string('used_desktop_browsers', 'lareport_browser_os');
         return [
             "<div class='row'><div class='col-12'>",
@@ -196,25 +200,32 @@ class lareport_browser_os extends report_base {
         global $DB;
 
         $courseid = $params['course'];
-        $result = $DB->get_record('lalog_browser_os', ['courseid' => $courseid], '*', MUST_EXIST);
-
+        $result = $DB->get_record('lalog_browser_os', ['courseid' => $courseid], '*');
+        if ($result === false) {
+            $result = [];
+        }
         $results = [
             'platform' => [],
             'os' => [],
             'browser' => [],
             'mobile' => [],
         ];
+        $maxvalue = 0;
         foreach ($result as $key => $value) {
             $separatorindex = strpos($key, '_');
             if ($separatorindex === false) {
                 continue;
             }
+            $maxvalue = $value < $privacythreshold ? $maxvalue : max($maxvalue, $value);
             $prefix = substr($key, 0, $separatorindex);
             $target = substr($key, $separatorindex + 1);
             $results[$prefix][$target] = $value;
         }
-
         arsort($results['browser']);
+
+        if ($maxvalue === 0) {
+            return [get_string('no_data_to_show', 'lareport_browser_os')];
+        }
 
         return array_merge(
             self::createplot($results, 'platform', $privacythreshold),
