@@ -61,7 +61,7 @@ class query_helper {
         s.name AS section_name,
         s.section AS section_pos,
         m.visible,
-        COUNT(*) hits
+        COUNT(log.id) hits
         FROM {modules} m
         JOIN {course_modules} cm
             ON cm.course = ?
