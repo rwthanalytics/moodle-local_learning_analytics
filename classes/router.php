@@ -29,6 +29,7 @@ use moodle_url;
 use core_component;
 use html_writer;
 use local_learning_analytics\event\report_viewed;
+use local_learning_analytics\report_list;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -41,7 +42,6 @@ class router {
         string $pagename = null
     ) : string {
         global $PAGE;
-        global $DB;
 
         $outputs = $instance->run($params);
 
@@ -64,10 +64,9 @@ class router {
         $ret .= $renderer->render_output_list($outputs);
         $ret .= "</div>";
 
-        $objectid = $DB->get_record_select('local_learning_analytics_rep', "reportname='{$reportname}'")->id;
         $event = report_viewed::create(array(
             'contextid' => $PAGE->context->id,
-            'objectid' => $objectid
+            'objectid' => report_list::list[$reportname],
         ));
         $event->add_record_snapshot('course', $PAGE->course);
         $event->trigger();
