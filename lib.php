@@ -33,8 +33,16 @@ defined('MOODLE_INTERNAL') || die();
 function local_learning_analytics_extend_navigation(global_navigation $navigation) {
     global $PAGE, $COURSE;
 
-    // Only extend navigation inside courses - 1 is the base system 'course'.
+    // Only extend navigation inside courses.
     if (isset($COURSE->id) && $COURSE->id !== SITEID) {
+        $courseids = get_config('logstore_lanalytics', 'course_ids');
+        if ($courseids !== false && $courseids !== '') {
+            $courseids = array_map('trim', explode(',', $courseids));
+            if (!in_array($COURSE->id, $courseids)) {
+                return;
+            }
+        }
+
         $node = $navigation->find($COURSE->id, navigation_node::TYPE_COURSE);
         if ($node) {
             $node->add_node(navigation_node::create(

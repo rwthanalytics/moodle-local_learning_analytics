@@ -36,6 +36,15 @@ $courseid = required_param('course', PARAM_INT);
 $context = context_course::instance($courseid, MUST_EXIST);
 
 require_capability('local/learning_analytics:view_statistics', $context, $USER->id);
+
+$courseids = get_config('logstore_lanalytics', 'course_ids');
+if ($courseids !== false && $courseids !== '') {
+    $courseids = array_map('trim', explode(',', $courseids));
+    if (!in_array($courseid, $courseids)) {
+        throw new moodle_exception('Learning Analytics Tracking is not enabled for this course.');
+    }
+}
+
 $PAGE->set_context($context);
 $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
