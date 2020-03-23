@@ -171,6 +171,10 @@ class lareport_activities extends report_base {
             ]
         ]);
 
+        $layout = new stdClass();
+        $layout->margin = ['l' => 80, 'r' => 80, 't' => 20, 'b' => 100];
+        $plot->set_layout($layout);
+
         return [
             $plot,
             $tabletypes,
