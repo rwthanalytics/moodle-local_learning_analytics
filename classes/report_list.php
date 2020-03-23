@@ -15,23 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Installation script for Learning Analytics UI
+ * Learning Analytics List of Reports
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_learning_analytics\report_list;
+namespace local_learning_analytics;
 
-function xmldb_local_learning_analytics_install() {
-    global $DB;
+defined('MOODLE_INTERNAL') || die;
 
-    foreach(report_list::list as $reportname => $reportid) {
-        $entry = [
-            'id' => $reportid,
-            'reportname' => $reportname
-        ];
-        $DB->insert_record_raw('local_learning_analytics_rep', $entry, false, false, true);
-    }
+/**
+ * Class report_list
+ *
+ * @package local_learning_analytics
+ */
+class report_list {
+    public const list = [
+        'coursedashboard' => 1,
+        'activities' => 2,
+        'learners' => 3,
+        'browser_os' => 4,
+    ];
 }
