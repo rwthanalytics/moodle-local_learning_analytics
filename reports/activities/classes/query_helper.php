@@ -54,13 +54,14 @@ class query_helper {
 
         $query = <<<SQL
         SELECT
-        COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modfolder.name, modwiki.name, 'Unknown')
-        AS name, m.name
-        As modname, cm.id
-        AS cmid, cm.instance
-        AS objectid, s.name
-        AS section_name, s.section
-        AS section_pos, m.visible, COUNT(*) hits
+        cm.id AS cmid, 
+        COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modfolder.name, modwiki.name, 'Unknown') AS name,
+        m.name AS modname,
+        cm.instance AS objectid,
+        s.name AS section_name,
+        s.section AS section_pos,
+        m.visible,
+        COUNT(*) hits
         FROM {modules} m
         JOIN {course_modules} cm
             ON cm.course = ?
