@@ -31,7 +31,10 @@ $string['subplugintype_lareport_plural'] = 'Reports';
 $string['subplugintype_laoutput'] = 'Output';
 $string['subplugintype_laoutput_plural'] = 'Outputs';
 
-$string['learners'] = 'Learners';
-$string['sessions'] = 'Sessions';
 
 $string['show_full_list'] = 'Expand list';
+
+// Terms also used by subplugins
+$string['learners'] = 'Learners';
+$string['sessions'] = 'Sessions';
+$string['hits'] = 'Hits'; // "Aufrufe"

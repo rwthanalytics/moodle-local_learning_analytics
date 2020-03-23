@@ -23,3 +23,13 @@
  */
 
 $string['pluginname'] = 'Browser/OS';
+
+$string['other'] = 'Other';
+
+$string['browser_name'] = 'Browser';
+$string['hits'] = 'Hits';
+
+$string['used_platform'] = 'Used platforms';
+$string['used_os'] = 'Used desktop operating systems';
+$string['used_mobile'] = 'Used mobile operating systems';
+$string['used_desktop_browsers'] = 'Used desktop browsers';

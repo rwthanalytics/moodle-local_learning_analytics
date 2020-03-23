@@ -30,36 +30,36 @@ use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\splitter;
 use local_learning_analytics\settings;
 
-const STRINGS = [
-    'platform' => [
-        'desktop' => 'Desktop Browser',
-        'mobile' => 'Mobile Browser',
-        'api' => 'App',
-        'other' => 'unknown' // TODO replace with language key
-    ],
-    'os' => [
-        'windows' => 'Microsoft Windows',
-        'mac' => 'macOS',
-        'linux' => 'Linux',
-        'other' => 'unknown' // TODO language key
-    ],
-    'browser' => [
-        'chrome' => 'Google Chrome',
-        'edge' => 'Microsoft Edge',
-        'firefox' => 'Mozilla Firefox',
-        'ie' => 'Internet Explorer',
-        'opera' => 'Opera',
-        'safari' => 'Safari',
-        'other' => 'other' // TODO language key
-    ],
-    'mobile' => [
-        'android' => 'Android',
-        'ios' => 'iOS',
-        'other' => 'unknown' // TODO language key
-    ]
-];
-
 class lareport_browser_os extends report_base {
+
+    private static $techStrings = [
+        'platform' => [
+            'desktop' => 'Desktop Browser',
+            'mobile' => 'Mobile Browser',
+            'api' => 'App',
+            'other' => 'lang/other'
+        ],
+        'os' => [
+            'windows' => 'Microsoft Windows',
+            'mac' => 'macOS',
+            'linux' => 'Linux',
+            'other' => 'lang/other'
+        ],
+        'browser' => [
+            'chrome' => 'Google Chrome',
+            'edge' => 'Microsoft Edge',
+            'firefox' => 'Mozilla Firefox',
+            'ie' => 'Internet Explorer',
+            'opera' => 'Opera',
+            'safari' => 'Safari',
+            'other' => 'lang/other'
+        ],
+        'mobile' => [
+            'android' => 'Android',
+            'ios' => 'iOS',
+            'other' => 'lang/other'
+        ]
+    ];
 
     private static $barcolors = [
         '#66b5ab',
@@ -96,7 +96,6 @@ class lareport_browser_os extends report_base {
         }
 
         $plot = new plot();
-
         $i = 0;
         $percsofar = 0;
         foreach ($entries as $key => $value) {
@@ -114,11 +113,15 @@ class lareport_browser_os extends report_base {
                     'xanchor' => 'center'
                 ];
             }
+            $text = self::$techStrings[$entrykey][$key];
+            if (substr($text, 0, 5) === 'lang/') {
+                $text = get_string(substr($text, 5), 'lareport_browser_os');
+            }
             $annotations[] = [
                 'x' => ($percsofar + ($perc / 2)),
                 'y' => 'value',
                 'yshift' => 16,
-                'text' => STRINGS[$entrykey][$key],
+                'text' => $text,
                 'font' => ['color' => '#000','size' => 16],
                 'showarrow' => false,
                 'xanchor' => 'center',
@@ -144,9 +147,12 @@ class lareport_browser_os extends report_base {
         if ($i === 0) {
             return [''];
         }
+        $langstring = get_string('used_' . $entrykey, 'lareport_browser_os');
         return [
-            "<h3>{$entrykey}</h3>", // TODO language keys
-            $plot
+            "<div class='row'><div class='col-12'>",
+            "<h3>{$langstring}</h3>",
+            $plot,
+            "</div></div><div class='w-100'><hr></div>"
         ];
     }
 
@@ -160,21 +166,28 @@ class lareport_browser_os extends report_base {
             }
         }
         $table = new table();
-        $table->set_header_local(['browser_name', 'hits'], 'lareport_activities');
+        $table->set_header_local(['browser_name', 'hits'], 'lareport_browser_os');
 
         foreach ($browsers as $browserkey => $hits) {
             if ($hits < $privacythreshold) {
                 continue;
             }
+            $text = self::$techStrings['browser'][$browserkey];
+            if (substr($text, 0, 5) === 'lang/') {
+                $text = get_string(substr($text, 5), 'lareport_browser_os');
+            }
             $table->add_row([
-                $browserkey,
+                $text,
                 $table::fancyNumberCell($hits, $maxhits, 'orange')
             ]);
         }
 
+        $langstring = get_string('used_desktop_browsers', 'lareport_browser_os');
         return [
-            '<h3>Desktop Browser Use</h3>', // TODO language keys
-            $table
+            "<div class='row'><div class='col-12'>",
+            "<h3>{$langstring}</h3>",
+            $table,
+            "</div></div>"
         ];
     }
 
@@ -204,17 +217,10 @@ class lareport_browser_os extends report_base {
         arsort($results['browser']);
 
         return array_merge(
-            ["<div class='row'><div class='col-12'>"],
             self::createplot($results, 'platform', $privacythreshold),
-            ["</div></div><div class='row'><div class='col-12'>"],
-            self::desktop_browsers($results['browser'], $privacythreshold),
-            ["</div></div>"],
-            [
-                new splitter(
-                    self::createplot($results, 'os', $privacythreshold),
-                    self::createplot($results, 'mobile', $privacythreshold)
-                )
-            ]
+            self::createplot($results, 'os', $privacythreshold),
+            self::createplot($results, 'mobile', $privacythreshold),
+            self::desktop_browsers($results['browser'], $privacythreshold)
         );
     }
 

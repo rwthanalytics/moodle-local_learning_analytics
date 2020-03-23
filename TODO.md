@@ -7,9 +7,9 @@
 - [x] **Give option to disable "Set course to compare" (as this makes no sense without data currently)**
 - [x] Make "Activities" box link to activity report even if no recently used activiy exists
 - [x] Report: Browser/mobile usage in course
-  - [x] Integrate Moodle-API into desktop/mobile statitics
+  - [x] Integrate Moodle-API into desktop/mobile statistics
   - [ ] Add language keys
-- [ ] **Add event `view_analytics` (or a similar event)**
+- [x] **Add event `view_analytics` (or a similar event)**
 - [ ] Check localization
   - [ ] **Add English text for all missing strings**
   - [ ] **Add German texts for all missing strings**
@@ -21,8 +21,12 @@
   - [x] Add info on settings of main plugin
     - [x] privacy threshold
     - [x] compare_options
+  - [ ] Describe subplugins
+    - [ ] `lareport`
+    - [ ] `lalog`
 - [ ] Add information to tables: "Only data >= X is shown"
-- [ ] Only show dashboard link when the user has the capability
+- [x] Only show dashboard link in selected courses
+- [ ] Update README.md in reports folder
 
 ## Logstore
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
