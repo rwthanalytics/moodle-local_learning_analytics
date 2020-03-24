@@ -28,14 +28,18 @@ use local_learning_analytics\report_page_base;
 use lareport_activities\query_helper;
 use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\settings;
+use \context_course;
 
 defined('MOODLE_INTERNAL') || die;
 
 class all extends report_page_base {
 
     public function run(array $params): array {
+        global $USER;
         $courseid = (int) $params['course'];
-        $activities = query_helper::query_activities($courseid);
+        $context = context_course::instance($courseid, MUST_EXIST);
+        $hasupdatecap = has_capability('moodle/course:update', $context, $USER->id);
+        $activities = query_helper::query_activities($courseid, $hasupdatecap);
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         // Find max values.
@@ -47,10 +51,11 @@ class all extends report_page_base {
         $tabledetails = new table();
         $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 
+        $hiddentext = get_string('hidden', 'lareport_activities');
         foreach ($activities as $activity) {
             $namecell = $activity->name;
             if (!$activity->visible) {
-                $namecell = '<del>${$namecell}</del>';
+                $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
             }
             $cellcontent = ($activity->hits < $privacythreshold) ?
                 " < {$privacythreshold}" : table::fancyNumberCell((int) $activity->hits, $maxhits, 'orange');

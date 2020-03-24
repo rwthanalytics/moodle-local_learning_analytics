@@ -36,6 +36,9 @@ $courseid = required_param('course', PARAM_INT);
 $context = context_course::instance($courseid, MUST_EXIST);
 
 require_capability('local/learning_analytics:view_statistics', $context, $USER->id);
+if ($courseid == SITEID) {
+    throw new moodle_exception('invalidcourse');
+}
 
 $courseids = get_config('logstore_lanalytics', 'course_ids');
 if ($courseids !== false && $courseids !== '') {

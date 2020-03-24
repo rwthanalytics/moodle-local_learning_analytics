@@ -30,5 +30,6 @@ $string['hits'] = 'Aufrufe';
 $string['activity_name'] = 'Name der Aktivität';
 $string['section'] = 'Abschnitt';
 $string['most_used_activities'] = 'Meistgenutzte Aktivitäten';
+$string['hidden'] = 'verborgen';
 
 $string['no_data_to_show'] = 'Aktuell gibt es keine Daten anzuzeigen. Kommen Sie später wieder um Statistiken zur Nutzung der Aktivitäten zu sehen.';

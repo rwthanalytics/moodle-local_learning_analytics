@@ -53,7 +53,10 @@ class lareport_activities extends report_base {
     private static $markercolortextdefault = 'gray';
 
     public function run(array $params): array {
+        global $USER;
         $courseid = $params['course'];
+        $context = context_course::instance($courseid, MUST_EXIST);
+        $hasupdatecap = has_capability('moodle/course:update', $context, $USER->id);
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $filter = '';
@@ -62,7 +65,7 @@ class lareport_activities extends report_base {
             $filter = "m.name = ?";
             $filtervalues[] = $params['mod'];
         }
-        $activities = query_helper::query_activities($courseid, $filter, $filtervalues);
+        $activities = query_helper::query_activities($courseid, $hasupdatecap, $filter, $filtervalues);
 
         // Find max values.
         $maxhits = 0;
@@ -137,6 +140,7 @@ class lareport_activities extends report_base {
             return $act2->hits <=> $act1->hits;
         });
 
+        $hiddentext = get_string('hidden', 'lareport_activities');
         $headinttoptext = get_string('most_used_activities', 'lareport_activities');
         foreach ($activities as $i => $activity) {
             if ($i >= 5) { // Stop when some reports are shown.
@@ -144,7 +148,7 @@ class lareport_activities extends report_base {
             }
             $namecell = $activity->name;
             if (!$activity->visible) {
-                $namecell = '<del>${$namecell}</del>';
+                $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
             }
             if ($activity->hits >= $privacythreshold) {
                 $tabledetails->add_row([

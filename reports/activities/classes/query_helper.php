@@ -33,23 +33,19 @@ use context_course;
 
 class query_helper {
 
-    public static function query_activities(int $courseid, string $filter = '', array $values = []): array {
+    public static function query_activities(int $courseid, $showhidden = false, string $filter = '', array $values = []): array {
         global $DB;
 
         $activity = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-        $context = context_course::instance($activity->id, MUST_EXIST);
-        if ($activity->id == SITEID) {
-            throw new moodle_exception('invalidcourse');
-        }
-        // Only teachers and managers.
-        require_capability('moodle/course:update', $context);
-
         $valuesstatemt = [$courseid, CONTEXT_MODULE];
 
         $filtersql = '';
         if ($filter) {
             $filtersql = ' AND ' . $filter;
             $valuesstatemt = array_merge($valuesstatemt, $values);
+        }
+        if (!$showhidden) {
+            $filtersql = ' AND cm.visible=1';
         }
 
         $query = <<<SQL
@@ -60,7 +56,7 @@ class query_helper {
         cm.instance AS objectid,
         s.name AS section_name,
         s.section AS section_pos,
-        m.visible,
+        cm.visible,
         COUNT(log.id) hits
         FROM {modules} m
         JOIN {course_modules} cm
