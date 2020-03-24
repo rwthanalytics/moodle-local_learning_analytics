@@ -38,3 +38,9 @@ $string['show_full_list'] = 'Expand list';
 $string['learners'] = 'Learners';
 $string['sessions'] = 'Sessions';
 $string['hits'] = 'Hits'; // "Aufrufe"
+
+// Settings
+$string['dataprivacy_threshold'] = 'dataprivacy_threshold';
+$string['dataprivacy_threshold_description'] = 'This value determines how many "data points" a data set needs to contain before the data is displayed.';
+$string['allow_dashboard_compare'] = 'allow_dashboard_compare';
+$string['allow_dashboard_compare_description'] = 'Activate this options, to allow teachers to compare their course with another one of their courses in the dashboad. The option adds a link to the dashboard allowing the teachers to select another one of their courses. After selecting another course, the week plot will show a dashed line in the background in addition to the current course.';

@@ -38,3 +38,9 @@ $string['show_full_list'] = 'Mehr anzeigen';
 $string['learners'] = 'Learners';
 $string['sessions'] = 'Sessions';
 $string['hits'] = 'Hits'; // "Aufrufe"
+
+// Settings
+$string['dataprivacy_threshold'] = 'dataprivacy_threshold';
+$string['dataprivacy_threshold_description'] = 'Bestimmt wie viele Datenpunkte ein Datensatz haben muss, bevor er angezeigt wird.';
+$string['allow_dashboard_compare'] = 'allow_dashboard_compare';
+$string['allow_dashboard_compare_description'] = 'Diese Option kann aktiviert werden um im Dashboard die Möglichkeit zu aktivieren den Kurs mit einem anderen Kurs zu vergleichen. Wird die Option aktiviert ist unter dem Zeitverlauf im Dashboard ein Link zu finden, der es erlaubt einen Kurs auszuwählen. Der wöchentliche Verlauf wird dann durch eine zweite gestrichelte Linie ergänzt.';
