@@ -1,3 +1,18 @@
+# CONTRIBUTING
+
+## Relase process
+
+- Check if there are any breaking changes that should be handled by a `upgrade.php` file
+- Make sure all changes are documented in `CHANGELOG.md`
+- Change `version.php`
+  - Set `$plugin->version`
+  - Set `$plugin->release`
+  - Check if dependency `logstore_lanalytics` needs to be changed to a new version
+- `git commit -m "Version release: vX.X.X"`
+- `git tag vX.X.X`
+- `git push`
+- `git push --tags`
+
 
 ## Development
 
