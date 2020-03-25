@@ -43,4 +43,12 @@ if ($hassiteconfig) {
         0
     ));
 
+    $settings->add(new admin_setting_configtext(
+        'local_learning_analytics/navigation_position_beforekey',
+        get_string('navigation_position_beforekey', 'local_learning_analytics'),
+        get_string('navigation_position_beforekey_description', 'local_learning_analytics'),
+        '',
+        PARAM_RAW
+    ));
+
 }

@@ -44,6 +44,18 @@ function local_learning_analytics_extend_navigation(global_navigation $navigatio
         }
 
         $node = $navigation->find($COURSE->id, navigation_node::TYPE_COURSE);
+
+        $settingbeforekey = get_config('local_learning_analytics', 'navigation_position_beforekey');
+        $beforekey = null;
+        if ($settingbeforekey === false || $settingbeforekey === '') {
+            // Find first section node, and add our node before that (to be the last non-section node)
+            $children = $node->children->type(navigation_node::TYPE_SECTION);
+            if (count($children) !== 0) {
+                $beforekey = reset($children)->key;
+            }
+        } else { // use setting
+            $beforekey = $settingbeforekey;
+        }
         if ($node) {
             $node->add_node(navigation_node::create(
                     get_string('learning_analytics', 'local_learning_analytics'),
@@ -52,7 +64,7 @@ function local_learning_analytics_extend_navigation(global_navigation $navigatio
                     null, 'learning_analytics',
                     new pix_icon('i/report', '')
                 ),
-                'grades'
+                $beforekey
             );
         }
     }
