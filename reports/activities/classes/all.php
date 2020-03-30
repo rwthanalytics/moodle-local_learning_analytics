@@ -65,7 +65,7 @@ class all extends report_page_base {
                 " < {$privacythreshold}" : table::fancyNumberCell((int) $activity->hits, $maxhits, 'orange');
             $tabledetails->add_row([
                 $namecell,
-                ucfirst($activity->modname),
+                get_string('modulename', $activity->modname),
                 $activity->section_name,
                 $cellcontent
             ]);

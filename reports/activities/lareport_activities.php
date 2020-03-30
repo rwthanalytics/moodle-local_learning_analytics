@@ -101,7 +101,7 @@ class lareport_activities extends report_base {
         foreach ($hitsbytype as $item) {
             $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
             $hits = ($privacythreshold === 0) ? (int) $item['hits'] : (floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold);
-            $typestr = ucfirst($item['type']);
+            $typestr = get_string('modulename', $item['type']);
             if ($hits >= $privacythreshold) {
                 $tabletypes->add_row([
                     "<a href='{$url}'>{$typestr}</a>",
@@ -157,7 +157,7 @@ class lareport_activities extends report_base {
             if ($activity->hits >= $privacythreshold) {
                 $tabledetails->add_row([
                     $namecell,
-                    ucfirst($activity->modname),
+                    get_string('modulename', $activity->modname),
                     $activity->section_name,
                     table::fancyNumberCell(
                         (int) $activity->hits,
