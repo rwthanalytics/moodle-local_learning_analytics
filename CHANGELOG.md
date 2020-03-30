@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2020-03-30
+## Changed
+- Minor language string changes
+
 ## [0.4.0] - 2020-03-30
 ### Changed
 - Tables are changed to better fit with RWTH layout
