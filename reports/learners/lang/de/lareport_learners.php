@@ -22,7 +22,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Lerner';
+$string['pluginname'] = 'Lernende';
 $string['pagename_all'] = 'Vollständige Liste';
 
 $string['courses_heard_before'] = 'Bereits gehörte Kurse';
