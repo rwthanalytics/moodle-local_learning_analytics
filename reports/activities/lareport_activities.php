@@ -72,12 +72,17 @@ class lareport_activities extends report_base {
 
         $hitsbytypeassoc = [];
 
-        foreach ($activities as $activity) {
+        $modinfo = get_fast_modinfo($courseid);
+        foreach ($activities as &$activity) {
             $maxhits = max($maxhits, (int) $activity->hits);
             if (!isset($hitsbytypeassoc[$activity->modname])) {
                 $hitsbytypeassoc[$activity->modname] = 0;
             }
             $hitsbytypeassoc[$activity->modname] += $activity->hits;
+            if ($activity->name === '') {
+                $activity->name = $modinfo->get_cm($activity->cmid)->name;
+            }
+            $activity->readablemodname = get_string('modulename', $activity->modname); // Human readable modname (e.g. "Test" instead of "Quiz").
         }
 
         if ($maxhits === 0) {
@@ -132,8 +137,8 @@ class lareport_activities extends report_base {
         foreach ($activities as $activity) {
             $x[] = $activity->name;
             $y[] = $activity->hits < $privacythreshold ? 0 : $activity->hits;
-            $hitstext = $activity->hits < $privacythreshold ? "{$activity->name}: < {$privacythreshold}" : $activity->hits;
-            $typestr = get_string('modulename', $activity->modname);
+            $hitstext = $activity->hits < $privacythreshold ? "< {$privacythreshold}" : $activity->hits;
+            $typestr = $activity->readablemodname;
             $texts[] = "{$typestr}: {$activity->name}<br>{$hitstext} {$hitsstring}";
             $markercolors[] = self::$markercolors[$activity->modname] ?? self::$markercolordefault;
         }
@@ -144,7 +149,6 @@ class lareport_activities extends report_base {
             return $act2->hits <=> $act1->hits;
         });
 
-        $modinfo = get_fast_modinfo($courseid);
         $hiddentext = get_string('hidden', 'lareport_activities');
         $headinttoptext = get_string('most_used_activities', 'lareport_activities');
         foreach ($activities as $i => $activity) {
@@ -152,16 +156,13 @@ class lareport_activities extends report_base {
                 break;
             }
             $namecell = $activity->name;
-            if ($namecell === '') {
-                $namecell = $modinfo->get_cm($activity->cmid)->name;
-            }
             if (!$activity->visible) {
                 $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
             }
             if ($activity->hits >= $privacythreshold) {
                 $tabledetails->add_row([
                     $namecell,
-                    get_string('modulename', $activity->modname),
+                    $activity->readablemodname,
                     $activity->section_name,
                     table::fancyNumberCell(
                         (int) $activity->hits,
