@@ -51,7 +51,7 @@ class query_helper {
         $query = <<<SQL
         SELECT
         cm.id AS cmid, 
-        COALESCE(modr.name, modas.name, modurl.name, modf.name, modpage.name, modfolder.name, modwiki.name, '') AS name,
+        COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modfolder.name, modwiki.name, '') AS name,
         m.name AS modname,
         cm.instance AS objectid,
         s.name AS section_name,

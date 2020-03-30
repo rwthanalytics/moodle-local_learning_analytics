@@ -53,7 +53,7 @@ class lareport_activities extends report_base {
     private static $markercolortextdefault = 'gray';
 
     public function run(array $params): array {
-        global $USER;
+        global $USER, $OUTPUT;
         $courseid = $params['course'];
         $context = context_course::instance($courseid, MUST_EXIST);
         $hasupdatecap = has_capability('moodle/course:update', $context, $USER->id);
@@ -99,12 +99,13 @@ class lareport_activities extends report_base {
         $tabletypes->set_header_local(['activity_type', 'hits'], 'lareport_activities');
 
         foreach ($hitsbytype as $item) {
+            $icon = $OUTPUT->pix_icon('icon', '', $item['type'], array('class' => 'iconlarge activityicon'));
             $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
             $hits = ($privacythreshold === 0) ? (int) $item['hits'] : (floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold);
             $typestr = get_string('modulename', $item['type']);
             if ($hits >= $privacythreshold) {
                 $tabletypes->add_row([
-                    "<a href='{$url}'>{$typestr}</a>",
+                    "{$icon} <a href='{$url}'>{$typestr}</a>",
                     table::fancyNumberCell(
                         $hits,
                         $maxhitsbytype,
@@ -127,10 +128,13 @@ class lareport_activities extends report_base {
         $texts = [];
         $markercolors = [];
 
+        $hitsstring = get_string('hits', 'lareport_activities');
         foreach ($activities as $activity) {
             $x[] = $activity->name;
             $y[] = $activity->hits < $privacythreshold ? 0 : $activity->hits;
-            $texts[] = $activity->hits < $privacythreshold ? "< {$privacythreshold}" : $activity->hits;
+            $hitstext = $activity->hits < $privacythreshold ? "{$activity->name}: < {$privacythreshold}" : $activity->hits;
+            $typestr = get_string('modulename', $activity->modname);
+            $texts[] = "{$typestr}: {$activity->name}<br>{$hitstext} {$hitsstring}";
             $markercolors[] = self::$markercolors[$activity->modname] ?? self::$markercolordefault;
         }
 

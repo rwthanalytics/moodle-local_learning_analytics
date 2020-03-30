@@ -3,6 +3,10 @@
     display: block;
     overflow-x: auto;
     display: table;
+
+}
+.latable .iconlarge {
+    vertical-align: bottom;
 }
 
 .bar {
