@@ -166,7 +166,7 @@ SQL;
         $oneweekago = $date->getTimestamp();
 
         $query = <<<SQL
-        SELECT SQL_NO_CACHE
+        SELECT
             m.name as modname,
             cm.id AS cmid,
             COUNT(*) hits
