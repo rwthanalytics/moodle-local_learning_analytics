@@ -41,6 +41,7 @@ class table extends output_base {
 
     public function __construct() {
         $this->table = new html_table();
+        $this->table->attributes['class'] = 'generaltable latable';
     }
 
     public function set_header(array $header) {

@@ -1,3 +1,10 @@
+.latable {
+    overflow-x: scroll;
+    display: block;
+    overflow-x: auto;
+    display: table;
+}
+
 .bar {
     width: 99%;
     height: 4px;
