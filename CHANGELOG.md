@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2020-03-30
+### Changed
+- Tables are changed to better fit with RWTH layout
+- Improved activities report
+  - Before this version, "Unknown" was shown for non-default activities, now the names for all activites are displayed
+  - Added icons to the modname table
+
 ## [0.3.0] - 2020-03-25
 ### Added
 - Option `navigation_position_beforekey` added to specify where the link to the dashboard in the navigation should be added
