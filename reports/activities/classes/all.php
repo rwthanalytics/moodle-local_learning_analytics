@@ -51,9 +51,13 @@ class all extends report_page_base {
         $tabledetails = new table();
         $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 
+        $modinfo = get_fast_modinfo($courseid);
         $hiddentext = get_string('hidden', 'lareport_activities');
         foreach ($activities as $activity) {
             $namecell = $activity->name;
+            if ($namecell === '') {
+                $namecell = $modinfo->get_cm($activity->cmid)->name;
+            }
             if (!$activity->visible) {
                 $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
             }

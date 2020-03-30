@@ -140,6 +140,7 @@ class lareport_activities extends report_base {
             return $act2->hits <=> $act1->hits;
         });
 
+        $modinfo = get_fast_modinfo($courseid);
         $hiddentext = get_string('hidden', 'lareport_activities');
         $headinttoptext = get_string('most_used_activities', 'lareport_activities');
         foreach ($activities as $i => $activity) {
@@ -147,6 +148,9 @@ class lareport_activities extends report_base {
                 break;
             }
             $namecell = $activity->name;
+            if ($namecell === '') {
+                $namecell = $modinfo->get_cm($activity->cmid)->name;
+            }
             if (!$activity->visible) {
                 $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
             }
