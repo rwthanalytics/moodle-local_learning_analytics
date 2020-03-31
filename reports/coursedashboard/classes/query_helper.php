@@ -170,14 +170,14 @@ SQL;
             m.name as modname,
             cm.id AS cmid,
             COUNT(*) hits
-        FROM mdl_modules m
-        JOIN mdl_course_modules cm
+        FROM {modules} m
+        JOIN {course_modules} cm
             ON cm.course = ?
         AND cm.module = m.id
-            LEFT JOIN mdl_context ctx
+            LEFT JOIN {context} ctx
         ON ctx.contextlevel = 70
             AND ctx.instanceid = cm.id
-        LEFT JOIN mdl_logstore_lanalytics_log l
+        LEFT JOIN {logstore_lanalytics_log} l
             ON l.courseid = cm.course
             AND l.contextid = ctx.id
         WHERE l.timecreated > ?
