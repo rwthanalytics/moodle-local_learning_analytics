@@ -1,9 +1,6 @@
-.latable {
-    overflow-x: scroll;
-    display: block;
+table.generaltable.latable {
     overflow-x: auto;
     display: table;
-
 }
 .latable .iconlarge {
     vertical-align: bottom;
