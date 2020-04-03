@@ -56,16 +56,64 @@ Optionally, you can configure both plugins. The logstore plugin has options rela
 
 You can find the same page as mentioned above (where the plugin is activated). The logstore has the following options:
 
-- `course_ids`: Only track the courses with the given IDs. The order of the IDs does not matter. IDs should be separated by a single comma. By default, the plugin tracks alls courses. Example: `10,80,10`.
-- `nontracking_roles`: Define which roles should *not* be tracked. This is useful if you don't want to track specific roles (like managers or teachres). Specify the role by using the "shortname" (can be found via *Site Administration* -> *Users* tab -> *Permissions* category -> *Define roles*). By default, no roles are ignored. Example: `teacher,editingteacher,manager`
+- `log_scope`: One of `all`, `include`, `exclude`. Defines the scope of the logging process. By default, everything is logged.
+  - Option `all`: Logs all events
+  - Option `include`: Log events only in courses specified via `course_ids`
+  - Option `exclude`: Log events *excluding* the courses specified via `course_ids`
+- `course_ids`: To be used with the `log_scope` option `include` or `exclude` to only track specific courses. Example: `10,153,102`.
+- `tracking_roles`: Define which roles should be tracked (whitelist) unless specified via `nontracking_roles`. This is useful if you only want to track specific roles (like students or guests). By default, all roles are tracked. Example: `student,guest`. See [Role Tracking](#roletracking) for more information.
+- `nontracking_roles`: Define which roles should *not* be tracked. This is useful if you don't want to track specific roles (like managers or teachers). By default, no roles are ignored. Example: `teacher,editingteacher,manager`. See [Role Tracking](#roletracking) for more information.
 - `buffersize`: Same as `buffersize` of other loggers. In case a single page fires more than one event, this is the number of events that will be buffered before writing them to database. Defaults to `50`.
 
 ### Local Plugin (`moodle-logstore_lanalytics`)
 
 The settings page can be found in *Site Administration* -> *Plugins* tab -> *Local plugins* category -> *Learning Analytics*. The plugin has the following options:
 
+- `status`: One of `show_if_enabled`, `show_courseids`, `show_always`, `hide_link`, `disable`. This value sets whether the user interface should be activated and whether a links should be shown in the navigation. By default, the link and page are visible if logging is enabled for the course. You can use this option, if you want to enabled logging in all courses, but only want to enable the user interface on specific courses.
+  - Option `show_if_enabled`: Show navigation link and page if logging is enabled for the course
+  - Option `show_courseids`: Show navigation link and page if course is specified below via course_ids
+  - Option `show_always`: Show navigation link and page for all courses, even if logging is disabled for the course (only enable this, if you already logged data before)
+  - Option `hide_link`: Hide navigation link but keep the page enabled for all courses (only if you know the link, you can access the page)
+  - Option `disable`: Hide navigation link and disable the page for all courses. This will completly disable the User Interface for everyone.
+- `course_ids`: To be used with the `status` option `show_courseids` to only show the UI in specific courses. Example: `10,153,102`.
+- `navigation_position_beforekey`: Allows to specify where in the course navigation the link to the page is added. By default, the link is added before the first `section` node. Example value: `grades` to be shown before the link to grades. You can find the key of a node in the navigation by using the developer tools. Right-click on a link in the navigation, press *Inspect* and check the attribute `data-key` of the corresponding `a` element.
 - `dataprivacy_threshold`: This value determines how many "data points" a "data set" needs to contain before the data is displayed. See the data privacy section below for more information. By default, the value is `10`.
 - `allow_dashboard_compare`: Activate this options, to allow teachers to compare their course with another one of their courses in the dashboad. The option adds a link to the dashboard allowing the teachers to select another one of their courses. After selecting another course, the week plot will show a dashed line in the background in addition to the current course. By default, the option is disabled.
+
+## Logstore: Role Tracking
+<a name="roletracking"></a>
+There are two settings to define which roles are to be tracked and which not. Specify the role by using the "shortname" (can be found via *Site Administration* -> *Users* tab -> *Permissions* category -> *Define roles*).
+
+- `tracking_roles`: Whitelist (Only track these roles unless specified by `nontracking_roles`)
+- `nontracking_roles`: Blacklist (don't track these roles)
+
+The blacklist has priority over the whitelist. Keep in mind that a user can be a `teacher` in one course and a `student` in another course meanining that a user might be tracked in one course while being excluded from tracking in another.
+
+If `tracking_roles` is not set, all roles are assumed to be tracked (unless roles are given in `nontracking_roles`). If `tracking_roles` and `nontracking_roles` are unset, all roles are tracked.
+
+### Example
+
+For an example, let's assume the following settings:
+
+| Setting | Value|
+|---|---|
+| `tracking_roles` | `guest,student` |
+| `nontracking_roles` | `teacher,manager` |
+
+In words, this setting means:
+
+> Only track users in the course that have the role `guest` or `student`, unless they also have the role `teacher` or `manager`.
+
+See below examples of what would be tracked:
+
+| User Roles | Tracked |
+|---|:---:|
+| `student` | ✔ |
+| `student,manager` | ✘ |
+| `manager` | ✘ |
+| `coursecreator` | ✘ |
+| `student,coursecreator` | ✔ |
+| `student,coursecreator,teacher` | ✘ |
 
 ## Data Privacy
 This plugin was developed with data privacy in mind. It does not log any user ids. All data is logged anonymously. You still have some flexibility in how strict the data is handled by using the `dataprivacy_threshold` option.

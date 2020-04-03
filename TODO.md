@@ -26,6 +26,27 @@
 - [x] Only show dashboard link in selected courses
 - [x] Update README.md in reports folder
 - [x] Don't show empty tables or empty data plots
+- [x] Tracking roles whitelist (in addition to blacklist)
+  - [x] Provide better options for which courses are logged:
+    - [x] Option "Log"
+      - [x] All courses
+      - [x] Only the courses specified below (whitelist)
+      - [x] Only the courses NOT specified  below (blacklist)
+- [x] Local plugin:
+  - [x] If logstore is disabled, don't show in the navigation
+  - [x] Show analytics: (enables the Analytics page and add the link to the navigation)
+    - [x] Show navigation link if logging is enabled for the course
+    - [x] Show navigation link if course is specified below via course_ids
+    - [x] Show navigation link even if logging is disabled for the course (only enable this, if you already logged data before)
+    - [x] Hide navigation link but keep the page enabled (only if you know the link, you can access Analytics)
+    - [x] Hide navigation link and also disable the page itself (even if logging happens in the background)
+- [x] Make table with loggable courseids (instead of single setting)
+  - After checking, I'll leave it like this for now as it's probably faster this way. The advantage will probably only come when there are a lot of courses added in this way...
+- [x] Update README with new settings
+- [x] Logstore plugin: Make sure it also works on its own (without this plugin)
+  - [x] Make sure it only loads `lalog` plugins if this plugin is installed
+- [ ] Page that shows what kind of data is being tracked and whether one is being tracked
+- [ ] External database support
 
 ## Logstore
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
@@ -33,9 +54,9 @@
 - [x] Detect Moodle-API use
 
 ## GDPR
-- [ ] Create "Verfahrensverzeichnis"
-- [ ] Datenschutzerklärung erstellen
-- [ ] **Implement Moodle Privacy providers**
+- [x] Create "Verfahrensverzeichnis"
+- [x] Datenschutzerklärung erstellen
+- [ ] **Implement Moodle Privacy providers** (later, when we log personalized data)
 - [x] Make sure that groups < X (aks GDPR officer) are not shown
   - [X] Ask (meeting 2020-03-10) what `X` is, configurable -> `10` by default
   - [X] Is is okay to still track the data (even when groups < `X`) but don't display results for smaller courses
