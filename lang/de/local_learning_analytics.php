@@ -40,6 +40,17 @@ $string['sessions'] = 'Sessions';
 $string['hits'] = 'Hits'; // "Aufrufe"
 
 // Settings
+$string['setting_status'] = 'status';
+$string['setting_status_description'] = 'Der Wert bestimmt ob das User Interface genutzt werden kann und ob ein Link im Navigationsmenü gezeigt wird. Standardmäßig, der Link im Navigationsmenü und die Seite selber sind nur aktiv, wenn das Loggen für den Kurs aktiviert ist. Diese Option kann z.B. genutzt werden um alle Kurse zu loggen, aber nur in bestimmten Kursen das User Interface anzuzeigen.';
+$string['setting_status_option_show_if_enabled'] = 'Navigationslink zeigen, wenn Logging für den Kurs aktiviert ist';
+$string['setting_status_option_show_courseids'] = 'Navigationslink zeigen, wenn der Kurs in course_ids (nächste Option) definiert ist';
+$string['setting_status_option_show_always'] = 'Navigationslink in allen Kursen zeigen, selbst wenn das Loggen deaktiviert ist (nützlich falls Daten zuvor bereits geloggt wurden)';
+$string['setting_status_option_hide_link'] = 'Navigationslink nicht anzeigen, aber die Seite selber aktivieren (wer den Link kennt, kann weiterhin die Seite nutzen)';
+$string['setting_status_option_disable'] = 'Navigationslink nicht anzeigen und die Seite selber in allen Kursen deaktivieren';
+
+$string['setting_course_ids'] = 'course_ids';
+$string['setting_course_ids_description'] = 'Diese Option kann zusammen mit der zweiten Einstellung für "status" genutzt werden um zu entscheiden in welchen Kursen das User Interface aktiviert sein soll.';
+
 $string['dataprivacy_threshold'] = 'dataprivacy_threshold';
 $string['dataprivacy_threshold_description'] = 'Bestimmt wie viele Datenpunkte ein Datensatz haben muss, bevor er angezeigt wird.';
 $string['allow_dashboard_compare'] = 'allow_dashboard_compare';

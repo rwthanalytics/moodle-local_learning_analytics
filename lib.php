@@ -35,11 +35,45 @@ function local_learning_analytics_extend_navigation(global_navigation $navigatio
 
     // Only extend navigation inside courses.
     if (isset($COURSE->id) && $COURSE->id !== SITEID) {
-        $courseids = get_config('logstore_lanalytics', 'course_ids');
-        if ($courseids !== false && $courseids !== '') {
-            $courseids = array_map('trim', explode(',', $courseids));
+        // status: 'show_if_enabled', 'show_courseids', 'show_always', 'hide_link', 'disable'
+        $statussetting = get_config('local_learning_analytics', 'status');
+    
+        if ($statussetting === 'hide_link' || $statussetting === 'disable') {
+            return;
+        } else if ($statussetting === 'show_always') {
+            // just show it, don't filter anything
+        } else if ($statussetting === 'show_courseids') {
+            // use courseids of this plugin
+            $courseids = get_config('local_learning_analytics', 'course_ids');
+            if ($courseids === false || $courseids === '') {
+                $courseids = [];
+            } else {
+                $courseids = array_map('trim', explode(',', $courseids));
+            }
             if (!in_array($COURSE->id, $courseids)) {
                 return;
+            }
+        } else { // default setting: 'show_if_enabled'
+            // check if the logstore plugin is enabled, otherwise hide link
+            $logstoresstr = get_config('tool_log', 'enabled_stores');
+            $logstores = $logstoresstr ? explode(',', $logstoresstr) : [];
+            if (!in_array('logstore_lanalytics', $logstores)) {
+                return;
+            }
+            // logging is enabled, check logging scope
+            $logscope = get_config('logstore_lanalytics', 'log_scope');
+            if ($logscope !== false && $logscope !== '' && $logscope !== 'all') {
+                // scope is not all -> check if course should be tracked
+                $courseids = get_config('logstore_lanalytics', 'course_ids');
+                if ($courseids === false || $courseids === '') {
+                    $courseids = [];
+                } else {
+                    $courseids = array_map('trim', explode(',', $courseids));
+                }
+                if (($logscope === 'include' && !in_array($COURSE->id, $courseids))
+                    || ($logscope === 'exclude' && in_array($COURSE->id, $courseids))) {
+                    return;
+                }
             }
         }
 

@@ -28,6 +28,31 @@ if ($hassiteconfig) {
 
     $ADMIN->add('localplugins', $settings);
 
+    $settings->add(new admin_setting_configselect(
+        'local_learning_analytics/status',
+        get_string('setting_status', 'local_learning_analytics'),
+        get_string('setting_status_description', 'local_learning_analytics'),
+        'show_if_enabled', // default value
+        [
+            'show_if_enabled' => get_string('setting_status_option_show_if_enabled', 'local_learning_analytics'),
+            'show_courseids' => get_string('setting_status_option_show_courseids', 'local_learning_analytics'),
+            'show_always' => get_string('setting_status_option_show_always', 'local_learning_analytics'),
+            'hide_link' => get_string('setting_status_option_hide_link', 'local_learning_analytics'),
+            'disable' => get_string('setting_status_option_disable', 'local_learning_analytics'),
+        ]
+    ));
+
+    // This is only a textarea to make it more comforable entering the values
+    $settings->add(new admin_setting_configtextarea(
+        'local_learning_analytics/course_ids',
+        get_string('setting_course_ids', 'local_learning_analytics'),
+        get_string('setting_course_ids_description', 'local_learning_analytics'),
+        '',
+        PARAM_RAW,
+        '60',
+        '2'
+    ));
+
     $settings->add(new admin_setting_configtext(
         'local_learning_analytics/dataprivacy_threshold',
         get_string('dataprivacy_threshold', 'local_learning_analytics'),

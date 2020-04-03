@@ -40,6 +40,17 @@ $string['sessions'] = 'Sessions';
 $string['hits'] = 'Hits'; // "Aufrufe"
 
 // Settings
+$string['setting_status'] = 'status';
+$string['setting_status_description'] = 'This value sets whether the user interface should be activated and whether a links should be shown in the navigation. By default, the link and page are visible if logging is enabled for the course. You can use this option, if you want to enabled logging in all courses, but only want to enable the user interface on specific courses.';
+$string['setting_status_option_show_if_enabled'] = 'Show navigation link if logging is enabled for the course';
+$string['setting_status_option_show_courseids'] = 'Show navigation link if course is specified below via course_ids';
+$string['setting_status_option_show_always'] = 'Show navigation link for all courses, even if logging is disabled for the course (only enable this, if you already logged data before)';
+$string['setting_status_option_hide_link'] = 'Hide navigation link but keep the page enabled for all courses (only if you know the link, you can access the page)';
+$string['setting_status_option_disable'] = 'Hide navigation link and disable the page for all courses';
+
+$string['setting_course_ids'] = 'course_ids';
+$string['setting_course_ids_description'] = 'Use this option, when you select the second option above to decide for which courses the user interface should be enabled.';
+
 $string['dataprivacy_threshold'] = 'dataprivacy_threshold';
 $string['dataprivacy_threshold_description'] = 'This value determines how many "data points" a data set needs to contain before the data is displayed.';
 $string['allow_dashboard_compare'] = 'allow_dashboard_compare';

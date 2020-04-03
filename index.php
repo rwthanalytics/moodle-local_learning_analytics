@@ -40,11 +40,45 @@ if ($courseid == SITEID) {
     throw new moodle_exception('invalidcourse');
 }
 
-$courseids = get_config('logstore_lanalytics', 'course_ids');
-if ($courseids !== false && $courseids !== '') {
-    $courseids = array_map('trim', explode(',', $courseids));
+// status: 'show_if_enabled', 'show_courseids', 'show_always', 'hide_link', 'disable'
+$statussetting = get_config('local_learning_analytics', 'status');
+    
+if ($statussetting === 'disable') {
+    throw new moodle_exception('Learning Analytics is not enabled (for this course).');
+} else if ($statussetting === 'show_always' || $statussetting === 'hide_link') {
+    // just show it, don't filter anything
+} else if ($statussetting === 'show_courseids') {
+    // use courseids of this plugin
+    $courseids = get_config('local_learning_analytics', 'course_ids');
+    if ($courseids === false || $courseids === '') {
+        $courseids = [];
+    } else {
+        $courseids = array_map('trim', explode(',', $courseids));
+    }
     if (!in_array($courseid, $courseids)) {
-        throw new moodle_exception('Learning Analytics Tracking is not enabled for this course.');
+        throw new moodle_exception('Learning Analytics is not enabled (for this course).');
+    }
+} else { // default setting: 'show_if_enabled'
+    // check if the logstore plugin is enabled, otherwise hide link
+    $logstoresstr = get_config('tool_log', 'enabled_stores');
+    $logstores = $logstoresstr ? explode(',', $logstoresstr) : [];
+    if (!in_array('logstore_lanalytics', $logstores)) {
+        throw new moodle_exception('Learning Analytics is not enabled (for this course).');
+    }
+    // logging is enabled, check logging scope
+    $logscope = get_config('logstore_lanalytics', 'log_scope');
+    if ($logscope !== false && $logscope !== '' && $logscope !== 'all') {
+        // scope is not all -> check if course should be tracked
+        $courseids = get_config('logstore_lanalytics', 'course_ids');
+        if ($courseids === false || $courseids === '') {
+            $courseids = [];
+        } else {
+            $courseids = array_map('trim', explode(',', $courseids));
+        }
+        if (($logscope === 'include' && !in_array($courseid, $courseids))
+            || ($logscope === 'exclude' && in_array($courseid, $courseids))) {
+            throw new moodle_exception('Learning Analytics is not enabled (for this course).');
+        }
     }
 }
 
