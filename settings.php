@@ -54,6 +54,14 @@ if ($hassiteconfig) {
     ));
 
     $settings->add(new admin_setting_configtext(
+        'local_learning_analytics/navigation_position_beforekey',
+        get_string('navigation_position_beforekey', 'local_learning_analytics'),
+        get_string('navigation_position_beforekey_description', 'local_learning_analytics'),
+        '',
+        PARAM_RAW
+    ));
+
+    $settings->add(new admin_setting_configtext(
         'local_learning_analytics/dataprivacy_threshold',
         get_string('dataprivacy_threshold', 'local_learning_analytics'),
         get_string('dataprivacy_threshold_description', 'local_learning_analytics'),
@@ -66,14 +74,6 @@ if ($hassiteconfig) {
         get_string('allow_dashboard_compare', 'local_learning_analytics'),
         get_string('allow_dashboard_compare_description', 'local_learning_analytics'),
         0
-    ));
-
-    $settings->add(new admin_setting_configtext(
-        'local_learning_analytics/navigation_position_beforekey',
-        get_string('navigation_position_beforekey', 'local_learning_analytics'),
-        get_string('navigation_position_beforekey_description', 'local_learning_analytics'),
-        '',
-        PARAM_RAW
     ));
 
 }
