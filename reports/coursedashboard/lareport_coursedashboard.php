@@ -418,7 +418,7 @@ class lareport_coursedashboard extends report_base {
     public function run(array $params): array {
         global $PAGE, $DB;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
-        $showcompare = settings::get_config('allow_dashboard_compare');
+        $showcompare = false; // settings::get_config('allow_dashboard_compare'); // disabled for now
 
         $courseid = $params['course'];
 

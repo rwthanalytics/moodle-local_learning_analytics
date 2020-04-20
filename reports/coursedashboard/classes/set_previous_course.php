@@ -79,7 +79,7 @@ class set_previous_course extends report_page_base {
     public function run(array $params): array {
         global $DB;
 
-        $showcompare = settings::get_config('allow_dashboard_compare');
+        $showcompare = false; // settings::get_config('allow_dashboard_compare');
         if (!$showcompare) {
             return ['Disabled'];
         }
