@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.6.1] - 2020-04-20
+### Removed
+- Option `allow_dashboard_compare` is also removed form the settings page. Previously, the option was still shown.
+
 ## [0.6.0] - 2020-04-20
 ### Changed
 - Changed how activities report works. It now uses the `get_fast_modinfo` function of Moodle to list courses. This allows a better order and uses the Moodle cache.
