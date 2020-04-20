@@ -42,31 +42,38 @@ class all extends report_page_base {
         $activities = query_helper::query_activities($courseid, $hasupdatecap);
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
+        $modinfo = get_fast_modinfo($courseid);
+        $cms = $modinfo->get_cms();
+        $modnameshumanreadable = $modinfo->get_used_module_names();
+        
         // Find max values.
         $maxhits = 1;
-        foreach ($activities as $activity) {
-            $maxhits = max($maxhits, (int) $activity->hits);
+        foreach ($cms as $cm) {
+            if (isset($activities[$cm->id])) {
+                $maxhits = max($maxhits, (int) $activities[$cm->id]->hits);
+            }
         }
 
         $tabledetails = new table();
         $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 
-        $modinfo = get_fast_modinfo($courseid);
         $hiddentext = get_string('hidden', 'lareport_activities');
-        foreach ($activities as $activity) {
-            $namecell = $activity->name;
-            if ($namecell === '') {
-                $namecell = $modinfo->get_cm($activity->cmid)->name;
+        foreach ($cms as $cm) {
+            if ($cm->modname === 'label' || !isset($activities[$cm->id])) {
+                continue; // skip labels and unknown activity (should only happen if cache is messed up)
             }
-            if (!$activity->visible) {
+            $activity = $activities[$cm->id];
+            $namecell = $cm->name;
+            $section = $cm->get_section_info();
+            if (!$cm->visible) {
                 $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
             }
             $cellcontent = ($activity->hits < $privacythreshold) ?
                 " < {$privacythreshold}" : table::fancyNumberCell((int) $activity->hits, $maxhits, 'orange');
             $tabledetails->add_row([
                 $namecell,
-                get_string('modulename', $activity->modname),
-                $activity->section_name,
+                $modnameshumanreadable[$cm->modname],
+                $section->name,
                 $cellcontent
             ]);
         }

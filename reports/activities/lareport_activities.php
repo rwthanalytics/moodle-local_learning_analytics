@@ -73,16 +73,22 @@ class lareport_activities extends report_base {
         $hitsbytypeassoc = [];
 
         $modinfo = get_fast_modinfo($courseid);
-        foreach ($activities as &$activity) {
+        $allcms = $modinfo->get_cms();
+        $cms = [];
+        foreach ($allcms as $cmid => $cm) {
+            if ($cm->modname === 'label' || !isset($activities[$cmid])) {
+                continue; // skip labels and unknown activity (should only happen if cache is messed up)
+            }
+            $cms[] = $cm;
+        }
+        $modnameshumanreadable = $modinfo->get_used_module_names();
+        foreach ($cms as $cm) {
+            $activity = $activities[$cm->id];
             $maxhits = max($maxhits, (int) $activity->hits);
-            if (!isset($hitsbytypeassoc[$activity->modname])) {
-                $hitsbytypeassoc[$activity->modname] = 0;
+            if (!isset($hitsbytypeassoc[$cm->modname])) {
+                $hitsbytypeassoc[$cm->modname] = 0;
             }
-            $hitsbytypeassoc[$activity->modname] += $activity->hits;
-            if ($activity->name === '') {
-                $activity->name = $modinfo->get_cm($activity->cmid)->name;
-            }
-            $activity->readablemodname = get_string('modulename', $activity->modname); // Human readable modname (e.g. "Test" instead of "Quiz").
+            $hitsbytypeassoc[$cm->modname] += $activity->hits;
         }
 
         if ($maxhits === 0) {
@@ -107,7 +113,7 @@ class lareport_activities extends report_base {
             $icon = $OUTPUT->pix_icon('icon', '', $item['type'], array('class' => 'iconlarge activityicon'));
             $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
             $hits = ($privacythreshold === 0) ? (int) $item['hits'] : (floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold);
-            $typestr = get_string('modulename', $item['type']);
+            $typestr = $modnameshumanreadable[$item['type']];
             if ($hits >= $privacythreshold) {
                 $tabletypes->add_row([
                     "{$icon} <a href='{$url}'>{$typestr}</a>",
@@ -134,40 +140,43 @@ class lareport_activities extends report_base {
         $markercolors = [];
 
         $hitsstring = get_string('hits', 'lareport_activities');
-        foreach ($activities as $activity) {
-            $x[] = $activity->name;
+        foreach ($cms as $cm) {
+            $activity = $activities[$cm->id];
+            $x[] = $cm->name;
             $y[] = $activity->hits < $privacythreshold ? 0 : $activity->hits;
             $hitstext = $activity->hits < $privacythreshold ? "< {$privacythreshold}" : $activity->hits;
-            $typestr = $activity->readablemodname;
-            $texts[] = "{$typestr}: {$activity->name}<br>{$hitstext} {$hitsstring}";
-            $markercolors[] = self::$markercolors[$activity->modname] ?? self::$markercolordefault;
+            $typestr = $modnameshumanreadable[$cm->modname];
+            $texts[] = "{$typestr}: {$cm->name}<br>{$hitstext} {$hitsstring}";
+            $markercolors[] = self::$markercolors[$cm->modname] ?? self::$markercolordefault;
         }
 
         // Reorder to show most used activities.
 
-        usort($activities, function ($act1, $act2) {
-            return $act2->hits <=> $act1->hits;
+        usort($cms, function ($cm1, $cm2) use ($activities) {
+            return $activities[$cm2->id]->hits <=> $activities[$cm1->id]->hits;
         });
 
         $hiddentext = get_string('hidden', 'lareport_activities');
         $headinttoptext = get_string('most_used_activities', 'lareport_activities');
-        foreach ($activities as $i => $activity) {
+        foreach ($cms as $i => $cm) {
             if ($i >= 5) { // Stop when some reports are shown.
                 break;
             }
-            $namecell = $activity->name;
-            if (!$activity->visible) {
+            $activity = $activities[$cm->id];
+            $namecell = $cm->name;
+            $section = $cm->get_section_info();
+            if (!$cm->visible) {
                 $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
             }
             if ($activity->hits >= $privacythreshold) {
                 $tabledetails->add_row([
                     $namecell,
-                    $activity->readablemodname,
-                    $activity->section_name,
+                    $modnameshumanreadable[$cm->modname],
+                    $section->name, // $activity->section_name,
                     table::fancyNumberCell(
                         (int) $activity->hits,
                         $maxhits,
-                        self::$markercolorstext[$activity->modname] ?? self::$markercolortextdefault
+                        self::$markercolorstext[$cm->modname] ?? self::$markercolortextdefault
                     )
                 ]);
             }

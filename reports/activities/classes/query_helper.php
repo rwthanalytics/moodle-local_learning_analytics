@@ -50,43 +50,13 @@ class query_helper {
 
         $query = <<<SQL
         SELECT
-        cm.id AS cmid, 
-        COALESCE(modq.name, modr.name, modas.name, modurl.name, modf.name, modpage.name, modfolder.name, modwiki.name, '') AS name,
-        m.name AS modname,
-        cm.instance AS objectid,
-        s.name AS section_name,
-        s.section AS section_pos,
-        cm.visible,
-        COUNT(log.id) hits
+            cm.id AS cmid, 
+            m.name AS modname,
+            COUNT(log.id) hits
         FROM {modules} m
         JOIN {course_modules} cm
             ON cm.course = ?
             AND cm.module = m.id
-        JOIN {course_sections} s
-            ON s.id = cm.section
-        LEFT JOIN {quiz} modq
-            ON modq.id = cm.instance
-            AND m.name = 'quiz'
-        LEFT JOIN {resource} modr
-            ON modr.id = cm.instance
-            AND m.name = 'resource'
-        LEFT JOIN {assign} modas
-            ON modas.id = cm.instance
-            AND m.name = 'assign'
-        LEFT JOIN {url} modurl
-            ON modurl.id = cm.instance
-            AND m.name = 'url'
-        LEFT JOIN {forum} modf
-            ON modf.id = cm.instance
-            AND m.name = 'forum'
-        LEFT JOIN {page} modpage
-            ON modpage.id = cm.instance
-            AND m.name = 'page'
-        LEFT JOIN {folder} modfolder
-            ON modfolder.id = cm.instance
-        LEFT JOIN {wiki} modwiki
-            ON modwiki.id = cm.instance
-            AND m.name = 'wiki'
         LEFT JOIN {context} ctx
             ON ctx.contextlevel = ?
             AND ctx.instanceid = cm.id
@@ -95,7 +65,6 @@ class query_helper {
             AND log.contextid = ctx.id
         WHERE m.name <> 'label' {$filtersql}
         GROUP BY cm.id
-        ORDER BY section_pos, cm.id
 SQL;
 
         return $DB->get_records_sql($query, $valuesstatemt);
