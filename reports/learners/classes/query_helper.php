@@ -67,8 +67,12 @@ SQL;
         return (int) $DB->get_field_sql($query, $sqlparams, MUST_EXIST);
     }
 
-    public static function query_courseparticipation(int $courseid, int $privacythreshold) : array {
+    public static function query_courseparticipation(int $courseid, int $privacythreshold, array $studentrolenames) : array {
         global $DB;
+
+        // creates sql placeholder for role names (like "?,?" for two roles)
+        $arraywithquestionsmarks = array_fill(0, count($studentrolenames), '?');
+        $roleplaceholder = implode(',', $arraywithquestionsmarks);
 
         $query = <<<SQL
             SELECT
@@ -94,7 +98,7 @@ SQL;
                 AND ra.contextid = c.id
             JOIN {role} r
                 ON ra.roleid = r.id
-                AND r.shortname = 'student'
+                AND r.shortname IN ({$roleplaceholder})
             WHERE u.deleted = 0
                 AND e.courseid = ?
             GROUP BY co.id
@@ -103,7 +107,8 @@ SQL;
 SQL;
 
         $threshold = max(1, $privacythreshold);
-        return $DB->get_records_sql($query, [$courseid, $threshold]);
+        $params = array_merge($studentrolenames, [$courseid, $threshold]);
+        return $DB->get_records_sql($query, $params);
     }
 
     public static function query_localization(int $courseid, string $type) : array {

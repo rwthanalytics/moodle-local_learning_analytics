@@ -31,11 +31,12 @@ abstract class settings {
     const DEFAULTS = [
         'dataprivacy_threshold' => 10,
         'allow_dashboard_compare' => 0,
+        'student_rolenames' => 'student',
     ];
 
     public static function get_config(string $configkey) {
         $value = get_config('local_learning_analytics', $configkey);
-        if ($value === false) {
+        if ($value === false || $value === '') {
             return self::DEFAULTS[$configkey];
         }
         return $value;

@@ -69,6 +69,14 @@ if ($hassiteconfig) {
         PARAM_INT
     ));
 
+    $settings->add(new admin_setting_configtext(
+        'local_learning_analytics/student_rolenames',
+        get_string('setting_student_rolenames', 'local_learning_analytics'),
+        get_string('setting_student_rolenames_description', 'local_learning_analytics'),
+        'student',
+        PARAM_RAW
+    ));
+
     // $settings->add(new admin_setting_configcheckbox(
     //     'local_learning_analytics/allow_dashboard_compare',
     //     get_string('allow_dashboard_compare', 'local_learning_analytics'),

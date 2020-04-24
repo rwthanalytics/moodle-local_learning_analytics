@@ -45,9 +45,10 @@ class helper {
 
     public static function generatecourseparticipationlist(int $courseid, int $limit = -1) {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
+        $studentrolenames = explode(',', settings::get_config('student_rolenames'));
 
         $learnerscount = query_helper::query_learners_count($courseid, 'student');
-        $courses = query_helper::query_courseparticipation($courseid, $privacythreshold);
+        $courses = query_helper::query_courseparticipation($courseid, $privacythreshold, $studentrolenames);
 
         $tableprevious = new table();
         $tableprevious->set_header_local(['coursename', 'participated_before'],
