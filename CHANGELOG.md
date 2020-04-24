@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.7.0] - TODO
+### Added
+- Option `student_rolenames` added. In case the system uses special names for users (instead of the default role name `student`), this setting can be used to configure the option. So far, the learners report was not able to show data in RWTHmoodle due to this.
+- Colors added for activities report: `assign`, `pdfannotator`
+### Fixed
+- Students are now able to filter by module type in activities report again
+
 ## [0.6.1] - 2020-04-20
 ### Removed
 - Option `allow_dashboard_compare` is also removed form the settings page. Previously, the option was still shown.
