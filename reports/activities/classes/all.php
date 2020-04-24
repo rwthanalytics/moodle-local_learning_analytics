@@ -28,7 +28,6 @@ use local_learning_analytics\report_page_base;
 use lareport_activities\query_helper;
 use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\settings;
-use \context_course;
 
 defined('MOODLE_INTERNAL') || die;
 
@@ -37,23 +36,23 @@ class all extends report_page_base {
     public function run(array $params): array {
         global $USER;
         $courseid = (int) $params['course'];
-        $context = context_course::instance($courseid, MUST_EXIST);
-        $hasupdatecap = has_capability('moodle/course:update', $context, $USER->id);
-        $activities = query_helper::query_activities($courseid, $hasupdatecap);
+        $activities = query_helper::query_activities($courseid);
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $modinfo = get_fast_modinfo($courseid);
-        $cms = $modinfo->get_cms();
-        $modnameshumanreadable = $modinfo->get_used_module_names();
-        
-        // Find max values.
+        $allcms = $modinfo->get_cms();
+        $cms = [];
         $maxhits = 1;
-        foreach ($cms as $cm) {
-            if (isset($activities[$cm->id])) {
-                $maxhits = max($maxhits, (int) $activities[$cm->id]->hits);
+        foreach ($allcms as $cmid => $cm) {
+            if ($cm->modname === 'label' || !isset($activities[$cmid]) || !$cm->uservisible) {
+                continue; // skip labels and unknown activity (should only happen if cache is messed up)
             }
+            $cms[] = $cm;
+            $maxhits = max($maxhits, (int) $activities[$cm->id]->hits);
         }
 
+        $modnameshumanreadable = $modinfo->get_used_module_names();
+        
         $tabledetails = new table();
         $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
 

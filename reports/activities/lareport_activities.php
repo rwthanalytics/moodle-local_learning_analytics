@@ -55,8 +55,6 @@ class lareport_activities extends report_base {
     public function run(array $params): array {
         global $USER, $OUTPUT;
         $courseid = $params['course'];
-        $context = context_course::instance($courseid, MUST_EXIST);
-        $hasupdatecap = has_capability('moodle/course:update', $context, $USER->id);
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $filter = '';
@@ -66,7 +64,7 @@ class lareport_activities extends report_base {
             $filter = "m.name = ?";
             $filtervalues[] = $params['mod'];
         }
-        $activities = query_helper::query_activities($courseid, $hasupdatecap, $filter, $filtervalues);
+        $activities = query_helper::query_activities($courseid, $filter, $filtervalues);
 
         // Find max values.
         $maxhits = 0;
@@ -77,7 +75,8 @@ class lareport_activities extends report_base {
         $allcms = $modinfo->get_cms();
         $cms = [];
         foreach ($allcms as $cmid => $cm) {
-            if ($cm->modname === 'label' || !isset($activities[$cmid]) || ($ismodfilteractive && $cm->modname !== $params['mod'])) {
+            if ($cm->modname === 'label' || !isset($activities[$cmid]) || !$cm->uservisible
+                || ($ismodfilteractive && $cm->modname !== $params['mod'])) {
                 continue; // skip labels and unknown activity (should only happen if cache is messed up)
             }
             $cms[] = $cm;

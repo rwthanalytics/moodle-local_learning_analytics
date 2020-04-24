@@ -33,7 +33,7 @@ use context_course;
 
 class query_helper {
 
-    public static function query_activities(int $courseid, $showhidden = false, string $filter = '', array $values = []): array {
+    public static function query_activities(int $courseid, string $filter = '', array $values = []): array {
         global $DB;
 
         $activity = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
@@ -43,9 +43,6 @@ class query_helper {
         if ($filter) {
             $filtersql .= ' AND ' . $filter;
             $valuesstatemt = array_merge($valuesstatemt, $values);
-        }
-        if (!$showhidden) {
-            $filtersql .= ' AND cm.visible=1';
         }
 
         $query = <<<SQL
