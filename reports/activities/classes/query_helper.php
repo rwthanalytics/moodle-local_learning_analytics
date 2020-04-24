@@ -41,11 +41,11 @@ class query_helper {
 
         $filtersql = '';
         if ($filter) {
-            $filtersql = ' AND ' . $filter;
+            $filtersql .= ' AND ' . $filter;
             $valuesstatemt = array_merge($valuesstatemt, $values);
         }
         if (!$showhidden) {
-            $filtersql = ' AND cm.visible=1';
+            $filtersql .= ' AND cm.visible=1';
         }
 
         $query = <<<SQL

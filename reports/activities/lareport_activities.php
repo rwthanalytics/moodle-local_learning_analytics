@@ -61,7 +61,8 @@ class lareport_activities extends report_base {
 
         $filter = '';
         $filtervalues = [];
-        if (!empty($params['mod'])) {
+        $ismodfilteractive = !empty($params['mod']);
+        if ($ismodfilteractive) {
             $filter = "m.name = ?";
             $filtervalues[] = $params['mod'];
         }
@@ -76,7 +77,7 @@ class lareport_activities extends report_base {
         $allcms = $modinfo->get_cms();
         $cms = [];
         foreach ($allcms as $cmid => $cm) {
-            if ($cm->modname === 'label' || !isset($activities[$cmid])) {
+            if ($cm->modname === 'label' || !isset($activities[$cmid]) || ($ismodfilteractive && $cm->modname !== $params['mod'])) {
                 continue; // skip labels and unknown activity (should only happen if cache is messed up)
             }
             $cms[] = $cm;
