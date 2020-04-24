@@ -34,6 +34,12 @@ table.generaltable.latable {
 .bar .segment.gray {
     background: #bbb;
 }
+.bar .segment.navy {
+    background: #000080;
+}
+.bar .segment.pdfred {
+    background: #d55351;
+}
 
 .showFullList {
     text-align: center;

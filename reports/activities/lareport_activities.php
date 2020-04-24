@@ -40,15 +40,19 @@ class lareport_activities extends report_base {
         'url' => '#F26522', // Orange.
         'forum' => '#ffda6e', // Yellow.
         'wiki' => '#ffda6e', // Yellow.
+        'assign' => '#000080', // Navy.
+        'pdfannotator' => '#d55351', // pdfred.
     ];
     private static $markercolordefault = '#bbbbbb';
     private static $markercolorstext = [
-        'quiz' => 'green', // Green.
-        'resource' => 'blue', // Blue.
-        'page' => 'red', // Red.
-        'url' => 'orange', // Orange.
-        'forum' => 'yellow', // Yellow.
-        'wiki' => 'yellow', // Yellow.
+        'quiz' => 'green',
+        'resource' => 'blue',
+        'page' => 'red',
+        'url' => 'orange',
+        'forum' => 'yellow',
+        'wiki' => 'yellow',
+        'assign' => 'navy',
+        'pdfannotator' => 'pdfred',
     ];
     private static $markercolortextdefault = 'gray';
 
