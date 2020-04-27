@@ -24,6 +24,7 @@
 
 $string['pluginname'] = 'Lernende';
 $string['pagename_all'] = 'Vollständige Liste';
+$string['pagename_courseparticipation'] = 'Lernende - Vollständige Liste';
 
 $string['courses_heard_before'] = 'Bereits gehörte Kurse';
 $string['parallel_courses'] = 'Parallel gehörte Kurse';

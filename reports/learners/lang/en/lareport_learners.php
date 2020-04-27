@@ -24,6 +24,7 @@
 
 $string['pluginname'] = 'Learners';
 $string['pagename_all'] = 'Full List';
+$string['pagename_courseparticipation'] = 'Learners - Full List';
 
 $string['courses_heard_before'] = 'Courses heard before';
 $string['parallel_courses'] = 'Courses heard in parallel';
