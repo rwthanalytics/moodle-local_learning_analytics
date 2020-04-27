@@ -1,7 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.7.0] - TODO
+## [0.7.1] - 2020-04-27
+### Fixed
+- Learners report uses option `student_rolenames` for calculating total number of students
+- Added missing language keys for learners page
+
+## [0.7.0] - 2020-04-24
 ### Added
 - Option `student_rolenames` added. In case the system uses special names for users (instead of the default role name `student`), this setting can be used to configure the option. So far, the learners report was not able to show data in RWTHmoodle due to this.
 - Colors added for activities report: `assign`, `pdfannotator`
