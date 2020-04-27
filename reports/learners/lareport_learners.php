@@ -57,7 +57,7 @@ class lareport_learners extends report_base {
     }
 
     private function langandcountryplot(int $courseid, string $type) {
-        $learnerscount = query_helper::query_learners_count($courseid, 'student');
+        $learnerscount = query_helper::query_learners_count($courseid, ['student']); // TODO replace student with config `student_rolenames`.
 
         $languages = query_helper::query_localization($courseid, $type);
 
@@ -138,9 +138,7 @@ class lareport_learners extends report_base {
 
     public function run(array $params): array {
         $courseid = $params['course'];
-
-        $headingtable = get_string('most_active_learners', 'lareport_learners');
-
+        // $headingtable = get_string('most_active_learners', 'lareport_learners');
         return array_merge(
             helper::generateCourseParticipationList($courseid, 10)
             // $this->languagesandcountries($courseid)

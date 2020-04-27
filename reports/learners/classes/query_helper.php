@@ -30,26 +30,12 @@ use context_course;
 
 class query_helper {
 
-    public static function query_learners_count(int $courseid, string $rolefilter = '') : int {
+    public static function query_learners_count(int $courseid, array $studentrolenames) : int {
         global $DB;
 
-        $sqlparams = [$courseid];
-
-        $rolefiltersql = '';
-        if ($rolefilter !== '') {
-            $rolefiltersql = <<<SQL
-                JOIN {context} c
-                    ON c.instanceid = e.courseid
-                    AND c.contextlevel = 50
-                JOIN {role_assignments} ra
-                    ON ra.userid = u.id
-                    AND ra.contextid = c.id
-                JOIN {role} r
-                    ON ra.roleid = r.id
-                    AND r.shortname = ?
-SQL;
-            $sqlparams = [$rolefilter, $courseid];
-        }
+        // creates sql placeholder for role names (like "?,?" for two roles)
+        $arraywithquestionsmarks = array_fill(0, count($studentrolenames), '?');
+        $roleplaceholder = implode(',', $arraywithquestionsmarks);
 
         $query = <<<SQL
             SELECT COUNT(DISTINCT u.id) count
@@ -58,13 +44,22 @@ SQL;
                 ON ue.userid = u.id
             JOIN {enrol} e
                 ON e.id = ue.enrolid
-            {$rolefiltersql}
+            JOIN {context} c
+                ON c.instanceid = e.courseid
+                AND c.contextlevel = 50
+            JOIN {role_assignments} ra
+                ON ra.userid = u.id
+                AND ra.contextid = c.id
+            JOIN {role} r
+                ON ra.roleid = r.id
+                AND r.shortname IN ({$roleplaceholder})
             WHERE
                 u.deleted = 0
                 AND e.courseid = ?;
 SQL;
 
-        return (int) $DB->get_field_sql($query, $sqlparams, MUST_EXIST);
+        $params = array_merge($studentrolenames, [$courseid]);
+        return (int) $DB->get_field_sql($query, $params, MUST_EXIST);
     }
 
     public static function query_courseparticipation(int $courseid, int $privacythreshold, array $studentrolenames) : array {
