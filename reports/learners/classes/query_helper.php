@@ -97,6 +97,7 @@ SQL;
             WHERE u.deleted = 0
                 AND e.courseid = ?
                 AND co.startdate <> 0
+                AND co.visible = 1
             GROUP BY co.id
             HAVING users > ?
             ORDER BY users DESC;
