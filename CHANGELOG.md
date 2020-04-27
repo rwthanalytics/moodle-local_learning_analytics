@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.7.2] - 2020-04-27
+### Fixed
+- Using `format_string` before displaying courses in learners report
+- Invisible courses and courses without startdate ae excluded from learners report
+
 ## [0.7.1] - 2020-04-27
 ### Fixed
 - Learners report uses option `student_rolenames` for calculating total number of students
