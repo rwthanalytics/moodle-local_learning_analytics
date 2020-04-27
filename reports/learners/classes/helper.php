@@ -68,7 +68,7 @@ class helper {
             $perc = round(100 * $course->users / $learnerscount);
 
             $row = [
-                $course->fullname,
+                format_string($course->fullname),
                 table::fancyNumberCell(
                     $perc,
                     100,
