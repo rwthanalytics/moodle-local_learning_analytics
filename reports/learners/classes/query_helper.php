@@ -96,6 +96,7 @@ SQL;
                 AND r.shortname IN ({$roleplaceholder})
             WHERE u.deleted = 0
                 AND e.courseid = ?
+                AND co.startdate <> 0
             GROUP BY co.id
             HAVING users > ?
             ORDER BY users DESC;
