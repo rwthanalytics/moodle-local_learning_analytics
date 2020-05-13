@@ -82,6 +82,11 @@
 - [x] Generate a lot of data to test how the dashboard (especially the timecreated query) performs for big courses (> 1m events in a single course, power law regarding users)
 - [ ] Also generate users
 
+## TODO WS
+- [ ] Possible changes
+  - [ ] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS
+  - [ ] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
+
 ## For later...
 - [ ] Describe subplugins
   - [ ] `lareport`

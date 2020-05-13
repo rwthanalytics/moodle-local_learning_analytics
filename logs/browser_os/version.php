@@ -26,5 +26,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'lalog_browser_os';
 
-$plugin->version = 2020031200;
+$plugin->version = 2020051300;
 $plugin->requires = '2017111302';

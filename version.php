@@ -26,12 +26,12 @@ defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'local_learning_analytics';
 
-$plugin->version = 2020042701;
-$plugin->release = 'v0.7.2';
+$plugin->version = 2020051300;
+$plugin->release = 'v0.8.0';
 $plugin->maturity = MATURITY_BETA;
 
 $plugin->requires = 2017111302;
 
 $plugin->dependencies = [
-    'logstore_lanalytics' => 2020040300,
+    'logstore_lanalytics' => 2020051300,
 ];

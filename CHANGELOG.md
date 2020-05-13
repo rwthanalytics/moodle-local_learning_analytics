@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.7.3] - 2020-05-13
+### Fixed
+- Clears `browser_os` logs (if upgraded) due to errors in the analysis (see logstore plugin)
+- Added related notice in the UI (only to `RWTHmoodle` page)
+
 ## [0.7.2] - 2020-04-27
 ### Fixed
 - Using `format_string` before displaying courses in learners report
