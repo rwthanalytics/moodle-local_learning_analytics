@@ -35,3 +35,5 @@ $string['used_mobile'] = 'Mobile Betriebssysteme';
 $string['used_desktop_browsers'] = 'Verwendete Desktop-Browser';
 
 $string['no_data_to_show'] = 'Aktuell gibt es keine Daten anzuzeigen. Kommen Sie später wieder um Statistiken zur Browser- und Systemnutzung zu sehen.';
+
+$string['special_notice'] = 'Hinweis: Die auf dieser Seite dargestellen Statistiken wurden aufgrund technischer Fehler bei der Analyse kürzlich zurückgesetzt.';

@@ -195,6 +195,17 @@ class lareport_browser_os extends report_base {
         ];
     }
 
+    private static function notice() {
+        global $SITE;
+
+        $langstring = get_string('special_notice', 'lareport_browser_os');
+        $showuntil = strtotime('2020-05-26');
+        if ($SITE->shortname === 'RWTHmoodle' && time() < $showuntil) {
+            return ["<div class='alert alert-info' role='alert'>{$langstring}</div>"];
+        }
+        return [];
+    }
+
     public function run(array $params): array {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
         global $DB;
@@ -228,6 +239,7 @@ class lareport_browser_os extends report_base {
         }
 
         return array_merge(
+            self::notice(),
             self::createplot($results, 'platform', $privacythreshold),
             self::createplot($results, 'os', $privacythreshold),
             self::createplot($results, 'mobile', $privacythreshold),

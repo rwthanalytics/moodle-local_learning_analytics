@@ -35,3 +35,5 @@ $string['used_mobile'] = 'Used mobile operating systems';
 $string['used_desktop_browsers'] = 'Used desktop browsers';
 
 $string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding browser and user systems.';
+
+$string['special_notice'] = 'Notice: The statistics presented on this page were recently reset due to technical problems.';
