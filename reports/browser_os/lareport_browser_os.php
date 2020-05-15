@@ -195,12 +195,13 @@ class lareport_browser_os extends report_base {
         ];
     }
 
+    // TODO This notice needs to be removed in the future
     private static function notice() {
         global $SITE;
 
         $langstring = get_string('special_notice', 'lareport_browser_os');
         $showuntil = strtotime('2020-05-26');
-        if ($SITE->shortname === 'RWTHmoodle' && time() < $showuntil) {
+        if (($SITE->shortname === 'RWTHmoodle' || $SITE->shortname === 'L2PTest') && time() < $showuntil) {
             return ["<div class='alert alert-info' role='alert'>{$langstring}</div>"];
         }
         return [];
@@ -235,7 +236,10 @@ class lareport_browser_os extends report_base {
         arsort($results['browser']);
 
         if ($maxvalue === 0) {
-            return [get_string('no_data_to_show', 'lareport_browser_os')];
+            return array_merge(
+                self::notice(),
+                [get_string('no_data_to_show', 'lareport_browser_os')]
+            );
         }
 
         return array_merge(
