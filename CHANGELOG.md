@@ -1,7 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.7.4] - 2020-05-15
+### Fixed
+- Notice regarding reset of browser/OS report is also shown in test environment and when there is no data to show
+
 ## [0.7.3] - 2020-05-13
+Note: This version was released and tagged as `v0.7.3` but accidentally marked as `v0.8.0` in the `version.php`.
 ### Fixed
 - Clears `browser_os` logs (if upgraded) due to errors in the analysis (see logstore plugin)
 - Added related notice in the UI (only to `RWTHmoodle` page)
