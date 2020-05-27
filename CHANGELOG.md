@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.8.0] - TODO
+### Fixed
+- Support for Postgres added
+- If a person is enrolled multiple times into a course, they are counted only once now.
+### Removed
+- Removed notice in the UI introduced in version `v0.7.3`
+
 ## [0.7.4] - 2020-05-15
 ### Fixed
 - Notice regarding reset of browser/OS report is also shown in test environment and when there is no data to show
