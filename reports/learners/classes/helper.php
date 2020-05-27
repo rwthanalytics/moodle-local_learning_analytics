@@ -66,7 +66,7 @@ class helper {
 
         foreach ($courses as $course) {
             $perc = round(100 * $course->users / $learnerscount);
-
+            
             $row = [
                 format_string($course->fullname),
                 table::fancyNumberCell(

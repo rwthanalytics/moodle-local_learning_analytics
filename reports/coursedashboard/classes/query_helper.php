@@ -101,7 +101,7 @@ SQL;
 
         $query = <<<SQL
         SELECT
-            COUNT(*) hits
+            COUNT(*) AS hits
         FROM {logstore_lanalytics_log}
         WHERE
             courseid = ?
@@ -169,7 +169,7 @@ SQL;
         SELECT
             m.name as modname,
             cm.id AS cmid,
-            COUNT(*) hits
+            COUNT(*) AS hits
         FROM {modules} m
         JOIN {course_modules} cm
             ON cm.course = ?
@@ -181,8 +181,8 @@ SQL;
             ON l.courseid = cm.course
             AND l.contextid = ctx.id
         WHERE l.timecreated > ?
-        GROUP BY cm.id
-        HAVING hits > ?
+        GROUP BY cm.id, m.name
+        HAVING count(*) > ?
         ORDER BY hits DESC
         LIMIT 1
 SQL;

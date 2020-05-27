@@ -71,7 +71,7 @@ SQL;
 
         $query = <<<SQL
             SELECT
-                co.id, co.fullname, co.startdate, COUNT(*) users
+                co.id, co.fullname, co.startdate, COUNT(DISTINCT u.id) AS users
             FROM {user} u
             JOIN {user_enrolments} ue
                 ON ue.userid = u.id
@@ -84,7 +84,7 @@ SQL;
                 AND e2.courseid <> e.courseid
             JOIN {course} co
                 ON co.id = e2.courseid
-            # only people enroled as students into the course
+            -- only people enroled as students into the course
             JOIN {context} c
                 ON c.instanceid = e.courseid
                 AND c.contextlevel = 50
@@ -99,7 +99,7 @@ SQL;
                 AND co.startdate <> 0
                 AND co.visible = 1
             GROUP BY co.id
-            HAVING users > ?
+            HAVING COUNT(*) > ?
             ORDER BY users DESC;
 SQL;
 
@@ -123,7 +123,7 @@ SQL;
             JOIN {context} c
                 ON c.instanceid = e.courseid
                 AND c.contextlevel = 50
-            # only students
+            -- only students
             JOIN {role_assignments} ra
                 ON ra.userid = u.id
                 AND ra.contextid = c.id

@@ -61,7 +61,7 @@ class query_helper {
             ON log.courseid = cm.course
             AND log.contextid = ctx.id
         WHERE m.name <> 'label' {$filtersql}
-        GROUP BY cm.id
+        GROUP BY cm.id, m.name
 SQL;
 
         return $DB->get_records_sql($query, $valuesstatemt);
