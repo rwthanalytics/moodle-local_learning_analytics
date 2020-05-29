@@ -1,7 +1,8 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.8.0] - TODO
+## [0.8.0] - 2020-05-29
+Thanks a lot to Jonathan Liebers who implemented the Postgres support and improved multiple SQL queries.
 ### Fixed
 - Support for Postgres added
 - If a person is enrolled multiple times into a course, they are counted only once now.
