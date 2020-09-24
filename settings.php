@@ -28,60 +28,70 @@ if ($hassiteconfig) {
 
     $ADMIN->add('localplugins', $settings);
 
-    $settings->add(new admin_setting_configselect(
-        'local_learning_analytics/status',
-        get_string('setting_status', 'local_learning_analytics'),
-        get_string('setting_status_description', 'local_learning_analytics'),
-        'show_if_enabled', // default value
-        [
-            'show_if_enabled' => get_string('setting_status_option_show_if_enabled', 'local_learning_analytics'),
-            'show_courseids' => get_string('setting_status_option_show_courseids', 'local_learning_analytics'),
-            'show_always' => get_string('setting_status_option_show_always', 'local_learning_analytics'),
-            'hide_link' => get_string('setting_status_option_hide_link', 'local_learning_analytics'),
-            'disable' => get_string('setting_status_option_disable', 'local_learning_analytics'),
-        ]
-    ));
+    if ($ADMIN->fulltree) {
 
-    // This is only a textarea to make it more comforable entering the values
-    $settings->add(new admin_setting_configtextarea(
-        'local_learning_analytics/course_ids',
-        get_string('setting_course_ids', 'local_learning_analytics'),
-        get_string('setting_course_ids_description', 'local_learning_analytics'),
-        '',
-        PARAM_RAW,
-        '60',
-        '2'
-    ));
+        $statuschoices = [];
+        $statuschoices['show_if_enabled'] = get_string('setting_status_option_show_if_enabled', 'local_learning_analytics');
+        $statuschoices['show_courseids'] = get_string('setting_status_option_show_courseids', 'local_learning_analytics');
+        $statuschoices['show_always'] = get_string('setting_status_option_show_always', 'local_learning_analytics');
+        $statuschoices['hide_link'] = get_string('setting_status_option_hide_link', 'local_learning_analytics');
+        $statuschoices['disable'] = get_string('setting_status_option_disable', 'local_learning_analytics');
+        if ($CFG->version >= 2019052000) {
+            // Moodle 3.7 supports custom course settings
+            // TODO lang
+            $statuschoices['course_customfield'] = 'Eintrag in den Kurseinstellungen hinzufügen, so dass die Kursinhaber selber entscheiden können';
+        }
 
-    $settings->add(new admin_setting_configtext(
-        'local_learning_analytics/navigation_position_beforekey',
-        get_string('navigation_position_beforekey', 'local_learning_analytics'),
-        get_string('navigation_position_beforekey_description', 'local_learning_analytics'),
-        '',
-        PARAM_RAW
-    ));
+        $settingstatus = new admin_setting_configselect(
+            'local_learning_analytics/status',
+            get_string('setting_status', 'local_learning_analytics'),
+            get_string('setting_status_description', 'local_learning_analytics'),
+            'show_if_enabled', // default value
+            $statuschoices
+        );
+        $settingstatus->set_updatedcallback('\\local_learning_analytics\\settings::statusupdated');
+        $settings->add($settingstatus);
 
-    $settings->add(new admin_setting_configtext(
-        'local_learning_analytics/dataprivacy_threshold',
-        get_string('dataprivacy_threshold', 'local_learning_analytics'),
-        get_string('dataprivacy_threshold_description', 'local_learning_analytics'),
-        '10', // default value
-        PARAM_INT
-    ));
+        // This is only a textarea to make it more comforable entering the values
+        $settings->add(new admin_setting_configtextarea(
+            'local_learning_analytics/course_ids',
+            get_string('setting_course_ids', 'local_learning_analytics'),
+            get_string('setting_course_ids_description', 'local_learning_analytics'),
+            '',
+            PARAM_RAW,
+            '60',
+            '2'
+        ));
 
-    $settings->add(new admin_setting_configtext(
-        'local_learning_analytics/student_rolenames',
-        get_string('setting_student_rolenames', 'local_learning_analytics'),
-        get_string('setting_student_rolenames_description', 'local_learning_analytics'),
-        'student',
-        PARAM_RAW
-    ));
+        $settings->add(new admin_setting_configtext(
+            'local_learning_analytics/navigation_position_beforekey',
+            get_string('navigation_position_beforekey', 'local_learning_analytics'),
+            get_string('navigation_position_beforekey_description', 'local_learning_analytics'),
+            '',
+            PARAM_RAW
+        ));
 
-    // $settings->add(new admin_setting_configcheckbox(
-    //     'local_learning_analytics/allow_dashboard_compare',
-    //     get_string('allow_dashboard_compare', 'local_learning_analytics'),
-    //     get_string('allow_dashboard_compare_description', 'local_learning_analytics'),
-    //     0
-    // ));
+        $settings->add(new admin_setting_configtext(
+            'local_learning_analytics/dataprivacy_threshold',
+            get_string('dataprivacy_threshold', 'local_learning_analytics'),
+            get_string('dataprivacy_threshold_description', 'local_learning_analytics'),
+            '10', // default value
+            PARAM_INT
+        ));
 
+        $settings->add(new admin_setting_configtext(
+            'local_learning_analytics/student_rolenames',
+            get_string('setting_student_rolenames', 'local_learning_analytics'),
+            get_string('setting_student_rolenames_description', 'local_learning_analytics'),
+            'student',
+            PARAM_RAW
+        ));
+
+        // $settings->add(new admin_setting_configcheckbox(
+        //     'local_learning_analytics/allow_dashboard_compare',
+        //     get_string('allow_dashboard_compare', 'local_learning_analytics'),
+        //     get_string('allow_dashboard_compare_description', 'local_learning_analytics'),
+        //     0
+        // ));
+    }
 }

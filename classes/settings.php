@@ -41,4 +41,111 @@ abstract class settings {
         }
         return $value;
     }
+
+    public static function statusupdated() {
+        // The status setting was changed via the administration
+        // In case it was changed from `course_setting` or to `course_setting`, we need to cleanup
+        // the custom course entries.
+
+        global $CFG, $DB;
+        if ($CFG->version < 2019052000) {
+            // The option is only supported since 3.7 (because of customfields)
+            return;
+        }
+
+        $statussetting = get_config('local_learning_analytics', 'status');
+        $customfieldid = (int) get_config('local_learning_analytics', 'customfieldid');
+        if ($statussetting === 'course_customfield' && empty($customfieldid)) {
+            // changed from another value to "customfield", so create customfield
+
+            // Create customfield category for courses
+            $handler = \core_course\customfield\course_handler::create();
+            $category = \core_customfield\category_controller::create(0, (object)[
+                'name' => 'Learning Analytics',
+                'description' => 'Explaination: this category should not be manually deleted as it was added by the Learning Analytics plugin...',
+            ], $handler);
+            \core_customfield\api::save_category($category);
+
+            // Create customfield entry (inside of category created above)
+            $field = \core_customfield\field_controller::create(0, (object)[
+                'name' => 'Aktivieren / Enable',
+                'shortname' => 'learning_analytics_enable',
+                // TODO lang Kurze Beschreibung muss sowohl auf Deutsch als auch Englisch sein, da hier keine lang-Möglichkeit besteht
+                'description' => 'Description auf Deutsch und Englisch...',
+                'type' => 'checkbox'
+            ], $category);
+            $formdata = \core_customfield\api::prepare_field_for_config_form($field);
+            $formdata->configdata = [
+                'required' => '0',
+                'uniquevalues' => '0',
+                'checkbydefault' => '0',
+                'locked' => '0',
+                'visibility' => '0',
+            ];
+            \core_customfield\api::save_field_configuration($field, $formdata);
+            $fieldid = $field->get('id');
+
+            set_config('customfieldid', $fieldid, 'local_learning_analytics');
+
+            // Set `customfield_data` for each course from courses in `course_ids` setting
+            $courseids = get_config('local_learning_analytics', 'course_ids');
+            if ($courseids !== false && $courseids !== '') {
+                // set existing course ids as 
+                $courseids = array_unique(array_map('trim', explode(',', $courseids)));
+
+                $datatoinsert = [];
+                $now = time();
+                foreach ($courseids as $courseid) {
+                    $coursecontext = \context_course::instance($courseid);
+                    $record = new \stdClass();
+                    $record->fieldid  = $fieldid;
+                    $record->instanceid = $courseid;
+                    $record->intvalue = 1;
+                    $record->value = 1;
+                    $record->valueformat = 0;
+                    $record->contextid = $coursecontext->id;
+                    $record->timecreated = $now;
+                    $record->timemodified = $now;
+                    $datatoinsert[] = $record;
+                }
+                
+                $DB->insert_records('customfield_data', $datatoinsert);
+            }
+        } else if ($statussetting !== 'course_customfield' && !empty($customfieldid)) {
+            // changed from "customfield" to non-"customfield" so remove customfield entry
+            $field = \core_customfield\field_controller::create($customfieldid);
+            $fieldid = $field->get('id');
+            $category = $field->get_category();
+            $fieldsincategory = count($category->get_fields());
+            if ($fieldsincategory === 1) {
+                // we only really work here if the admin didn't change the category and customfield
+
+                // The code below does not work, but I'll keep it here for the next commit...
+                // Problem is that Moodle updates the course_ids value after we set it here and then
+                // Moodle overwrites our just-saved-value...
+                // // Merge data from customfield_data into our `course_ids` text field
+                // $oldcourseids = get_config('local_learning_analytics', 'course_ids');
+                // if ($oldcourseids === false || $oldcourseids === '') {
+                //     $oldcourseids = [];
+                // } else {
+                //     $oldcourseids = array_map('trim', explode(',', $oldcourseids));
+                // }
+                
+                // $newcourseids = [];
+                // $rows = $DB->get_records('customfield_data', [ 'fieldid' => $fieldid ], '', 'id,instanceid');
+                // foreach ($rows as $row) {
+                //     $newcourseids[] = $row->instanceid;
+                // }
+                
+                // $mergedarrays = array_unique(array_merge($oldcourseids, $newcourseids));
+                // $mergedarraysstr = implode(',', $mergedarrays);
+                // set_config('course_ids', $mergedarraysstr, 'local_learning_analytics');
+
+                // we only delete if the admin did not change anything (by adding other fields to the category)
+                $field->delete();
+                $category->delete();
+            }
+            unset_config('customfieldid', 'local_learning_analytics');
+        }
+    }
 }
