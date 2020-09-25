@@ -45,8 +45,8 @@
 - [x] Update README with new settings
 - [x] Logstore plugin: Make sure it also works on its own (without this plugin)
   - [x] Make sure it only loads `lalog` plugins if this plugin is installed
-- [ ] Page that shows what kind of data is being tracked and whether one is being tracked
-- [ ] External database support
+- [x] Page that shows what kind of data is being tracked and whether one is being tracked => only anonymous data is being saved, not implemented
+- [ ] External database support => no feedback from ITC
 
 ## Logstore
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
@@ -72,20 +72,24 @@
 
 -------------------------------
 
-# TODOs after first use
+# WS 20/21
 
-## Other report ideas
-- [ ] "Weekly heatmap"
+## Reports
+- [ ] "Weekly heatmap" instead of browsers
   - [ ] Figure out how we need to shift dates when showing hourly data: https://docs.moodle.org/dev/Time_API
+- [ ] Change activities report
+  - [ ] Vertical list?
+  - [ ] Include quiz statistics?
+- [ ] Fix problems of "Parallel heard / So far heard courses"
+- [x] Custom course settings to give option 
+- [ ] Possible changes
+  - [ ] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS (?)
+  - [ ] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
+- [ ] UX: Embed help into website
 
 ## Big course test
 - [x] Generate a lot of data to test how the dashboard (especially the timecreated query) performs for big courses (> 1m events in a single course, power law regarding users)
 - [ ] Also generate users
-
-## TODO WS
-- [ ] Possible changes
-  - [ ] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS
-  - [ ] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
 
 ## For later...
 - [ ] Describe subplugins
@@ -97,7 +101,7 @@
 - [ ] "Consent-API"
 - [ ] Remove any magic numbers and strings and use constants file
 - [ ] Put subplugin settings (like `allow_dashboard_compare`) in the actual subplugins
-- [ ] Check and update CLI scripts of logstore
+- [x] Check and update CLI scripts of logstore
 - [ ] Make reports to show configurable on dashboard
   - [ ] Each report should have a "small" stats to be shown on dashboard and a "report" page
 - [ ] Create a special class directory for pages (classes/pages) so that they don't get mixed up with other classes

@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.9.0]
+- Option `course_customfield` added to status option
+  - If the Moodle version is >= 3.7, administration can set the setting `status` to `course_customfield` to let teachers decide 
+    whether the `Learning Analytics` link should be shown in the navigation. If the option is selected, the plugin will add a customfield
+    to the course settings, so that teachers can enable/disable the setting on their own.
+
 ## [0.8.0] - 2020-05-29
 Thanks a lot to Jonathan Liebers who implemented the Postgres support and improved multiple SQL queries.
 ### Fixed
