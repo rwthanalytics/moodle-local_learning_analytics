@@ -38,8 +38,7 @@ if ($hassiteconfig) {
         $statuschoices['disable'] = get_string('setting_status_option_disable', 'local_learning_analytics');
         if ($CFG->version >= 2019052000) {
             // Moodle 3.7 supports custom course settings
-            // TODO lang
-            $statuschoices['course_customfield'] = 'Eintrag in den Kurseinstellungen hinzufügen, so dass die Kursinhaber selber entscheiden können';
+            $statuschoices['course_customfield'] = get_string('setting_status_course_customfield', 'local_learning_analytics');
         }
 
         $settingstatus = new admin_setting_configselect(

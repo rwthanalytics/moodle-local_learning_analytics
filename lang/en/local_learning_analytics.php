@@ -47,6 +47,7 @@ $string['setting_status_option_show_courseids'] = 'Show navigation link if cours
 $string['setting_status_option_show_always'] = 'Show navigation link for all courses, even if logging is disabled for the course (only enable this, if you already logged data before)';
 $string['setting_status_option_hide_link'] = 'Hide navigation link but keep the page enabled for all courses (only if you know the link, you can access the page)';
 $string['setting_status_option_disable'] = 'Hide navigation link and disable the page for all courses';
+$string['setting_status_course_customfield'] = 'Add option to the course settings so that teachers can enable it on their own';
 
 $string['setting_course_ids'] = 'course_ids';
 $string['setting_course_ids_description'] = 'Use this option, when you select the second option above to decide for which courses the user interface should be enabled.';
