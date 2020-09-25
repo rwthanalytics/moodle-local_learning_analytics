@@ -31,6 +31,8 @@ use lareport_activities\query_helper;
 use local_learning_analytics\router;
 use local_learning_analytics\settings;
 
+const MAX_LENGTH_SECTION_NAMES = 13;
+
 class lareport_activities extends report_base {
 
     private static $markercolors = [
@@ -142,16 +144,25 @@ class lareport_activities extends report_base {
         $y = [];
         $texts = [];
         $markercolors = [];
+        $sections = []; // [splitposition: int, name: string]
+        $lastsectionid = -1;
 
         $hitsstring = get_string('hits', 'lareport_activities');
+        $i = 0;
         foreach ($cms as $cm) {
             $activity = $activities[$cm->id];
+            $section = $cm->get_section_info();
+            if ($lastsectionid !== $section->id) {
+                $sections[] = [$i, $section->name];
+                $lastsectionid = $section->id;
+            }
             $x[] = $cm->name;
             $y[] = $activity->hits < $privacythreshold ? 0 : $activity->hits;
             $hitstext = $activity->hits < $privacythreshold ? "< {$privacythreshold}" : $activity->hits;
             $typestr = $modnameshumanreadable[$cm->modname];
             $texts[] = "{$typestr}: {$cm->name}<br>{$hitstext} {$hitsstring}";
             $markercolors[] = self::$markercolors[$cm->modname] ?? self::$markercolordefault;
+            $i += 1;
         }
 
         // Reorder to show most used activities.
@@ -205,6 +216,61 @@ class lareport_activities extends report_base {
 
         $layout = new stdClass();
         $layout->margin = ['l' => 80, 'r' => 80, 't' => 20, 'b' => 100];
+
+        $shapes = [];
+        $annotations = [];
+        for ($i = 1; $i < count($sections); $i += 1) {
+            $sectionx = $sections[$i][0];
+            $sectionnamefull = $sections[$i][1];
+            $sectionname = $sectionnamefull;
+            if (strlen($sectionname) > MAX_LENGTH_SECTION_NAMES) {
+                $sectionname = substr($sectionname, 0, MAX_LENGTH_SECTION_NAMES - 2) . '…';
+            }
+            $shapes[] = [ // dotted line to separate sections
+                'type' => 'line',
+                'xref' => 'x',
+                'x0' => ($sectionx - 0.5),
+                'x1' => ($sectionx - 0.5),
+                'yref' => 'paper',
+                'y0' => 0,
+                'y1' => 1.3,
+                'line' => [ 'color' => '#666', 'width' => 1.5, 'dash' => 'dot' ]
+            ];
+            $nextx = ($i !== count($sections) - 1) ? $sections[$i + 1][0] : count($cms);
+            if ($i % 2 === 1) { // add grey background to every second section
+                $shapes[] = [
+                    'type' => 'rect',
+                    'xref' => 'x',
+                    'x0' => ($sectionx - 0.5),
+                    'x1' => ($nextx - 0.5),
+                    'yref' => 'paper',
+                    'y0' => 0,
+                    'y1' => 1.2,
+                    'fillcolor' => 'rgba(0,0,0,0.04)',
+                    'line' => [ 'width' => 0 ],
+                    // 'line' => [ 'color' => '#aaa', 'width' => 1, 'dash' => 'dot' ]
+                ];
+            }
+            $annotations[] = [ // section label text at the top
+                'text' => $sectionname,
+                'showarrow' => false,
+                'bgcolor' => 'rgba(255,255,255,0.95)',
+                'bordercolor' => '#eee',
+                'borderpad' => 3,
+                'xref' => 'x',
+                'xanchor' => 'center',
+                // 'x' => $sectionx - 0.4,
+                'x' => ($sectionx + $nextx - 1) / 2,
+                'yref' => 'paper',
+                'yanchor' => 'top',
+                'y' => 1.1,
+                'hovertext' => get_string('section'). ': ' . $sectionnamefull
+                // 'clicktoshow' => 'onout' // hide when clicked on the plot
+            ];
+        }
+        $layout->shapes = $shapes;
+        $layout->annotations = $annotations;
+
         $plot->set_layout($layout);
 
         return [
