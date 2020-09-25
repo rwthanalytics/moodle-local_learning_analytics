@@ -111,7 +111,7 @@ class lareport_activities extends report_base {
         });
 
         $tabletypes = new table();
-        $tabletypes->set_header_local(['activity_type', 'hits'], 'lareport_activities');
+        $tabletypes->set_header_local(['activity_type', 'table_header_hits'], 'lareport_activities');
 
         foreach ($hitsbytype as $item) {
             $icon = $OUTPUT->pix_icon('icon', '', $item['type'], array('class' => 'iconlarge activityicon'));
@@ -136,7 +136,7 @@ class lareport_activities extends report_base {
         }
 
         $tabledetails = new table();
-        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
+        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'table_header_hits'], 'lareport_activities');
 
         $x = [];
         $y = [];

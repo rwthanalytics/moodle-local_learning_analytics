@@ -26,6 +26,7 @@ $string['pluginname'] = 'Aktivitäten';
 $string['all_activities'] = 'Alle Aktivitäten';
 $string['pagename_all'] = 'Komplette Liste';
 $string['activity_type'] = 'Aktivitätstyp';
+$string['table_header_hits'] = 'Aufrufe';
 $string['hits'] = 'Aufrufe';
 $string['activity_name'] = 'Name der Aktivität';
 $string['section'] = 'Abschnitt';

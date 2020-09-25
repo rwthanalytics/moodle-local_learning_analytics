@@ -54,7 +54,7 @@ class all extends report_page_base {
         $modnameshumanreadable = $modinfo->get_used_module_names();
         
         $tabledetails = new table();
-        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'hits'], 'lareport_activities');
+        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'table_header_hits'], 'lareport_activities');
 
         $hiddentext = get_string('hidden', 'lareport_activities');
         foreach ($cms as $cm) {
