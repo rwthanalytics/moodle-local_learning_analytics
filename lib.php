@@ -31,14 +31,26 @@ defined('MOODLE_INTERNAL') || die();
  * @throws moodle_exception
  */
 function local_learning_analytics_extend_navigation(global_navigation $navigation) {
-    global $PAGE, $COURSE;
+    global $PAGE, $COURSE, $DB;
 
     // Only extend navigation inside courses.
     if (isset($COURSE->id) && $COURSE->id !== SITEID) {
         // status: 'show_if_enabled', 'show_courseids', 'show_always', 'hide_link', 'disable'
         $statussetting = get_config('local_learning_analytics', 'status');
     
-        if ($statussetting === 'hide_link' || $statussetting === 'disable') {
+        if ($statussetting === 'course_customfield') {
+            $customfieldid = (int) get_config('local_learning_analytics', 'customfieldid');
+            if (!$customfieldid) { // setup went wrong, this should not happen in reality
+                return;
+            }
+            $record = $DB->get_record('customfield_data', [
+                'fieldid' => $customfieldid,
+                'instanceid' => $COURSE->id,
+            ], 'intvalue');
+            if ($record === false || $record->intvalue !== '1') {
+                return;
+            }
+        } else if ($statussetting === 'hide_link' || $statussetting === 'disable') {
             return;
         } else if ($statussetting === 'show_always') {
             // just show it, don't filter anything

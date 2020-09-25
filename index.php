@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die;
 
 require_login();
 
-global $PAGE, $USER;
+global $PAGE, $USER, $DB;
 
 $courseid = required_param('course', PARAM_INT);
 $context = context_course::instance($courseid, MUST_EXIST);
@@ -43,7 +43,16 @@ if ($courseid == SITEID) {
 // status: 'show_if_enabled', 'show_courseids', 'show_always', 'hide_link', 'disable'
 $statussetting = get_config('local_learning_analytics', 'status');
     
-if ($statussetting === 'disable') {
+if ($statussetting === 'course_customfield') {
+    $customfieldid = (int) get_config('local_learning_analytics', 'customfieldid');
+    $record = $DB->get_record('customfield_data', [
+        'fieldid' => $customfieldid,
+        'instanceid' => $courseid,
+    ], 'intvalue');
+    if ($record === false || $record->intvalue !== '1') {
+        throw new moodle_exception('Learning Analytics is not enabled (for this course).');
+    }
+} else if ($statussetting === 'disable') {
     throw new moodle_exception('Learning Analytics is not enabled (for this course).');
 } else if ($statussetting === 'show_always' || $statussetting === 'hide_link') {
     // just show it, don't filter anything
