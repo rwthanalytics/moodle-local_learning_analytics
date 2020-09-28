@@ -79,6 +79,7 @@ class lareport_activities extends report_base {
 
         $modinfo = get_fast_modinfo($courseid);
         $allcms = $modinfo->get_cms();
+        $format = \course_get_format($courseid);
         $cms = [];
         foreach ($allcms as $cmid => $cm) {
             if ($cm->modname === 'label' || !isset($activities[$cmid]) || !$cm->uservisible
@@ -153,7 +154,7 @@ class lareport_activities extends report_base {
             $activity = $activities[$cm->id];
             $section = $cm->get_section_info();
             if ($lastsectionid !== $section->id) {
-                $sections[] = [$i, $section->name];
+                $sections[] = [$i, $format->get_section_name($section)];
                 $lastsectionid = $section->id;
             }
             $x[] = $cm->name;
@@ -187,7 +188,7 @@ class lareport_activities extends report_base {
                 $tabledetails->add_row([
                     $namecell,
                     $modnameshumanreadable[$cm->modname],
-                    $section->name, // $activity->section_name,
+                    $format->get_section_name($section),
                     table::fancyNumberCell(
                         (int) $activity->hits,
                         $maxhits,

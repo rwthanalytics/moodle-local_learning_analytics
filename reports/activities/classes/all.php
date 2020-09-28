@@ -41,6 +41,7 @@ class all extends report_page_base {
 
         $modinfo = get_fast_modinfo($courseid);
         $allcms = $modinfo->get_cms();
+        $format = \course_get_format($courseid);
         $cms = [];
         $maxhits = 1;
         foreach ($allcms as $cmid => $cm) {
@@ -72,7 +73,7 @@ class all extends report_page_base {
             $tabledetails->add_row([
                 $namecell,
                 $modnameshumanreadable[$cm->modname],
-                $section->name,
+                $format->get_section_name($section),
                 $cellcontent
             ]);
         }
