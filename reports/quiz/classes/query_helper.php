@@ -15,28 +15,42 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Learning Analytics List of Reports
+ * Version info for the Activities report
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learning_analytics;
+namespace lareport_quiz;
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
-/**
- * Class report_list
- *
- * @package local_learning_analytics
- */
-class report_list {
-    public const list = [
-        'coursedashboard' => 1,
-        'activities' => 2,
-        'learners' => 3,
-        'browser_os' => 4,
-        'quiz' => 5,
-    ];
+use local_learning_analytics\local\outputs\plot;
+use local_learning_analytics\local\outputs\table;
+use local_learning_analytics\report_base;
+use context_course;
+
+class query_helper {
+
+    public static function query_tries(int $courseid): array {
+        global $DB;
+
+        $query = <<<SQL
+        SELECT
+            qa.quiz,
+            COUNT(DISTINCT userid) users,
+            COUNT(1) attempts
+        FROM {grade_items} gi
+        JOIN {quiz_attempts} qa
+        ON qa.quiz = gi.iteminstance
+            AND qa.state = 'finished'
+        WHERE gi.courseid = ?
+            AND gi.itemtype = 'mod'
+            AND gi.itemmodule = 'quiz'
+        GROUP BY qa.quiz
+SQL;
+
+        return $DB->get_records_sql($query, [$courseid]);
+    }
 }
