@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.9.0]
+## [0.9.0] - 2020-09-28
 ### Added
 - Administration: Option `course_customfield` added to status option
   - If the Moodle version is >= 3.7, administration can set the setting `status` to `course_customfield` to let teachers decide 
