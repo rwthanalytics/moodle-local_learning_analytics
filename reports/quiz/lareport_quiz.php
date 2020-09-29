@@ -57,8 +57,16 @@ class lareport_quiz extends report_base {
         $dbdata = query_helper::query_tries($courseid);
         $modinfo = get_fast_modinfo($courseid);
         $quizzes = $modinfo->instances['quiz'];
+        $hiddentext = get_string('hiddenwithbrackets');
         foreach ($quizzes as $quizid => $cm) {
-            $x[] = $cm->name;
+            if (!$cm->uservisible) {
+                continue;
+            }
+            $name = $cm->name;
+            if (!$cm->visible) {
+                $name = $name . "<br><span style='opacity:0.75'>{$hiddentext}</span>";
+            }
+            $x[] = $name;
             if (isset($dbdata[$quizid])) {
                 $dbinfo = $dbdata[$quizid];
                 $triescount[] = $dbinfo->attempts;

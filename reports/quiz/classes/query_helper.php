@@ -41,8 +41,8 @@ class query_helper {
             q.id,
             AVG(qa.sumgrades)/q.sumgrades AS result,
             AVG(case when qa.attempt=1 then qa.sumgrades else NULL end)/q.sumgrades AS firsttryresult,
-            COUNT(DISTINCT userid) users,
-            COUNT(1) attempts
+            COUNT(DISTINCT userid) AS users,
+            COUNT(1) AS attempts
         FROM {grade_items} gi
         JOIN {quiz} q
             ON q.id = gi.iteminstance
