@@ -43,10 +43,10 @@ class query_helper {
             AVG(case when qa.attempt=1 then qa.sumgrades else NULL end)/q.sumgrades AS firsttryresult,
             COUNT(DISTINCT userid) users,
             COUNT(1) attempts
-        FROM mdl_grade_items gi
-        JOIN mdl_quiz q
+        FROM {grade_items} gi
+        JOIN {quiz} q
             ON q.id = gi.iteminstance
-        JOIN mdl_quiz_attempts qa
+        JOIN {quiz_attempts} qa
         ON qa.quiz = q.id
             AND qa.state = 'finished'
         WHERE gi.courseid = ?
