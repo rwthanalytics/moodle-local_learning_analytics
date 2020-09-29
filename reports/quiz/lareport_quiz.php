@@ -31,18 +31,15 @@ use lareport_quiz\query_helper;
 use local_learning_analytics\router;
 use local_learning_analytics\settings;
 
+// TODO privacythreshold
+// TODO remove redundant plot code
+
 class lareport_quiz extends report_base {
 
-    public function run(array $params): array {
-        global $USER, $OUTPUT;
-        $courseid = $params['course'];
-        $privacythreshold = settings::get_config('dataprivacy_threshold');
-
+    public function quizzes(int $courseid, $privacythreshold) {
         $x = [];
         $triescount = [];
         $users = [];
-        $texts = [];
-        
         $resultstotal = [];
         $resultsfirsttry = [];
 
@@ -54,7 +51,7 @@ class lareport_quiz extends report_base {
         ];
         $margin = ['l' => 80, 'r' => 0, 't' => 0, 'b' => 100];
 
-        $dbdata = query_helper::query_tries($courseid);
+        $dbquizzes = query_helper::query_quiz($courseid);
         $modinfo = get_fast_modinfo($courseid);
         $quizzes = $modinfo->instances['quiz'];
         $hiddentext = get_string('hiddenwithbrackets');
@@ -67,12 +64,12 @@ class lareport_quiz extends report_base {
                 $name = $name . "<br><span style='opacity:0.75'>{$hiddentext}</span>";
             }
             $x[] = $name;
-            if (isset($dbdata[$quizid])) {
-                $dbinfo = $dbdata[$quizid];
-                $triescount[] = $dbinfo->attempts;
-                $users[] = $dbinfo->users;
-                $resultstotal[] = $dbinfo->result;
-                $resultsfirsttry[] = $dbinfo->firsttryresult;
+            if (isset($dbquizzes[$quizid])) {
+                $quizinfo = $dbquizzes[$quizid];
+                $triescount[] = $quizinfo->attempts;
+                $users[] = $quizinfo->users;
+                $resultstotal[] = $quizinfo->result;
+                $resultsfirsttry[] = $quizinfo->firsttryresult;
             } else {
                 $triescount[] = 0;
                 $users[] = 0;
@@ -131,12 +128,105 @@ class lareport_quiz extends report_base {
         $plotresults->set_layout($layout);
         $plotresults->set_height(300);
 
+        // TODO only show quiz statistics if there is at least one quiz
+
         return [ // TODO lang
-            "<h3 style='margin-bottom:0'>Durchgeführte Quizversuche</h3>", 
+            "<h3 style='margin-bottom: 5px'>Quizze - Durchgeführte Versuche</h3>", 
             $plotuse,
-            "<hr><h3 style='margin-bottom:0'>Durchschnittlich erreichte Punkte</h3>", 
+            "<hr><h3 style='margin-bottom: 5px'>Quizze - Durchschnittlich erreichte Punkte</h3>", 
             $plotresults
         ];
+    }
+
+    public function assignments(int $courseid, $privacythreshold) {
+        $x = [];
+        $handins = [];
+        $grades = [];
+        
+        $legend = [
+            'orientation' => 'h',
+            'xanchor' => 'right',
+            'x' => 1,
+            'y' => 1.18,
+        ];
+        $margin = ['l' => 80, 'r' => 0, 't' => 20, 'b' => 100];
+
+        $dbassignments = query_helper::query_assignment($courseid);
+        $modinfo = get_fast_modinfo($courseid);
+        $assignments = $modinfo->instances['assign'];
+        $hiddentext = get_string('hiddenwithbrackets');
+        foreach ($assignments as $assignid => $cm) {
+            if (!$cm->uservisible) {
+                continue;
+            }
+            $name = $cm->name;
+            if (!$cm->visible) {
+                $name = $name . "<br><span style='opacity:0.75'>{$hiddentext}</span>";
+            }
+            $x[] = $name;
+            if (isset($dbassignments[$assignid])) {
+                $quizinfo = $dbassignments[$assignid];
+                $handins[] = $quizinfo->handins;
+                $grades[] = $quizinfo->grade;
+            } else {
+                $handins[] = 0;
+                $grades[] = 0;
+            }
+        }
+
+        $plotuse = new plot();
+        $plotuse->show_toolbar(false);
+        $plotuse->add_series([
+            'type' => 'bar',
+            'x' => $x,
+            'y' => $handins,
+            'name' => 'Abgaben', // TODO lang
+            'marker' => [ 'color' => '#1f77b4' ]
+        ]);
+        $layout = new stdClass();
+        $layout->margin = $margin;
+        $layout->xaxis = [ 'tickangle' => 30 ];
+        $plotuse->set_layout($layout);
+        $plotuse->set_height(300);
+        
+        $plotresults = new plot();
+        $plotresults->show_toolbar(false);
+        $plotresults->add_series([
+            'type' => 'bar',
+            'x' => $x,
+            'y' => $grades,
+            'name' => 'Alle Versuche', // TODO lang
+            'marker' => [ 'color' => '#2ca02c' ]
+        ]);
+        $layout = new stdClass();
+        $layout->margin = $margin;
+        $layout->xaxis = [ 'tickangle' => 30 ];
+        $layout->yaxis = [
+            'tickformat' => ',.1%',
+            'range' => [0,1]
+        ];
+        $plotresults->set_layout($layout);
+        $plotresults->set_height(300);
+
+        // TODO only show quiz statistics if there is at least one assignment
+
+        return [ // TODO lang
+            "<h3 style='margin-bottom: 5px'>Aufgaben - Anzahl an bewerteten Abgaben</h3>", 
+            $plotuse,
+            "<hr><h3 style='margin-bottom: 5px'>Aufgaben - Durchschnittlich erreichte Punkte</h3>", 
+            $plotresults
+        ];
+    }
+
+    public function run(array $params): array {
+        global $USER, $OUTPUT;
+        $courseid = $params['course'];
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
+
+        return array_merge(
+            self::quizzes($courseid, $privacythreshold),
+            self::assignments($courseid, $privacythreshold)
+        );
     }
 
     public function params(): array {

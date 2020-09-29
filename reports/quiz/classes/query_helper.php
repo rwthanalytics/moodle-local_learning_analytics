@@ -33,7 +33,7 @@ use context_course;
 
 class query_helper {
 
-    public static function query_tries(int $courseid): array {
+    public static function query_quiz(int $courseid): array {
         global $DB;
 
         $query = <<<SQL
@@ -53,6 +53,30 @@ class query_helper {
             AND gi.itemtype = 'mod'
             AND gi.itemmodule = 'quiz'
         GROUP BY q.id
+SQL;
+
+        return $DB->get_records_sql($query, [$courseid]);
+    }
+
+    public static function query_assignment(int $courseid): array {
+        global $DB;
+
+        $query = <<<SQL
+        SELECT
+            a.id,
+            COUNT(1) handins,
+            (AVG(gg.rawgrade)-gg.rawgrademin)/(gi.grademax-gg.rawgrademin) AS grade
+        FROM {grade_items} gi
+        JOIN {grade_grades} gg
+            ON gg.itemid = gi.id
+            AND gg.usermodified IS NOT NULL -- filter out entries created by Moodle automatically (INDEX)
+            AND gg.rawgrade IS NOT NULL -- filter out non-graded assignments
+        JOIN {assign} a
+            ON a.id = gi.iteminstance
+        WHERE gi.courseid = ?
+            AND gi.itemtype = 'mod'
+            AND gi.itemmodule = 'assign'
+        GROUP BY a.id
 SQL;
 
         return $DB->get_records_sql($query, [$courseid]);
