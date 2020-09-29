@@ -38,17 +38,21 @@ class query_helper {
 
         $query = <<<SQL
         SELECT
-            qa.quiz,
+            q.id,
+            AVG(qa.sumgrades)/q.sumgrades AS result,
+            AVG(case when qa.attempt=1 then qa.sumgrades else NULL end)/q.sumgrades AS firsttryresult,
             COUNT(DISTINCT userid) users,
             COUNT(1) attempts
-        FROM {grade_items} gi
-        JOIN {quiz_attempts} qa
-        ON qa.quiz = gi.iteminstance
+        FROM mdl_grade_items gi
+        JOIN mdl_quiz q
+            ON q.id = gi.iteminstance
+        JOIN mdl_quiz_attempts qa
+        ON qa.quiz = q.id
             AND qa.state = 'finished'
         WHERE gi.courseid = ?
             AND gi.itemtype = 'mod'
             AND gi.itemmodule = 'quiz'
-        GROUP BY qa.quiz
+        GROUP BY q.id
 SQL;
 
         return $DB->get_records_sql($query, [$courseid]);

@@ -39,9 +39,20 @@ class lareport_quiz extends report_base {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $x = [];
-        $tries = [];
+        $triescount = [];
         $users = [];
         $texts = [];
+        
+        $resultstotal = [];
+        $resultsfirsttry = [];
+
+        $legend = [
+            'orientation' => 'h',
+            'xanchor' => 'right',
+            'x' => 1,
+            'y' => 1.18,
+        ];
+        $margin = ['l' => 80, 'r' => 0, 't' => 0, 'b' => 100];
 
         $dbdata = query_helper::query_tries($courseid);
         $modinfo = get_fast_modinfo($courseid);
@@ -50,37 +61,73 @@ class lareport_quiz extends report_base {
             $x[] = $cm->name;
             if (isset($dbdata[$quizid])) {
                 $dbinfo = $dbdata[$quizid];
-                $tries[] = $dbinfo->attempts;
+                $triescount[] = $dbinfo->attempts;
                 $users[] = $dbinfo->users;
+                $resultstotal[] = $dbinfo->result;
+                $resultsfirsttry[] = $dbinfo->firsttryresult;
             } else {
-                $tries[] = 0;
+                $triescount[] = 0;
                 $users[] = 0;
+                $resultstotal[] = 0;
+                $resultsfirsttry[] = 0;
             }
         }
-        
-        $plot = new plot();
-        $plot->show_toolbar(false);
-        $plot->add_series([
+
+        $plotuse = new plot();
+        $plotuse->show_toolbar(false);
+        $plotuse->add_series([
             'type' => 'bar',
             'x' => $x,
-            'y' => $tries,
-            'name' => 'Tries' // TODO lang
+            'y' => $triescount,
+            'name' => 'Tries', // TODO lang
+            'marker' => [ 'color' => '#1f77b4' ]
         ]);
-        $plot->add_series([
+        $plotuse->add_series([
             'type' => 'bar',
             'x' => $x,
             'y' => $users,
-            'name' => 'Users' // TODO lang
+            'name' => 'Users', // TODO lang
+            'marker' => [ 'color' => '#ff7f0e' ]
         ]);
         $layout = new stdClass();
-        $layout->margin = [
-            'b' => 100
+        $layout->margin = $margin;
+        $layout->legend = $legend;
+        $layout->xaxis = [ 'tickangle' => 30 ];
+        $plotuse->set_layout($layout);
+        $plotuse->set_height(300);
+        
+        $plotresults = new plot();
+        $plotresults->show_toolbar(false);
+        $plotresults->add_series([
+            'type' => 'bar',
+            'x' => $x,
+            'y' => $resultstotal,
+            'name' => 'Alle Versuche', // TODO lang
+            'marker' => [ 'color' => '#2ca02c' ]
+        ]);
+        $plotresults->add_series([
+            'type' => 'bar',
+            'x' => $x,
+            'y' => $resultsfirsttry,
+            'name' => 'Erster Versuch', // TODO lang
+            'marker' => [ 'color' => '#bcbd22' ]
+        ]);
+        $layout = new stdClass();
+        $layout->margin = $margin;
+        $layout->legend = $legend;
+        $layout->xaxis = [ 'tickangle' => 30 ];
+        $layout->yaxis = [
+            'tickformat' => ',.1%',
+            'range' => [0,1]
         ];
-        $plot->set_layout($layout);
-        $plot->set_height(300);
+        $plotresults->set_layout($layout);
+        $plotresults->set_height(300);
 
-        return [
-            $plot
+        return [ // TODO lang
+            "<h3 style='margin-bottom:0'>Durchgeführte Quizversuche</h3>", 
+            $plotuse,
+            "<hr><h3 style='margin-bottom:0'>Durchschnittlich erreichte Punkte</h3>", 
+            $plotresults
         ];
     }
 
