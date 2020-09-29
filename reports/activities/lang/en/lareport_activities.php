@@ -31,6 +31,5 @@ $string['hits'] = 'hits';
 $string['activity_name'] = 'Activity name';
 $string['section'] = 'Section';
 $string['most_used_activities'] = 'Most used activities';
-$string['hidden'] = 'hidden';
 
 $string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding your learning modules.';

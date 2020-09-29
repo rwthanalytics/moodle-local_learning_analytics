@@ -57,7 +57,7 @@ class all extends report_page_base {
         $tabledetails = new table();
         $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'table_header_hits'], 'lareport_activities');
 
-        $hiddentext = get_string('hidden', 'lareport_activities');
+        $hiddentext = get_string('hiddenwithbrackets');
         foreach ($cms as $cm) {
             if ($cm->modname === 'label' || !isset($activities[$cm->id])) {
                 continue; // skip labels and unknown activity (should only happen if cache is messed up)
@@ -66,7 +66,7 @@ class all extends report_page_base {
             $namecell = $cm->name;
             $section = $cm->get_section_info();
             if (!$cm->visible) {
-                $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
+                $namecell = "<span class='dimmed_text'>{$namecell} {$hiddentext}</span>";
             }
             $cellcontent = ($activity->hits < $privacythreshold) ?
                 " < {$privacythreshold}" : table::fancyNumberCell((int) $activity->hits, $maxhits, 'orange');

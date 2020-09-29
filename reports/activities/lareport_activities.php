@@ -172,7 +172,7 @@ class lareport_activities extends report_base {
             return $activities[$cm2->id]->hits <=> $activities[$cm1->id]->hits;
         });
 
-        $hiddentext = get_string('hidden', 'lareport_activities');
+        $hiddentext = get_string('hiddenwithbrackets');
         $headinttoptext = get_string('most_used_activities', 'lareport_activities');
         foreach ($cms as $i => $cm) {
             if ($i >= 5) { // Stop when some reports are shown.
@@ -182,7 +182,7 @@ class lareport_activities extends report_base {
             $namecell = $cm->name;
             $section = $cm->get_section_info();
             if (!$cm->visible) {
-                $namecell = "<span class='dimmed_text'>{$namecell} ({$hiddentext})</span>";
+                $namecell = "<span class='dimmed_text'>{$namecell} {$hiddentext}</span>";
             }
             if ($activity->hits >= $privacythreshold) {
                 $tabledetails->add_row([
