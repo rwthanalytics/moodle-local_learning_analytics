@@ -31,14 +31,11 @@ use lareport_quiz\query_helper;
 use local_learning_analytics\router;
 use local_learning_analytics\settings;
 
-// TODO privacythreshold
-// TODO remove redundant plot code
-
 class lareport_quiz extends report_base {
 
     public function quizzes(int $courseid, $privacythreshold) {
         $tablequiz = new table('quiztable');
-        $tablequiz->set_header(['Name der Aktivität', 'Versuche', 'Nutzer', 'Punkte aller Versuche (Ø)', 'Punkte 1. Versuch (Ø)']); // TODO lang
+        $tablequiz->set_header(['Name der Aktivität', 'Nutzer', 'Versuche', 'Punkte aller Versuche (Ø)', 'Punkte 1. Versuch (Ø)']); // TODO lang
 
         $rows = [];
         $maxtries = 1;
@@ -70,19 +67,29 @@ class lareport_quiz extends report_base {
             }
         }
 
+        $dataprivacynotice = false;
         foreach ($rows as $row) {
-            $tablequiz->add_row([
-                $row[0],
-                table::fancynumbercellcolored((int) $row[1], $maxtries, '#1f77b4'),
-                table::fancynumbercellcolored((int) $row[2], $maxusers, '#ff7f0e'),
-                table::fancynumbercellcolored(min(1, $row[3]), 1, '#2ca02c', format_float(100 * $row[3], 1) . '%'),
-                table::fancynumbercellcolored(min(1, $row[4]), 1, '#bcbd22', format_float(100 * $row[4], 1) . '%')
-            ]);
+            if ($row[2] < $privacythreshold) {
+                $tablequiz->add_row([
+                    $row[0], "< {$privacythreshold}", '*', '*', '*'
+                ]);
+                $dataprivacynotice = true;
+            } else {
+                $tablequiz->add_row([
+                    $row[0],
+                    table::fancynumbercellcolored((int) $row[2], $maxusers, '#1f77b4'),
+                    table::fancynumbercellcolored((int) $row[1], $maxtries, '#ff7f0e'),
+                    table::fancynumbercellcolored(min(1, $row[3]), 1, '#2ca02c', format_float(100 * $row[3], 1) . '%'),
+                    table::fancynumbercellcolored(min(1, $row[4]), 1, '#bcbd22', format_float(100 * $row[4], 1) . '%')
+                ]);
+            }
         }
 
         return [
             '<h3>Quizze</h3>',
             $tablequiz,
+            $dataprivacynotice ? '<div>* Aus Datenschutzgründen werden Ergebnisse von weniger als 10 Nutzern nicht gezeigt.</div>' : '', // TODO lang
+            '<hr>'
         ];
     }
 
@@ -118,17 +125,26 @@ class lareport_quiz extends report_base {
             }
         }
 
+        $dataprivacynotice = false;
         foreach ($rows as $row) {
-            $tableassign->add_row([
-                $row[0],
-                table::fancynumbercellcolored((int) $row[1], $maxhandins, '#1f77b4'),
-                table::fancynumbercellcolored($row[2], 1, '#2ca02c', format_float(100 * $row[2], 1) . '%')
-            ]);
+            if ($row[1] < $privacythreshold) {
+                $tableassign->add_row([
+                    $row[0], "< {$privacythreshold}", '*'
+                ]);
+                $dataprivacynotice = true;
+            } else {
+                $tableassign->add_row([
+                    $row[0],
+                    table::fancynumbercellcolored((int) $row[1], $maxhandins, '#ff7f0e'),
+                    table::fancynumbercellcolored($row[2], 1, '#2ca02c', format_float(100 * $row[2], 1) . '%')
+                ]);
+            }
         }
 
         return [
             '<h3>Aufgaben</h3>',
             $tableassign,
+            $dataprivacynotice ? '<div>* Aus Datenschutzgründen werden Ergebnisse von weniger als 10 Nutzern nicht gezeigt.</div>' : '' // TODO lang
         ];
     }
 
