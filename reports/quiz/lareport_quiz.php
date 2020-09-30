@@ -53,7 +53,7 @@ class lareport_quiz extends report_base {
             if (!$cm->uservisible) {
                 continue;
             }
-            $name = $cm->name;
+            $name = "<a href='{$cm->url}'>{$cm->name}</a>";
             if (!$cm->visible) {
                 $name = "<span class='dimmed_text'>{$name} {$hiddentext}</span>";
             }
@@ -112,7 +112,7 @@ class lareport_quiz extends report_base {
             if (!$cm->uservisible) {
                 continue;
             }
-            $name = $cm->name;
+            $name = "<a href='{$cm->url}'>{$cm->name}</a>";
             if (!$cm->visible) {
                 $name = "<span class='dimmed_text'>{$name} {$hiddentext}</span>";
             }
