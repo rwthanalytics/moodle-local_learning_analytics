@@ -39,9 +39,13 @@ class table extends output_base {
 
     private $ajaxrows;
 
-    public function __construct() {
+    public function __construct($customclass = null) {
         $this->table = new html_table();
-        $this->table->attributes['class'] = 'generaltable latable';
+        $classname = 'generaltable latable';
+        if ($customclass) {
+            $classname = $classname . ' ' . $customclass;
+        }
+        $this->table->attributes['class'] = $classname;
     }
 
     public function set_header(array $header) {
@@ -67,6 +71,14 @@ class table extends output_base {
         }
         $width = round(100 * $value / $maxvalue);
         return "${textvalue}<div class='bar'><div class='segment ${class}' style='width:${width}%'></div></div>";
+    }
+
+    public static function fancynumbercellcolored(float $value, float $maxvalue, string $color, string $textvalue = null) : string {
+        if ($textvalue === null) {
+            $textvalue = $value;
+        }
+        $width = round(100 * $value / $maxvalue);
+        return "${textvalue}<div class='bar'><div class='segment' style='width:${width}%;background:${color}'></div></div>";
     }
 
     /**

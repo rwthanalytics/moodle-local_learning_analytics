@@ -37,22 +37,19 @@ use local_learning_analytics\settings;
 class lareport_quiz extends report_base {
 
     public function quizzes(int $courseid, $privacythreshold) {
-        $x = [];
-        $triescount = [];
-        $users = [];
-        $resultstotal = [];
-        $resultsfirsttry = [];
+        $tablequiz = new table('quiztable');
+        $tablequiz->set_header(['Name der Aktivität', 'Versuche', 'Nutzer', 'Punkte aller Versuche (Ø)', 'Punkte 1. Versuch (Ø)']); // TODO lang
 
-        $legend = [
-            'orientation' => 'h',
-            'xanchor' => 'right',
-            'x' => 1,
-            'y' => 1.18,
-        ];
-        $margin = ['l' => 80, 'r' => 0, 't' => 0, 'b' => 100];
+        $rows = [];
+        $maxtries = 1;
+        $maxusers = 1;
 
         $dbquizzes = query_helper::query_quiz($courseid);
         $modinfo = get_fast_modinfo($courseid);
+        if (!isset($modinfo->instances['quiz'])) {
+            // TODO Text about no quizzes...
+            return [];
+        }
         $quizzes = $modinfo->instances['quiz'];
         $hiddentext = get_string('hiddenwithbrackets');
         foreach ($quizzes as $quizid => $cm) {
@@ -61,98 +58,47 @@ class lareport_quiz extends report_base {
             }
             $name = $cm->name;
             if (!$cm->visible) {
-                $name = $name . "<br><span style='opacity:0.75'>{$hiddentext}</span>";
+                $name = "<span class='dimmed_text'>{$name} {$hiddentext}</span>";
             }
-            $x[] = $name;
             if (isset($dbquizzes[$quizid])) {
                 $quizinfo = $dbquizzes[$quizid];
-                $triescount[] = $quizinfo->attempts;
-                $users[] = $quizinfo->users;
-                $resultstotal[] = $quizinfo->result;
-                $resultsfirsttry[] = $quizinfo->firsttryresult;
+                $rows[] = [$name, $quizinfo->attempts, $quizinfo->users, $quizinfo->result, $quizinfo->firsttryresult];
+                $maxtries = max($maxtries, $quizinfo->attempts);
+                $maxusers = max($maxusers, $quizinfo->users);
             } else {
-                $triescount[] = 0;
-                $users[] = 0;
-                $resultstotal[] = 0;
-                $resultsfirsttry[] = 0;
+                $rows[] = [$name, 0, 0, 0, 0];
             }
         }
 
-        $plotuse = new plot();
-        $plotuse->show_toolbar(false);
-        $plotuse->add_series([
-            'type' => 'bar',
-            'x' => $x,
-            'y' => $triescount,
-            'name' => 'Tries', // TODO lang
-            'marker' => [ 'color' => '#1f77b4' ]
-        ]);
-        $plotuse->add_series([
-            'type' => 'bar',
-            'x' => $x,
-            'y' => $users,
-            'name' => 'Users', // TODO lang
-            'marker' => [ 'color' => '#ff7f0e' ]
-        ]);
-        $layout = new stdClass();
-        $layout->margin = $margin;
-        $layout->legend = $legend;
-        $layout->xaxis = [ 'tickangle' => 30 ];
-        $plotuse->set_layout($layout);
-        $plotuse->set_height(300);
-        
-        $plotresults = new plot();
-        $plotresults->show_toolbar(false);
-        $plotresults->add_series([
-            'type' => 'bar',
-            'x' => $x,
-            'y' => $resultstotal,
-            'name' => 'Alle Versuche', // TODO lang
-            'marker' => [ 'color' => '#2ca02c' ]
-        ]);
-        $plotresults->add_series([
-            'type' => 'bar',
-            'x' => $x,
-            'y' => $resultsfirsttry,
-            'name' => 'Erster Versuch', // TODO lang
-            'marker' => [ 'color' => '#bcbd22' ]
-        ]);
-        $layout = new stdClass();
-        $layout->margin = $margin;
-        $layout->legend = $legend;
-        $layout->xaxis = [ 'tickangle' => 30 ];
-        $layout->yaxis = [
-            'tickformat' => ',.1%',
-            'range' => [0,1]
-        ];
-        $plotresults->set_layout($layout);
-        $plotresults->set_height(300);
+        foreach ($rows as $row) {
+            $tablequiz->add_row([
+                $row[0],
+                table::fancynumbercellcolored((int) $row[1], $maxtries, '#1f77b4'),
+                table::fancynumbercellcolored((int) $row[2], $maxusers, '#ff7f0e'),
+                table::fancynumbercellcolored(min(1, $row[3]), 1, '#2ca02c', format_float(100 * $row[3], 1) . '%'),
+                table::fancynumbercellcolored(min(1, $row[4]), 1, '#bcbd22', format_float(100 * $row[4], 1) . '%')
+            ]);
+        }
 
-        // TODO only show quiz statistics if there is at least one quiz
-
-        return [ // TODO lang
-            "<h3 style='margin-bottom: 5px'>Quizze - Durchgeführte Versuche</h3>", 
-            $plotuse,
-            "<hr><h3 style='margin-bottom: 5px'>Quizze - Durchschnittlich erreichte Punkte</h3>", 
-            $plotresults
+        return [
+            '<h3>Quizze</h3>',
+            $tablequiz,
         ];
     }
 
     public function assignments(int $courseid, $privacythreshold) {
-        $x = [];
-        $handins = [];
-        $grades = [];
-        
-        $legend = [
-            'orientation' => 'h',
-            'xanchor' => 'right',
-            'x' => 1,
-            'y' => 1.18,
-        ];
-        $margin = ['l' => 80, 'r' => 0, 't' => 20, 'b' => 100];
+        $tableassign = new table('assigntable');
+        $tableassign->set_header(['Name der Aktivität', 'Anzahl bewerteter Versuche', 'Durchschnittlich erreichte Punkte']); // TODO lang
+
+        $rows = [];
+        $maxhandins = 1;
 
         $dbassignments = query_helper::query_assignment($courseid);
         $modinfo = get_fast_modinfo($courseid);
+        if (!isset($modinfo->instances['assign'])) {
+            // TODO Text about no assignments...
+            return [];
+        }
         $assignments = $modinfo->instances['assign'];
         $hiddentext = get_string('hiddenwithbrackets');
         foreach ($assignments as $assignid => $cm) {
@@ -161,60 +107,28 @@ class lareport_quiz extends report_base {
             }
             $name = $cm->name;
             if (!$cm->visible) {
-                $name = $name . "<br><span style='opacity:0.75'>{$hiddentext}</span>";
+                $name = "<span class='dimmed_text'>{$name} {$hiddentext}</span>";
             }
-            $x[] = $name;
             if (isset($dbassignments[$assignid])) {
-                $quizinfo = $dbassignments[$assignid];
-                $handins[] = $quizinfo->handins;
-                $grades[] = $quizinfo->grade;
+                $assigninfo = $dbassignments[$assignid];
+                $rows[] = [$name, $assigninfo->handins, $assigninfo->grade];
+                $maxhandins = max($maxhandins, $assigninfo->handins);
             } else {
-                $handins[] = 0;
-                $grades[] = 0;
+                $rows[] = [$name, 0, 0, 0, 0];
             }
         }
 
-        $plotuse = new plot();
-        $plotuse->show_toolbar(false);
-        $plotuse->add_series([
-            'type' => 'bar',
-            'x' => $x,
-            'y' => $handins,
-            'name' => 'Abgaben', // TODO lang
-            'marker' => [ 'color' => '#1f77b4' ]
-        ]);
-        $layout = new stdClass();
-        $layout->margin = $margin;
-        $layout->xaxis = [ 'tickangle' => 30 ];
-        $plotuse->set_layout($layout);
-        $plotuse->set_height(300);
-        
-        $plotresults = new plot();
-        $plotresults->show_toolbar(false);
-        $plotresults->add_series([
-            'type' => 'bar',
-            'x' => $x,
-            'y' => $grades,
-            'name' => 'Alle Versuche', // TODO lang
-            'marker' => [ 'color' => '#2ca02c' ]
-        ]);
-        $layout = new stdClass();
-        $layout->margin = $margin;
-        $layout->xaxis = [ 'tickangle' => 30 ];
-        $layout->yaxis = [
-            'tickformat' => ',.1%',
-            'range' => [0,1]
-        ];
-        $plotresults->set_layout($layout);
-        $plotresults->set_height(300);
+        foreach ($rows as $row) {
+            $tableassign->add_row([
+                $row[0],
+                table::fancynumbercellcolored((int) $row[1], $maxhandins, '#1f77b4'),
+                table::fancynumbercellcolored($row[2], 1, '#2ca02c', format_float(100 * $row[2], 1) . '%')
+            ]);
+        }
 
-        // TODO only show quiz statistics if there is at least one assignment
-
-        return [ // TODO lang
-            "<h3 style='margin-bottom: 5px'>Aufgaben - Anzahl an bewerteten Abgaben</h3>", 
-            $plotuse,
-            "<hr><h3 style='margin-bottom: 5px'>Aufgaben - Durchschnittlich erreichte Punkte</h3>", 
-            $plotresults
+        return [
+            '<h3>Aufgaben</h3>',
+            $tableassign,
         ];
     }
 

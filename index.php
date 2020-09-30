@@ -112,7 +112,7 @@ $resultinghtml = router::run($_SERVER['REQUEST_URI']);
 
 $output = $PAGE->get_renderer('local_learning_analytics');
 
-$PAGE->requires->css('/local/learning_analytics/static/styles.css?2');
+$PAGE->requires->css('/local/learning_analytics/static/styles.css?3');
 $mainoutput = $output->render_from_template('local_learning_analytics/course', [
     'content' => $resultinghtml
 ]);
