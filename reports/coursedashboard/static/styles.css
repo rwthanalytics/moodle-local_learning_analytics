@@ -1,26 +1,43 @@
 .dashboardbox {
+    position: relative;
     border: 1px solid #ccc;
-    padding: 20px 20px;
+    padding: 20px 20px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-bottom: 20px;
+    height: 165px;
 }
 .dashboardbox-icon {
-    padding-right: 20px;
-    float: left;
-    opacity: 0.4;
+    display: block;
+    opacity: 0.2;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    text-align: right;
+}
+@media (max-width: 1600px) {
+    .dashboardbox-icon {
+        display: none;
+    }
 }
 .dashboardbox-icon svg {
-    position: relative;
-    top: -15px;
+    height: 50px;
+    width: 50px;
 }
-/*.dashboardbox-content {
-}*/
-.dashboardbox-title {
-    font-size: 220%;
+.dashboardbox-header a {
     font-weight: bold;
-    margin: 0 0 0 0;
+    font-size: 120%;
+    line-height: 100%;
+}
+.dashboardbox-title {
+    font-size: 320%;
+    font-weight: bold;
+    margin: 5px 0 5px 0;
     line-height: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
 }
 .dashboardbox-timespan {
     color: #666;
@@ -28,10 +45,27 @@
 }
 .dashboardbox-change {
     color: #666;
+    margin: 8px 0 0 0;
+    text-align: center;
 }
 .dashboardbox-change-up {
     color: #00d600;
 }
 .dashboardbox-change-down {
     color: #d30000;
+}
+.dashboardbox-table {
+    margin-top: 15px;
+    table-layout: fixed;
+    width: 100%;
+}
+.dashboardbox-table td.c0 {
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dashboardbox-table td.c1 {
+    width: 30%;
+    text-align: right;
+    color: #666;
 }

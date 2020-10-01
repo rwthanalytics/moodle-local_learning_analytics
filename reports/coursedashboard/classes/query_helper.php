@@ -167,8 +167,8 @@ SQL;
 
         $query = <<<SQL
         SELECT
-            m.name as modname,
             cm.id AS cmid,
+            m.name as modname,
             COUNT(*) AS hits
         FROM {modules} m
         JOIN {course_modules} cm
@@ -184,19 +184,61 @@ SQL;
         GROUP BY cm.id, m.name
         HAVING count(*) > ?
         ORDER BY hits DESC
-        LIMIT 1
+        LIMIT 3
 SQL;
 
-        $row = $DB->get_record_sql($query, [$courseid, $oneweekago, $privacythreshold]);
-        if (!$row) {
-            return null;
-        }
+        return $DB->get_records_sql($query, [$courseid, $oneweekago, $privacythreshold]);
+    }
 
-        return [
-            'modname' => $row->modname,
-            'cmid' => $row->cmid,
-            'hits' => $row->hits
-        ];
+    private static function helper_quiz_and_assigments(int $courseid, int $from, int $to = null) {
+        global $DB;
+
+        // assignments
+        $assignquery = <<<SQL
+        SELECT
+            COUNT(1) AS handins
+        FROM mdl_assign AS a
+        JOIN mdl_assign_submission AS am
+            ON am.assignment = a.id
+        WHERE a.course = ?
+            AND am.status = 'submitted'
+            AND am.timecreated > ?
+            AND am.timecreated <= ?
+SQL;
+        $assignresult = $DB->get_record_sql($assignquery, [$courseid, $from, $to]);
+
+        // quizzes
+        $quizquery = <<<SQL
+        SELECT
+            COUNT(1) AS attempts
+        FROM mdl_quiz q
+        JOIN mdl_quiz_attempts qa
+            ON qa.quiz = q.id
+        WHERE q.course = ?
+            AND qa.state = 'finished'
+            AND qa.timefinish > ?
+            AND qa.timefinish <= ?
+SQL;
+        $quizresult = $DB->get_record_sql($quizquery, [$courseid, $from, $to]);
+
+        return $assignresult->handins + $quizresult->attempts;
+    }
+
+    public static function query_quiz_and_assigments(int $courseid, $privacythreshold) {
+        global $DB;
+
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // Include today.
+        $today = $date->getTimestamp();
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+        $date->modify('-1 week');
+        $twoweeksago = $date->getTimestamp();
+
+        $previousweek = self::helper_quiz_and_assigments($courseid, $twoweeksago, $oneweekago);
+        $thisweek = self::helper_quiz_and_assigments($courseid, $oneweekago, $today);
+
+        return [$previousweek, $thisweek];
     }
 
 }

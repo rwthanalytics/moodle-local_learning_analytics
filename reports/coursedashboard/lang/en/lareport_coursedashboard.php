@@ -29,6 +29,7 @@ $string['active_learners'] = 'Active learners';
 $string['click_count'] = 'Number of hits';
 $string['pagename_set_previous_course'] = 'Set previous course';
 $string['most_clicked_module'] = 'Most used activity';
+$string['quiz_assign'] = 'Quizzes & Assignments';
 
 $string['clicks'] = 'hits';
 $string['sessions'] = 'Sessions';

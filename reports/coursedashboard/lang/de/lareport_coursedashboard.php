@@ -29,6 +29,7 @@ $string['active_learners'] = 'Aktive Nutzer';
 $string['click_count'] = 'Anzahl an Aufrufen';
 $string['pagename_set_previous_course'] = 'Vergleichenden Kurs festlegen';
 $string['most_clicked_module'] = 'Meist genutzte Aktivität';
+$string['quiz_assign'] = 'Quizze & Aufgaben';
 
 $string['clicks'] = 'Aufrufe';
 $string['sessions'] = 'Sitzungen';

@@ -285,17 +285,12 @@ class lareport_coursedashboard extends report_base {
             <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
             <path fill="none" d="M0 0h24v24H0z"/>
         </svg>',
-        'mobile_use' => '<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 24 24" style="margin-top:10px">
-            <path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5
-            1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
+        'most_clicked_module' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 0 28 28">
+            <rect fill="none" height="24" width="24"/><g><path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"/></g>
         </svg>',
-        'most_clicked_module' => '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
-        style="margin-top:15px">
-            <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4
-            14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76
-            2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+        'quiz_assign' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 0 28 28">
             <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
         </svg>'
     ];
 
@@ -314,18 +309,23 @@ class lareport_coursedashboard extends report_base {
 
         $last7days = get_string('last_7_days', 'lareport_coursedashboard');
 
-        $appendedtext = ($titlekey === 'registered_users') ? '' : " <span class='dashboardbox-timespan'>({$last7days})</span>";
+        // TODO lang string
+        $appendedtext = "Der letzten 7 Tage";
+        if ($titlekey === 'registered_users') {
+            $appendedtext = "Insgesamt";
+        } else if ($titlekey === 'quiz_assign') {
+            $appendedtext = "Versuche und Abgaben der letzten 7 Tage";
+        }
         return "
-            <div class='col-sm-4'>
+            <div class='col-lg-3'>
                 <div class='dashboardbox'>
                     <div class='dashboardbox-icon'>
                         {$icon}
                     </div>
-                    <div class='dashboardbox-content'>
-                        <div>{$titlestr}{$appendedtext}</div>
-                        <div class='dashboardbox-title'>{$maintext}</div>
-                        <div class='dashboardbox-change'>{$change}</div>
-                    </div>
+                    <div class='dashboardbox-header'>{$titlestr}</div>
+                    <div class='dashboardbox-timespan'>{$appendedtext}</div>
+                    <div class='dashboardbox-title'>{$maintext}</div>
+                    <div class='dashboardbox-change'>{$change}</div>
                 </div>
             </div>
         ";
@@ -389,12 +389,12 @@ class lareport_coursedashboard extends report_base {
     private function mostclickedactivity(int $courseid) : array {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
         $strclicks = get_string('clicks', 'lareport_coursedashboard');
-        $module = query_helper::query_most_clicked_activity($courseid, $privacythreshold);
-        if ($module === null) {
+        $modules = query_helper::query_most_clicked_activity($courseid, $privacythreshold);
+        if (count($modules) === 0) {
             return [
                 $this->boxoutputraw(
                     'most_clicked_module',
-                    get_string('not_available', 'lareport_coursedashboard'),
+                    '-', // get_string('not_available', 'lareport_coursedashboard'), // TODO remove lang string
                     "< {$privacythreshold} {$strclicks}",
                     $courseid,
                     'activities'
@@ -402,22 +402,47 @@ class lareport_coursedashboard extends report_base {
             ];
         }
 
-        $mod = \context_module::instance($module['cmid']);
-        $modurl = $mod->get_url();
-
-        $modtitle = $mod->get_context_name(false);
-        $modlink = "<a href='{$modurl}'>{$modtitle}</a>";
-        $hitsstr = $module['hits'] . " {$strclicks}";
-        if ($module['hits'] < $privacythreshold) {
-            $hitsstr = "< {$privacythreshold} {$strclicks}";
+        $modulerows = [];
+        foreach ($modules as $module) {
+            $mod = \context_module::instance($module->cmid);
+            $modtitle = $mod->get_context_name(false);
+            $modurl = $mod->get_url();
+            $modulerows[] = "<td class='c0'><a href='{$modurl}'>{$modtitle}</a></td><td class='c1'>{$module->hits} {$strclicks}</td>";
         }
 
-        return [ $this->boxoutputraw('most_clicked_module', $modlink, $hitsstr, $courseid, 'activities') ];
+        $link = new moodle_url("/local/learning_analytics/index.php/reports/activities", ['course' => $courseid]);
+        $titlestr = get_string('most_clicked_module', 'lareport_coursedashboard');
+        // TODO lang: "Der letzten 7 Tage", s.u.
+        $mergedrows = implode("</tr><tr>", $modulerows);
+        $icon = self::$icons['most_clicked_module'];
+        return ["<div class='col-lg-3'>
+            <div class='dashboardbox'>
+                <div class='dashboardbox-icon'>{$icon}</div>
+                <div class='dashboardbox-header'><a href='{$link}'>{$titlestr}</a></div>
+                <div class='dashboardbox-timespan'>Der letzten 7 Tage</div>
+                <table class='dashboardbox-table'><tr>{$mergedrows}</tr></table>
+            </div>
+        </div>"];
+    }
+
+    private function quiz_assign(int $courseid) : array {
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
+        $counts = query_helper::query_quiz_and_assigments($courseid, $privacythreshold);
+
+        // TODO lang instead of custom language key, merge lang strings of "Quiz and assignments"
+        $hitsLast7Days = $counts[1];
+        $hitsdiff = $counts[1] - $counts[0];
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
+        if ($hitsLast7Days < $privacythreshold) {
+            return [ $this->boxoutputraw('quiz_assign', '< ' . $privacythreshold, '', $courseid, 'quiz') ];
+        }
+
+        return [ $this->boxoutput('quiz_assign', $hitsLast7Days, $hitsdiff, $courseid, 'quiz') ];
     }
 
     public function run(array $params): array {
         global $PAGE, $DB;
-        $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css');
+        $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css?2');
         $showcompare = false; // settings::get_config('allow_dashboard_compare'); // disabled for now
 
         $courseid = $params['course'];
@@ -445,6 +470,7 @@ class lareport_coursedashboard extends report_base {
             ["<div class='row'>"],
             $this->registeredusercount($courseid),
             $this->clickcount($courseid),
+            $this->quiz_assign($courseid),
             $this->mostclickedactivity($courseid),
             ["</div>"]
         );
