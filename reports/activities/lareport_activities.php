@@ -61,7 +61,7 @@ class lareport_activities extends report_base {
     public function run(array $params): array {
         global $USER, $OUTPUT;
         $courseid = $params['course'];
-        $privacythreshold = settings::get_config('dataprivacy_threshold');
+        $privacythreshold = (int) settings::get_config('dataprivacy_threshold');
 
         $filter = '';
         $filtervalues = [];
