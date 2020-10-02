@@ -140,8 +140,8 @@ class lareport_learners extends report_base {
         $courseid = $params['course'];
         // $headingtable = get_string('most_active_learners', 'lareport_learners');
         return array_merge(
+            [self::heading(get_string('pluginname', 'lareport_learners'))],
             helper::generateCourseParticipationList($courseid, 10)
-            // $this->languagesandcountries($courseid)
         );
     }
 

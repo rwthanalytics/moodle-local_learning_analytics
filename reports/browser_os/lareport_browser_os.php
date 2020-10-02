@@ -228,6 +228,7 @@ class lareport_browser_os extends report_base {
         }
 
         return array_merge(
+            [self::heading(get_string('pluginname', 'lareport_browser_os'))],
             self::createplot($results, 'platform', $privacythreshold),
             self::createplot($results, 'os', $privacythreshold),
             self::createplot($results, 'mobile', $privacythreshold),

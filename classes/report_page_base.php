@@ -24,6 +24,8 @@
 
 namespace local_learning_analytics;
 
+use html_writer;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -32,6 +34,12 @@ defined('MOODLE_INTERNAL') || die;
  * @package local_learning_analytics
  */
 abstract class report_page_base {
+    public function heading(string $title, $showhr = true, string $prefix = '') {
+        $hr = $showhr ? "<div class='w-100'><hr></div>" : '<div class="mb-2"></div>'; // hr or some space
+        return "<div class='row'><div class='col'>{$prefix}"
+        . html_writer::tag('h2', $title)
+        . "</div></div>" . $hr;
+    }
     public abstract function run(array $params) : array;
     public abstract function params(): array;
 }

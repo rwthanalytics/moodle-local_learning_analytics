@@ -88,3 +88,10 @@ table.generaltable.latable.quiztable td.c0 {
     background-position: center center;
     background-repeat: no-repeat;
 }
+.headingfloater {
+    float: right;
+    margin-top: 3px;
+}
+.headingfloater .form-control {
+    margin-left: 10px;
+}

@@ -81,7 +81,7 @@ class all extends report_page_base {
         $headingtext = get_string('all_activities', 'lareport_activities');
 
         return [
-            "<h3>{$headingtext}</h3>",
+            self::heading(get_string('all_activities', 'lareport_activities'), false),
             $tabledetails
         ];
     }

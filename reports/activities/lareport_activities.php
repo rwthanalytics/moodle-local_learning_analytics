@@ -274,7 +274,19 @@ class lareport_activities extends report_base {
 
         $plot->set_layout($layout);
 
+        // TODO lang below
+        $filterprefix = '<form class="headingfloater">
+        <div class="form-inline">
+            <label for="filterinput">Filter nach Aktivitätsname:</label>
+            <div class="input-group">
+                <input type="text" class="form-control">
+                <div class="input-group-append"><button class="btn btn-secondary" type="button">Filter</button></div>
+            </div>
+        </div>
+        </form>';
+
         return [
+            self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix),
             $plot,
             $tabletypes,
             "<h3>{$headinttoptext}</h3>",

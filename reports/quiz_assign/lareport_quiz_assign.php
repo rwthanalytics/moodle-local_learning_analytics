@@ -154,6 +154,7 @@ class lareport_quiz_assign extends report_base {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         return array_merge(
+            [self::heading(get_string('pluginname', 'lareport_quiz_assign'))],
             self::quizzes($courseid, $privacythreshold),
             self::assignments($courseid, $privacythreshold)
         );

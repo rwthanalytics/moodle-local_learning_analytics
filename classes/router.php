@@ -50,16 +50,7 @@ class router {
             $PAGE->navbar->add($title, self::report($reportname, $params));
         }
 
-        if ($pagename !== null) {
-            $pagename = get_string("pagename_{$pagename}", "lareport_{$reportname}");
-            $title = $pagename;
-        }
-
-        $ret = "<div class='container-fluid'>"
-            . "<div class='row'><div class='col'>"
-            . html_writer::tag('h2', $title)
-            . "</div></div><div class='w-100'><hr></div>";
-
+        $ret = "<div class='container-fluid'>";
         $renderer = $PAGE->get_renderer('local_learning_analytics');
         $ret .= $renderer->render_output_list($outputs);
         $ret .= "</div>";

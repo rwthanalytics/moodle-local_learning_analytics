@@ -465,6 +465,7 @@ class lareport_coursedashboard extends report_base {
         }
 
         return array_merge(
+            [self::heading(get_string('pluginname', 'lareport_coursedashboard'))],
             $this->activiyoverweeks($courseid, $previd),
             $comparetext,
             ["<div class='row'>"],

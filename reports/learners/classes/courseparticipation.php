@@ -34,7 +34,10 @@ class courseparticipation extends report_page_base {
     public function run(array $params): array {
         $courseid = $params['course'];
 
-        return helper::generateCourseParticipationList($courseid);
+        return array_merge(
+            [self::heading(get_string('pagename_courseparticipation', 'lareport_learners'))],
+            helper::generateCourseParticipationList($courseid)
+        );
     }
 
     public function params(): array {
