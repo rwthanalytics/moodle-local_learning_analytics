@@ -197,8 +197,8 @@ SQL;
         $assignquery = <<<SQL
         SELECT
             COUNT(1) AS handins
-        FROM mdl_assign AS a
-        JOIN mdl_assign_submission AS am
+        FROM {assign} AS a
+        JOIN {assign_submission} AS am
             ON am.assignment = a.id
         WHERE a.course = ?
             AND am.status = 'submitted'
@@ -211,8 +211,8 @@ SQL;
         $quizquery = <<<SQL
         SELECT
             COUNT(1) AS attempts
-        FROM mdl_quiz q
-        JOIN mdl_quiz_attempts qa
+        FROM {quiz} q
+        JOIN {quiz_attempts} qa
             ON qa.quiz = q.id
         WHERE q.course = ?
             AND qa.state = 'finished'
