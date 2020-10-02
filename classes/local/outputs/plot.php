@@ -146,7 +146,8 @@ class plot extends output_base {
             'data-layout' => json_encode($this->layout),
             'data-params' => json_encode($this->params),
             'id' => $this->id,
-            'style' => $style
+            'style' => $style,
+            'class' => 'plotly-wrapper'
         ]);
 
         return $out;

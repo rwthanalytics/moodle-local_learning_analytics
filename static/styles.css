@@ -81,3 +81,10 @@ table.generaltable.latable.quiztable th.c0 {
 table.generaltable.latable.quiztable td.c0 {
     white-space: nowrap;
 }
+
+/* loading animation */
+.plotly-wrapper {
+    background-image: url('./loading-indicator.gif');
+    background-position: center center;
+    background-repeat: no-repeat;
+}
