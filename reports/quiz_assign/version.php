@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'lareport_quiz';
+$plugin->component = 'lareport_quiz_assign';
 
 $plugin->version = '2020092800';
 $plugin->requires = '2017111302';

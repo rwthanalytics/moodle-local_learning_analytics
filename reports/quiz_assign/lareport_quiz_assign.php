@@ -27,11 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
-use lareport_quiz\query_helper;
+use lareport_quiz_assign\query_helper;
 use local_learning_analytics\router;
 use local_learning_analytics\settings;
 
-class lareport_quiz extends report_base {
+class lareport_quiz_assign extends report_base {
 
     public function quizzes(int $courseid, $privacythreshold) {
         $tablequiz = new table('quiztable');

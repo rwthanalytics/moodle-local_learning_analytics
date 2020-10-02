@@ -434,10 +434,10 @@ class lareport_coursedashboard extends report_base {
         $hitsdiff = $counts[1] - $counts[0];
         $privacythreshold = settings::get_config('dataprivacy_threshold');
         if ($hitsLast7Days < $privacythreshold) {
-            return [ $this->boxoutputraw('quiz_assign', '< ' . $privacythreshold, '', $courseid, 'quiz') ];
+            return [ $this->boxoutputraw('quiz_assign', '< ' . $privacythreshold, '', $courseid, 'quiz_assign') ];
         }
 
-        return [ $this->boxoutput('quiz_assign', $hitsLast7Days, $hitsdiff, $courseid, 'quiz') ];
+        return [ $this->boxoutput('quiz_assign', $hitsLast7Days, $hitsdiff, $courseid, 'quiz_assign') ];
     }
 
     public function run(array $params): array {

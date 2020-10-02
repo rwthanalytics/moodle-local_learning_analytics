@@ -37,6 +37,6 @@ class report_list {
         'activities' => 2,
         'learners' => 3,
         'browser_os' => 4,
-        'quiz' => 5,
+        'quiz_assign' => 5,
     ];
 }
