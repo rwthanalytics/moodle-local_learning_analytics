@@ -62,6 +62,7 @@ class lareport_activities extends report_base {
         global $USER, $OUTPUT;
         $courseid = $params['course'];
         $privacythreshold = (int) settings::get_config('dataprivacy_threshold');
+        $filtertext = !empty($params['filter']) ? $params['filter'] : null;
 
         $filter = '';
         $filtervalues = [];
@@ -83,7 +84,8 @@ class lareport_activities extends report_base {
         $cms = [];
         foreach ($allcms as $cmid => $cm) {
             if ($cm->modname === 'label' || !isset($activities[$cmid]) || !$cm->uservisible
-                || ($ismodfilteractive && $cm->modname !== $params['mod'])) {
+                || ($ismodfilteractive && $cm->modname !== $params['mod'])
+                || ($filtertext !== null && strpos($cm->name, $filtertext) === false)) {
                 continue; // skip labels and unknown activity (should only happen if cache is messed up)
             }
             $cms[] = $cm;
@@ -98,8 +100,24 @@ class lareport_activities extends report_base {
             $hitsbytypeassoc[$cm->modname] += $activity->hits;
         }
 
+        $filtervalue = $filtertext === null ? '' : htmlspecialchars($filtertext);
+        // TODO lang below
+        $filterprefix = '<form class="headingfloater" action="activities" method="get">
+        <div class="form-inline">
+            <label for="filterinput">Filter nach Aktivitätsname:</label>
+            <div class="input-group">
+                <input type="text" class="form-control" name="filter" value="'. $filtervalue . '">
+                <div class="input-group-append"><button class="btn btn-secondary" type="submit">Filter</button></div>
+            </div>
+        </div><input type="hidden" name="course" value ="'.$courseid.'"/>
+        </form>';
+
         if ($maxhits === 0) {
-            return [get_string('no_data_to_show', 'lareport_activities')];
+            // TODO show different message when $filtertext is set
+            return [
+                self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix),
+                get_string('no_data_to_show', 'lareport_activities')
+            ];
         }
 
         $hitsbytype = [];
@@ -274,17 +292,6 @@ class lareport_activities extends report_base {
 
         $plot->set_layout($layout);
 
-        // TODO lang below
-        $filterprefix = '<form class="headingfloater">
-        <div class="form-inline">
-            <label for="filterinput">Filter nach Aktivitätsname:</label>
-            <div class="input-group">
-                <input type="text" class="form-control">
-                <div class="input-group-append"><button class="btn btn-secondary" type="button">Filter</button></div>
-            </div>
-        </div>
-        </form>';
-
         return [
             self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix),
             $plot,
@@ -297,7 +304,8 @@ class lareport_activities extends report_base {
     public function params(): array {
         return [
             'course' => required_param('course', PARAM_INT),
-            'mod' => optional_param('mod', null, PARAM_RAW)
+            'mod' => optional_param('mod', null, PARAM_RAW),
+            'filter' => optional_param('filter', null, PARAM_RAW)
         ];
     }
 }
