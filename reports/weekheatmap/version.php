@@ -15,29 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Learning Analytics List of Reports
+ * Version info for the Weekly Heatmap Report
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learning_analytics;
+defined('MOODLE_INTERNAL') || die();
 
-defined('MOODLE_INTERNAL') || die;
+$plugin->component = 'lareport_weekheatmap';
 
-/**
- * Class report_list
- *
- * @package local_learning_analytics
- */
-class report_list {
-    public const list = [
-        'coursedashboard' => 1,
-        'activities' => 2,
-        'learners' => 3,
-        'browser_os' => 4,
-        'quiz_assign' => 5,
-        'weekheatmap' => 6,
-    ];
-}
+$plugin->version = '2020092800';
+$plugin->requires = '2017111302';

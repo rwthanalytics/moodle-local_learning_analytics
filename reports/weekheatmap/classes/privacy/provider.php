@@ -15,29 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Learning Analytics List of Reports
+ *
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learning_analytics;
+namespace lareport_activities\privacy;
 
 defined('MOODLE_INTERNAL') || die;
 
+use core_privacy\local\metadata\null_provider;
+
 /**
- * Class report_list
- *
- * @package local_learning_analytics
+ * Class provider
  */
-class report_list {
-    public const list = [
-        'coursedashboard' => 1,
-        'activities' => 2,
-        'learners' => 3,
-        'browser_os' => 4,
-        'quiz_assign' => 5,
-        'weekheatmap' => 6,
-    ];
+class provider implements  null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     * @throws \coding_exception
+     */
+    public static function get_reason(): string {
+        return get_string('privacy:metadata:subplugin', 'local_learning_analytics');
+    }
 }
