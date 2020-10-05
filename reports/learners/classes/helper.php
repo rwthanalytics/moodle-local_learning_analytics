@@ -46,9 +46,16 @@ class helper {
     public static function generatecourseparticipationlist(int $courseid, int $limit = -1) {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
         $studentrolenames = explode(',', settings::get_config('student_rolenames'));
+        $coursegroupby = get_config('local_learning_analytics', 'student_enrols_groupby');
+
+        $coursestartdate = get_course($courseid)->startdate;
+        $coursebeforecutoff = $coursestartdate - self::$parallelcoursebuffer;
+        $courseparallelcutoff = $coursestartdate + self::$parallelcoursebuffer;
 
         $learnerscount = max(1, query_helper::query_learners_count($courseid, $studentrolenames));
-        $courses = query_helper::query_courseparticipation($courseid, $privacythreshold, $studentrolenames);
+        $courses = query_helper::query_courseparticipation(
+            $courseid, $privacythreshold, $studentrolenames, $coursebeforecutoff, $courseparallelcutoff, $coursegroupby
+        );
 
         $tableprevious = new table();
         $tableprevious->set_header_local(['coursename', 'participated_before'],
@@ -57,8 +64,6 @@ class helper {
         $tableparallel = new table();
         $tableparallel->set_header_local(['coursename', 'participating_now'],
             'lareport_learners');
-
-        $coursestartdate = get_course($courseid)->startdate;
 
         $previousrowscount = 0;
         $parallelrowscount = 0;
@@ -77,14 +82,14 @@ class helper {
                 )
             ];
 
-            if ($course->startdate < ($coursestartdate - self::$parallelcoursebuffer)) {
+            if ($course->beforeparallel === '1') {
                 if ($limit === -1 || $previousrowscount < $limit) {
                     $tableprevious->add_row($row);
                     $previousrowscount++;
                 } else if ($previousrowscount >= $limit) {
                     $showexpandlink = true;
                 }
-            } else if ($course->startdate < ($coursestartdate + self::$parallelcoursebuffer)) {
+            } else if ($course->beforeparallel === '2') {
                 if ($limit === -1 || $parallelrowscount < $limit) {
                     $tableparallel->add_row($row);
                     $parallelrowscount++;

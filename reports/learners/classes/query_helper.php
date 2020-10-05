@@ -62,8 +62,16 @@ SQL;
         return (int) $DB->get_field_sql($query, $params, MUST_EXIST);
     }
 
-    public static function query_courseparticipation(int $courseid, int $privacythreshold, array $studentrolenames) : array {
+    public static function query_courseparticipation(
+        int $courseid, int $privacythreshold, array $studentrolenames, int $coursebeforecutoff, int $courseparallelcutoff,
+        string $coursegroupby
+    ) : array {
         global $DB;
+
+        $groupbychoice = 'id';
+        if ($coursegroupby === 'fullname' || $coursegroupby === 'shortname') {
+            $groupbychoice = $coursegroupby;
+        }
 
         // creates sql placeholder for role names (like "?,?" for two roles)
         $arraywithquestionsmarks = array_fill(0, count($studentrolenames), '?');
@@ -71,7 +79,15 @@ SQL;
 
         $query = <<<SQL
             SELECT
-                co.id, co.fullname, co.startdate, COUNT(DISTINCT u.id) AS users
+                co.id,
+                co.fullname,
+                co.startdate,
+                CASE
+                    WHEN co.startdate < {$coursebeforecutoff} THEN 1
+                    WHEN co.startdate < {$courseparallelcutoff} THEN 2
+                    ELSE 0
+                END AS beforeparallel,
+                COUNT(DISTINCT u.id) AS users
             FROM {user} u
             JOIN {user_enrolments} ue
                 ON ue.userid = u.id
@@ -98,8 +114,8 @@ SQL;
                 AND e.courseid = ?
                 AND co.startdate <> 0
                 AND co.visible = 1
-            GROUP BY co.id
-            HAVING COUNT(*) > ?
+            GROUP BY co.{$groupbychoice}
+            HAVING COUNT(*) > ? AND beforeparallel <> 0
             ORDER BY users DESC;
 SQL;
 

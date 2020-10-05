@@ -86,6 +86,18 @@ if ($hassiteconfig) {
             PARAM_RAW
         ));
 
+        $settings->add(new admin_setting_configselect(
+            'local_learning_analytics/student_enrols_groupby',
+            get_string('setting_student_enrols_groupby', 'local_learning_analytics'), // TODO lang
+            get_string('setting_student_enrols_groupby_description', 'local_learning_analytics'),
+            'course.id', // default value
+            [
+                'id' => 'course->id',
+                'shortname' => 'course->shortname',
+                'fullname' => 'course->fullname',
+            ]
+        ));
+
         // $settings->add(new admin_setting_configcheckbox(
         //     'local_learning_analytics/allow_dashboard_compare',
         //     get_string('allow_dashboard_compare', 'local_learning_analytics'),
