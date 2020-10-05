@@ -75,7 +75,7 @@ SQL;
 
         $query = <<<SQL
         SELECT
-            1 + FLOOR((ue.timestart - {$timestamp}) / 5000000000) AS time,
+            CASE WHEN ue.timestart < {$timestamp} THEN 0 ELSE 1 END AS time,
             COUNT(u.id) AS learners
         FROM {user} u
         JOIN {user_enrolments} ue
