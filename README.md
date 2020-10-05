@@ -83,7 +83,8 @@ The settings page can be found in *Site Administration* -> *Plugins* tab -> *Loc
 - `navigation_position_beforekey`: Allows to specify where in the course navigation the link to the page is added. By default, the link is added before the first `section` node. Example value: `grades` to be shown before the link to grades. You can find the key of a node in the navigation by using the developer tools. Right-click on a link in the navigation, press *Inspect* and check the attribute `data-key` of the corresponding `a` element.
 - `dataprivacy_threshold`: This value determines how many "data points" a "data set" needs to contain before the data is displayed. See the data privacy section below for more information. By default, the value is `10`.
 - `student_rolenames`: In case the role(s) for students/users in a course is not `student`, you can specify the corresponding role name. In case there are multiple roles that students have, use a single comma. Example: `student,customrole`. By default, the value is `student`.
-- `allow_dashboard_compare`: **experimental** (disabled for now) Activate this options, to allow teachers to compare their course with another one of their courses in the dashboad. The option adds a link to the dashboard allowing the teachers to select another one of their courses. After selecting another course, the week plot will show a dashed line in the background in addition to the current course. By default, the option is disabled.
+- `student_enrols_groupby`: Option to allow merging of multiple courses with the same `shortname` or `fullname` in the parallel/previously heard courses. By default, the value is `course->id` which will not merge any courses by comparing their name.
+- `allow_dashboard_compare`: **(currently disabled)** Activate this options, to allow teachers to compare their course with another one of their courses in the dashboad. The option adds a link to the dashboard allowing the teachers to select another one of their courses. After selecting another course, the week plot will show a dashed line in the background in addition to the current course. By default, the option is disabled.
 
 ## Logstore: Role Tracking
 <a name="roletracking"></a>
@@ -145,6 +146,11 @@ There is currently only a single capability `local/learning_analytics:view_stati
 - `student`
 - `editingteacher`
 - `manager`
+
+## Third-party libraries
+- Loading indicator from <https://icons8.com/preloaders/> "Fountain" (Free)
+    > All GIF and APNG images marked as "Free" are completely free to use in all projects (web and desktop applications, freeware), with the exception of web-site and application templates with commercial basis (e.g. online store template) [...]
+- Plotly.js: <https://plotly.com/javascript/> MIT license
 
 ## Contributing
 Checkout [Contributing guide](./CONTRIBUTING).
