@@ -301,7 +301,6 @@ class lareport_coursedashboard extends report_base {
         if ($report !== null) {
             $link = new moodle_url("/local/learning_analytics/index.php/reports/{$report}", ['course' => $courseid]);
             $titlestr = "<a href='{$link}'>{$titlestr}</a>";
-            $icon = "<a href='{$link}'>{$icon}</a>";
         }
         if ($change === '') {
             $change = '&nbsp;';
