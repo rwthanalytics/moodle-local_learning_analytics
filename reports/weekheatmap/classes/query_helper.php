@@ -50,7 +50,7 @@ class query_helper {
         SELECT
             FLOOR(((l.timecreated - ?) MOD (60*60*24*7)) / (60*60)) AS heatpoint,
             COUNT(1) value
-        FROM mdl_logstore_lanalytics_log l
+        FROM {logstore_lanalytics_log} l
             WHERE l.courseid = ?
         GROUP BY heatpoint
         HAVING heatpoint >= 0 -- exlude events before lecture start week
