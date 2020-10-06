@@ -358,7 +358,7 @@ class lareport_coursedashboard extends report_base {
     private function clickcount(int $courseid) : array {
         $counts = query_helper::query_click_count($courseid);
 
-        $linkedreport = 'browser_os';
+        $linkedreport = 'weekheatmap';
 
         $hits = $counts['hits'];
         $hitsLast7Days = $hits[1];
