@@ -440,7 +440,7 @@ class lareport_coursedashboard extends report_base {
     }
 
     public function run(array $params): array {
-        global $PAGE, $DB;
+        global $PAGE, $DB, $OUTPUT;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css?2');
         $showcompare = false; // settings::get_config('allow_dashboard_compare'); // disabled for now
 
@@ -463,8 +463,12 @@ class lareport_coursedashboard extends report_base {
             $comparetext = ["<div class='coursedashboard-compare'><a href='{$setcomparelink}'>{$setcomparelinktext}</a></div>"];
         }
 
+        $helpurl = new moodle_url('/local/learning_analytics/help.php', ['course' => $courseid]);
+        $icon = \html_writer::link($helpurl, $OUTPUT->pix_icon('e/help', 'Help TODO lang', 'moodle', ['class' => 'helpicon'])); // TODO lang
+        $helpprefix = "<div class='headingfloater'>{$icon}</div>";
+
         return array_merge(
-            [self::heading(get_string('pluginname', 'lareport_coursedashboard'))],
+            [self::heading(get_string('pluginname', 'lareport_coursedashboard'), true, $helpprefix)],
             $this->activiyoverweeks($courseid, $previd),
             $comparetext,
             ["<div class='row'>"],
