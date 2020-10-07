@@ -317,7 +317,7 @@ class lareport_coursedashboard extends report_base {
         }
         return "
             <div class='col-lg-3'>
-                <div class='dashboardbox'>
+                <div class='dashboardbox box-{$titlekey}'>
                     <div class='dashboardbox-icon'>
                         {$icon}
                     </div>
@@ -415,7 +415,7 @@ class lareport_coursedashboard extends report_base {
         $mergedrows = implode("</tr><tr>", $modulerows);
         $icon = self::$icons['most_clicked_module'];
         return ["<div class='col-lg-3'>
-            <div class='dashboardbox'>
+            <div class='dashboardbox box-activities'>
                 <div class='dashboardbox-icon'>{$icon}</div>
                 <div class='dashboardbox-header'><a href='{$link}'>{$titlestr}</a></div>
                 <div class='dashboardbox-timespan'>Der letzten 7 Tage</div>

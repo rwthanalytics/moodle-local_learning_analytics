@@ -68,7 +68,9 @@ $string['setting_student_enrols_groupby_description'] = 'This option defines whi
 $string['help_title'] = 'Help';
 $string['help_take_tour'] = 'Take the interactive tour';
 $string['help_text'] = 'Learning Analytics shows you the key metrics of your course.
+
 The Learning Analytics displays data that was collected by itself as well as data from the Moodle course itself. All collected data is collected fully anonymously and cannot be traced back to users.
+
 There are multiple metrics that are displayed. The most important one is the dashboard. From the dashboard there are 4 links that can provided more information. The following list presents all reports to you. Below that you find a list of frequently asked questions.';
 
 $string['help_available_reports'] = 'Available reports';
@@ -94,3 +96,10 @@ $string['help_faq_visibility_question'] = 'Who has the right to see the metrics?
 $string['help_faq_visibility_answer'] = 'TODO';
 $string['help_faq_developer_question'] = 'Who develops the Learning Analytics service?';
 $string['help_faq_developer_answer'] = 'TODO';
+
+$string['tour_overview_title'] = 'Learning Analytics';
+$string['tour_dashboard_boxes'] = 'The boxes at the bottom show the key metrics of your course. By clicking on the individual links you can get more information.';
+$string['tour_more_information'] = 'TODO ...
+
+If you need more information, check out the Help page.';
+

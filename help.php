@@ -71,7 +71,12 @@ $DB->delete_records('user_preferences', [
 $PAGE->requires->css('/local/learning_analytics/static/help.css?1');
 $output = $PAGE->get_renderer('local_learning_analytics');
 
-$helptext = explode("\n", get_string('help_text', 'local_learning_analytics'));
+$helptext = array_values(
+    array_filter(
+        explode("\n", get_string('help_text', 'local_learning_analytics')),
+        function(string $value) { return trim($value) !== ''; }
+    )
+);
 $reports = ['coursedashboard', 'learners', 'weekheatmap', 'quiz_assign', 'activities'];
 $reportstrs = [];
 foreach ($reports as $report) {
