@@ -72,35 +72,73 @@
 
 -------------------------------
 
-# WS 20/21
-
-## Reports
-- [ ] "Weekly heatmap" instead of browsers
-  - [ ] Figure out how we need to shift dates when showing hourly data: https://docs.moodle.org/dev/Time_API
-- [ ] Change activities report
-  - [ ] Vertical list?
-  - [ ] Include quiz statistics?
-- [ ] Fix problems of "Parallel heard / So far heard courses"
-- [x] Custom course settings to give option 
-- [ ] Possible changes
+## WS 20/21
+- [x] Change activities report
+  - [x] ~~Vertical list?~~ => Not for now
+  - [x] Use vertical divider for each section
+  - [x] Add search
+  - [x] ~~Make plot at the top scrollable (?)~~ => Probably not for now
+  - [x] ~~Add "remove filter" link when filter was applied~~ => not needed for now (I guess?)
+- [ ] Check out all "TODO"s in code, especially "TODO lang" for language strings
+  - [ ] Fix "TODO lang"
+  - [ ] Check all other TODOs
+  - [ ] Check if existing lang-strings should be replaced by Moodle native strings
+    - [ ] "Registrierte Nutzer"
+    - [ ] "Lernende"
+    - [ ] "Quizze" / "Aufgaben"
+    - [ ] "Punkte" ...
+- [x] "Weekly heatmap" instead of browsers
+  - [x] Figure out how we need to shift dates when showing hourly data: https://docs.moodle.org/dev/Time_API
+- [x] New report for quiz statistics
+  - [x] Add new report IDs (to the logged reports)
+- [x] Fix problems of "Parallel heard / So far heard courses"
+- [x] Custom course settings to give option
+- [ ] Database changes (wait for ITC answer)
   - [ ] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS (?)
   - [ ] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
-- [ ] UX: Embed help into website
+- [ ] UX
+  - [x] Embed help into website (FAQ?)
+  - [ ] Communication to users: Not possible to show more data due to privacy (and what data is being logged)
+  - [x] Don't make icons on dashboard clickable (confusion to users, looks like there are two clickable items per field)
+  - [x] Add loading animation to plots
+- [ ] Remove browser report / replace with heatmap
+- [ ] For other universities
+  - [ ] Postgres: Check if database still works
+  - [ ] Log: Improve import script to specify number of weeks to import
+
+## WS 20/21 Before publish
+- [ ] Privacy Provider
+  - [ ] Check implementation, we probably don't need one as there is no personal data in there...
+- [ ] HTML elements
+  - [ ] Remove div-soup on top-level and use Moodle div's instead
+- [ ] Administration
+  - [ ] Option: Start of the week: Sunday/Monday
+  - [ ] Option: Number of weeks shown in dashboard
+- [ ] Add uninstall script that removes our tables
+  - [ ] Removes all creates tables
+  - [ ] Removes all data
+  - [ ] Removes customfield
+  - [ ] Removes user tour
+- [ ] Add new reports to upgrade.php script
+- [ ] Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)
+- [ ] Accessibility: Add alt texts to images/icons, add aria-labels where needed
+- [ ] Check Moodle guidelines
 
 ## Big course test
 - [x] Generate a lot of data to test how the dashboard (especially the timecreated query) performs for big courses (> 1m events in a single course, power law regarding users)
 - [ ] Also generate users
 
 ## For later...
-- [ ] Describe subplugins
+- [ ] Describe subplugins in README
   - [ ] `lareport`
   - [ ] `lalog`
 - [ ] Check if the `requires` version in the plugins (and subplugins) are correct (check for which Moodle version the plugin still works)
-- [ ] Improve "course to compare" option of graph: Wording, preselect course if already given
-- [ ] Provide an option to allow or disable tracking teachers
-- [ ] "Consent-API"
+- [ ] Ideas
+  - [ ] Bring back course to compare?
+- [x] Provide an option to allow or disable tracking teachers
+- [x] ~~"Consent-API"~~ Not until Moodle supports optional policies...
 - [ ] Remove any magic numbers and strings and use constants file
-- [ ] Put subplugin settings (like `allow_dashboard_compare`) in the actual subplugins
+- [ ] Put subplugin settings (like `allow_dashboard_compare`) in the actual subplugins (check if that really makes sense)
 - [x] Check and update CLI scripts of logstore
 - [ ] Make reports to show configurable on dashboard
   - [ ] Each report should have a "small" stats to be shown on dashboard and a "report" page
