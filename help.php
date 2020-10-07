@@ -57,43 +57,44 @@ $PAGE->set_title($title);
 
 $PAGE->navbar->add('Hilfe', new \moodle_url("/local/learning_analytics/help.php", ['course' => $courseid]));
 
-$resultinghtml = "<div class='row'><div class='col'><h2>Hilfe</h2></div></div>
-<hr/>
+// delete tour settings from user, so that he can take the tour again
+$tourid = 5; // TODO find correct tour id
+$DB->delete_records('user_preferences', [
+    'userid' => $USER->id,
+    'name' => \tool_usertours\tour::TOUR_LAST_COMPLETED_BY_USER . $tourid
+]);
+$DB->delete_records('user_preferences', [
+    'userid' => $USER->id,
+    'name' => \tool_usertours\tour::TOUR_REQUESTED_BY_USER . $tourid
+]);
 
-<p>Learning Analytics gibt einen einfachen Überblick über die wichtigsten Daten des Kurses.</p>
-
-<hr/>
-
-<h3>Dashboard</h3>
-<p>Das Dashboard stellt in der oberen Hälfte den Verlauf der Anzahl an Zugriffen über das Semester dar.
-Hierbei werden je Woche die Anzahl an Zugriffen von Montag bis Sonntag gezählt.</p>
-<p>Alle durch das Plugin erfassten Daten werden anonymisiert erfasst und lassen keinen Personenbezug zu.
-Darüberhinaus stellt das Plugin auch von Moodle selber erfasste Daten dar, wie z.B. die Ergebnisse von Aufgaben oder Quizzen unter Quizze & Aufgaben.</p>
-
-<hr/>
-
-<h3>Häufig gestellte Fragen / FAQ</h3>
-<ul class='faq'>
-    <li>
-        <p class='question'>Warum entspricht Woche 1 nicht dem tatsächlichen Start der Veranstaltung?</p>
-        <p class='answer'>Lorem Ipsum...</p>
-    </li>
-    <li>
-        <p class='question'>Wieso wird manchmal '< 10' als Wert angezeigt?</p>
-        <p class='answer'>Welche Daten werden genau gespeichert?</p>
-    </li>
-    <li>
-        <p class='question'>Wer kann die Statistiken einsehen?</p>
-        <p class='answer'>Wer entwickelt das Learning-Analytics-Modul?</p>
-    </li>
-</ul>
-";
-
-$PAGE->requires->css('/local/learning_analytics/static/faq.css?1');
+$PAGE->requires->css('/local/learning_analytics/static/help.css?1');
 $output = $PAGE->get_renderer('local_learning_analytics');
 
+$helptext = explode("\n", get_string('help_text', 'local_learning_analytics'));
+$reports = ['coursedashboard', 'learners', 'weekheatmap', 'quiz_assign', 'activities'];
+$reportstrs = [];
+foreach ($reports as $report) {
+    $reportstrs[] = [
+        'title' => get_string('report_' . $report . '_title', 'local_learning_analytics'),
+        'description' => get_string('report_' . $report . '_description', 'local_learning_analytics')
+    ];
+}
+
+$faqs = ['week_start', 'data_storage', 'privacy_threshold', 'visibility', 'developer'];
+$faqstrs = [];
+foreach ($faqs as $faq) {
+    $faqstrs[] = [
+        'question' => get_string('help_faq_' . $faq . '_question', 'local_learning_analytics'),
+        'answer' => get_string('help_faq_' . $faq . '_answer', 'local_learning_analytics')
+    ];
+}
+
 echo $output->header();
-echo $output->render_from_template('local_learning_analytics/course', [
-    'content' => $resultinghtml
+echo $output->render_from_template('local_learning_analytics/help', [
+    'courseid' => $courseid,
+    'helptext' => $helptext,
+    'reports' => $reportstrs,
+    'faq' => $faqstrs,
 ]);
 echo $output->footer();

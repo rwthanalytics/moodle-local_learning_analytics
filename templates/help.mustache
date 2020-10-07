@@ -1,0 +1,38 @@
+<div class="learning_analytics-content">
+    <div class='row'><div class='col'><h2>{{# str }} help_title, local_learning_analytics {{/ str }}</h2></div></div>
+    <hr/>
+
+    <div class='text-center'>
+        <a href='index.php/reports/coursedashboard?tour=1&course={{courseid}}' class='btn btn-primary btn-lg'>
+        {{# pix }} t/go, core, Start {{/ pix }}
+        {{# str }} help_take_tour, local_learning_analytics {{/ str }}</a>
+    </div>
+
+    {{#helptext}}
+    <p>{{{.}}}</p>
+    {{/helptext}}
+
+    <hr/>
+
+    <h3>{{# str }} help_available_reports, local_learning_analytics {{/ str }}</h3>
+    <ul class='helplist'>
+        {{#reports}}
+            <li>
+                <p class='heading'>{{title}}</p>
+                <p>{{description}}</p>
+            </li>
+        {{/reports}}
+    </ul>
+
+    <hr/>
+
+    <h3>{{# str }} help_faq, local_learning_analytics {{/ str }}</h3>
+    <ul class='helplist'>
+        {{#faq}}
+            <li>
+                <p class='heading'>{{question}}</p>
+                <p>{{answer}}</p>
+            </li>
+        {{/faq}}
+    </ul>
+</div>

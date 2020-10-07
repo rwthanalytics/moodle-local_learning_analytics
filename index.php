@@ -33,6 +33,7 @@ require_login();
 global $PAGE, $USER, $DB;
 
 $courseid = required_param('course', PARAM_INT);
+$showtour = optional_param('tour', 0, PARAM_INT) === 1;
 $context = context_course::instance($courseid, MUST_EXIST);
 
 require_capability('local/learning_analytics:view_statistics', $context, $USER->id);
@@ -96,7 +97,11 @@ $PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
 $PAGE->set_pagelayout('course');
 
 // Set URL to main path of analytics.
-$url = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $courseid]);
+$currentparams = ['course' => $courseid];
+if ($showtour) {
+    $currentparams = ['tour' => 1, 'course' => $courseid];
+}
+$url = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', $currentparams);
 $PAGE->set_url($url);
 
 // For now, all statistics are shown on course level.

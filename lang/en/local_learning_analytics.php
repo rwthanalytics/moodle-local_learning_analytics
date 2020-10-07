@@ -63,3 +63,34 @@ $string['setting_student_rolenames_description'] = 'In case the role(s) for stud
 
 $string['setting_student_enrols_groupby'] = 'student_enrols_groupby';
 $string['setting_student_enrols_groupby_description'] = 'This option defines which courses are merged together in the "Previous/Parallel course.';
+
+// Help
+$string['help_title'] = 'Help';
+$string['help_take_tour'] = 'Take the interactive tour';
+$string['help_text'] = 'Learning Analytics shows you the key metrics of your course.
+The Learning Analytics displays data that was collected by itself as well as data from the Moodle course itself. All collected data is collected fully anonymously and cannot be traced back to users.
+There are multiple metrics that are displayed. The most important one is the dashboard. From the dashboard there are 4 links that can provided more information. The following list presents all reports to you. Below that you find a list of frequently asked questions.';
+
+$string['help_available_reports'] = 'Available reports';
+$string['report_coursedashboard_title'] = 'Dashboard (main page)';
+$string['report_coursedashboard_description'] = 'The reports gives an overview of ...';
+$string['report_learners_title'] = 'Registered users';
+$string['report_learners_description'] = 'The reports gives an overview of ...';
+$string['report_weekheatmap_title'] = 'Number of hits / Weekly heatmap';
+$string['report_weekheatmap_description'] = 'The reports gives an overview of ...';
+$string['report_quiz_assign_title'] = 'Registered users';
+$string['report_quiz_assign_description'] = 'The reports gives an overview of ...';
+$string['report_activities_title'] = 'Activities';
+$string['report_activities_description'] = 'The reports gives an overview of ...';
+
+$string['help_faq'] = 'Frequently Asked Questions (FAQ)';
+$string['help_faq_week_start_question'] = 'Why is the first week not the actual start of the lecture?';
+$string['help_faq_week_start_answer'] = 'TODO';
+$string['help_faq_data_storage_question'] = 'What data is stored by the Learning Analytics service?';
+$string['help_faq_data_storage_answer'] = 'TODO';
+$string['help_faq_privacy_threshold_question'] = 'Why do some values show as "$a"?';
+$string['help_faq_privacy_threshold_answer'] = 'TODO';
+$string['help_faq_visibility_question'] = 'Who has the right to see the metrics?';
+$string['help_faq_visibility_answer'] = 'TODO';
+$string['help_faq_developer_question'] = 'Who develops the Learning Analytics service?';
+$string['help_faq_developer_answer'] = 'TODO';

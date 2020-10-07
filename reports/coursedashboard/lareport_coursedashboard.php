@@ -471,7 +471,7 @@ class lareport_coursedashboard extends report_base {
             [self::heading(get_string('pluginname', 'lareport_coursedashboard'), true, $helpprefix)],
             $this->activiyoverweeks($courseid, $previd),
             $comparetext,
-            ["<div class='row'>"],
+            ["<div class='row reportboxes'>"],
             $this->registeredusercount($courseid),
             $this->clickcount($courseid),
             $this->quiz_assign($courseid),

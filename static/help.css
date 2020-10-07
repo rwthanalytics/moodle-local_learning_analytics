@@ -1,12 +1,12 @@
-.faq {
+.helplist {
     margin-top: 1rem;
 }
-.faq li {
+.helplist li {
     margin: 0 0 1rem 1rem;
 }
-.faq .question {
+.helplist .heading {
     font-weight: 500;
 }
-.faq p {
+.helplist p {
     margin-bottom: 0.5rem;
 }
