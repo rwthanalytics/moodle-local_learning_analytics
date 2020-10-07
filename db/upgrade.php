@@ -15,29 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Installation script for Learning Analytics UI
+ * Upgrade for local_learning_analytics
  *
  * @package     local_learning_analytics
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_learning_analytics\report_list;
-
-function xmldb_local_learning_analytics_install() {
+function xmldb_local_learning_analytics_upgrade($oldversion) {
     global $DB, $CFG;
 
-    foreach(report_list::list as $reportname => $reportid) {
-        $entry = [
-            'id' => $reportid,
-            'reportname' => $reportname
-        ];
-        $DB->insert_record_raw('local_learning_analytics_rep', $entry, false, false, true);
+    if ($oldversion < 2020100700) {
+        $tourpath = $CFG->dirroot . '/local/learning_analytics/templates/usertour.json';
+        $tourjson = file_get_contents($tourpath);
+        $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
+        set_config('tourid', $tour->get_id(), 'local_learning_analytics');
+        upgrade_plugin_savepoint(true, 2020100700, 'local', 'learning_analytics');
     }
-    
-    $tourpath = $CFG->dirroot . '/local/learning_analytics/templates/usertour.json';
-    $tourjson = file_get_contents($tourpath);
-    $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
-    set_config('tourid', $tour->get_id(), 'local_learning_analytics');
 
+    return true;
 }

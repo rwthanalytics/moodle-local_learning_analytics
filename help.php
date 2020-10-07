@@ -58,7 +58,7 @@ $PAGE->set_title($title);
 $PAGE->navbar->add('Hilfe', new \moodle_url("/local/learning_analytics/help.php", ['course' => $courseid]));
 
 // delete tour settings from user, so that he can take the tour again
-$tourid = 5; // TODO find correct tour id
+$tourid = get_config('local_learning_analytics', 'tourid');
 $DB->delete_records('user_preferences', [
     'userid' => $USER->id,
     'name' => \tool_usertours\tour::TOUR_LAST_COMPLETED_BY_USER . $tourid
