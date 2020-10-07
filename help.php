@@ -55,7 +55,10 @@ $coursename = format_string($course->fullname, true, array('context' => context_
 $title = $coursename . ': ' . get_string('learning_analytics', 'local_learning_analytics');
 $PAGE->set_title($title);
 
-$PAGE->navbar->add('Hilfe', new \moodle_url("/local/learning_analytics/help.php", ['course' => $courseid]));
+$PAGE->navbar->add(
+    get_string('help_title', 'local_learning_analytics'),
+    new \moodle_url("/local/learning_analytics/help.php", ['course' => $courseid])
+);
 
 // delete tour settings from user, so that he can take the tour again
 $tourid = get_config('local_learning_analytics', 'tourid');

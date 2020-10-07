@@ -71,7 +71,7 @@ $string['help_text'] = 'Learning Analytics shows you the key metrics of your cou
 
 The Learning Analytics displays data that was collected by itself as well as data from the Moodle course itself. All collected data is collected fully anonymously and cannot be traced back to users.
 
-There are multiple metrics that are displayed. The most important one is the dashboard. From the dashboard there are 4 links that can provided more information. The following list presents all reports to you. Below that you find a list of frequently asked questions.';
+There are multiple metrics that are displayed. The most important one is the dashboard. From the dashboard there are 4 links that can provided more information.';
 
 $string['help_available_reports'] = 'Available reports';
 $string['report_coursedashboard_title'] = 'Dashboard (main page)';
