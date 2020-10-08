@@ -35,7 +35,7 @@ class lareport_quiz_assign extends report_base {
 
     public function quizzes(int $courseid, $privacythreshold) {
         $tablequiz = new table('quiztable');
-        $tablequiz->set_header(['Name der Aktivität', 'Nutzer', 'Versuche', 'Punkte aller Versuche (Ø)', 'Punkte 1. Versuch (Ø)']); // TODO lang
+        $tablequiz->set_header_local(['quiz', 'participants', 'attempts', 'overall_average', 'overall_average_first_try'], 'lareport_quiz_assign');
 
         $rows = [];
         $maxtries = 1;
@@ -44,7 +44,6 @@ class lareport_quiz_assign extends report_base {
         $dbquizzes = query_helper::query_quiz($courseid);
         $modinfo = get_fast_modinfo($courseid);
         if (!isset($modinfo->instances['quiz'])) {
-            // TODO Text about no quizzes...
             return [];
         }
         $quizzes = $modinfo->instances['quiz'];
@@ -86,16 +85,16 @@ class lareport_quiz_assign extends report_base {
         }
 
         return [
-            '<h3>Quizze</h3>',
+            '<h3>' . get_string('quizzes', 'lareport_quiz_assign') . '</h3>',
             $tablequiz,
-            $dataprivacynotice ? '<div>* Aus Datenschutzgründen werden Ergebnisse von weniger als 10 Nutzern nicht gezeigt.</div>' : '', // TODO lang
+            $dataprivacynotice ? '<div>* ' . get_string('data_privacy_note', 'lareport_quiz_assign', $privacythreshold) . '</div>' : '',
             '<hr>'
         ];
     }
 
     public function assignments(int $courseid, $privacythreshold) {
         $tableassign = new table('assigntable');
-        $tableassign->set_header(['Name der Aktivität', 'Anzahl bewerteter Versuche', 'Durchschnittlich erreichte Punkte']); // TODO lang
+        $tableassign->set_header_local(['assignment', 'graded_submissions', 'overall_average'], 'lareport_quiz_assign');
 
         $rows = [];
         $maxhandins = 1;
@@ -103,7 +102,6 @@ class lareport_quiz_assign extends report_base {
         $dbassignments = query_helper::query_assignment($courseid);
         $modinfo = get_fast_modinfo($courseid);
         if (!isset($modinfo->instances['assign'])) {
-            // TODO Text about no assignments...
             return [];
         }
         $assignments = $modinfo->instances['assign'];
@@ -142,9 +140,9 @@ class lareport_quiz_assign extends report_base {
         }
 
         return [
-            '<h3>Aufgaben</h3>',
+            '<h3>' . get_string('assignments', 'lareport_quiz_assign') . '</h3>',
             $tableassign,
-            $dataprivacynotice ? '<div>* Aus Datenschutzgründen werden Ergebnisse von weniger als 10 Nutzern nicht gezeigt.</div>' : '' // TODO lang
+            $dataprivacynotice ? '<div>* ' . get_string('data_privacy_note', 'lareport_quiz_assign', $privacythreshold) . '</div>' : '',
         ];
     }
 
@@ -153,10 +151,25 @@ class lareport_quiz_assign extends report_base {
         $courseid = $params['course'];
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
+        $quizpart = self::quizzes($courseid, $privacythreshold);
+        $assignpart = self::assignments($courseid, $privacythreshold);
+
+        $introtext = get_string('introduction', 'lareport_quiz_assign');
+        if (count($quizpart) === 0 && count($assignpart) === 0) {
+            $introtext .= ' ' . get_string('introduction_no_both', 'lareport_quiz_assign');
+        } else if (count($quizpart) === 0) {
+            $introtext .= ' ' . get_string('introduction_no_quizzes', 'lareport_quiz_assign');
+        } else if (count($assignpart) === 0) {
+            $introtext .= ' ' . get_string('introduction_no_assignments', 'lareport_quiz_assign');
+        }
+
         return array_merge(
-            [self::heading(get_string('pluginname', 'lareport_quiz_assign'))],
-            self::quizzes($courseid, $privacythreshold),
-            self::assignments($courseid, $privacythreshold)
+            [
+                self::heading(get_string('pluginname', 'lareport_quiz_assign')),
+                "<p>{$introtext}</p>"
+            ],
+            $quizpart,
+            $assignpart
         );
     }
 

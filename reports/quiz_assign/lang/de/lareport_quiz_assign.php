@@ -22,4 +22,24 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Quizze TODO lang';
+$string['pluginname'] = 'Tests und Aufgaben';
+$string['quizzes'] = 'Tests';
+$string['assignments'] = 'Aufgaben';
+$string['data_privacy_note'] = 'Aus Datenschutzgründen werden Ergebnisse von weniger als {$a} Teilnehmern nicht angezeigt.';
+
+// Intro
+$string['introduction'] = 'Diese Seite zeigt Statistiken über Tests und Aufgaben des Kurses.';
+$string['introduction_no_quizzes'] = 'Da dieser Kurs keine Tests enthält, werden nur Daten der Aufgaben angezeigt.';
+$string['introduction_no_assignments'] = 'Da dieser Kurs keine Aufgaben enthält, werden nur Daten der Tests angezeigt.';
+$string['introduction_no_both'] = 'Da dieser Kurs weder Tests noch Aufgaben enthält, können keine Daten angezeigt werden.';
+
+// Table quizzes
+$string['quiz'] = 'Test';
+$string['participants'] = 'Teilnehmer/innen';
+$string['attempts'] = 'Versuche';
+$string['overall_average'] = 'Durchschnitt aller Versuche';
+$string['overall_average_first_try'] = 'Durchschnitt der Erstversuche';
+
+// Table Assignments
+$string['assignment'] = 'Aufgabe';
+$string['graded_submissions'] = 'Bewertete Abgaben';

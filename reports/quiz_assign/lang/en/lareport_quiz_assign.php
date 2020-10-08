@@ -22,5 +22,24 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// TODO lang
-$string['pluginname'] = 'Quizze TODO lang';
+$string['pluginname'] = 'Quizzes and Assignments';
+$string['quizzes'] = 'Quizzes';
+$string['assignments'] = 'Assignments';
+$string['data_privacy_note'] = 'For privacy reasons, results from less than {$a} participants are not shown.';
+
+// Intro
+$string['introduction'] = 'This page shows statistics regarding quizzes and assignments in the course.';
+$string['introduction_no_quizzes'] = 'Since this course does not contain any quizzes, only data for assignments is shown.';
+$string['introduction_no_assignments'] = 'Since this course does not contain any assignments, only data for quizzes is shown.';
+$string['introduction_no_both'] = 'Since this course contains neither quizzes nor assignments, no data can be displayed.';
+
+// Table quizzes
+$string['quiz'] = 'Quiz';
+$string['participants'] = 'Participants';
+$string['attempts'] = 'Attempts';
+$string['overall_average'] = 'Overall average of all attempts';
+$string['overall_average_first_try'] = 'Overall average of first attempts';
+
+// Table Assignments
+$string['assignment'] = 'Assignment';
+$string['graded_submissions'] = 'Graded submissions';
