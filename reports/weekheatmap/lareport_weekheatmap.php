@@ -48,7 +48,14 @@ class lareport_weekheatmap extends report_base {
         foreach ($days as $day) {
             $ystrs[] = get_string($day, 'calendar');
         }
+        
+        // not able to use 12/24h format for now, as 12h format does not work with heatmap (as there are the same x axis values twice)
+        // $timeformat = get_user_preferences('calendar_timeformat');
+        // if (empty($timeformat)) {
+        //     $timeformat = get_config(null, 'calendar_site_timeformat');
+        // }
 
+        $hitsstr = get_string('hits', 'lareport_weekheatmap');
         $heatpoints = query_helper::query_heatmap($courseid);
         for ($d = 0; $d < 7; $d += 1) {
             // we need to start the plot at the bottom (sun -> sat -> fri -> ...)
@@ -63,9 +70,9 @@ class lareport_weekheatmap extends report_base {
                 }
                 $daydata[] = $datapoint;
                 $hourstr = str_pad($h, 2, '0', STR_PAD_LEFT);
-                $x = "{$hourstr}:00 - {$hourstr}:59 Uhr";
+                $x = "{$hourstr}:00 - {$hourstr}:59";
                 $xstrs[] = $x;
-                $textdata[] = "<b>{$text} Aufrufe</b><br>{$ystrs[$d]}, {$x}"; // TODO lang
+                $textdata[] = "<b>{$text} {$hitsstr}</b><br>{$ystrs[$d]}, {$x}";
             }
             $plotdata[] = $daydata;
             $texts[] = $textdata;
@@ -86,10 +93,9 @@ class lareport_weekheatmap extends report_base {
         $plot->set_layout($layout);
         $plot->set_height(450);
 
-        // TODO lang
         return [
             self::heading(get_string('pluginname', 'lareport_weekheatmap')),
-            '<p>Die folgende Heatmap zeigt die Anzahl aller Zugriffe je Wochentag und Uhrzeit.</p>', // TODO lang
+            '<p>' . get_string('introduction', 'lareport_weekheatmap') . '</p>',
             $plot
         ];
     }

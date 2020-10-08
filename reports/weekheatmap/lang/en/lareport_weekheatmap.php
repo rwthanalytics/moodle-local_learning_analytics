@@ -22,5 +22,8 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// TODO lang
-$string['pluginname'] = 'Week Heatmap TODO lang';
+$string['pluginname'] = 'Heatmap of hits';
+$string['introduction'] = 'The following figure visualizes all hits as a weekly heatmap.
+Each hit is mapped to its corresponding time on the X-axis and to the corresponding weekday on the Y-axis.
+Hereby it can be seen in which periods of time the most hits take place.';
+$string['hits'] = 'hits';

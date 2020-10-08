@@ -22,4 +22,8 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Week Heatmap TODO lang';
+$string['pluginname'] = 'Heatmap der Zugriffe';
+$string['introduction'] = 'Die folgende Darstellung visualisiert alle Aufrufe als wöchentliche Heatmap.
+Jeder Zugriff wird auf der X-Achse seiner entsprechenden Uhrzeit zugeordnet und auf der Y-Achse dem entsprechenden Wochentag.
+Hierdurch kann abgelesen werden in welchen Zeiträumen die meisten Zugriffe stattfinden.';
+$string['hits'] = 'Aufrufe';
