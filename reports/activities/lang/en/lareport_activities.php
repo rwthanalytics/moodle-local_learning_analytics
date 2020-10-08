@@ -23,6 +23,11 @@
  */
 
 $string['pluginname'] = 'Activities and Resources';
+$string['introduction'] = 'The above figure shows the hits per activity.
+The order is based on the order of the activities in the course.
+The table below breaks down the hits by activity type.
+A click on the respective activity type limits the view to activities of the corresponding type.
+The table below shows the most frequently used activities in the course.';
 $string['all_activities'] = 'All Activities and resources';
 $string['activity_type'] = 'Activity type';
 

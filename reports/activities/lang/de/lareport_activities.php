@@ -23,6 +23,11 @@
  */
 
 $string['pluginname'] = 'Aktivitäten und Materialien';
+$string['introduction'] = 'Die obige Darstellung zeigt die Zugriffe je Aktivität an.
+Die Sortierung richtet sich nach der Reihenfolge der Aktivitäten im Kurs.
+Die folgende Tabelle schlüsselt die Zugriffe je nach Aktivitätstypen auf.
+Ein Klick auf den jeweiligen Aktivitätstyp beschränkt die Darstellung auf Aktivitäten des entsprechenden Typs.
+Die Tabelle darunter zeigt die meist genutzten Aktivitäten des Kurses an.';
 $string['all_activities'] = 'Alle Aktivitäten und Materialien';
 $string['activity_type'] = 'Aktivitätstyp';
 

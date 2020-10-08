@@ -296,6 +296,7 @@ class lareport_activities extends report_base {
         return [
             self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix),
             $plot,
+            '<hr style="margin-top:0"><p>' . get_string('introduction', 'lareport_activities') . '</p>',
             $tabletypes,
             "<h3>{$headinttoptext}</h3>",
             $tabledetails
