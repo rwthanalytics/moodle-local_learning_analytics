@@ -409,7 +409,6 @@ class lareport_coursedashboard extends report_base {
 
         $link = new moodle_url("/local/learning_analytics/index.php/reports/activities", ['course' => $courseid]);
         $titlestr = get_string('most_clicked_module', 'lareport_coursedashboard');
-        // TODO lang: "Der letzten 7 Tage", s.u.
         $last7days = get_string('last_7_days', 'lareport_coursedashboard');
         $mergedrows = implode("</tr><tr>", $modulerows);
         $icon = self::$icons['most_clicked_module'];
@@ -427,7 +426,6 @@ class lareport_coursedashboard extends report_base {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
         $counts = query_helper::query_quiz_and_assigments($courseid, $privacythreshold);
 
-        // TODO lang instead of custom language key, merge lang strings of "Quiz and assignments"
         $hitsLast7Days = $counts[1];
         $hitsdiff = $counts[1] - $counts[0];
         $privacythreshold = settings::get_config('dataprivacy_threshold');

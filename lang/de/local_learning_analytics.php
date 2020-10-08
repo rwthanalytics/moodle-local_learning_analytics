@@ -40,7 +40,6 @@ $string['sessions'] = 'Sessions';
 $string['hits'] = 'Aufrufe'; // "Aufrufe"
 
 // Settings
-$string['setting_status'] = 'status';
 $string['setting_status_description'] = 'Der Wert bestimmt ob das User Interface genutzt werden kann und ob ein Link im Navigationsmenü gezeigt wird. Standardmäßig, der Link im Navigationsmenü und die Seite selber sind nur aktiv, wenn das Loggen für den Kurs aktiviert ist. Diese Option kann z.B. genutzt werden um alle Kurse zu loggen, aber nur in bestimmten Kursen das User Interface anzuzeigen.';
 $string['setting_status_option_show_if_enabled'] = 'Navigationslink zeigen, wenn Logging für den Kurs aktiviert ist';
 $string['setting_status_option_show_courseids'] = 'Navigationslink zeigen, wenn der Kurs in course_ids (nächste Option) definiert ist';
@@ -49,19 +48,13 @@ $string['setting_status_option_hide_link'] = 'Navigationslink nicht anzeigen, ab
 $string['setting_status_option_disable'] = 'Navigationslink nicht anzeigen und die Seite selber in allen Kursen deaktivieren';
 $string['setting_status_course_customfield'] = 'Eintrag in den Kurseinstellungen hinzufügen, so dass die Kursinhaber selber entscheiden können';
 
-$string['setting_course_ids'] = 'course_ids';
 $string['setting_course_ids_description'] = 'Diese Option kann zusammen mit der zweiten Einstellung für "status" genutzt werden um zu entscheiden in welchen Kursen das User Interface aktiviert sein soll.';
 
-$string['dataprivacy_threshold'] = 'dataprivacy_threshold';
 $string['dataprivacy_threshold_description'] = 'Bestimmt wie viele Datenpunkte ein Datensatz haben muss, bevor er angezeigt wird.';
-$string['allow_dashboard_compare'] = 'allow_dashboard_compare';
 $string['allow_dashboard_compare_description'] = 'Diese Option kann aktiviert werden um im Dashboard die Möglichkeit zu aktivieren den Kurs mit einem anderen Kurs zu vergleichen. Wird die Option aktiviert ist unter dem Zeitverlauf im Dashboard ein Link zu finden, der es erlaubt einen Kurs auszuwählen. Der wöchentliche Verlauf wird dann durch eine zweite gestrichelte Linie ergänzt.';
-$string['navigation_position_beforekey'] = 'navigation_position_beforekey';
 $string['navigation_position_beforekey_description'] = 'Erlaubt es die Position in der Navigation anzugeben, an der der Link zur Seite erscheinen soll. Standardmäßig, wir der Link vor dem ersten "section"-Link angezeigt. Beispielwert: <code>grades</code> um den Link über den Link zu den Bewertungen anzuzeigen. Um herauszufinden, wie der "key" eines Navigationslinks ist, können die Entwicklertools des Browsers genutzt werden. Hierzu einen Rechtsklick auf den gewünschten Link machen, <em>Untersuchen</em> auswählen und dann das Attribut <code>data-key</code> des entsprechenden <code>a</code>-Elementes nutzen.';
-$string['setting_student_rolenames'] = 'student_rolenames';
 $string['setting_student_rolenames_description'] = 'Falls die Rolle <code>student</code> nicht die passende Rolle für Studierende/Nutzer ist oder es mehrere Rollen gibt, die zutreffend sind, können hier die passenden Rollen angegeben werden. Falls mehrere Rollen zutreffen, sollte ein einzelnes Komma genutzt werden um die Rollen zu trennen. Beispiel: <code>student,customrole</code>';
 
-$string['setting_student_enrols_groupby'] = 'student_enrols_groupby';
 $string['setting_student_enrols_groupby_description'] = 'Für die Statistik "Vorher/Parallelgehört" kann durch die Option bestimmt werden, welche Kurse zusammengefasst werden sollen.';
 
 // Help

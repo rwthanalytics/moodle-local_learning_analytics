@@ -22,7 +22,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Lernende';
+$string['pluginname'] = 'Teilnehmer/innen';
 $string['pagename_all'] = 'Vollständige Liste';
 $string['pagename_courseparticipation'] = 'Lernende - Vollständige Liste';
 $string['introduction'] = 'Die folgenden Tabellen zeigen die Kurse, die von den Teilnehmer/innen des Kurses in der Vergangenheit gehört wurden (links) sowie die parallel zu diesem Kurs gehörten Kurse (rechts).
