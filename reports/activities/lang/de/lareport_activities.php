@@ -22,14 +22,17 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Aktivitäten';
-$string['all_activities'] = 'Alle Aktivitäten';
-$string['pagename_all'] = 'Komplette Liste';
+$string['pluginname'] = 'Aktivitäten und Materialien';
+$string['all_activities'] = 'Alle Aktivitäten und Materialien';
 $string['activity_type'] = 'Aktivitätstyp';
+
 $string['table_header_hits'] = 'Aufrufe';
 $string['hits'] = 'Aufrufe';
-$string['activity_name'] = 'Name der Aktivität';
+
+$string['activity_name'] = 'Aktivität';
 $string['section'] = 'Abschnitt';
 $string['most_used_activities'] = 'Meistgenutzte Aktivitäten';
+$string['filter_by_name'] = 'Filter nach Aktivitätsname';
+$string['filter'] = 'Filter';
 
-$string['no_data_to_show'] = 'Aktuell gibt es keine Daten anzuzeigen. Kommen Sie später wieder um Statistiken zur Nutzung der Aktivitäten zu sehen.';
+$string['no_data_to_show'] = 'Aktuell gibt es keine Daten zum Anzeigen. Kommen Sie später wieder um Statistiken zur Nutzung der Aktivitäten und Materialien zu sehen.';

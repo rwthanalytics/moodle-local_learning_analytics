@@ -101,13 +101,14 @@ class lareport_activities extends report_base {
         }
 
         $filtervalue = $filtertext === null ? '' : htmlspecialchars($filtertext);
-        // TODO lang below
+        $filteractlangstr = get_string('filter_by_name', 'lareport_activities');
+        $filterlangstr = get_string('filter', 'lareport_activities');
         $filterprefix = '<form class="headingfloater" action="activities" method="get">
         <div class="form-inline">
-            <label for="filterinput">Filter nach Aktivitätsname:</label>
+            <label for="filterinput">' . $filteractlangstr . ':</label>
             <div class="input-group">
                 <input type="text" class="form-control" name="filter" value="'. $filtervalue . '">
-                <div class="input-group-append"><button class="btn btn-secondary" type="submit">Filter</button></div>
+                <div class="input-group-append"><button class="btn btn-secondary" type="submit">' . $filterlangstr . '</button></div>
             </div>
         </div><input type="hidden" name="course" value ="'.$courseid.'"/>
         </form>';

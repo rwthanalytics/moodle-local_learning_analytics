@@ -22,14 +22,17 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Activities';
-$string['all_activities'] = 'All Activities';
-$string['pagename_all'] = 'Full List';
+$string['pluginname'] = 'Activities and Resources';
+$string['all_activities'] = 'All Activities and resources';
 $string['activity_type'] = 'Activity type';
+
 $string['table_header_hits'] = 'Hits';
 $string['hits'] = 'hits';
-$string['activity_name'] = 'Activity name';
+
+$string['activity_name'] = 'Activity';
 $string['section'] = 'Section';
 $string['most_used_activities'] = 'Most used activities';
+$string['filter_by_name'] = 'Filter by activity name';
+$string['filter'] = 'Filter';
 
-$string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding your learning modules.';
+$string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding your activities and resources.';
