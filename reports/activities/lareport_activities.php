@@ -114,11 +114,11 @@ class lareport_activities extends report_base {
         </form>';
 
         if ($maxhits === 0) {
-            // TODO show different message when $filtertext is set
-            return [
-                self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix),
-                get_string('no_data_to_show', 'lareport_activities')
-            ];
+            $heading = self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix);
+            if (!empty($filtertext)) {
+                return [$heading,get_string('no_data_to_show_filter', 'lareport_activities')];
+            }
+            return [$heading,get_string('no_data_to_show', 'lareport_activities')];
         }
 
         $hitsbytype = [];

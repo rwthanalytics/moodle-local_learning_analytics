@@ -41,3 +41,4 @@ $string['filter_by_name'] = 'Filter by activity name';
 $string['filter'] = 'Filter';
 
 $string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding your activities and resources.';
+$string['no_data_to_show_filter'] = 'There are no activities with the given name.';
