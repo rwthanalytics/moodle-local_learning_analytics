@@ -76,7 +76,7 @@ SQL;
         $query = <<<SQL
         SELECT
             CASE WHEN ue.timestart < {$timestamp} THEN 0 ELSE 1 END AS time,
-            COUNT(u.id) AS learners
+            COUNT(DISTINCT u.id) AS learners
         FROM {user} u
         JOIN {user_enrolments} ue
             ON ue.userid = u.id
@@ -182,12 +182,12 @@ SQL;
             AND l.contextid = ctx.id
         WHERE l.timecreated > ?
         GROUP BY cm.id, m.name
-        HAVING count(*) > ?
+        HAVING count(*) >= ?
         ORDER BY hits DESC
         LIMIT 3
 SQL;
 
-        return $DB->get_records_sql($query, [$courseid, $oneweekago, $privacythreshold]);
+        return $DB->get_records_sql($query, [$courseid, $oneweekago, max(1, $privacythreshold)]);
     }
 
     private static function helper_quiz_and_assigments(int $courseid, int $from, int $to = null) {

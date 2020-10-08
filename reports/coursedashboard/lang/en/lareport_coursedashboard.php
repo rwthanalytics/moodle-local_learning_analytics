@@ -24,11 +24,11 @@
 
 $string['pluginname'] = 'Learning Analytics Dashboard';
 
-$string['registered_users'] = 'Registered users';
+$string['registered_users'] = 'Participants';
 $string['active_learners'] = 'Active learners';
-$string['click_count'] = 'Number of hits';
+$string['click_count'] = 'Hits';
 $string['pagename_set_previous_course'] = 'Set previous course';
-$string['most_clicked_module'] = 'Most used activity';
+$string['most_clicked_module'] = 'Most used activities';
 $string['quiz_assign'] = 'Quizzes & Assignments';
 
 $string['clicks'] = 'hits';
@@ -43,5 +43,9 @@ $string['parameter:prev_course'] = 'Previous course';
 
 $string['set'] = 'Set';
 $string['not_available'] = 'N/A';
-$string['last_7_days'] = 'last 7 days';
+$string['last_7_days'] = 'Last 7 days';
+$string['total'] = 'Total';
+$string['quiz_and_assignments'] = 'Attempts and submissions (last 7 days)';
 $string['no_difference'] = 'No difference to last week';
+
+$string['help'] = 'Help';

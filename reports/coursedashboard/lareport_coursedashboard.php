@@ -306,14 +306,11 @@ class lareport_coursedashboard extends report_base {
             $change = '&nbsp;';
         }
 
-        $last7days = get_string('last_7_days', 'lareport_coursedashboard');
-
-        // TODO lang string
-        $appendedtext = "Der letzten 7 Tage";
+        $appendedtext = get_string('last_7_days', 'lareport_coursedashboard');
         if ($titlekey === 'registered_users') {
-            $appendedtext = "Insgesamt";
+            $appendedtext = get_string('total', 'lareport_coursedashboard');
         } else if ($titlekey === 'quiz_assign') {
-            $appendedtext = "Versuche und Abgaben der letzten 7 Tage";
+            $appendedtext = get_string('quiz_and_assignments', 'lareport_coursedashboard');
         }
         return "
             <div class='col-lg-3'>
@@ -364,8 +361,9 @@ class lareport_coursedashboard extends report_base {
         $hitsLast7Days = $hits[1];
         $hitsdiff = $hits[1] - $hits[0];
         $privacythreshold = settings::get_config('dataprivacy_threshold');
+        $strclicks = get_string('clicks', 'lareport_coursedashboard');
         if ($hitsLast7Days < $privacythreshold) {
-            return [ $this->boxoutputraw('click_count', '< ' . $privacythreshold, '', $courseid, $linkedreport) ];
+            return [ $this->boxoutputraw('click_count', '-', "< {$privacythreshold} {$strclicks}", $courseid, $linkedreport) ];
         }
 
         return [ $this->boxoutput('click_count', $hitsLast7Days, $hitsdiff, $courseid, $linkedreport) ];
@@ -393,7 +391,7 @@ class lareport_coursedashboard extends report_base {
             return [
                 $this->boxoutputraw(
                     'most_clicked_module',
-                    '-', // get_string('not_available', 'lareport_coursedashboard'), // TODO remove lang string
+                    '-',
                     "< {$privacythreshold} {$strclicks}",
                     $courseid,
                     'activities'
@@ -412,13 +410,14 @@ class lareport_coursedashboard extends report_base {
         $link = new moodle_url("/local/learning_analytics/index.php/reports/activities", ['course' => $courseid]);
         $titlestr = get_string('most_clicked_module', 'lareport_coursedashboard');
         // TODO lang: "Der letzten 7 Tage", s.u.
+        $last7days = get_string('last_7_days', 'lareport_coursedashboard');
         $mergedrows = implode("</tr><tr>", $modulerows);
         $icon = self::$icons['most_clicked_module'];
         return ["<div class='col-lg-3'>
             <div class='dashboardbox box-activities'>
                 <div class='dashboardbox-icon'>{$icon}</div>
                 <div class='dashboardbox-header'><a href='{$link}'>{$titlestr}</a></div>
-                <div class='dashboardbox-timespan'>Der letzten 7 Tage</div>
+                <div class='dashboardbox-timespan'>{$last7days}</div>
                 <table class='dashboardbox-table'><tr>{$mergedrows}</tr></table>
             </div>
         </div>"];
@@ -432,8 +431,9 @@ class lareport_coursedashboard extends report_base {
         $hitsLast7Days = $counts[1];
         $hitsdiff = $counts[1] - $counts[0];
         $privacythreshold = settings::get_config('dataprivacy_threshold');
+        $strclicks = get_string('clicks', 'lareport_coursedashboard');
         if ($hitsLast7Days < $privacythreshold) {
-            return [ $this->boxoutputraw('quiz_assign', '< ' . $privacythreshold, '', $courseid, 'quiz_assign') ];
+            return [ $this->boxoutputraw('quiz_assign', '-', "< {$privacythreshold} {$strclicks}", $courseid, 'quiz_assign') ];
         }
 
         return [ $this->boxoutput('quiz_assign', $hitsLast7Days, $hitsdiff, $courseid, 'quiz_assign') ];
@@ -464,7 +464,9 @@ class lareport_coursedashboard extends report_base {
         }
 
         $helpurl = new moodle_url('/local/learning_analytics/help.php', ['course' => $courseid]);
-        $icon = \html_writer::link($helpurl, $OUTPUT->pix_icon('e/help', 'Help TODO lang', 'moodle', ['class' => 'helpicon'])); // TODO lang
+        $icon = \html_writer::link($helpurl,
+            $OUTPUT->pix_icon('e/help', get_string('help', 'lareport_coursedashboard'), 'moodle', ['class' => 'helpicon'])
+        );
         $helpprefix = "<div class='headingfloater'>{$icon}</div>";
 
         return array_merge(

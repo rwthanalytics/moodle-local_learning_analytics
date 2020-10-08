@@ -37,7 +37,7 @@ $string['show_full_list'] = 'Mehr anzeigen';
 // Terms also used by subplugins
 $string['learners'] = 'Learners';
 $string['sessions'] = 'Sessions';
-$string['hits'] = 'Hits'; // "Aufrufe"
+$string['hits'] = 'Aufrufe'; // "Aufrufe"
 
 // Settings
 $string['setting_status'] = 'status';
@@ -63,3 +63,42 @@ $string['setting_student_rolenames_description'] = 'Falls die Rolle <code>studen
 
 $string['setting_student_enrols_groupby'] = 'student_enrols_groupby';
 $string['setting_student_enrols_groupby_description'] = 'Für die Statistik "Vorher/Parallelgehört" kann durch die Option bestimmt werden, welche Kurse zusammengefasst werden sollen.';
+
+// Help
+$string['help_title'] = 'Hilfe';
+$string['help_take_tour'] = 'Interaktive Vorstellung anzeigen';
+$string['help_text'] = 'Learning Analytics zeigt verschiedene Kennzahlen des Kurses.
+
+Die dargestellen Statistiken enthalten sowohl selber erhobenen Daten des Moduls als auch Moodle-eigene Daten. Alle vom Learning Analytics-Modul erhobenen Daten werden anonymisiert erhoben und erlauben keine Rückverfolgung zu einzelnen Nutzern.
+
+Es werden verschiedene Kennzahlen gezeigt. Das Dashboard gibt eine allgemeine Übersicht, die darüberhinaus auf vier weitere Seiten verlinkt, die weitere Statistiken anzeigen.';
+
+$string['help_available_reports'] = 'Verfügbare Statistiken';
+$string['report_coursedashboard_title'] = 'Dashboard (Hauptseite)';
+$string['report_coursedashboard_description'] = 'The reports gives an overview of ...';
+$string['report_learners_title'] = 'Registered users';
+$string['report_learners_description'] = 'The reports gives an overview of ...';
+$string['report_weekheatmap_title'] = 'Number of hits / Weekly heatmap';
+$string['report_weekheatmap_description'] = 'The reports gives an overview of ...';
+$string['report_quiz_assign_title'] = 'Registered users';
+$string['report_quiz_assign_description'] = 'The reports gives an overview of ...';
+$string['report_activities_title'] = 'Activities';
+$string['report_activities_description'] = 'The reports gives an overview of ...';
+
+$string['help_faq'] = 'Frequently Asked Questions (FAQ)';
+$string['help_faq_week_start_question'] = 'Why is the first week not the actual start of the lecture?';
+$string['help_faq_week_start_answer'] = 'TODO';
+$string['help_faq_data_storage_question'] = 'What data is stored by the Learning Analytics service?';
+$string['help_faq_data_storage_answer'] = 'TODO';
+$string['help_faq_privacy_threshold_question'] = 'Why do some values show as "$a"?';
+$string['help_faq_privacy_threshold_answer'] = 'TODO';
+$string['help_faq_visibility_question'] = 'Who has the right to see the metrics?';
+$string['help_faq_visibility_answer'] = 'TODO';
+$string['help_faq_developer_question'] = 'Who develops the Learning Analytics service?';
+$string['help_faq_developer_answer'] = 'TODO';
+
+$string['tour_overview_title'] = 'Learning Analytics';
+$string['tour_dashboard_boxes'] = 'The boxes at the bottom show the key metrics of your course. By clicking on the individual links you can get more information.';
+$string['tour_more_information'] = 'TODO ...
+
+If you need more information, check out the Help page.';
