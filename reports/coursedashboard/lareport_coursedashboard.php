@@ -312,6 +312,7 @@ class lareport_coursedashboard extends report_base {
         } else if ($titlekey === 'quiz_assign') {
             $appendedtext = get_string('quiz_and_assignments', 'lareport_coursedashboard');
         }
+        $comparedto = get_string('compared_to_previous_week', 'lareport_coursedashboard');
         return "
             <div class='col-lg-3'>
                 <div class='dashboardbox box-{$titlekey}'>
@@ -321,7 +322,7 @@ class lareport_coursedashboard extends report_base {
                     <div class='dashboardbox-header'>{$titlestr}</div>
                     <div class='dashboardbox-timespan'>{$appendedtext}</div>
                     <div class='dashboardbox-title'>{$maintext}</div>
-                    <div class='dashboardbox-change'>{$change}</div>
+                    <div class='dashboardbox-change' title='{$comparedto}'>{$change}</div>
                 </div>
             </div>
         ";
