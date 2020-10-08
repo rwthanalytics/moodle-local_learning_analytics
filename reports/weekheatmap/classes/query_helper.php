@@ -48,15 +48,15 @@ class query_helper {
         // returns points between 0 - 167 (24*7 data points), where 0 => Mon,0-1am; 1 => Mon,1-2am; ...
         $query = <<<SQL
         SELECT
-            FLOOR(((l.timecreated - ?) MOD (60*60*24*7)) / (60*60)) AS heatpoint,
-            COUNT(1) value
-        FROM {logstore_lanalytics_log} l
+            FLOOR(((l.timecreated - ?) % (60*60*24*7)) / (60*60)) AS heatpoint,
+            COUNT(1) AS value
+        FROM {logstore_lanalytics_log} AS l
             WHERE l.courseid = ?
+            AND ((l.timecreated - ?) % (60*60*24*7)) >= 0
         GROUP BY heatpoint
-        HAVING heatpoint >= 0 -- exlude events before lecture start week
         ORDER BY heatpoint
 SQL;
 
-        return $DB->get_records_sql($query, [$mondaytimestamp, $courseid]);
+        return $DB->get_records_sql($query, [$mondaytimestamp, $courseid, $mondaytimestamp]);
     }
 }
