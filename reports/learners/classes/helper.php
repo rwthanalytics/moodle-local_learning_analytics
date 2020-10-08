@@ -119,9 +119,7 @@ class helper {
             new splitter(
                 ["<h3>{$headingprevious}</h3>", $tableprevious],
                 ["<h3>{$headingparallel}</h3>", $tableparallel]
-            ),
-            "<div class='w-100'><hr></div>",
-            get_string('above_lists_only_show_courses_with_more_than_threshold_users', 'lareport_learners', $privacythreshold)
+            )
         ];
     }
 }

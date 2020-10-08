@@ -25,6 +25,8 @@
 $string['pluginname'] = 'Learners';
 $string['pagename_all'] = 'Full List';
 $string['pagename_courseparticipation'] = 'Learners - Full List';
+$string['introduction'] = 'The following tables show the courses heard by the participants of this course in the past (left) and the courses heard parallel to this course (right).
+For data privacy reasons, courses with less than {$a} overlapping participants will not be displayed.';
 
 $string['courses_heard_before'] = 'Courses heard before';
 $string['parallel_courses'] = 'Courses heard in parallel';
@@ -47,5 +49,3 @@ $string['sessions'] = 'Sessions';
 $string['countries'] = 'Countries';
 $string['no_courses_heard_before'] = 'There are no courses, that were heard in parallel by your audience.';
 $string['no_courses_heard_in_parallel'] = 'There are no courses, that your students are being enrolled in parallel.';
-
-$string['above_lists_only_show_courses_with_more_than_threshold_users'] = 'For privacy reasons, both lists do not show courses with less than {$a} learners.';

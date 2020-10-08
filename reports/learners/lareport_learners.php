@@ -30,6 +30,7 @@ use lareport_learners\query_helper;
 use lareport_learners\helper;
 use local_learning_analytics\local\outputs\splitter;
 use local_learning_analytics\local\outputs\plot;
+use local_learning_analytics\settings;
 
 class lareport_learners extends report_base {
 
@@ -137,10 +138,14 @@ class lareport_learners extends report_base {
     }
 
     public function run(array $params): array {
+        $privacythreshold = settings::get_config('dataprivacy_threshold');
         $courseid = $params['course'];
         // $headingtable = get_string('most_active_learners', 'lareport_learners');
         return array_merge(
-            [self::heading(get_string('pluginname', 'lareport_learners'))],
+            [
+                self::heading(get_string('pluginname', 'lareport_learners')),
+                '<p>' . get_string('introduction', 'lareport_learners', $privacythreshold) . '</p>'
+            ],
             helper::generatecourseparticipationlist($courseid, 10)
         );
     }
