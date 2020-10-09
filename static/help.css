@@ -1,8 +1,11 @@
 .helplist {
     margin-top: 0.5rem;
 }
-.helplist li {
+.helplist > li {
     margin: 0 0 0.5rem 1rem;
+}
+.helplist li li {
+    margin: 0 0 0 1rem;
 }
 .helplist .heading {
     font-weight: 500;

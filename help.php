@@ -22,11 +22,14 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use local_learning_analytics\settings;
+
 require(__DIR__ . '/../../config.php');
 
 defined('MOODLE_INTERNAL') || die;
 
 require_login();
+
 
 global $PAGE, $USER, $DB;
 
@@ -80,29 +83,15 @@ $helptext = array_values(
         function(string $value) { return trim($value) !== ''; }
     )
 );
-$reports = ['coursedashboard', 'learners', 'weekheatmap', 'quiz_assign', 'activities'];
-$reportstrs = [];
-foreach ($reports as $report) {
-    $reportstrs[] = [
-        'title' => get_string('report_' . $report . '_title', 'local_learning_analytics'),
-        'description' => get_string('report_' . $report . '_description', 'local_learning_analytics')
-    ];
-}
 
-$faqs = ['week_start', 'data_storage', 'privacy_threshold', 'visibility', 'developer'];
-$faqstrs = [];
-foreach ($faqs as $faq) {
-    $faqstrs[] = [
-        'question' => get_string('help_faq_' . $faq . '_question', 'local_learning_analytics'),
-        'answer' => get_string('help_faq_' . $faq . '_answer', 'local_learning_analytics')
-    ];
-}
+$privacythreshold = (int) settings::get_config('dataprivacy_threshold');
+$loggeddatalist = explode("\n", get_string('help_faq_data_storage_answer_list', 'local_learning_analytics'));
 
 echo $output->header();
 echo $output->render_from_template('local_learning_analytics/help', [
     'courseid' => $courseid,
     'helptext' => $helptext,
-    'reports' => $reportstrs,
-    'faq' => $faqstrs,
+    'privacythreshold' => $privacythreshold,
+    'loggeddatalist' => $loggeddatalist
 ]);
 echo $output->footer();
