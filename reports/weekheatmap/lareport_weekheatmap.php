@@ -86,7 +86,17 @@ class lareport_weekheatmap extends report_base {
             'y' => $ystrs,
             'text' => $texts,
             'hoverinfo' => 'text',
-            'colorscale' => 'YlGnBu'
+            'colorscale' => [ // reversed "YlGnBu"
+                [0,"rgb(255,255,217)"],
+                [.125,"rgb(237,248,217)"],
+                [.25,"rgb(199,233,180)"],
+                [.375,"rgb(127,205,187)"],
+                [.5,"rgb(65,182,196)"],
+                [.625,"rgb(29,145,192)"],
+                [.75,"rgb(34,94,168)"],
+                [.875,"rgb(37,52,148)"],
+                [1,"rgb(8,29,88)"],
+            ]
         ]);
         $layout = new stdClass();
         $layout->margin = [ 't' => 10, 'r' => 20, 'l' => 80, 'b' => 80 ];
