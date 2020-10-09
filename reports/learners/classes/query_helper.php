@@ -115,7 +115,12 @@ SQL;
                 AND co.startdate <> 0
                 AND co.visible = 1
             GROUP BY co.{$groupbychoice}
-            HAVING COUNT(*) > ? AND beforeparallel <> 0
+            HAVING COUNT(*) > ?
+            AND CASE
+                    WHEN co.startdate < {$coursebeforecutoff} THEN 1
+                    WHEN co.startdate < {$courseparallelcutoff} THEN 2
+                    ELSE 0
+                END <> 0
             ORDER BY users DESC;
 SQL;
 
