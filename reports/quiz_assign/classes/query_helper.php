@@ -76,7 +76,10 @@ SQL;
         WHERE gi.courseid = ?
             AND gi.itemtype = 'mod'
             AND gi.itemmodule = 'assign'
-        GROUP BY a.id
+        GROUP BY
+            a.id,
+            gg.rawgrademin,
+            gi.grademax
 SQL;
 
         return $DB->get_records_sql($query, [$courseid]);
