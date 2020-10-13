@@ -1,18 +1,27 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.10.0]
+## [0.10.0] - 2020-10-13
 ### Added
-- Dashboard changed
-  - Better mobile breakpoints added
-  - 4 "mini statistics" instead of 3 (quiz/assignments added)
+- Dashboard changes
+  - 4 "mini statistics" instead of 3
+  - Quiz/assignments shows recent attempts/submitted assignments
   - "Top used resources" shows the top 3 instead of top 1
-- "Quiz & Assignment" report added
-- Activities report: Added text-based filter
-- Week heatmap report added
-- Loading indicator added to plots
-- Learners report: Setting to configure merging of courses added
-  - This allows to define to merge courses by their `fullname` or `shortname` (in case the same lecture was given in different semesters)
+  - Some UI changes to the boxes at the bottom
+- Page: "Participants"
+  - Setting to configure merging of courses added. This allows to define to merge courses by their `fullname` or `shortname` (in case the same lecture was given in different semesters)
+- Page: "Hits"
+  - Links to week heatmap
+- Page: "Quiz & Assignments"
+  - Information regarding quizzes and assignments
+- Page "Activities":
+  - Added text-based filter
+- Help page added
+  - User tour added (that is added to the Moodle user tours on installation/upgrade) that can be triggered via Help page
+- Multiple UX changes
+  - Loading indicators for plots
+  - Better mobile breakpoints
+  - Better wording
 
 
 ## [0.9.0] - 2020-09-28
