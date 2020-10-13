@@ -62,20 +62,7 @@ $string['help_title'] = 'Help';
 $string['help_take_tour'] = 'Take the interactive tour';
 $string['help_text'] = 'Learning Analytics shows you the key metrics of your course.
 
-The Learning Analytics displays data that was collected by itself as well as data from the Moodle course itself. All collected data is collected fully anonymously and cannot be traced back to users.
-
-There are multiple metrics that are displayed. The most important one is the dashboard. From the dashboard there are 4 links that can provided more information.';
-
-$string['report_coursedashboard_title'] = 'Dashboard (main page)';
-$string['report_coursedashboard_description'] = 'The reports gives an overview of ...';
-$string['report_learners_title'] = 'Registered users';
-$string['report_learners_description'] = 'The reports gives an overview of ...';
-$string['report_weekheatmap_title'] = 'Number of hits / Weekly heatmap';
-$string['report_weekheatmap_description'] = 'The reports gives an overview of ...';
-$string['report_quiz_assign_title'] = 'Registered users';
-$string['report_quiz_assign_description'] = 'The reports gives an overview of ...';
-$string['report_activities_title'] = 'Activities';
-$string['report_activities_description'] = 'The reports gives an overview of ...';
+The Learning Analytics displays data that was collected by itself as well as data from the Moodle course itself. All collected data is collected fully anonymously and cannot be traced back to users.';
 
 $string['help_faq'] = 'Frequently Asked Questions (FAQ)';
 
@@ -108,9 +95,26 @@ $string['help_faq_developer_question'] = 'Who develops the Learning Analytics se
 $string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by RWTH Aachen University.
 The development is Open Source. Therefore you can check the used algorithms yourself. On the following pages you can access further information:';
 
-$string['tour_overview_title'] = 'Learning Analytics';
-$string['tour_dashboard_boxes'] = 'The boxes at the bottom show the key metrics of your course. By clicking on the individual links you can get more information.';
-$string['tour_more_information'] = 'TODO ...
+// Tour
+$string['tour_title'] = 'Learning Analytics';
+$string['tour_dashboard_graph'] = 'The graph shows the number of all actions in the respective week.
 
-If you need more information, check out the Help page.';
+If it is a running course, the beginning of the current week is marked by a dotted line. Numbers of the current week are not displayed.';
+$string['tour_dashboard_boxes'] = 'In the bottom area, important key figures of the course are displayed.
 
+In addition, each box contains a link through which further information is available.';
+$string['tour_box_learners'] = 'The first indicator shows the total number of participants. Below the large number, the change from the previous week is shown.';
+$string['tour_box_learners_link'] = 'Click on the link to view more information about the participants.';
+$string['tour_box_hits'] = 'This indicator shows the number of actions within the last 7 days. Below you can see the changes over the previous 7 days.
+
+By clicking on the link you can open a heat map, which visualizes the number of actions over the whole semester.';
+$string['tour_box_quiz_assign'] = 'This shows the number of quiz attempts and assignment submissions of the last 7 days. Below, the change from the previous 7 days is shown again.
+
+By clicking on the link you can view details about the quizzes and assignments of the course.';
+$string['tour_activities'] = 'The last view shows the three most used activities of the last 7 days.
+
+By clicking on the link you can view details of the course activities.';
+
+$string['tour_more_information'] = 'The interactive tour is now complete. We hope we could give you a good overview of the features.
+
+More answers to frequently asked questions can be found on the help page.';

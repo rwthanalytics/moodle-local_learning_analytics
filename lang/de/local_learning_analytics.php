@@ -62,20 +62,7 @@ $string['help_title'] = 'Hilfe';
 $string['help_take_tour'] = 'Interaktive Vorstellung starten';
 $string['help_text'] = 'Learning Analytics zeigt verschiedene Kennzahlen des Kurses.
 
-Die dargestellen Statistiken enthalten sowohl selber erhobenen Daten des Moduls als auch Moodle-eigene Daten. Alle vom Learning Analytics-Modul erhobenen Daten werden anonymisiert erhoben und erlauben keine Rückverfolgung zu einzelnen Nutzern.
-
-Es werden verschiedene Kennzahlen gezeigt. Das Dashboard gibt eine allgemeine Übersicht, die darüberhinaus auf vier weitere Seiten verlinkt, die weitere Statistiken anzeigen.';
-
-$string['report_coursedashboard_title'] = 'Dashboard (Hauptseite)';
-$string['report_coursedashboard_description'] = 'The reports gives an overview of ...';
-$string['report_learners_title'] = 'Registered users';
-$string['report_learners_description'] = 'The reports gives an overview of ...';
-$string['report_weekheatmap_title'] = 'Number of hits / Weekly heatmap';
-$string['report_weekheatmap_description'] = 'The reports gives an overview of ...';
-$string['report_quiz_assign_title'] = 'Registered users';
-$string['report_quiz_assign_description'] = 'The reports gives an overview of ...';
-$string['report_activities_title'] = 'Activities';
-$string['report_activities_description'] = 'The reports gives an overview of ...';
+Die dargestellen Statistiken sind live und enthalten sowohl selber erhobenen Daten des Moduls als auch Moodle-eigene Daten. Alle vom Learning Analytics-Modul erhobenen Daten werden anonymisiert erhoben und erlauben keine Rückverfolgung zu einzelnen Nutzern.';
 
 $string['help_faq'] = 'Häufig gestellte Fragen';
 
@@ -108,8 +95,26 @@ $string['help_faq_developer_question'] = 'Durch wen wird das Angebot entwickelt 
 $string['help_faq_developer_answer'] = 'Die Entwicklung des Learning Analytics Angebot geschieht durch die RWTH Aachen University.
 Die Entwicklung ist Open Source. Sie können die eingesetzten Algorithmen daher selber überprüfen. Auf den folgenden Seiten können Sie auf weitere Informationen zugreifen:';
 
-$string['tour_overview_title'] = 'Learning Analytics';
-$string['tour_dashboard_boxes'] = 'The boxes at the bottom show the key metrics of your course. By clicking on the individual links you can get more information.';
-$string['tour_more_information'] = 'TODO ...
+// Tour
+$string['tour_title'] = 'Learning Analytics';
+$string['tour_dashboard_graph'] = 'Der Verlauf zeigt die Anzahl aller Zugriffe in der jeweiligen Woche an.
 
-If you need more information, check out the Help page.';
+Handelt es sich um einen aktuellen Kurs, so wird der Beginn der laufenden Woche durch eine gestrichelte Linie gekennzeichnet. Zahlen der laufenden Woche werden nicht angezeigt.';
+$string['tour_dashboard_boxes'] = 'Im unteren Bereich werden wichtige Kennzahlen des Kurses dargestellt.
+
+Darüber hinaus enthält jede Box einen Link durch den weiterführende Informationen angezeigt werden können.';
+$string['tour_box_learners'] = 'Die erste Anzeige gibt die Gesamtzahl an eingeschriebenen Teilnehmer/innen wieder. Unterhalb der großen Zahl, ist die Veränderung zur Vorwoche dargstellt.';
+$string['tour_box_learners_link'] = 'Durch einen Klick auf den Link werden weiterführende Informationen zu den Teilnehmer/innen angezeigt.';
+$string['tour_box_hits'] = 'Diese Darstellung stellt die Anzahl an Aufrufen innerhalb der letzten 7 Tage dar. Unterhalb ist die Veränderungen du den vorherigen 7 Tagen angegeben.
+
+Durch einen Klick auf den Link lässt sich eine Heatmap aufrufen, welche die Anzahl an Aufrufen über das gesamte Semester visualisiert.';
+$string['tour_box_quiz_assign'] = 'Hier wird die Anzahl an Test-Versuchen und Aufgaben-Abgaben der letzten 7 Tage angezeigt. Unterhalb ist erneut die Veränderungen du den vorherigen 7 Tagen angegeben.
+
+Durch einen Klick auf den Link lassen sich Details zu den Tests und Aufgaben des Kurses anzeigen.';
+$string['tour_activities'] = 'Die letzte Auswertung zeigt die drei meistgenutzten Aktivitäten der letzten 7 Tage.
+
+Durch einen Klick auf den Link lassen sich Details zu den Aktivitäten des Kurses anzeigen.';
+
+$string['tour_more_information'] = 'Die interaktive Tour ist hiermit beendet. Wir hoffen wir konnten einen guten Überblick über die Funktionen verschaffen.
+
+Weitere Antworten zu häufig gestellten Fragen finden sich auf der Hilfeseite.';
