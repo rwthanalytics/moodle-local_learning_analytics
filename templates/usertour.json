@@ -8,7 +8,7 @@
     "version": "2019052001",
     "steps": [
         {
-            "title": "tour_overview_title,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
             "content": "help_text,local_learning_analytics",
             "targettype": "2",
             "targetvalue": "",
@@ -16,15 +16,15 @@
             "configdata": "{}"
         },
         {
-            "title": "report_coursedashboard_title,local_learning_analytics",
-            "content": "report_coursedashboard_description,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
+            "content": "tour_dashboard_graph,local_learning_analytics",
             "targettype": "0",
             "targetvalue": ".plotly-wrapper.js-plotly-plot",
             "sortorder": "1",
             "configdata": "{\"placement\":\"bottom\"}"
         },
         {
-            "title": "report_coursedashboard_title,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
             "content": "tour_dashboard_boxes,local_learning_analytics",
             "targettype": "0",
             "targetvalue": ".reportboxes",
@@ -32,43 +32,51 @@
             "configdata": "{}"
         },
         {
-            "title": "tour_overview_title,local_learning_analytics",
-            "content": "report_learners_description,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
+            "content": "tour_box_learners,local_learning_analytics",
             "targettype": "0",
-            "targetvalue": ".dashboardbox.box-registered_users .dashboardbox-header a",
+            "targetvalue": ".dashboardbox.box-registered_users",
             "sortorder": "3",
             "configdata": "{}"
         },
         {
-            "title": "tour_overview_title,local_learning_analytics",
-            "content": "report_weekheatmap_description,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
+            "content": "tour_box_learners_link,local_learning_analytics",
             "targettype": "0",
-            "targetvalue": ".dashboardbox.box-click_count .dashboardbox-header a",
+            "targetvalue": ".dashboardbox.box-registered_users .dashboardbox-header a",
             "sortorder": "4",
             "configdata": "{}"
         },
         {
-            "title": "tour_overview_title,local_learning_analytics",
-            "content": "report_quiz_assign_description,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
+            "content": "tour_box_hits,local_learning_analytics",
             "targettype": "0",
-            "targetvalue": ".dashboardbox.box-quiz_assign .dashboardbox-header a",
+            "targetvalue": ".dashboardbox.box-click_count",
             "sortorder": "5",
             "configdata": "{}"
         },
         {
-            "title": "tour_overview_title,local_learning_analytics",
-            "content": "report_activities_description,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
+            "content": "tour_box_quiz_assign,local_learning_analytics",
             "targettype": "0",
-            "targetvalue": ".dashboardbox.box-activities .dashboardbox-header a",
+            "targetvalue": ".dashboardbox.box-quiz_assign",
             "sortorder": "6",
             "configdata": "{}"
         },
         {
-            "title": "tour_overview_title,local_learning_analytics",
+            "title": "tour_title,local_learning_analytics",
+            "content": "tour_activities,local_learning_analytics",
+            "targettype": "0",
+            "targetvalue": ".dashboardbox.box-most_clicked_module",
+            "sortorder": "7",
+            "configdata": "{}"
+        },
+        {
+            "title": "tour_title,local_learning_analytics",
             "content": "tour_more_information,local_learning_analytics",
             "targettype": "2",
             "targetvalue": "",
-            "sortorder": "7",
+            "sortorder": "8",
             "configdata": "{}"
         }
     ]
