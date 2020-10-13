@@ -87,6 +87,7 @@ $string['help_faq_data_storage_answer_list'] = 'Typ der Aktion (z.B. "Quizversuc
 Uhrzeit (sekundengenau)
 Betroffener Kurs (ID des Kurses) in dem die Aktion durchgeführt wurde
 Betroffener Kontext (z.B. die ID des Quizzes das gestartet wurde)
+Betoffenes Objekt (z.B. der Quizversuch, der gestartet wurde)
 Betriebssystem und Browser (z.B. "Windows 10" und "Firefox") kodiert als Zahl (Detaillierte Browser- oder Betriebssystemversionen werden nicht gespeichert)';
 
 $string['help_faq_privacy_threshold_question'] = 'Warum werden manche Werte als "< {$a}" angezeigt?';

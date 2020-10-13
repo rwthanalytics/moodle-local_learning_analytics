@@ -87,6 +87,7 @@ $string['help_faq_data_storage_answer_list'] = 'Type of action (e.g. "Quiz attem
 Time (exact to the second)
 Corresponding course (ID of the course) in which the action happened
 Corresponding context (e.g. the ID of the quiz that was started)
+Corresponding object (e.g. the ID of the quiz attempt that was started)
 Operating system and browser (e.g. "Windows 10" and "Firefox") stored as number (detailed browser or operating system versions are not stored)';
 
 $string['help_faq_privacy_threshold_question'] = 'Why do some values shown as "< {$a}"?';
