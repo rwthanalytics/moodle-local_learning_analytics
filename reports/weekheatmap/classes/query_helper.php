@@ -52,11 +52,10 @@ class query_helper {
             COUNT(1) AS value
         FROM {logstore_lanalytics_log} AS l
             WHERE l.courseid = ?
-            AND ((l.timecreated - ?) % (60*60*24*7)) >= 0
         GROUP BY heatpoint
         ORDER BY heatpoint
 SQL;
 
-        return $DB->get_records_sql($query, [$mondaytimestamp, $courseid, $mondaytimestamp]);
+        return $DB->get_records_sql($query, [$mondaytimestamp, $courseid]);
     }
 }
