@@ -1,4 +1,4 @@
-# TODO
+# TO*DOs (spelled like this, so it doesn't show when searching for the word...)
 
 - [x] **Add title to page**
 - [x] **Make sure only people enrolled can see the statistics**
@@ -46,7 +46,7 @@
 - [x] Logstore plugin: Make sure it also works on its own (without this plugin)
   - [x] Make sure it only loads `lalog` plugins if this plugin is installed
 - [x] Page that shows what kind of data is being tracked and whether one is being tracked => only anonymous data is being saved, not implemented
-- [ ] External database support => no feedback from ITC
+- [x] External database support => no feedback from ITC (not needed I guess..)
 
 ## Logstore
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
@@ -56,7 +56,7 @@
 ## GDPR
 - [x] Create "Verfahrensverzeichnis"
 - [x] Datenschutzerklärung erstellen
-- [ ] **Implement Moodle Privacy providers** (later, when we log personalized data)
+- [x] Implement Moodle Privacy providers (new item further below)
 - [x] Make sure that groups < X (aks GDPR officer) are not shown
   - [X] Ask (meeting 2020-03-10) what `X` is, configurable -> `10` by default
   - [X] Is is okay to still track the data (even when groups < `X`) but don't display results for smaller courses
@@ -73,46 +73,57 @@
 -------------------------------
 
 ## WS 20/21
+- [ ] Logstore plugin: Database changes (wait for ITC answer)
+  - [ ] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS (?)
+  - [ ] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
+  - [ ] Remove `userid`
+- [x] UX
+  - [x] Finish help page
+  - [x] Embed help into website (FAQ?)
+  - [x] Communication to users: Not possible to show more data due to privacy (and what data is being logged)
+  - [x] Don't make icons on dashboard clickable (confusion to users, looks like there are two clickable items per field)
+  - [x] Add loading animation to plots
+- [ ] Remove browser report
+- [ ] For other universities
+  - [x] Postgres: Check if database still works
+    - [x] TODO merge from Thorbens branch
+  - [ ] Log: Improve import script to specify number of weeks to import
 - [x] Change activities report
   - [x] ~~Vertical list?~~ => Not for now
   - [x] Use vertical divider for each section
   - [x] Add search
   - [x] ~~Make plot at the top scrollable (?)~~ => Probably not for now
   - [x] ~~Add "remove filter" link when filter was applied~~ => not needed for now (I guess?)
-- [ ] Check out all "TODO"s in code, especially "TODO lang" for language strings
-  - [ ] Fix "TODO lang"
-  - [ ] Check all other TODOs
-  - [ ] Check if existing lang-strings should be replaced by Moodle native strings
-    - [ ] "Registrierte Nutzer"
-    - [ ] "Lernende"
-    - [ ] "Quizze" / "Aufgaben"
-    - [ ] "Punkte" ...
+- [x] Check out all "TO DO"s in code, especially "TO DO lang" for language strings
+  - [x] Fix "TO DO lang"
+  - [x] Add a small info text to each report to give an overview
+    - [x] Activities: Small text explaining that the user can also filter by clicking on the names
+    - [x] Quiz, assign: Short explanation
+    - [x] Weekheatmap: Short explanation
+    - [x] Learners: Short explanation
+  - [x] Check all other TO DOs
+  - [x] Check if existing lang-strings should be replaced by Moodle native strings
+    - [x] "Registrierte Nutzer"
+    - [x] "Lernende"
+    - [x] "Quizze" / "Aufgaben"
+    - [x] "Punkte" ...
+- [x] Dashboard last changes
+  - [x] Change "quiz/assign" "<1" look, more it more to the middle (?)
 - [x] "Weekly heatmap" instead of browsers
   - [x] Figure out how we need to shift dates when showing hourly data: https://docs.moodle.org/dev/Time_API
 - [x] New report for quiz statistics
   - [x] Add new report IDs (to the logged reports)
 - [x] Fix problems of "Parallel heard / So far heard courses"
 - [x] Custom course settings to give option
-- [ ] Database changes (wait for ITC answer)
-  - [ ] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS (?)
-  - [ ] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
-- [ ] UX
-  - [x] Embed help into website (FAQ?)
-  - [ ] Communication to users: Not possible to show more data due to privacy (and what data is being logged)
-  - [x] Don't make icons on dashboard clickable (confusion to users, looks like there are two clickable items per field)
-  - [x] Add loading animation to plots
-- [ ] Remove browser report / replace with heatmap
-- [ ] For other universities
-  - [ ] Postgres: Check if database still works
-  - [ ] Log: Improve import script to specify number of weeks to import
 
 ## WS 20/21 Before publish
+- [ ] Wording: "Learning Analytics Angebot" / "Modul" / "Service"
 - [ ] Privacy Provider
   - [ ] Check implementation, we probably don't need one as there is no personal data in there...
-- [ ] HTML elements
-  - [ ] Remove div-soup on top-level and use Moodle div's instead
+- [x] HTML elements
+  - [x] Remove div-soup on top-level and use Moodle div's instead
 - [ ] Administration
-  - [ ] Option: Start of the week: Sunday/Monday
+  - [ ] Option: Start of the week: Sunday/Monday => respect Setting of Calender in Moodle
   - [ ] Option: Number of weeks shown in dashboard
 - [ ] Add uninstall script that removes our tables
   - [ ] Removes all creates tables
