@@ -26,7 +26,7 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
     global $DB, $CFG;
 
     // Update TOUR to latest version
-    if ($oldversion < 2020100700) { // always update this to the latest version when the usertour was changed
+    if ($oldversion < 2020101301) { // always update this to the latest version when the usertour was changed
         // Remove old tour first (if there is one)
         $tourid = (int) get_config('local_learning_analytics', 'tourid');
         if ($tourid !== 0) { // delete any old tours before updating the tour
@@ -39,7 +39,7 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
         $tourjson = file_get_contents($tourpath);
         $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
         set_config('tourid', $tour->get_id(), 'local_learning_analytics');
-        upgrade_plugin_savepoint(true, 2020100700, 'local', 'learning_analytics');
+        upgrade_plugin_savepoint(true, 2020101301, 'local', 'learning_analytics');
     }
 
     return true;
