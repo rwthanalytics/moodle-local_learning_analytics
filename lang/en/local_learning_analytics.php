@@ -66,6 +66,10 @@ The Learning Analytics displays data that was collected by itself as well as dat
 
 $string['help_faq'] = 'Frequently Asked Questions (FAQ)';
 
+$string['help_faq_personal_data_question'] = 'Why are no personalized statistics, like clicks per user, displayed?';
+$string['help_faq_personal_data_answer'] = 'For data privacy reasons, the Learning Analytics module does not collect personalized data. Therefore, most of the displayed statistics (e.g. the most used activities) only contain information about how often a resource was accessed, but not by how many participants.
+An exception to this are the statistics about participants and quizzes/assignments, which also display Moodle internal data.';
+
 $string['help_faq_week_start_question'] = 'Why does the first week in the dashboard graph not correspond to the actual start of the lecture?';
 $string['help_faq_week_start_answer'] = 'The visualization in the dashboard depends on the setting "Course start date" in the course settings. If the date specified there does not correspond to the actual start of the lecture, the display in the dashboard will not be correct either.
 If this is your course, you can correct the setting on the following page (General / Course start date):';

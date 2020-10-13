@@ -66,6 +66,10 @@ Die dargestellen Statistiken sind live und enthalten sowohl selber erhobenen Dat
 
 $string['help_faq'] = 'Häufig gestellte Fragen';
 
+$string['help_faq_personal_data_question'] = 'Warum werden keine personalisierten Statistiken, wie z.B. die Klicks pro Nutzer angezeigt?';
+$string['help_faq_personal_data_answer'] = 'Aus Datenschutzgründen erhebt das Learning Analytics-Modul keine personalisierten Daten. Daher enthalten die meisten dargestellten Statistiken (z.B. die meist genutzten Aktivitäten) nur Information darüber wie oft eine Resource aufgerufen wurde, aber nicht von wie vielen Teilnehmer/innen.
+Eine Ausnahme stellen die Statistiken zu Teilnehmer/innen und Tests/Aufgaben da, da hier auch Moodle-eigene Daten dargestellt werden.';
+
 $string['help_faq_week_start_question'] = 'Warum entspricht die erste Woche in der Darstellung im Dashboard nicht dem tatsächlichen Vorlesungsstart?';
 $string['help_faq_week_start_answer'] = 'Die Darstellung im Dashboard richtet sich nach der Einstellung "Kursbeginn" in den Kurseinstellungen. Sollte das dort vorgegebene Datum nicht dem tatsächlichen Start der Vorlesung entsprechen, wird auch die Anzeige im Dashboard nicht korrekt sein.
 Handelt es sich um Ihren Kurs, so können Sie die Einstellung auf der folgenden Seite (unter Allgemeines / Kursbeginn) korrigieren:';
