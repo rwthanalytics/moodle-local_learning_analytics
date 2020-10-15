@@ -143,7 +143,7 @@ In addition, **aggregated data** (like the number of total clicks on all quizzes
 There is currently only a single capability `local/learning_analytics:view_statistics` that decides who is allowed to view the dashboard. By default, the following roles have the cabability (as defined in [access.php](db/access.php)):
 
 - `student`
-- `student`
+- `teacher`
 - `editingteacher`
 - `manager`
 
