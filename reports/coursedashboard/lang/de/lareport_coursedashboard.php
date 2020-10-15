@@ -33,7 +33,7 @@ $string['quiz_assign'] = 'Tests & Aufgaben';
 
 $string['clicks'] = 'Aufrufe';
 $string['sessions'] = 'Sitzungen';
-$string['learners'] = 'Lernende';
+$string['learners'] = 'Teilnehmer/innen';
 
 $string['clicks_compare'] = 'Sitzungen (im Vergleich)';
 
