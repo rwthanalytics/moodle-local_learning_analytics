@@ -72,7 +72,7 @@ An exception to this are the statistics about participants and quizzes/assignmen
 
 $string['help_faq_week_start_question'] = 'Why does the first week in the dashboard graph not correspond to the actual start of the lecture?';
 $string['help_faq_week_start_answer'] = 'The visualization in the dashboard depends on the setting "Course start date" in the course settings. If the date specified there does not correspond to the actual start of the lecture, the display in the dashboard will not be correct either.
-If this is your course, you can correct the setting on the following page (General / Course start date):';
+If you are the manager of this course, you can correct the setting in the course settings (in General / Course start date).';
 
 $string['help_faq_data_storage_question'] = 'Which data is stored and displayed by the service?';
 $string['help_faq_data_storage_answer'] = 'The data presented is from two data sources.

@@ -72,7 +72,7 @@ Eine Ausnahme stellen die Statistiken zu Teilnehmer/innen und Tests/Aufgaben da,
 
 $string['help_faq_week_start_question'] = 'Warum entspricht die erste Woche in der Darstellung im Dashboard nicht dem tatsächlichen Vorlesungsstart?';
 $string['help_faq_week_start_answer'] = 'Die Darstellung im Dashboard richtet sich nach der Einstellung "Kursbeginn" in den Kurseinstellungen. Sollte das dort vorgegebene Datum nicht dem tatsächlichen Start der Vorlesung entsprechen, wird auch die Anzeige im Dashboard nicht korrekt sein.
-Handelt es sich um Ihren Kurs, so können Sie die Einstellung auf der folgenden Seite (unter Allgemeines / Kursbeginn) korrigieren:';
+Sind Sie der Manager des Kurses, so können Sie den Kursstart in den Kurseinstellungen (unter Allgemeines / Kursbeginn) korrigieren.';
 
 $string['help_faq_data_storage_question'] = 'Welche Daten werden durch das Angebot gespeichert und dargestellt?';
 $string['help_faq_data_storage_answer'] = 'Die dargestellten Daten stammen aus zwei Datenquellen.
