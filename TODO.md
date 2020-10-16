@@ -73,21 +73,22 @@
 -------------------------------
 
 ## WS 20/21
-- [ ] Logstore plugin: Database changes (wait for ITC answer)
-  - [ ] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS (?)
-  - [ ] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
-  - [ ] Remove `userid`
+- [x] Logstore plugin: Database changes (wait for ITC answer)
+  - [x] Change OS/browser column to a single column and just use 100 values for browser and 100 for OS (?)
+  - [x] Remove objectid, this would not allow looking "into" modules anymore, but this will probably not happen anyway
+  - [x] Remove `userid`
+- [x] Bug: Loading indicator wird beim resizen sichtbar
 - [x] UX
   - [x] Finish help page
   - [x] Embed help into website (FAQ?)
   - [x] Communication to users: Not possible to show more data due to privacy (and what data is being logged)
   - [x] Don't make icons on dashboard clickable (confusion to users, looks like there are two clickable items per field)
   - [x] Add loading animation to plots
-- [ ] Remove browser report
-- [ ] For other universities
+- [x] Remove browser report
+- [x] For other universities
   - [x] Postgres: Check if database still works
     - [x] TODO merge from Thorbens branch
-  - [ ] Log: Improve import script to specify number of weeks to import
+  - [x] Log: Improve import script to specify number of weeks to import
 - [x] Change activities report
   - [x] ~~Vertical list?~~ => Not for now
   - [x] Use vertical divider for each section
@@ -117,6 +118,11 @@
 - [x] Custom course settings to give option
 
 ## WS 20/21 Before publish
+- [ ] Make a nice README
+  - [ ] Screenshots of pages
+  - [ ] More information on data storage/use
+- [ ] Create "demo course" for screenshots/documentation purposes
+  - [ ] Constant date on dashboard page, with faked number of students, accesses, etc...
 - [ ] Wording: "Learning Analytics Angebot" / "Modul" / "Service"
 - [ ] Privacy Provider
   - [ ] Check implementation, we probably don't need one as there is no personal data in there...
@@ -131,8 +137,11 @@
   - [ ] Removes customfield
   - [ ] Removes user tour
 - [ ] Add new reports to upgrade.php script
-- [ ] Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)
+- [ ] ~~Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)~~ => it's already in there
 - [ ] Accessibility: Add alt texts to images/icons, add aria-labels where needed
+  - [x] Check if color blindness is respected
+  - [ ] Give graph meaningful aria labels
+  - [ ] Add aria-hidden to data that is not needed for screen readers
 - [ ] Check Moodle guidelines
 
 ## Big course test
@@ -140,6 +149,8 @@
 - [ ] Also generate users
 
 ## For later...
+- [ ] Users of our plugin still have the `lalog_browser_os` table installed (RWTH + HRW)
+  - [ ] Plan: Get the data and then put uninstall routine into upgrade
 - [ ] Describe subplugins in README
   - [ ] `lareport`
   - [ ] `lalog`
