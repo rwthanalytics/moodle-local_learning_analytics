@@ -90,6 +90,13 @@ table.generaltable.latable.quiztable td.c0 {
     background-image: url('./loading-indicator.gif');
     background-position: center center;
     background-repeat: no-repeat;
+    overflow:hidden;
+}
+.plotly-wrapper .plot-container {
+    background: #fff;
+}
+.plotly-wrapper .plot-container .svg-container {
+    margin: 0 auto;
 }
 .headingfloater {
     float: right;
