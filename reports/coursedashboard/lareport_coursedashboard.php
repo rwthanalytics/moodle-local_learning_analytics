@@ -415,12 +415,14 @@ class lareport_coursedashboard extends report_base {
         $last7days = get_string('last_7_days', 'lareport_coursedashboard');
         $mergedrows = implode("</tr><tr>", $modulerows);
         $icon = self::$icons['most_clicked_module'];
+        $in = get_string('in', 'lareport_coursedashboard');
         return ["<div class='col-lg-3'>
             <div class='dashboardbox box-most_clicked_module'>
-                <div class='dashboardbox-icon'>{$icon}</div>
-                <div class='dashboardbox-header'><a href='{$link}'>{$titlestr}</a></div>
-                <div class='dashboardbox-timespan'>{$last7days}</div>
-                <table class='dashboardbox-table'><tr>{$mergedrows}</tr></table>
+                <div class='dashboardbox-icon' aria-hidden='true'>{$icon}</div>
+                <div class='dashboardbox-header' aria-hidden='true'><a href='{$link}'>{$titlestr}</a></div>
+                <div style='position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;' class='dashboardbox-accessible' aria-label='{$titlestr} {$in} {$last7days}: {$mergedrows}'></div>
+                <div class='dashboardbox-timespan' aria-hidden='true'>{$last7days}</div>
+                <table class='dashboardbox-table' aria-hidden='true'><tr>{$mergedrows}</tr></table>
             </div>
         </div>"];
     }
