@@ -48,6 +48,5 @@ $string['total'] = 'Insgesamt';
 $string['quiz_and_assignments'] = 'Versuche und Abgaben der letzten 7 Tage';
 $string['no_difference'] = 'Kein Unterschied';
 $string['compared_to_previous_week'] = 'Verglichen mit den vorherigen 7 Tagen';
-$string['in'] = 'in';
 
 $string['help'] = 'Hilfe';

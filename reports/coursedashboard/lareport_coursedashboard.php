@@ -298,6 +298,7 @@ class lareport_coursedashboard extends report_base {
         $icon = self::$icons[$titlekey];
 
         $titlestr = get_string($titlekey, 'lareport_coursedashboard');
+        $titlearia = get_string($titlekey, 'lareport_coursedashboard');
         if ($report !== null) {
             $link = new moodle_url("/local/learning_analytics/index.php/reports/{$report}", ['course' => $courseid]);
             $titlestr = "<a href='{$link}'>{$titlestr}</a>";
@@ -313,7 +314,6 @@ class lareport_coursedashboard extends report_base {
             $appendedtext = get_string('quiz_and_assignments', 'lareport_coursedashboard');
         }
         $comparedto = get_string('compared_to_previous_week', 'lareport_coursedashboard');
-        $in = get_string('in', 'lareport_coursedashboard');
         return "
             <div class='col-lg-3'>
                 <div class='dashboardbox box-{$titlekey}'>
@@ -322,8 +322,7 @@ class lareport_coursedashboard extends report_base {
                     </div>
                     <div class='dashboardbox-header' aria-hidden='true'>{$titlestr}</div>
                     <div class='dashboardbox-timespan' aria-hidden='true'>{$appendedtext}</div>
-                    <div class='dashboardbox-title' aria-hidden='true'>{$maintext}</div>
-                    <div style='position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;' class='dashboardbox-accessible' aria-label='{$maintext} {$titlestr} {$in} {$appendedtext}'></div>
+                    <div class='dashboardbox-title' aria-label='{$titlearia}({$appendedtext})'>{$maintext}</div>
                     <div class='dashboardbox-change' title='{$comparedto}' aria-hidden='true'>{$change}</div>
                 </div>
             </div>
@@ -415,14 +414,12 @@ class lareport_coursedashboard extends report_base {
         $last7days = get_string('last_7_days', 'lareport_coursedashboard');
         $mergedrows = implode("</tr><tr>", $modulerows);
         $icon = self::$icons['most_clicked_module'];
-        $in = get_string('in', 'lareport_coursedashboard');
         return ["<div class='col-lg-3'>
             <div class='dashboardbox box-most_clicked_module'>
                 <div class='dashboardbox-icon' aria-hidden='true'>{$icon}</div>
                 <div class='dashboardbox-header' aria-hidden='true'><a href='{$link}'>{$titlestr}</a></div>
-                <div style='position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;' class='dashboardbox-accessible' aria-label='{$titlestr} {$in} {$last7days}: {$mergedrows}'></div>
                 <div class='dashboardbox-timespan' aria-hidden='true'>{$last7days}</div>
-                <table class='dashboardbox-table' aria-hidden='true'><tr>{$mergedrows}</tr></table>
+                <table class='dashboardbox-table' aria-label='{$titlestr}($last7days})'><tr>{$mergedrows}</tr></table>
             </div>
         </div>"];
     }
