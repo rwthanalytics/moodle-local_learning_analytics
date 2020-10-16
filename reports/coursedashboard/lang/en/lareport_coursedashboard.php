@@ -48,5 +48,6 @@ $string['total'] = 'Total';
 $string['quiz_and_assignments'] = 'Attempts and submissions (last 7 days)';
 $string['no_difference'] = 'No change';
 $string['compared_to_previous_week'] = 'Compared to the previous 7 days';
+$string['in'] = 'in';
 
 $string['help'] = 'Help';

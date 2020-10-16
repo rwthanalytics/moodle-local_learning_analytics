@@ -313,16 +313,18 @@ class lareport_coursedashboard extends report_base {
             $appendedtext = get_string('quiz_and_assignments', 'lareport_coursedashboard');
         }
         $comparedto = get_string('compared_to_previous_week', 'lareport_coursedashboard');
+        $in = get_string('in', 'lareport_coursedashboard');
         return "
             <div class='col-lg-3'>
                 <div class='dashboardbox box-{$titlekey}'>
-                    <div class='dashboardbox-icon'>
+                    <div class='dashboardbox-icon' aria-hidden='true'>
                         {$icon}
                     </div>
-                    <div class='dashboardbox-header'>{$titlestr}</div>
-                    <div class='dashboardbox-timespan'>{$appendedtext}</div>
-                    <div class='dashboardbox-title'>{$maintext}</div>
-                    <div class='dashboardbox-change' title='{$comparedto}'>{$change}</div>
+                    <div class='dashboardbox-header' aria-hidden='true'>{$titlestr}</div>
+                    <div class='dashboardbox-timespan' aria-hidden='true'>{$appendedtext}</div>
+                    <div class='dashboardbox-title' aria-hidden='true'>{$maintext}</div>
+                    <div style='position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;' class='dashboardbox-accessible' aria-label='{$maintext} {$titlestr} {$in} {$appendedtext}'></div>
+                    <div class='dashboardbox-change' title='{$comparedto}' aria-hidden='true'>{$change}</div>
                 </div>
             </div>
         ";
