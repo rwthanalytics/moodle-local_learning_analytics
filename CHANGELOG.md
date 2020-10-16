@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.11.0]
+### Changed
+- Heatmap colors and look changed
+- Minor changes in FAQ page
+### Fixed
+- 2 bugs in activities page:
+  - Activities with the same name were merged previously (this was not intended)
+  - Activity names with non-ASCII characters could potentially lead to UI issues (in case an unlucky substr would hit a multi-byte character..)
+
 ## [0.10.0] - 2020-10-13
 ### Added
 - Dashboard changes
