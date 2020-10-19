@@ -72,7 +72,7 @@ An exception to this are the statistics about participants and quizzes/assignmen
 
 $string['help_faq_week_start_question'] = 'Why does the first week in the dashboard graph not correspond to the actual start of the lecture?';
 $string['help_faq_week_start_answer'] = 'The visualization in the dashboard depends on the setting "Course start date" in the course settings. If the date specified there does not correspond to the actual start of the lecture, the display in the dashboard will not be correct either.
-If you are the manager of this course, you can correct the setting in the course settings (in General / Course start date).';
+The manager of this course can correct the setting in the course settings (in General / Course start date).';
 
 $string['help_faq_data_storage_question'] = 'Which data is stored and displayed by the service?';
 $string['help_faq_data_storage_answer'] = 'The data presented is from two data sources.
@@ -83,12 +83,11 @@ The second data source is data that is collected specifically for the Learning A
 All data is stored anonymously.
 The collected data does not allow to trace back to individual users.
 Specifically, the following data is stored with each request in Moodle:';
-$string['help_faq_data_storage_answer_list'] = 'Type of action (e.g. "Quiz attempt started") stored as number
+$string['help_faq_data_storage_answer_list'] = 'Type of action (e.g. "Resource viewed")
 Time (exact to the second)
-Corresponding course (ID of the course) in which the action happened
-Corresponding context (e.g. the ID of the quiz that was started)
-Corresponding object (e.g. the ID of the quiz attempt that was started)
-Operating system and browser (e.g. "Windows 10" and "Firefox") stored as number (detailed browser or operating system versions are not stored)';
+Corresponding course in which the action happened
+Corresponding context (e.g. the resource that was viewed)
+Operating system and browser (e.g. "Windows 10" and "Firefox"), detailed browser or operating system versions are not stored';
 
 $string['help_faq_privacy_threshold_question'] = 'Why do some values shown as "< {$a}"?';
 $string['help_faq_privacy_threshold_answer'] = 'For data privacy reasons, aggregated data is only displayed if at least {$a} data points are present.';
@@ -97,7 +96,7 @@ $string['help_faq_visibility_question'] = 'Who can access the Learning Analytics
 $string['help_faq_visibility_answer'] = 'To ensure maximum transparency, the displayed data can be viewed by the course owners as well as by the participants of the course.';
 
 $string['help_faq_developer_question'] = 'Who develops the Learning Analytics service and where can I get further information?';
-$string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by RWTH Aachen University.
+$string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by the Center for teaching and learning services at RWTH Aachen University.
 The development is Open Source. Therefore you can check the used algorithms yourself. On the following pages you can access further information:';
 
 // Tour

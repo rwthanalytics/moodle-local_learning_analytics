@@ -72,7 +72,7 @@ Eine Ausnahme stellen die Statistiken zu Teilnehmer/innen und Tests/Aufgaben da,
 
 $string['help_faq_week_start_question'] = 'Warum entspricht die erste Woche in der Darstellung im Dashboard nicht dem tatsächlichen Vorlesungsstart?';
 $string['help_faq_week_start_answer'] = 'Die Darstellung im Dashboard richtet sich nach der Einstellung "Kursbeginn" in den Kurseinstellungen. Sollte das dort vorgegebene Datum nicht dem tatsächlichen Start der Vorlesung entsprechen, wird auch die Anzeige im Dashboard nicht korrekt sein.
-Sind Sie der Manager des Kurses, so können Sie den Kursstart in den Kurseinstellungen (unter Allgemeines / Kursbeginn) korrigieren.';
+Der Manager des Kurses kann den Kursstart in den Kurseinstellungen (unter Allgemeines / Kursbeginn) korrigieren.';
 
 $string['help_faq_data_storage_question'] = 'Welche Daten werden durch das Angebot gespeichert und dargestellt?';
 $string['help_faq_data_storage_answer'] = 'Die dargestellten Daten stammen aus zwei Datenquellen.
@@ -83,12 +83,11 @@ Bei der zweiten Datenquelle handelt es sich um Daten, die eigens für das Learni
 Alle Daten werden anonymisiert gespeichert.
 Die erhobenen Daten erlauben keine Rückverfolgung zu einzelnen Nutzern.
 Konkret werden bei jedem Aufruf in Moodle folgende Daten gespeichert:';
-$string['help_faq_data_storage_answer_list'] = 'Typ der Aktion (z.B. "Quizversuch gestartet") kodiert als Zahl
+$string['help_faq_data_storage_answer_list'] = 'Typ der Aktion (z.B. "Resource angesehen")
 Uhrzeit (sekundengenau)
-Betroffener Kurs (ID des Kurses) in dem die Aktion durchgeführt wurde
-Betroffener Kontext (z.B. die ID des Quizzes das gestartet wurde)
-Betoffenes Objekt (z.B. der Quizversuch, der gestartet wurde)
-Betriebssystem und Browser (z.B. "Windows 10" und "Firefox") kodiert als Zahl (Detaillierte Browser- oder Betriebssystemversionen werden nicht gespeichert)';
+Betroffener Kurs in dem die Aktion durchgeführt wurde
+Betroffener Kontext (z.B. die Resource die angesehen wurde)
+Betriebssystem und Browser (z.B. "Windows 10" und "Firefox"), detaillierte Browser- oder Betriebssystemversionen werden nicht gespeichert';
 
 $string['help_faq_privacy_threshold_question'] = 'Warum werden manche Werte als "< {$a}" angezeigt?';
 $string['help_faq_privacy_threshold_answer'] = 'Aus Datenschutzgründen werden aggregierte Daten erst dargestellt, wenn mindestens {$a} Datensätze vorhanden sind.';
@@ -96,8 +95,8 @@ $string['help_faq_privacy_threshold_answer'] = 'Aus Datenschutzgründen werden a
 $string['help_faq_visibility_question'] = 'Wer kann auf die Learning Analytics-Statistiken zugreifen?';
 $string['help_faq_visibility_answer'] = 'Um größtmögliche Transparenz zu gewährleisten, können die angezeigten Daten sowohl von den Managern/Inhabern als auch von den Teilnehmer/innen des Kurses eingesehen werden.';
 
-$string['help_faq_developer_question'] = 'Durch wen wird das Angebot entwickelt und wo erhalten ich weitere Informationen?';
-$string['help_faq_developer_answer'] = 'Die Entwicklung des Learning Analytics Angebot geschieht durch die RWTH Aachen University.
+$string['help_faq_developer_question'] = 'Durch wen wird das Angebot entwickelt und wo erhalte ich weitere Informationen?';
+$string['help_faq_developer_answer'] = 'Die Entwicklung des Learning Analytics Angebot geschieht durch das Center für Lehr- und Lernservices der RWTH Aachen University.
 Die Entwicklung ist Open Source. Sie können die eingesetzten Algorithmen daher selber überprüfen. Auf den folgenden Seiten können Sie auf weitere Informationen zugreifen:';
 
 // Tour
