@@ -29,26 +29,25 @@ use logstore_lanalytics\devices;
 
 defined('MOODLE_INTERNAL') || die;
 
-const MOBILE_OS = 10000; // See devices.php of logstore plugin.
+const MOBILE_OS = 50; // See devices.php of logstore plugin.
 
 const UNKNOWN = 0;
 const MOODLE_API = devices::OS['Moodle API'];
 
-const WINDOWS = devices::OS['Windows'];
 const MAC = devices::OS['macOS'];
 const LINUX = devices::OS['Linux'];
+const WINDOWS = devices::OS['Windows'];
 
-const CHROME = devices::BROWSER['Chrome'];
-const EDGE = devices::BROWSER['Edge'];
-const FIREFOX = devices::BROWSER['Firefox'];
-const IE = devices::BROWSER['Internet Explorer'];
-const OPERA = devices::BROWSER['Opera'];
-const SAFARI = devices::BROWSER['Safari'];
+const CHROME = devices::BROWSER['Chrome']; // first browser to log
+const SAFARI = devices::BROWSER['Safari']; // last browser to log
 
 const IOS = devices::OS['iOS'];
 const ANDROID = devices::OS['Android'];
 
-const RANGE = 1000;
+const OS_RANGE = 10;
+const OS_MULTIPLIER = 100;
+
+const BROWSERLIST = ['chrome', 'edge', 'firefox', 'ie', 'opera', 'safari'];
 
 class logger {
 
@@ -85,14 +84,15 @@ class logger {
                     'mobile_other' => 0
                 ];
             }
-            $os = $event['os'];
-            $browser = $event['browser'];
+            $device = $event['device'];
+            $os = floor($device / OS_MULTIPLIER);
+            $browser = $device % OS_MULTIPLIER;
 
             $platform = 'other';
-            if ($os >= MOBILE_OS) {
-                $platform = 'mobile';
-            } else if ($os === MOODLE_API) {
+            if ($os === MOODLE_API) {
                 $platform = 'api';
+            } else if ($os >= MOBILE_OS) {
+                $platform = 'mobile';
             } else if ($os !== UNKNOWN) {
                 $platform = 'desktop';
             }
@@ -100,35 +100,25 @@ class logger {
 
             if ($platform === 'desktop') {
                 $desktopos = 'other';
-                if ($os >= WINDOWS && $os < (WINDOWS + RANGE)) {
+                if ($os >= WINDOWS && $os < (WINDOWS + OS_RANGE)) {
                     $desktopos = 'windows';
-                } else if ($os >= MAC && $os < (MAC + RANGE)) {
+                } else if ($os >= MAC && $os < (MAC + OS_RANGE)) {
                     $desktopos = 'mac';
-                } else if ($os >= LINUX && $os < (LINUX + RANGE)) {
+                } else if ($os >= LINUX && $os < (LINUX + OS_RANGE)) {
                     $desktopos = 'linux';
                 }
                 $bycourse[$courseid]['os_' . $desktopos] += 1;
 
                 $desktopbrowser = 'other';
-                if ($browser >= CHROME && $browser < (CHROME + RANGE)) {
-                    $desktopbrowser = 'chrome';
-                } else if ($browser >= EDGE && $browser < (EDGE + RANGE)) {
-                    $desktopbrowser = 'edge';
-                } else if ($browser >= FIREFOX && $browser < (FIREFOX + RANGE)) {
-                    $desktopbrowser = 'firefox';
-                } else if ($browser >= IE && $browser < (IE + RANGE)) {
-                    $desktopbrowser = 'ie';
-                } else if ($browser >= OPERA && $browser < (OPERA + RANGE)) {
-                    $desktopbrowser = 'opera';
-                } else if ($browser >= SAFARI && $browser < (SAFARI + RANGE)) {
-                    $desktopbrowser = 'safari';
+                if ($browser >= CHROME && $browser <= SAFARI) {
+                    $desktopbrowser = BROWSERLIST[$browser - CHROME];
                 }
                 $bycourse[$courseid]['browser_' . $desktopbrowser] += 1;
             } else if ($platform === 'mobile') {
                 $mobileos = 'other';
-                if ($os >= IOS && $os < (IOS + RANGE)) {
+                if ($os >= IOS && $os < (IOS + OS_RANGE)) {
                     $mobileos = 'ios';
-                } else if ($os >= ANDROID && $os < (ANDROID + RANGE)) {
+                } else if ($os >= ANDROID && $os < (ANDROID + OS_RANGE)) {
                     $mobileos = 'android';
                 }
                 $bycourse[$courseid]['mobile_' . $mobileos] += 1;
