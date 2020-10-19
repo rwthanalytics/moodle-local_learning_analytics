@@ -1,10 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.11.0]
+## [0.11.0] - 2020-10-19
 ### Changed
 - Heatmap colors and look changed
-- Minor changes in FAQ page
+- Minor text changes in FAQ page
+- Activities page: "Clear filter" link added
 ### Fixed
 - 2 bugs in activities page:
   - Activities with the same name were merged previously (this was not intended)

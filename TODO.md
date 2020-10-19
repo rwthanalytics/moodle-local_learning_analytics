@@ -137,7 +137,7 @@
   - [ ] Removes customfield
   - [ ] Removes user tour
 - [ ] Add new reports to upgrade.php script
-- [ ] ~~Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)~~ => it's already in there
+- [x] ~~Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)~~ => it's already in there
 - [ ] Accessibility: Add alt texts to images/icons, add aria-labels where needed
   - [x] Check if color blindness is respected
   - [ ] Give graph meaningful aria labels
@@ -151,6 +151,8 @@
 ## For later...
 - [ ] Users of our plugin still have the `lalog_browser_os` table installed (RWTH + HRW)
   - [ ] Plan: Get the data and then put uninstall routine into upgrade
+  - [ ] Remove this in a future upgrade?
+  - [ ] Rethink the current structure of sub plugins?
 - [ ] Describe subplugins in README
   - [ ] `lareport`
   - [ ] `lalog`
