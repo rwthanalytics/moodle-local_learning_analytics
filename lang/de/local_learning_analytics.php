@@ -25,6 +25,7 @@
 $string['pluginname'] = 'Learning Analytics';
 
 $string['learning_analytics'] = 'Learning Analytics';
+$string['navigation_link'] = 'Zugriffsstatistiken';
 
 $string['subplugintype_lareport'] = 'Report';
 $string['subplugintype_lareport_plural'] = 'Reports';
