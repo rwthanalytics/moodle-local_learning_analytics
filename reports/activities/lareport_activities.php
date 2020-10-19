@@ -208,9 +208,14 @@ class lareport_activities extends report_base {
         $filtervalue = $filtertext === null ? '' : htmlspecialchars($filtertext);
         $filteractlangstr = get_string('filter_by_name', 'lareport_activities');
         $filterlangstr = get_string('filter', 'lareport_activities');
+        $removefilterlink = '';
+        if ($filtertext !== null) {
+            $removefilterlang = get_string('remove_filter', 'lareport_activities');
+            $removefilterlink = " (<a href='?course={$courseid}'>{$removefilterlang}</a>)";
+        }
         $filterprefix = '<form class="headingfloater" action="activities" method="get">
         <div class="form-inline">
-            <label for="filterinput">' . $filteractlangstr . ':</label>
+            <label for="filterinput">' . $filteractlangstr . $removefilterlink . ':</label>
             <div class="input-group">
                 <input type="text" class="form-control" name="filter" value="'. $filtervalue . '">
                 <div class="input-group-append"><button class="btn btn-secondary" type="submit">' . $filterlangstr . '</button></div>
@@ -218,7 +223,7 @@ class lareport_activities extends report_base {
         </div><input type="hidden" name="course" value ="'.$courseid.'"/>
         </form>';
 
-        if ($maxhits === 0) {
+        if ($maxhits < $privacythreshold) {
             $heading = self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix);
             if (!empty($filtertext)) {
                 return [$heading,get_string('no_data_to_show_filter', 'lareport_activities')];
