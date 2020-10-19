@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.11.1] - 2020-10-19
+### Changed
+- Navigation link renamed to Usage Statistics / Zugriffsstatistiken
+
 ## [0.11.0] - 2020-10-19
 ### Changed
 - Heatmap colors and look changed
