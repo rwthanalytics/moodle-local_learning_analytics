@@ -22,7 +22,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Heatmap of hits';
+$string['pluginname'] = 'Heatmap of Hits';
 $string['introduction'] = 'The following figure visualizes all hits as a weekly heatmap.
 Each hit is mapped to its corresponding time on the X-axis and to the corresponding weekday on the Y-axis.
 Hereby it can be seen in which periods of time the most hits take place.';

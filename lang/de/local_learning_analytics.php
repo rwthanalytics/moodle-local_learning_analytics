@@ -27,10 +27,10 @@ $string['pluginname'] = 'Learning Analytics';
 $string['learning_analytics'] = 'Learning Analytics';
 $string['navigation_link'] = 'Zugriffsstatistiken';
 
-$string['subplugintype_lareport'] = 'Report';
-$string['subplugintype_lareport_plural'] = 'Reports';
-$string['subplugintype_laoutput'] = 'Output';
-$string['subplugintype_laoutput_plural'] = 'Outputs';
+$string['subplugintype_lareport'] = 'L.A. Report';
+$string['subplugintype_lareport_plural'] = 'L.A. Reports';
+$string['subplugintype_lalog'] = 'L.A. Log';
+$string['subplugintype_lalog_plural'] = 'L.A. Logs';
 
 
 $string['show_full_list'] = 'Mehr anzeigen';

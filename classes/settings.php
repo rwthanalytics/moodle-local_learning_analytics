@@ -56,7 +56,7 @@ abstract class settings {
 
         global $CFG, $DB;
         if ($CFG->version < 2019052000) {
-            // The option is only supported since 3.7 (because of customfields)
+            // The option is only supported since Moodle version 3.7 (because of customfields)
             return;
         }
 

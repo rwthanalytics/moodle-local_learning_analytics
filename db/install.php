@@ -24,6 +24,8 @@
 
 use local_learning_analytics\report_list;
 
+defined('MOODLE_INTERNAL') || die();
+
 function xmldb_local_learning_analytics_install() {
     global $DB, $CFG;
 
