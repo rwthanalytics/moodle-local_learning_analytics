@@ -55,6 +55,7 @@ class lareport_weekheatmap extends report_base {
         //     $timeformat = get_config(null, 'calendar_site_timeformat');
         // }
 
+        $maxvalue = 0;
         $hitsstr = get_string('hits', 'lareport_weekheatmap');
         $heatpoints = query_helper::query_heatmap($courseid);
         for ($d = 0; $d < 7; $d += 1) {
@@ -67,8 +68,10 @@ class lareport_weekheatmap extends report_base {
                 $text = $datapoint;
                 if ($datapoint < $privacythreshold) {
                     $text = '< ' . $privacythreshold;
+                    $datapoint = 0;
                 }
                 $daydata[] = $datapoint;
+                $maxvalue = max($datapoint, $maxvalue);
                 $hourstr = str_pad($h, 2, '0', STR_PAD_LEFT);
                 $x = "{$hourstr}:00 - {$hourstr}:59";
                 $xstrs[] = $x;
@@ -98,7 +101,9 @@ class lareport_weekheatmap extends report_base {
                 [1,    "#00549F"], // RWTH-blue
             ],
             'xgap' => 3,
-            'ygap' => 3
+            'ygap' => 3,
+            'zmin' => 0,
+            'zmax' => max(1, $maxvalue),
         ]);
         $layout = new stdClass();
         $layout->margin = [ 't' => 10, 'r' => 20, 'l' => 80, 'b' => 80 ];
