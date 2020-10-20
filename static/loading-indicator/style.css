@@ -1,0 +1,100 @@
+.loader {
+    width: 6px;
+    height: 6px;
+    animation: loadinganim 1s linear normal infinite;
+    position: relative;
+    left: 100px;
+    border-radius: 50%;
+    margin: 50px;
+    font-size: 6px;
+}
+
+@keyframes loadinganim {
+    0% {
+        box-shadow:
+        -6em 2em 0 0.2em #000,
+        -4em 2em 0 0 #ccc,
+        -2em 2em 0 0 #ccc,
+        0 2em 0 0 #ccc,
+        2em 2em 0 0 #ccc,
+        4em 2em 0 0 #ccc,
+        6em 2em 0 0 #ccc;
+    }
+
+    14.3% {
+        box-shadow:
+        -6em 2em 0 0 #ccc,
+        -4em 2em 0 0.2em #000,
+        -2em 2em 0 0 #ccc,
+        0 2em 0 0 #ccc,
+        2em 2em 0 0 #ccc,
+        4em 2em 0 0 #ccc,
+        6em 2em 0 0 #ccc;
+    }
+
+    28.6% {
+        box-shadow:
+        -6em 2em 0 0 #ccc,
+        -4em 2em 0 0 #ccc,
+        -2em 2em 0 0.2em #000,
+        0 2em 0 0 #ccc,
+        2em 2em 0 0 #ccc,
+        4em 2em 0 0 #ccc,
+        6em 2em 0 0 #ccc;
+    }
+
+    42.85% {
+        box-shadow:
+        -6em 2em 0 0 #ccc,
+        -4em 2em 0 0 #ccc,
+        -2em 2em 0 0 #ccc,
+        0 2em 0 0.2em #000,
+        2em 2em 0 0 #ccc,
+        4em 2em 0 0 #ccc,
+        6em 2em 0 0 #ccc;
+    }
+
+    57.15% {
+        box-shadow:
+        -6em 2em 0 0 #ccc,
+        -4em 2em 0 0 #ccc,
+        -2em 2em 0 0 #ccc,
+        0 2em 0 0 #ccc,
+        2em 2em 0 0.2em #000,
+        4em 2em 0 0 #ccc,
+        6em 2em 0 0 #ccc;
+    }
+
+    71.4% {
+        box-shadow:
+        -6em 2em 0 0 #ccc,
+        -4em 2em 0 0 #ccc,
+        -2em 2em 0 0 #ccc,
+        0 2em 0 0 #ccc,
+        2em 2em 0 0 #ccc,
+        4em 2em 0 0.2em #000,
+        6em 2em 0 0 #ccc;
+    }
+
+    85.7% {
+        box-shadow:
+        -6em 2em 0 0 #ccc,
+        -4em 2em 0 0 #ccc,
+        -2em 2em 0 0 #ccc,
+        0 2em 0 0 #ccc,
+        2em 2em 0 0 #ccc,
+        4em 2em 0 0 #ccc,
+        6em 2em 0 0.2em #000;
+    }
+
+    100% {
+        box-shadow:
+        -6em 2em 0 0.2em #000,
+        -4em 2em 0 0 #ccc,
+        -2em 2em 0 0 #ccc,
+        0 2em 0 0 #ccc,
+        2em 2em 0 0 #ccc,
+        4em 2em 0 0 #ccc,
+        6em 2em 0 0 #ccc;
+    }
+}

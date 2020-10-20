@@ -87,7 +87,7 @@ table.generaltable.latable.quiztable td.c0 {
 
 /* loading animation */
 .plotly-wrapper {
-    background-image: url('./loading-indicator.gif');
+    background-image: url('./loading-indicator2.gif');
     background-position: center center;
     background-repeat: no-repeat;
     overflow:hidden;
