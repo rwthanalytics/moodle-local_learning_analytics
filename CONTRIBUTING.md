@@ -14,6 +14,17 @@
 - `git push --tags`
 
 
+## Versioning
+
+## Changelog
+Every changelog should be noted in the [CHANGELOG](./CHANGELOG.md) file. The logstore plugin has it's own changelog file.
+
+### Major / Minor / Patch releases
+- We'll release version 1 as soon as we want to publish the plugin in the plugin store.
+- Major release (1 -> 2): When the plugin structure changes or any *major* or breaking changes happen.
+- Minor release (1.1 -> 1.2): New features.
+- Patch release (1.1.0 -> 1.1.1): In case of bugs that are found outside of our normal release plan.
+
 ## Development
 
 ### JavaScript Development
