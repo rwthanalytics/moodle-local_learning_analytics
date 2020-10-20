@@ -1,11 +1,11 @@
 # Learning Analytics for Moodle
 
-This plugin really consists of two plugins:
+This Learning Analytics solution consists of two plugins:
 
-- `logstore_lanalytics`: Logs the events to the database
-- `local_learning_analytics`: Shows the Learning Analytics user interface
+- [`local_learning_analytics`](https://github.com/rwthanalytics/moodle-local_learning_analytics): User Interface (this plugin)
+- [`logstore_lanalytics`](https://github.com/rwthanalytics/moodle-logstore_lanalytics): Logs the events to the database
 
-The first plugin (`logstore`) is a dependecy of the second one. Therefore, it should be installed first.
+The second plugin (`logstore`) is a dependecy of the first one. To keep documentation in one place, you find all documentation in this repository.
 
 ## Installation
 
@@ -148,13 +148,23 @@ There is currently only a single capability `local/learning_analytics:view_stati
 - `editingteacher`
 - `manager`
 
+## Changelog
+Every change is documented via GIT. In addition, we create a summary for every version in separate changelog files. All important changes will be documented there. We follow the guides from [keepachangelog](https://keepachangelog.com/).
+
+Each of the plugins has a separate changelog, which you find here:
+
+- `local_learning_analytics`: [CHANGELOG](./CHANGELOG.md)
+- `logstore_lanalytics`: [CHANGELOG](https://github.com/rwthanalytics/moodle-logstore_lanalytics/blob/master/CHANGELOG.md)
+
 ## Third-party libraries
 
-- Plotly.js: <https://plotly.com/javascript/>
+The following third-party libraries are used in this project:
+
+- Plotly.js: <https://plotly.com/javascript/> (MIT license)
 
 
 <details>
-<summary>View license of Plotly.js</summary>
+<summary>View full license of Plotly.js</summary>
 <p>
 
 ```
@@ -188,4 +198,4 @@ THE SOFTWARE.
 [GPL](./LICENSE)
 
 ## Contributing
-Checkout [Contributing guide](./CONTRIBUTING).
+Checkout the [contributing guide](./CONTRIBUTING).
