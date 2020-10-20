@@ -56,6 +56,7 @@ class query_helper {
         ORDER BY heatpoint
 SQL;
 
+        return \local_learning_analytics\demo::data('weekheatmap', 'heatmap');
         return $DB->get_records_sql($query, [$mondaytimestamp, $courseid]);
     }
 }

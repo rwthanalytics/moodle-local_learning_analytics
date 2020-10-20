@@ -32,6 +32,8 @@ require_login();
 
 global $PAGE, $USER, $DB;
 
+\local_learning_analytics\demo::setup();
+
 $courseid = required_param('course', PARAM_INT);
 $showtour = optional_param('tour', 0, PARAM_INT) === 1;
 $context = context_course::instance($courseid, MUST_EXIST);

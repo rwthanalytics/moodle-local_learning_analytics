@@ -58,6 +58,7 @@ class query_helper {
                 AND e.courseid = ?;
 SQL;
 
+        return \local_learning_analytics\demo::data('learners', 'total');
         $params = array_merge($studentrolenames, [$courseid]);
         return (int) $DB->get_field_sql($query, $params, MUST_EXIST);
     }
@@ -126,6 +127,9 @@ SQL;
 
         $threshold = max(1, $privacythreshold);
         $params = array_merge($studentrolenames, [$courseid, $threshold]);
+
+        return \local_learning_analytics\demo::data('learners', 'overlap');
+
         return $DB->get_records_sql($query, $params);
     }
 

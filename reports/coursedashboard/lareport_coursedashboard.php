@@ -129,7 +129,7 @@ class lareport_coursedashboard extends report_base {
             $startofweektimestamp = $date->getTimestamp();
             $date->modify('+6 days');
 
-            if ($startofweektimestamp < $now) {
+            if ($i < \local_learning_analytics\demo::data('coursedashboard', 'plot_weeks')) {
                 // Date is in the past.
                 $yclicks[] = $clickcount;
 

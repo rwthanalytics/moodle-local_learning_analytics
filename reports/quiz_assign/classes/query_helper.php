@@ -55,6 +55,7 @@ class query_helper {
         GROUP BY q.id
 SQL;
 
+        return \local_learning_analytics\demo::data('quiz_assign', 'quiz');
         return $DB->get_records_sql($query, [$courseid]);
     }
 
@@ -82,6 +83,7 @@ SQL;
             gi.grademax
 SQL;
 
+        return \local_learning_analytics\demo::data('quiz_assign', 'assign');
         return $DB->get_records_sql($query, [$courseid]);
     }
 }

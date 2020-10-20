@@ -64,6 +64,7 @@ class query_helper {
         GROUP BY cm.id, m.name
 SQL;
 
+        return \local_learning_analytics\demo::data('activities', 'data');
         return $DB->get_records_sql($query, $valuesstatemt);
     }
 }

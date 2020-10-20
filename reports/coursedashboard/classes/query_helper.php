@@ -60,6 +60,7 @@ class query_helper {
         ORDER BY week;
 SQL;
 
+        return \local_learning_analytics\demo::data('coursedashboard', 'plot');
         return $DB->get_records_sql($query, [$courseid]);
     }
 
@@ -89,6 +90,8 @@ SQL;
 SQL;
 
         $res = $DB->get_records_sql($query, [$courseid]);
+
+        return \local_learning_analytics\demo::data('coursedashboard', 'users');
 
         return [
             $res[0]->learners ?? 0,
@@ -126,6 +129,7 @@ SQL;
         $previousweek = self::click_count_helper($courseid, $twoweeksago, $oneweekago);
         $thisweek = self::click_count_helper($courseid, $oneweekago, $today);
 
+        return \local_learning_analytics\demo::data('coursedashboard', 'hits');
         return [
             'hits' => [
                 $previousweek->hits,
@@ -163,6 +167,8 @@ SQL;
         ORDER BY hits DESC
         LIMIT 3
 SQL;
+
+        return \local_learning_analytics\demo::data('coursedashboard', 'activities');
 
         return $DB->get_records_sql($query, [$courseid, $oneweekago, max(1, $privacythreshold)]);
     }
@@ -214,6 +220,8 @@ SQL;
 
         $previousweek = self::helper_quiz_and_assigments($courseid, $twoweeksago, $oneweekago);
         $thisweek = self::helper_quiz_and_assigments($courseid, $oneweekago, $today);
+
+        return \local_learning_analytics\demo::data('coursedashboard', 'quiz_assign');
 
         return [$previousweek, $thisweek];
     }
