@@ -139,6 +139,9 @@ Let's consider an example for each case. Assuming, the value is set to `10`, thi
 
 In addition, **aggregated data** (like the number of total clicks on all quizzes) is rounded (down) to a multiple of the threshold. By doing that, the teacher cannot use the aggregated data points to esimated the data points of a specific activity. Let's take the example from above and assume the threshold is set to `10`. Assuming two quiz activities have `22` and `6` clicks on them, they would show as `22` and `< 10` on the individual clicks. If the aggregated data would now show `28`, the teacher could easily calculate the number of clicks on the second quiz. That's why the aggregated shown number is displayed as `20` (rounded down to multiples of the threshold `10`).
 
+## Language support
+The plugin comes with German and English language files.
+
 ## Capabilities
 
 There is currently only a single capability `local/learning_analytics:view_statistics` that decides who is allowed to view the dashboard. By default, the following roles have the cabability (as defined in [access.php](db/access.php)):
@@ -156,43 +159,18 @@ Each of the plugins has a separate changelog, which you find here:
 - `local_learning_analytics`: [CHANGELOG](./CHANGELOG.md)
 - `logstore_lanalytics`: [CHANGELOG](https://github.com/rwthanalytics/moodle-logstore_lanalytics/blob/master/CHANGELOG.md)
 
-## Third-party libraries
+## Third-party libraries and resources
 
 The following third-party libraries are used in this project:
 
-- Plotly.js: <https://plotly.com/javascript/> (MIT license)
+- Plotly.js: <https://plotly.com/javascript/>
+- Material.io icons: <https://material.io/resources/icons/>
 
+See [CREDITS](./docs/CREDITS.md) for more information including full licenses.
 
-<details>
-<summary>View full license of Plotly.js</summary>
-<p>
+## Provided by
 
-```
-The MIT License (MIT)
-
-Copyright (c) 2018 Plotly, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
-</p>
-</details>
+<a href="https://cls.rwth-aachen.de/"><img src="https://cls.rwth-aachen.de/wp-content/uploads/2019/06/rwth_cls_de_rgb.png" alt="Center für Lern- und Lehrservices - RWTH Aachen University" height="80"></a>
 
 ## License
 [GPL](./LICENSE)
