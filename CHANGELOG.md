@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.12.0]
+### Added
+- Uninstall script added that removes the User Tour and customfield (in case that option was used)
+### Changed
+- Replaced loading indicator with own version (due to potential license problems)
+- Improved weekheatmap report to look better in case there are no hits so far
+### Fixed
+- Weekheatmap report would show values below privacy threshold
+
 ## [0.11.1] - 2020-10-19
 ### Changed
 - Navigation link renamed to Usage Statistics / Zugriffsstatistiken
