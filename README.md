@@ -14,7 +14,7 @@ First, download the dependency (`moodle-logstore_lanalytics`) and place the file
 ```
 $ cd MOODLE_PATH
 $ cd admin/tool/log/store
-$ git clone https://git.rwth-aachen.de/laixmo/moodle-logstore_lanalytics.git lanalytics
+$ git clone https://github.com/rwthanalytics/moodle-logstore_lanalytics.git lanalytics
 ```
 
 After that repeat the steps for this plugin and place the files in the `local/learning_analytics` folder.
@@ -22,7 +22,7 @@ After that repeat the steps for this plugin and place the files in the `local/le
 ```
 $ cd MOODLE_PATH
 $ cd local
-$ git clone https://git.rwth-aachen.de/laixmo/moodle-local_learning_analytics.git learning_analytics
+$ git clone https://github.com/rwthanalytics/moodle-local_learning_analytics.git learning_analytics
 ```
 
 The end result should look like this:
@@ -30,7 +30,9 @@ The end result should look like this:
 - `MOODLE_PATH/admin/tool/log/store/lanalytics` contains the contents of the `moodle-logstore_lanalytics` plugin
 - `MOODLE_PATH/local/learning_analytics` contains the contents of the `moodle-local_learning_analytics` plugin
 
-Now visit the Moodle administration page or the Moodle starting page and Moodle should detect the new plugins and install them. After installation, there should be a link in each course menu called "Learning Analytics" leading to the following page (`COURSE_ID` is the course id of the corresponding course):
+Now visit the Moodle administration page or the Moodle starting page and Moodle should detect the new plugins and install them. Alternatively, you can install the plugins via [CLI](https://docs.moodle.org/en/Administration_via_command_line). As both plugins are very modular, the local plugin comes with several subplugins (of type `lareport` and `lalog`)
+
+After installation, there should be a link in each course menu called "Learning Analytics" leading to the following page (`COURSE_ID` is the course id of the corresponding course):
 
 ```
 https://MOODLE_INSTALLATION/local/learning_analytics/index.php/reports/coursedashboard?course=COURSE_ID
@@ -84,7 +86,6 @@ The settings page can be found in *Site Administration* -> *Plugins* tab -> *Loc
 - `dataprivacy_threshold`: This value determines how many "data points" a "data set" needs to contain before the data is displayed. See the data privacy section below for more information. By default, the value is `10`.
 - `student_rolenames`: In case the role(s) for students/users in a course is not `student`, you can specify the corresponding role name. In case there are multiple roles that students have, use a single comma. Example: `student,customrole`. By default, the value is `student`.
 - `student_enrols_groupby`: Option to allow merging of multiple courses with the same `shortname` or `fullname` in the parallel/previously heard courses. By default, the value is `course->id` which will not merge any courses by comparing their name.
-- `allow_dashboard_compare`: **(currently disabled)** Activate this options, to allow teachers to compare their course with another one of their courses in the dashboad. The option adds a link to the dashboard allowing the teachers to select another one of their courses. After selecting another course, the week plot will show a dashed line in the background in addition to the current course. By default, the option is disabled.
 
 ## Logstore: Role Tracking
 <a name="roletracking"></a>
@@ -148,9 +149,43 @@ There is currently only a single capability `local/learning_analytics:view_stati
 - `manager`
 
 ## Third-party libraries
-- Loading indicator from <https://icons8.com/preloaders/> "Fountain" (Free)
-    > All GIF and APNG images marked as "Free" are completely free to use in all projects (web and desktop applications, freeware), with the exception of web-site and application templates with commercial basis (e.g. online store template) [...]
-- Plotly.js: <https://plotly.com/javascript/> MIT license
+
+- Plotly.js: <https://plotly.com/javascript/>
+
+
+<details>
+<summary>View license of Plotly.js</summary>
+<p>
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2018 Plotly, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+
+</p>
+</details>
+
+## License
+[GPL](./LICENSE)
 
 ## Contributing
 Checkout [Contributing guide](./CONTRIBUTING).
