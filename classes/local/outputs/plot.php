@@ -148,7 +148,7 @@ class plot extends output_base {
             'id' => $this->id,
             'style' => $style,
             'class' => 'plotly-wrapper',
-            'aria-hidden' => 'true'
+            'role' => 'grid'
         ]);
 
         return $out;

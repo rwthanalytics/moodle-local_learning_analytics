@@ -320,7 +320,7 @@ class lareport_coursedashboard extends report_base {
                     <div class='dashboardbox-icon' aria-hidden='true'>
                         {$icon}
                     </div>
-                    <div id='{$titlearia}_section' class='dashboardbox-header' aria-controls='{$titlearia}_value'>{$titlestr}</div>
+                    <div id='{$titlearia}_section' class='dashboardbox-header' role='button' aria-controls='{$titlearia}_value'>{$titlestr}</div>
                     <div class='dashboardbox-timespan' aria-hidden='true'>{$appendedtext}</div>
                     <div id='{$titlearia}_value' class='dashboardbox-title' aria-label='{$titlearia}({$appendedtext})' aria-describedby='{$titlearia}_section'>{$maintext}</div>
                     <div class='dashboardbox-change' title='{$comparedto}' aria-hidden='true'>{$change}</div>
