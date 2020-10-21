@@ -1,5 +1,20 @@
 # Learning Analytics for Moodle
 
+The following plugins offer a privacy-friendly Learning Analytics solution for Moodle. The plugins integrate into Moodle courses and offer statistics to teachers and students.
+
+<p align="center">
+  <img src="https://files.lfi.rwth-aachen.de/learning-analytics/2020-10-21-preview.gif" height="300">
+</p>
+
+This Learning Analytics solution consists of two plugins.
+
+- [`local_learning_analytics`](https://github.com/rwthanalytics/moodle-local_learning_analytics): User Interface (this plugin)
+- [`logstore_lanalytics`](https://github.com/rwthanalytics/moodle-logstore_lanalytics): Logs the events to the database (dependecy of the first one)
+
+To keep documentation in one place, you find all documentation in this repository.
+
+----------
+
 - [Installation](#installation)
   - [Download](#download)
   - [Activating the logstore](#activating-the-logstore)
@@ -18,13 +33,6 @@
   - [Contributing](#contributing)
 - [Provided by](#provided-by)
 - [License](#license)
-
-This Learning Analytics solution consists of two plugins:
-
-- [`local_learning_analytics`](https://github.com/rwthanalytics/moodle-local_learning_analytics): User Interface (this plugin)
-- [`logstore_lanalytics`](https://github.com/rwthanalytics/moodle-logstore_lanalytics): Logs the events to the database
-
-The second plugin (`logstore`) is a dependecy of the first one. To keep documentation in one place, you find all documentation in this repository.
 
 ## Installation
 
