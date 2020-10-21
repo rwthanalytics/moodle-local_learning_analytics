@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Heatmap der Zugriffe';
+
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine Personenbezogenen Daten';
+
 $string['introduction'] = 'Die folgende Darstellung visualisiert alle Aufrufe als wöchentliche Heatmap.
 Jeder Zugriff wird auf der X-Achse seiner entsprechenden Uhrzeit zugeordnet und auf der Y-Achse dem entsprechenden Wochentag.
 Hierdurch kann abgelesen werden in welchen Zeiträumen die meisten Zugriffe stattfinden.';

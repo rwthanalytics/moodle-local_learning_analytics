@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Activities and Resources';
+
+$string['privacy:metadata'] = 'this plugin does not store any personal data';
+
 $string['introduction'] = 'The above figure shows the hits per activity.
 The order is based on the order of the activities in the course.
 The table below breaks down the hits by activity type.

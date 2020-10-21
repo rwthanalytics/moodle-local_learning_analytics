@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Participants';
+
+$string['privacy:metadata'] = 'this plugin does not store any personal data';
+
 $string['pagename_all'] = 'Full List';
 $string['pagename_courseparticipation'] = 'Learners - Full List';
 $string['introduction'] = 'The following tables show the courses heard by the participants of this course in the past (left) and the courses heard parallel to this course (right).
