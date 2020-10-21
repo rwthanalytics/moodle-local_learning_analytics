@@ -24,7 +24,7 @@
 
 $string['pluginname'] = 'Participants';
 
-$string['privacy:metadata'] = 'this plugin does not store any personal data';
+$string['privacy:metadata'] = 'This plugin does not store any personal data.';
 
 $string['pagename_all'] = 'Full List';
 $string['pagename_courseparticipation'] = 'Learners - Full List';

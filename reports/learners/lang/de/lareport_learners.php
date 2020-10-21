@@ -24,7 +24,7 @@
 
 $string['pluginname'] = 'Teilnehmer/innen';
 
-$string['privacy:metadata'] = 'Dieses Plugin speichert keine Personenbezogenen Daten';
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
 
 $string['pagename_all'] = 'Vollständige Liste';
 $string['pagename_courseparticipation'] = 'Teilnehmer/innen - Vollständige Liste';

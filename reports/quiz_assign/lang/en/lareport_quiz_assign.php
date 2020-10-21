@@ -24,7 +24,7 @@
 
 $string['pluginname'] = 'Quizzes and Assignments';
 
-$string['privacy:metadata'] = 'this plugin does not store any personal data';
+$string['privacy:metadata'] = 'This plugin does not store any personal data.';
 
 $string['quizzes'] = 'Quizzes';
 $string['assignments'] = 'Assignments';

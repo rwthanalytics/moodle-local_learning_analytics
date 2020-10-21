@@ -24,7 +24,7 @@
 
 $string['pluginname'] = 'Learning Analytics Dashboard';
 
-$string['privacy:metadata'] = 'Dieses Plugin speichert keine Personenbezogenen Daten';
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
 
 $string['registered_users'] = 'Teilnehmer/innen';
 $string['active_learners'] = 'Aktive Nutzer';
