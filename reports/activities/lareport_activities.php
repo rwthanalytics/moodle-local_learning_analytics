@@ -78,8 +78,31 @@ class lareport_activities extends report_base {
         $hitsbytypeassoc = [];
 
         $modinfo = get_fast_modinfo($courseid);
-        $allcms = $modinfo->get_cms();
-        $format = \course_get_format($courseid);
+        // $allcms = $modinfo->get_cms();
+        // $format = \course_get_format($courseid);
+
+        // Generating fake data
+        // $mapper = function($cm) use ($format) {
+        //     $section = $cm->get_section_info();
+        //     return (object) [
+        //         'id' => $cm->id,
+        //         'url' => '',
+        //         'visible' => true,
+        //         'modname' => $cm->modname,
+        //         'uservisible' => $cm->uservisible,
+        //         'name' => $cm->name,
+        //         'section' => (object) [
+        //             'id' => $section->id,
+        //             'name' => $format->get_section_name($section),
+        //         ]
+        //     ];
+        // };
+        // $newdata = array_map($mapper, $allcms);
+        // var_export($newdata);
+        // die();
+
+        $allcms = \local_learning_analytics\demo::data('activities', 'cms');
+
         $cms = [];
         foreach ($allcms as $cmid => $cm) { // filter out all modules we don't want to show, that's the list we will be working with
             if ($cm->modname === 'label' || !isset($activities[$cmid]) || !$cm->uservisible
@@ -89,7 +112,8 @@ class lareport_activities extends report_base {
             }
             $cms[] = $cm;
         }
-        $modnameshumanreadable = $modinfo->get_used_module_names();
+        $modnameshumanreadable = get_module_types_names(false);
+        // $modnameshumanreadable = $modinfo->get_used_module_names();
         
         // Create plot at the top
         $x = [];
@@ -112,9 +136,9 @@ class lareport_activities extends report_base {
             
             // dotted lines to separate sections
             $activity = $activities[$cm->id];
-            $section = $cm->get_section_info();
+            $section = $cm->section;
             if ($lastsectionid !== $section->id) {
-                $sections[] = [$i, $format->get_section_name($section)];
+                $sections[] = [$i, $section->name];
                 $lastsectionid = $section->id;
             }
             $x[] = $i;
@@ -285,7 +309,7 @@ class lareport_activities extends report_base {
             }
             $activity = $activities[$cm->id];
             $namecell = $cm->name;
-            $section = $cm->get_section_info();
+            $section = $cm->section;
             if (!$cm->visible) {
                 $namecell = "<span class='dimmed_text'>{$namecell} {$hiddentext}</span>";
             }
@@ -293,7 +317,7 @@ class lareport_activities extends report_base {
                 $tabledetails->add_row([
                     $namecell,
                     $modnameshumanreadable[$cm->modname],
-                    $format->get_section_name($section),
+                    $section->name,
                     table::fancyNumberCell(
                         (int) $activity->hits,
                         $maxhits,

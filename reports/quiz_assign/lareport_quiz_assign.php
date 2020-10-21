@@ -42,11 +42,12 @@ class lareport_quiz_assign extends report_base {
         $maxusers = 1;
 
         $dbquizzes = query_helper::query_quiz($courseid);
-        $modinfo = get_fast_modinfo($courseid);
-        if (!isset($modinfo->instances['quiz'])) {
-            return [];
-        }
-        $quizzes = $modinfo->instances['quiz'];
+        // $modinfo = get_fast_modinfo($courseid);
+        // if (!isset($modinfo->instances['quiz'])) {
+        //     return [];
+        // }
+        // $quizzes = $modinfo->instances['quiz'];
+        $quizzes = \local_learning_analytics\demo::data('quiz_assign', 'quiz_cms');
         $hiddentext = get_string('hiddenwithbrackets');
         foreach ($quizzes as $quizid => $cm) {
             if (!$cm->uservisible) {
@@ -100,11 +101,12 @@ class lareport_quiz_assign extends report_base {
         $maxhandins = 1;
 
         $dbassignments = query_helper::query_assignment($courseid);
-        $modinfo = get_fast_modinfo($courseid);
-        if (!isset($modinfo->instances['assign'])) {
-            return [];
-        }
-        $assignments = $modinfo->instances['assign'];
+        // $modinfo = get_fast_modinfo($courseid);
+        // if (!isset($modinfo->instances['assign'])) {
+        //     return [];
+        // }
+        // $assignments = $modinfo->instances['assign'];
+        $assignments = \local_learning_analytics\demo::data('quiz_assign', 'assign_cms');
         $hiddentext = get_string('hiddenwithbrackets');
         foreach ($assignments as $assignid => $cm) {
             if (!$cm->uservisible) {

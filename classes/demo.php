@@ -34,7 +34,7 @@ class demo {
 
     static public function data($page, $component) {
         if (empty(self::$demodata[$page][$component])) {
-            throw new Error('Demo Data not found: ' . $page . ' / ' . $component);
+            throw new \Error('Demo Data not found: ' . $page . ' / ' . $component);
         }
         return self::$demodata[$page][$component];
     }
@@ -331,6 +331,14 @@ class demo {
 
             /*--************************************************ Quiz / Assignments */
             'quiz_assign' => [
+                'quiz_cms' => [
+                    671 => (object) [ 'url' => '', 'visible' => true, 'uservisible' => true, 'name' => 'Quiz Introduction' ],
+                    675 => (object) [ 'url' => '', 'visible' => true, 'uservisible' => true, 'name' => 'Quiz Server' ],
+                    672 => (object) [ 'url' => '', 'visible' => true, 'uservisible' => true, 'name' => 'Quiz PHP' ],
+                    673 => (object) [ 'url' => '', 'visible' => true, 'uservisible' => true, 'name' => 'Quiz Databases' ],
+                    674 => (object) [ 'url' => '', 'visible' => true, 'uservisible' => true, 'name' => 'Quiz JavaScript' ],
+                    676 => (object) [ 'url' => '', 'visible' => true, 'uservisible' => true, 'name' => 'Quiz Security' ],
+                ],
                 'quiz' => [
                     671 => (object) [
                         'result' => '0.8946360151667',
@@ -369,6 +377,15 @@ class demo {
                         'attempts' => '273',
                     ],
                 ],
+                'assign_cms' => [
+                    34 => (object) [ 'visible' => true, 'uservisible' => true, 'url' => '', 'name' => 'Exercise Introduction' ],
+                    38 => (object) [ 'visible' => true, 'uservisible' => true, 'url' => '', 'name' => 'Exercise Server' ],
+                    35 => (object) [ 'visible' => true, 'uservisible' => true, 'url' => '', 'name' => 'Exercise PHP' ],
+                    36 => (object) [ 'visible' => true, 'uservisible' => true, 'url' => '', 'name' => 'Exercise Databases' ],
+                    37 => (object) [ 'visible' => true, 'uservisible' => true, 'url' => '', 'name' => 'Exercise JavaScript' ],
+                    39 => (object) [ 'visible' => true, 'uservisible' => true, 'url' => '', 'name' => 'Exercise Misc.' ],
+                    40 => (object) [ 'visible' => true, 'uservisible' => true, 'url' => '', 'name' => 'Project hand in' ],
+                ],
                 'assign' => [
                     34 => (object) [
                         'handins' => '62',
@@ -395,6 +412,64 @@ class demo {
 
             /*--************************************************ Quiz / Assignments */
             'activities' => [
+                'cms' => [
+                        7764 => (object) [ 'id' => 7764, 'visible' => true, 'modname' => 'forum','uservisible' => true, 'name' => 'Ankündigungen',
+                            'section' => (object) ['id' => 1118, 'name' => 'Allgemeines']],
+                        7765 => (object) [ 'id' => 7765, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Schedule',
+                            'section' => (object) ['id' => 1126, 'name' => 'General']],
+                        7790 => (object) [ 'id' => 7790, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Code Samples',
+                            'section' => (object) ['id' => 1126, 'name' => 'General']],
+                        7791 => (object) [ 'id' => 7791, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides Introduction (Kopie)',
+                            'section' => (object) ['id' => 1119, 'name' => 'Introduction']],
+                        7766 => (object) [ 'id' => 7766, 'visible' => true, 'modname' => 'assign','uservisible' => true, 'name' => 'Exercise Introduction',
+                            'section' => (object) ['id' => 1119, 'name' => 'Introduction']],
+                        7767 => (object) [ 'id' => 7767, 'visible' => true, 'modname' => 'quiz','uservisible' => true, 'name' => 'Quiz Introduction',
+                            'section' => (object) ['id' => 1119, 'name' => 'Introduction']],
+                        7777 => (object) [ 'id' => 7777, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides Server',
+                            'section' => (object) ['id' => 1123, 'name' => 'Server']],
+                        7778 => (object) [ 'id' => 7778, 'visible' => true, 'modname' => 'assign','uservisible' => true, 'name' => 'Exercise Server',
+                            'section' => (object) ['id' => 1123, 'name' => 'Server']],
+                        7779 => (object) [ 'id' => 7779, 'visible' => true, 'modname' => 'quiz','uservisible' => true, 'name' => 'Quiz Server',
+                            'section' => (object) ['id' => 1123, 'name' => 'Server']],
+                        7768 => (object) [ 'id' => 7768, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides PHP',
+                            'section' => (object) ['id' => 1120, 'name' => 'PHP']],
+                        7769 => (object) [ 'id' => 7769, 'visible' => true, 'modname' => 'assign','uservisible' => true, 'name' => 'Exercise PHP',
+                            'section' => (object) ['id' => 1120, 'name' => 'PHP']],
+                        7770 => (object) [ 'id' => 7770, 'visible' => true, 'modname' => 'quiz','uservisible' => true, 'name' => 'Quiz PHP',
+                            'section' => (object) ['id' => 1120, 'name' => 'PHP']],
+                        7771 => (object) [ 'id' => 7771, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides Databases',
+                            'section' => (object) ['id' => 1121, 'name' => 'Databases']],
+                        7772 => (object) [ 'id' => 7772, 'visible' => true, 'modname' => 'assign','uservisible' => true, 'name' => 'Exercise Databases',
+                            'section' => (object) ['id' => 1121, 'name' => 'Databases']],
+                        7773 => (object) [ 'id' => 7773, 'visible' => true, 'modname' => 'quiz','uservisible' => true, 'name' => 'Quiz Databases',
+                            'section' => (object) ['id' => 1121, 'name' => 'Databases']],
+                        7774 => (object) [ 'id' => 7774, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides JavaScript',
+                            'section' => (object) ['id' => 1122, 'name' => 'JavaScript']],
+                        7775 => (object) [ 'id' => 7775, 'visible' => true, 'modname' => 'assign','uservisible' => true, 'name' => 'Exercise JavaScript',
+                            'section' => (object) ['id' => 1122, 'name' => 'JavaScript']],
+                        7776 => (object) [ 'id' => 7776, 'visible' => true, 'modname' => 'quiz','uservisible' => true, 'name' => 'Quiz JavaScript',
+                            'section' => (object) ['id' => 1122, 'name' => 'JavaScript']],
+                        7780 => (object) [ 'id' => 7780, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides Security',
+                            'section' => (object) ['id' => 1124, 'name' => 'Misc.']],
+                        7781 => (object) [ 'id' => 7781, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides Java',
+                            'section' => (object) ['id' => 1124, 'name' => 'Misc.']],
+                        7782 => (object) [ 'id' => 7782, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides Standards',
+                            'section' => (object) ['id' => 1124, 'name' => 'Misc.']],
+                        7783 => (object) [ 'id' => 7783, 'visible' => true, 'modname' => 'assign','uservisible' => true, 'name' => 'Exercise Misc.',
+                            'section' => (object) ['id' => 1124, 'name' => 'Misc.']],
+                        7784 => (object) [ 'id' => 7784, 'visible' => true, 'modname' => 'quiz','uservisible' => true, 'name' => 'Quiz Security',
+                            'section' => (object) ['id' => 1124, 'name' => 'Misc.']],
+                        7785 => (object) [ 'id' => 7785, 'visible' => true, 'modname' => 'url','uservisible' => true, 'name' => 'Practice: Security',
+                            'section' => (object) ['id' => 1124, 'name' => 'Misc.']],
+                        7789 => (object) [ 'id' => 7789, 'visible' => true, 'modname' => 'resource','uservisible' => true, 'name' => 'Slides Project',
+                            'section' => (object) ['id' => 1125, 'name' => 'Project']],
+                        7788 => (object) [ 'id' => 7788, 'visible' => true, 'modname' => 'page','uservisible' => true, 'name' => 'Project information',
+                            'section' => (object) ['id' => 1125, 'name' => 'Project']],
+                        7787 => (object) [ 'id' => 7787, 'visible' => true, 'modname' => 'wiki','uservisible' => true, 'name' => 'Wiki: Projects',
+                            'section' => (object) ['id' => 1125, 'name' => 'Project']],
+                        7786 => (object) [ 'id' => 7786, 'visible' => true, 'modname' => 'assign','uservisible' => true, 'name' => 'Project hand in',
+                            'section' => (object) ['id' => 1125, 'name' => 'Project']],
+                ],
                 'data' => [
                     7765 => (object) [ 'modname' => 'resource', 'hits' => 89 ],
                     7790 => (object) [ 'modname' => 'resource', 'hits' => 44 ],
