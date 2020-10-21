@@ -320,9 +320,9 @@ class lareport_coursedashboard extends report_base {
                     <div class='dashboardbox-icon' aria-hidden='true'>
                         {$icon}
                     </div>
-                    <div class='dashboardbox-header' aria-hidden='true'>{$titlestr}</div>
+                    <div id='{$titlearia}_section' class='dashboardbox-header' aria-controls='{$titlearia}_value'>{$titlestr}</div>
                     <div class='dashboardbox-timespan' aria-hidden='true'>{$appendedtext}</div>
-                    <div class='dashboardbox-title' aria-label='{$titlearia}({$appendedtext})'>{$maintext}</div>
+                    <div id='{$titlearia}_value' class='dashboardbox-title' aria-label='{$titlearia}({$appendedtext})' aria-describedby='{$titlearia}_section'>{$maintext}</div>
                     <div class='dashboardbox-change' title='{$comparedto}' aria-hidden='true'>{$change}</div>
                 </div>
             </div>
@@ -417,9 +417,9 @@ class lareport_coursedashboard extends report_base {
         return ["<div class='col-lg-3'>
             <div class='dashboardbox box-most_clicked_module'>
                 <div class='dashboardbox-icon' aria-hidden='true'>{$icon}</div>
-                <div class='dashboardbox-header' aria-hidden='true'><a href='{$link}'>{$titlestr}</a></div>
+                <div id='{$titlestr}_section' class='dashboardbox-header' aria-controls='{$titlestr}_value'><a href='{$link}'>{$titlestr}</a></div>
                 <div class='dashboardbox-timespan' aria-hidden='true'>{$last7days}</div>
-                <table class='dashboardbox-table' aria-label='{$titlestr}($last7days})'><tr>{$mergedrows}</tr></table>
+                <table id='{$titlestr}_value' class='dashboardbox-table' aria-label='{$titlestr}($last7days})' aria-describedby='{$titlestr}_section'><tr>{$mergedrows}</tr></table>
             </div>
         </div>"];
     }
