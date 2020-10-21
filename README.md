@@ -31,7 +31,7 @@ The second plugin (`logstore`) is a dependecy of the first one. To keep document
 Requirements:
 
 - Moodle: Version 3.2 or higher (currently testing with 3.6 and 3.9)
-- Database: MySQL or Postgres (other database types have not been tested)
+- Database: MySQL/MariaDB or Postgres (other database types have not been tested)
 
 ### Download
 
