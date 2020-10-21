@@ -24,6 +24,8 @@
 
 $string['pluginname'] = 'Learning Analytics';
 
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
+
 $string['learning_analytics'] = 'Learning Analytics';
 $string['navigation_link'] = 'Zugriffsstatistiken';
 

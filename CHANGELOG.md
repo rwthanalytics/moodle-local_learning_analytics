@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 ## [0.12.0]
 ### Added
 - Uninstall script added that removes the User Tour and customfield (in case that option was used)
+- Privacy providers were added to all (sub)plugin parts as Moodle has its own API to read if personal data is stored (we don't store any personal data)
 ### Changed
 - Replaced loading indicator with own version (due to potential license problems)
 - Improved weekheatmap report to look better in case there are no hits so far
+- Added customfields now have `multilang` strings for English and German, but also have a fallback to show both strings if multilang is disabled
 ### Fixed
 - Weekheatmap report would show values below privacy threshold
 

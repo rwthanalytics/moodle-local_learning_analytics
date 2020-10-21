@@ -28,8 +28,12 @@ namespace local_learning_analytics;
 // So, instead we have to use strings that are english/german
 const STRING_CATEGORY_NAME = 'Learning Analytics';
 const STRING_CATEGORY_DESCRIPTION = 'This category was automatically created by the Learning Analytics plugin (local_learning_analytics). You should not manually delete this.';
-const STRING_FIELD_NAME = 'Enable / Aktivieren';
-const STRING_FIELD_DESCRIPTION = 'Enabling adds the link "Learning Analytics" to your course navigation. /'."\n ".'Die Aktivierung fügt der Kursnavigation den Link "Learning Analytics" hinzu über den Statistiken abrufbar sind.';
+
+// We use multilang strings here with an "invalid" divider in between. That way, if multilang strings are enabled, the corresponding language is used, otherwise
+// both languages (including the divider) will be shown.
+const STRING_FIELD_NAME = '<span lang="en" class="multilang">Enable Usage Statistics</span><span lang="invalid" class="multilang"> / </span><span lang="de" class="multilang">Zugriffsstatistiken aktivieren</span>';
+const STRING_FIELD_DESCRIPTION = '<span lang="en" class="multilang">Enabling adds the link "Usage Statistics" to your course navigation.</span><span lang="invalid" class="multilang"> / ' .
+    "\r\n" . '</span><span lang="de" class="multilang">Die Aktivierung fügt der Kursnavigation den Link "Zugriffsstatistiken" hinzu.</span>';
 
 defined('MOODLE_INTERNAL') || die;
 

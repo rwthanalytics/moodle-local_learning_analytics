@@ -3,24 +3,21 @@
 ## WS 20/21 Before publish
 - [x] License
   - [x] Check license
-- [ ] Create "demo course" for screenshots/documentation purposes
-  - [ ] Constant date on dashboard page, with faked number of students, accesses, etc...
+- [x] Create "demo course" for screenshots/documentation purposes
+  - [x] Constant date on dashboard page, with faked number of students, accesses, etc...
 - [ ] Make a nice README
-  - [ ] Add data privacy information and German data privacy note for Datenschutzerklärung
+  - [x] Add data privacy information and German data privacy note for Datenschutzerklärung
   - [ ] Screenshots of pages
-  - [ ] More information on data storage/use
+  - [x] More information on data storage/use
+- [x] customfield rename to "course statistics"
 - [x] Heatmap
   - [x] Heatmap with zero hits everywhere looks odd...
 - [x] Contributing
   - [x] Explain versions
-- [ ] Wording: "Learning Analytics Angebot" / "Modul" / "Service"
-- [ ] Privacy Provider
-  - [ ] Check implementation, we probably don't need one as there is no personal data in there...
+- [x] Privacy Provider
+  - [x] Check implementation, we probably don't need one as there is no personal data in there...
 - [x] HTML elements
   - [x] Remove div-soup on top-level and use Moodle div's instead
-- [ ] Administration
-  - [ ] Option: Start of the week: Sunday/Monday => respect Setting of Calender in Moodle
-  - [ ] Option: Number of weeks shown in dashboard
 - [x] Add uninstall script that removes our tables
   - [x] Removes all creates tables -> this is actually done automatically by Moodle
   - [x] Removes all data -> same
@@ -28,6 +25,13 @@
   - [x] Removes user tour
 - [ ] Add new reports to upgrade.php script
 - [x] ~~Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)~~ => it's already in there
+
+## WS 20/21 Before Moodle store
+- [ ] Wording: "Learning Analytics Angebot" / "Modul" / "Service"
+- [ ] Test plugin with more multi-language content and check where to use `format_string` when printing activity names
+- [ ] Administration
+  - [ ] Option: Start of the week: Sunday/Monday => respect Setting of Calender in Moodle
+  - [ ] Option: Number of weeks shown in dashboard
 - [ ] Accessibility: Add alt texts to images/icons, add aria-labels where needed
   - [x] Check if color blindness is respected
   - [ ] Give graph meaningful aria labels
@@ -38,6 +42,7 @@
 -------------------
 
 ## For later
+- [ ] Tests
 - [ ] Ideas
   - [ ] Bring back course to compare?
 - [x] Provide an option to allow or disable tracking teachers
@@ -72,7 +77,7 @@
 - [x] Remove browser report
 - [x] For other universities
   - [x] Postgres: Check if database still works
-    - [x] TODO merge from Thorbens branch
+    - [x] TO DO merge from Thorbens branch
   - [x] Log: Improve import script to specify number of weeks to import
 - [x] Change activities report
   - [x] ~~Vertical list?~~ => Not for now

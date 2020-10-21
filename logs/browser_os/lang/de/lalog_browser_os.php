@@ -15,19 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Strings for lalog_browser_os
  *
- *
- * @package     local_learning_analytics
+ * @package     lalog_browser_os
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learning_analytics\privacy;
-
-defined('MOODLE_INTERNAL') || die;
-
-class provider implements \core_privacy\local\metadata\null_provider {
-    public static function get_reason() : string {
-        return 'privacy:metadata';
-    }
-}
+$string['pluginname'] = 'Browser und Betriebssystem Log';
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';

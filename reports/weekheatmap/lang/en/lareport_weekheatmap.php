@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Heatmap of Hits';
+
+$string['privacy:metadata'] = 'This plugin does not store any personal data.';
+
 $string['introduction'] = 'The following figure visualizes all hits as a weekly heatmap.
 Each hit is mapped to its corresponding time on the X-axis and to the corresponding weekday on the Y-axis.
 Hereby it can be seen in which periods of time the most hits take place.';

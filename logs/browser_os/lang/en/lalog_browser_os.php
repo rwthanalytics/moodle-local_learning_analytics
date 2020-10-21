@@ -23,3 +23,4 @@
  */
 
 $string['pluginname'] = 'Browser and Operating System Log';
+$string['privacy:metadata'] = 'This plugin does not store any personal data.';
