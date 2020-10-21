@@ -1,3 +1,7 @@
 {
+    "markdown.extension.toc.levels": "2..3",
+    "files.exclude": {
+        ".vscode": true
+    },
     "files.eol": "\n"
 }
