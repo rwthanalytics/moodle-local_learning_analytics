@@ -22,25 +22,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace lareport_activities\privacy;
+namespace lareport_quiz_assign\privacy;
 
 defined('MOODLE_INTERNAL') || die;
 
-use core_privacy\local\metadata\null_provider;
-
-/**
- * Class provider
- */
-class provider implements  null_provider {
-
-    /**
-     * Get the language string identifier with the component's language
-     * file to explain why this plugin stores no data.
-     *
-     * @return  string
-     * @throws \coding_exception
-     */
-    public static function get_reason(): string {
-        return get_string('privacy:metadata:subplugin', 'local_learning_analytics');
+class provider implements \core_privacy\local\metadata\null_provider {
+    public static function get_reason() : string {
+        return 'privacy:metadata';
     }
 }

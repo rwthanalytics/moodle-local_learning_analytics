@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Tests und Aufgaben';
+
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
+
 $string['quizzes'] = 'Tests';
 $string['assignments'] = 'Aufgaben';
 $string['data_privacy_note'] = 'Aus Datenschutzgründen werden Ergebnisse von weniger als {$a} Teilnehmern nicht angezeigt.';

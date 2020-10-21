@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Teilnehmer/innen';
+
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
+
 $string['pagename_all'] = 'Vollständige Liste';
 $string['pagename_courseparticipation'] = 'Teilnehmer/innen - Vollständige Liste';
 $string['introduction'] = 'Die folgenden Tabellen zeigen die Kurse, die von den Teilnehmer/innen des Kurses in der Vergangenheit gehört wurden (links) sowie die parallel zu diesem Kurs gehörten Kurse (rechts).
