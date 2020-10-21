@@ -154,10 +154,10 @@ The plugin has the following options:
 - `student_rolenames`: In case the role(s) for students/users in a course is not `student`, you can specify the corresponding role name. In case there are multiple roles that students have, use a single comma. Example: `student,customrole`. By default, the value is `student`.
 - `student_enrols_groupby`: Option to allow merging of multiple courses with the same `shortname` or `fullname` in the parallel/previously heard courses. By default, the value is `course->id` which will not merge any courses by comparing their name.
 
-#### Option `course_customfield` of `status`
+#### Option `course_customfield`
 <a name="customfield"></a>
 
-As described above, the option `course_customfield` adds a Moodle customfield to the settings page of your course. Technical details how this works can be found in the Moodle Wiki on [Custom fields API](https://docs.moodle.org/dev/Custom_fields_API).
+**This feature requires Moodle 3.7. In older version of Moodle, this option will be unavailable.** As described above, the option `course_customfield` adds a Moodle customfield to the settings page of your course. Technical details how this works can be found in the Moodle Wiki on [Custom fields API](https://docs.moodle.org/dev/Custom_fields_API).
 
 Before switching to this option, you should be aware of the following:
 
@@ -256,7 +256,7 @@ The plugin comes with German and English language files.
 ### Changelog
 Every change is documented via GIT. In addition, we create a summary for every version in separate changelog files. All important changes will be documented there. We follow the guides from [keepachangelog](https://keepachangelog.com/).
 
-Each of the plugins has a separate changelog, which you find here:
+Each of the plugins has a separate changelog and separate versioning. You can find the changelogs of the projects here:
 
 - `local_learning_analytics`: [CHANGELOG](./CHANGELOG.md)
 - `logstore_lanalytics`: [CHANGELOG](https://github.com/rwthanalytics/moodle-logstore_lanalytics/blob/master/CHANGELOG.md)
