@@ -93,8 +93,6 @@ if ($statussetting === 'course_customfield') {
 }
 
 $PAGE->set_context($context);
-$PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
-$PAGE->set_pagelayout('course');
 
 // Set URL to main path of analytics.
 $currentparams = ['course' => $courseid];
@@ -108,9 +106,13 @@ $PAGE->set_url($url);
 $course = get_course($courseid);
 $PAGE->set_course($course);
 
-// Set title of page.
+// Header of page (we simply use the course name to be consitent with other pages)
+$PAGE->set_pagelayout('course');
+$PAGE->set_heading($course->fullname);
+
+// title of page.
 $coursename = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
-$title = $coursename . ': ' . get_string('learning_analytics', 'local_learning_analytics');
+$title = $coursename . ': ' . get_string('navigation_link', 'local_learning_analytics');
 $PAGE->set_title($title);
 
 $resultinghtml = router::run($_SERVER['REQUEST_URI']);
