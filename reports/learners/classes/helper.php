@@ -74,12 +74,7 @@ class helper {
             
             $row = [
                 format_string($course->fullname),
-                table::fancyNumberCell(
-                    $perc,
-                    100,
-                    'red',
-                    $perc . '%'
-                )
+                table::fancynumbercellcolored($perc, 100, '#1f77b4', $perc . '%')
             ];
 
             if ($course->beforeparallel === '1') {
