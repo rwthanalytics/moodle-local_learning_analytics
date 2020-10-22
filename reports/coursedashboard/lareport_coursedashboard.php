@@ -298,7 +298,7 @@ class lareport_coursedashboard extends report_base {
         $icon = self::$icons[$titlekey];
 
         $titlestr = get_string($titlekey, 'lareport_coursedashboard');
-        $titlearia = get_string($titlekey, 'lareport_coursedashboard');
+        $titlearia = $titlestr;
         if ($report !== null) {
             $link = new moodle_url("/local/learning_analytics/index.php/reports/{$report}", ['course' => $courseid]);
             $titlestr = "<a href='{$link}'>{$titlestr}</a>";
@@ -320,10 +320,10 @@ class lareport_coursedashboard extends report_base {
                     <div class='dashboardbox-icon' aria-hidden='true'>
                         {$icon}
                     </div>
-                    <div id='{$titlearia}_section' class='dashboardbox-header' role='button' aria-controls='{$titlearia}_value'>{$titlestr}</div>
+                    <div id='{$titlekey}_section' class='dashboardbox-header' role='button' aria-controls='{$titlekey}_value'>{$titlestr}</div>
                     <div class='dashboardbox-timespan' aria-hidden='true'>{$appendedtext}</div>
-                    <div id='{$titlearia}_value' class='dashboardbox-title' aria-label='{$titlearia}({$appendedtext})' aria-describedby='{$titlearia}_section'>{$maintext}</div>
-                    <div class='dashboardbox-change' title='{$comparedto}' aria-hidden='true'>{$change}</div>
+                    <div id='{$titlekey}_value' class='dashboardbox-title' aria-label='{$titlearia} ({$appendedtext})' aria-describedby='{$titlekey}_section'>{$maintext}</div>
+                    <div class='dashboardbox-change' title='{$comparedto}'>{$change}</div>
                 </div>
             </div>
         ";
@@ -336,9 +336,9 @@ class lareport_coursedashboard extends report_base {
             $difftext = get_string('no_difference', 'lareport_coursedashboard');
         } else if ($diff > 0) {
             $difftext = '+' . $diff;
-            $difftriangle = '<span class="dashboardbox-change-up">▲</span>';
+            $difftriangle = '<span class="dashboardbox-change-up" aria-hidden="true">▲</span>';
         } else {
-            $difftriangle = '<span class="dashboardbox-change-down">▼</span>';
+            $difftriangle = '<span class="dashboardbox-change-down" aria-hidden="true">▼</span>';
         }
 
         return $this->boxoutputraw($title, $value, "{$difftriangle} {$difftext}", $courseid, $report);
@@ -403,9 +403,9 @@ class lareport_coursedashboard extends report_base {
         return ["<div class='col-lg-3'>
             <div class='dashboardbox box-most_clicked_module'>
                 <div class='dashboardbox-icon' aria-hidden='true'>{$icon}</div>
-                <div id='{$titlestr}_section' class='dashboardbox-header' aria-controls='{$titlestr}_value'><a href='{$link}'>{$titlestr}</a></div>
+                <div id='activ_section' class='dashboardbox-header' aria-controls='activ_value'><a href='{$link}'>{$titlestr}</a></div>
                 <div class='dashboardbox-timespan' aria-hidden='true'>{$last7days}</div>
-                <table id='{$titlestr}_value' class='dashboardbox-table' aria-label='{$titlestr}($last7days})' aria-describedby='{$titlestr}_section'><tr>{$mergedrows}</tr></table>
+                <table id='activ_value' class='dashboardbox-table' aria-label='{$titlestr} ($last7days})' aria-describedby='activ_section'><tr>{$mergedrows}</tr></table>
             </div>
         </div>"];
     }
