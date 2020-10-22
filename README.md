@@ -1,6 +1,6 @@
 # Learning Analytics for Moodle
 
-The following plugins offer a privacy-friendly Learning Analytics solution for Moodle. The plugins integrate into Moodle courses and offer statistics to teachers and students.
+This project offers a privacy-friendly Learning Analytics solution for Moodle. The plugins integrate into Moodle courses and offer statistics to teachers and students.
 
 <p align="center">
   <img src="https://files.lfi.rwth-aachen.de/learning-analytics/2020-10-21-preview.gif" height="300">
@@ -8,8 +8,8 @@ The following plugins offer a privacy-friendly Learning Analytics solution for M
 
 This Learning Analytics solution consists of two plugins.
 
-- [`local_learning_analytics`](https://github.com/rwthanalytics/moodle-local_learning_analytics): User Interface (this plugin)
-- [`logstore_lanalytics`](https://github.com/rwthanalytics/moodle-logstore_lanalytics): Logs the events to the database (dependecy of the first one)
+- [`local_learning_analytics`](https://github.com/rwthanalytics/moodle-local_learning_analytics): User Interface (this plugin), simply called `local` plugin in the docs.
+- [`logstore_lanalytics`](https://github.com/rwthanalytics/moodle-logstore_lanalytics): Logs the events to the database, simply called `logstore` plugin in the docs.
 
 To keep documentation in one place, you find all documentation in this repository.
 
@@ -18,6 +18,7 @@ To keep documentation in one place, you find all documentation in this repositor
 - [Installation](#installation)
   - [Download](#download)
   - [Activating the logstore](#activating-the-logstore)
+  - [Import data from `logstore_standard`](#import-data-from-logstore_standard)
 - [Configuration](#configuration)
   - [Plugin `logstore_lanalytics` configuration](#plugin-logstore_lanalytics-configuration)
   - [Plugin `local_learning_analytics` configuration](#plugin-local_learning_analytics-configuration)
@@ -84,6 +85,17 @@ After installation and activation of the logstore, there should be a link in eac
 ```
 https://MOODLE_INSTALLATION/local/learning_analytics/index.php/reports/coursedashboard?course=COURSE_ID
 ```
+
+### Import data from `logstore_standard`
+
+After installation, all statistics are empty as no data has been logged so far. But your Moodle site might log data through Moodle's own logging system, the `logstore_standard_log`. The `logstore` plugin offers a simple way to import that data by using the [`import.php`](https://github.com/rwthanalytics/moodle-logstore_lanalytics/blob/master/cli/import.php) script. It can be called from the shell like this:
+
+```
+$ cd MOODLE_PATH/admin/tool/log/store/lanalytics
+$ php cli/import.php
+```
+
+This will immediately start the import process. Instead you can also call `php cli/import.php --help` to see a list of possible options. You can for example only import the last `X` weeks or import only events starting from a specific ID to limit the amount of data you import.
 
 ## Configuration
 
@@ -230,7 +242,7 @@ Our Learning Analytics plugins were developed to log as little data as possible 
 Some real numbers: The plugin has been used for one semester (6 months) at the RWTH Aachen University. The RWTH has roughly 45,000 students. In total, about 40 million rows were inserted into the log table. The needed storage was around 2 GB.
 
 ### Data Privacy
-This plugin was developed with data privacy in mind. It does not log any user ids. All data is logged anonymously.
+This plugin was developed with data privacy in mind. It does not log any user ids. All data is logged anonymously. As this plugin logs no personal data, you don't need the consent of users to log the data.
 
 After consultation of our data privacy officer, the following information was added to our data privacy statement (Datenschutzerklärung):
 
@@ -243,7 +255,7 @@ After consultation of our data privacy officer, the following information was ad
 > - Genutztes Betriebssystem (z.B. Windows oder Linux) und genutzter Browser (z.B. Firefox oder Edge), detaillierte Versionen werden nicht gespeichert
 > 
 > Sämtliche Daten werden anonym gespeichert und lassen keinen Rückschluss auf Nutzende zu. Die Statistiken können in den teilnehmenden Lernräumen über einen Link in der Navigation von allen Teilnehmenden der Veranstaltung abgerufen werden. Aggregierte Daten werden daher in den Statistiken erst dann angezeigt, wenn mindestens 10 Datensätze vorhanden sind. Andernfalls wird nur "< 10" angegeben.
-> 
+
 
 ### Access / Capabilities
 
@@ -271,12 +283,12 @@ Each of the plugins has a separate changelog and separate versioning. You can fi
 
 ### Third-party libraries and resources
 
-The following third-party libraries are used in this project:
+The following third-party libraries and resources are used in this project:
 
 - Plotly.js: <https://plotly.com/javascript/>
 - Material.io icons: <https://material.io/resources/icons/>
 
-See [CREDITS](./docs/CREDITS.md) for more information including full licenses.
+See [CREDITS](./CREDITS.md) for more information including full licenses.
 
 ### Contributing
 Checkout the [contributing guide](./CONTRIBUTING).
