@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.12.0]
+## [0.12.0] - 2020-10-22
 ### Added
 - Uninstall script added that removes the User Tour and customfield (in case that option was used)
 - Privacy providers were added to all (sub)plugin parts as Moodle has its own API to read if personal data is stored (we don't store any personal data)
