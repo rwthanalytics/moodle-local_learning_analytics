@@ -387,10 +387,11 @@ class lareport_coursedashboard extends report_base {
         }
 
         $modulerows = [];
+        $activities = \local_learning_analytics\demo::data('activities', 'cms');
         foreach ($modules as $module) {
-            $mod = \context_module::instance($module->cmid);
-            $modtitle = $mod->get_context_name(false);
-            $modurl = $mod->get_url();
+            $mod = $activities[$module->cmid]; // \context_module::instance($module->cmid);
+            $modtitle = $mod->name; // $mod->get_context_name(false);
+            $modurl = ''; // $mod->get_url();
             $modulerows[] = "<td class='c0'><a href='{$modurl}'>{$modtitle}</a></td><td class='c1'>{$module->hits} {$strclicks}</td>";
         }
 
