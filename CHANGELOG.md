@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.13.0] - 2020-10-22
+### Added
+- Accessibility attributes added (`aria-*`)
+### Changed
+- Page headers and titles changed (now show the name of the course)
+- Colors of bars in learners report changed
+
 ## [0.12.0] - 2020-10-22
 ### Added
 - Uninstall script added that removes the User Tour and customfield (in case that option was used)

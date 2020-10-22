@@ -28,15 +28,15 @@
 
 ## WS 20/21 Before Moodle store
 - [ ] Wording: "Learning Analytics Angebot" / "Modul" / "Service"
-- [ ] Test plugin with more multi-language content and check where to use `format_string` when printing activity names
+- [x] Test plugin with more multi-language content and check where to use `format_string` when printing activity names
 - [ ] Administration
   - [ ] Option: Start of the week: Sunday/Monday => respect Setting of Calender in Moodle
   - [ ] Option: Number of weeks shown in dashboard
-- [ ] Accessibility: Add alt texts to images/icons, add aria-labels where needed
+- [x] Accessibility: Add alt texts to images/icons, add aria-labels where needed
   - [x] Check if color blindness is respected
-  - [ ] Give graph meaningful aria labels
-  - [ ] Add aria-hidden to data that is not needed for screen readers
-- [ ] Check Moodle guidelines
+  - [x] Give graph meaningful aria labels
+  - [x] Add aria-hidden to data that is not needed for screen readers
+- [x] Check Moodle guidelines => we should be fine, expect for some naming conventions, but we ignore them for now...
 - [ ] If customfield setting is used, add information to course backup / import (if that is even possible...)
 
 -------------------
