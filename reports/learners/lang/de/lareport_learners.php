@@ -23,8 +23,11 @@
  */
 
 $string['pluginname'] = 'Teilnehmer/innen';
+
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
+
 $string['pagename_all'] = 'Vollständige Liste';
-$string['pagename_courseparticipation'] = 'Lernende - Vollständige Liste';
+$string['pagename_courseparticipation'] = 'Teilnehmer/innen - Vollständige Liste';
 $string['introduction'] = 'Die folgenden Tabellen zeigen die Kurse, die von den Teilnehmer/innen des Kurses in der Vergangenheit gehört wurden (links) sowie die parallel zu diesem Kurs gehörten Kurse (rechts).
 Aus Datenschutzgründen, werden Kurse mit weniger als {$a} überschneidenen Teilnehmer/innen nicht anzeigt.';
 
@@ -47,5 +50,5 @@ $string['hits'] = 'Aufrufe';
 $string['sessions'] = 'Sitzungen';
 
 $string['countries'] = 'Länder';
-$string['no_courses_heard_before'] = 'Es gibt keine Kurse, die bereits von den Lernenden vorher gehört wurden.';
-$string['no_courses_heard_in_parallel'] = 'Es gibt keinen Kurse, in denen die Lernenden (gleichzeitig mit diesem Kurs) eingeschrieben sind.';
+$string['no_courses_heard_before'] = 'Es gibt keine Kurse, die bereits vorher von den Teilnehmer/innen gehört wurden.';
+$string['no_courses_heard_in_parallel'] = 'Es gibt keine Kurse, in denen die Teilnehmer/innen (gleichzeitig mit diesem Kurs) eingeschrieben sind.';

@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Activities and Resources';
+
+$string['privacy:metadata'] = 'This plugin does not store any personal data.';
+
 $string['introduction'] = 'The above figure shows the hits per activity.
 The order is based on the order of the activities in the course.
 The table below breaks down the hits by activity type.
@@ -39,6 +42,7 @@ $string['section'] = 'Section';
 $string['most_used_activities'] = 'Most used activities';
 $string['filter_by_name'] = 'Filter by activity name';
 $string['filter'] = 'Filter';
+$string['remove_filter'] = 'clear';
 
 $string['no_data_to_show'] = 'There is currently no data to show. Come back later to see statistics regarding your activities and resources.';
-$string['no_data_to_show_filter'] = 'There are no activities with the given name.';
+$string['no_data_to_show_filter'] = 'There are no activities with the given name or there is no data available related to these actvities.';

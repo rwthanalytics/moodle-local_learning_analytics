@@ -23,6 +23,9 @@
  */
 
 $string['pluginname'] = 'Aktivitäten und Materialien';
+
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
+
 $string['introduction'] = 'Die obige Darstellung zeigt die Zugriffe je Aktivität an.
 Die Sortierung richtet sich nach der Reihenfolge der Aktivitäten im Kurs.
 Die folgende Tabelle schlüsselt die Zugriffe je nach Aktivitätstypen auf.
@@ -39,6 +42,7 @@ $string['section'] = 'Abschnitt';
 $string['most_used_activities'] = 'Meistgenutzte Aktivitäten';
 $string['filter_by_name'] = 'Filter nach Aktivitätsname';
 $string['filter'] = 'Filter';
+$string['remove_filter'] = 'Filter aufheben';
 
 $string['no_data_to_show'] = 'Aktuell gibt es keine Daten zum Anzeigen. Kommen Sie später wieder um Statistiken zur Nutzung der Aktivitäten und Materialien zu sehen.';
-$string['no_data_to_show_filter'] = 'Es existieren keine Aktivitäten mit dem angegeben Namen.';
+$string['no_data_to_show_filter'] = 'Es existieren entweder keine Aktivitäten mit dem angegeben Namen oder es sind keine Daten zu diesen Aktivitäten verfügbar.';

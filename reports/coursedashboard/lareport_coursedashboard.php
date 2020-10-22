@@ -371,20 +371,6 @@ class lareport_coursedashboard extends report_base {
         return [ $this->boxoutput('click_count', $hitsLast7Days, $hitsdiff, $courseid, $linkedreport) ];
     }
 
-    private function mobileevents(int $courseid) : array {
-        $percentage = query_helper::query_mobile_percentage($courseid);
-
-        $perctext = get_string('not_available', 'lareport_coursedashboard');
-        if ($percentage !== null) {
-            $perctext = round($percentage) . '%';
-        }
-        $posttext = get_string('mobile_use_post_text', 'lareport_coursedashboard');
-
-        return [
-            $this->boxoutputraw('mobile_use', $perctext, $posttext, $courseid)
-        ];
-    }
-
     private function mostclickedactivity(int $courseid) : array {
         $privacythreshold = settings::get_config('dataprivacy_threshold');
         $strclicks = get_string('clicks', 'lareport_coursedashboard');

@@ -75,14 +75,13 @@ class lareport_activities extends report_base {
 
         // Find max values.
         $maxhits = 0;
-
         $hitsbytypeassoc = [];
 
         $modinfo = get_fast_modinfo($courseid);
         $allcms = $modinfo->get_cms();
         $format = \course_get_format($courseid);
         $cms = [];
-        foreach ($allcms as $cmid => $cm) {
+        foreach ($allcms as $cmid => $cm) { // filter out all modules we don't want to show, that's the list we will be working with
             if ($cm->modname === 'label' || !isset($activities[$cmid]) || !$cm->uservisible
                 || ($ismodfilteractive && $cm->modname !== $params['mod'])
                 || ($filtertext !== null && strpos($cm->name, $filtertext) === false)) {
@@ -91,78 +90,12 @@ class lareport_activities extends report_base {
             $cms[] = $cm;
         }
         $modnameshumanreadable = $modinfo->get_used_module_names();
-        foreach ($cms as $cm) {
-            $activity = $activities[$cm->id];
-            $maxhits = max($maxhits, (int) $activity->hits);
-            if (!isset($hitsbytypeassoc[$cm->modname])) {
-                $hitsbytypeassoc[$cm->modname] = 0;
-            }
-            $hitsbytypeassoc[$cm->modname] += $activity->hits;
-        }
-
-        $filtervalue = $filtertext === null ? '' : htmlspecialchars($filtertext);
-        $filteractlangstr = get_string('filter_by_name', 'lareport_activities');
-        $filterlangstr = get_string('filter', 'lareport_activities');
-        $filterprefix = '<form class="headingfloater" action="activities" method="get">
-        <div class="form-inline">
-            <label for="filterinput">' . $filteractlangstr . ':</label>
-            <div class="input-group">
-                <input type="text" class="form-control" name="filter" value="'. $filtervalue . '">
-                <div class="input-group-append"><button class="btn btn-secondary" type="submit">' . $filterlangstr . '</button></div>
-            </div>
-        </div><input type="hidden" name="course" value ="'.$courseid.'"/>
-        </form>';
-
-        if ($maxhits === 0) {
-            $heading = self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix);
-            if (!empty($filtertext)) {
-                return [$heading,get_string('no_data_to_show_filter', 'lareport_activities')];
-            }
-            return [$heading,get_string('no_data_to_show', 'lareport_activities')];
-        }
-
-        $hitsbytype = [];
-        $maxhitsbytype = 1;
-        foreach ($hitsbytypeassoc as $type => $hits) {
-            $hitsbytype[] = ['type' => $type, 'hits' => $hits];
-            $maxhitsbytype = max($maxhitsbytype, $hits);
-        }
-
-        usort($hitsbytype, function ($item1, $item2) {
-            return $item2['hits'] <=> $item1['hits'];
-        });
-
-        $tabletypes = new table();
-        $tabletypes->set_header_local(['activity_type', 'table_header_hits'], 'lareport_activities');
-
-        foreach ($hitsbytype as $item) {
-            $icon = $OUTPUT->pix_icon('icon', '', $item['type'], array('class' => 'iconlarge activityicon'));
-            $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
-            $hits = ($privacythreshold === 0) ? (int) $item['hits'] : (floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold);
-            $typestr = $modnameshumanreadable[$item['type']];
-            if ($hits >= $privacythreshold) {
-                $tabletypes->add_row([
-                    "{$icon} <a href='{$url}'>{$typestr}</a>",
-                    table::fancyNumberCell(
-                        $hits,
-                        $maxhitsbytype,
-                        self::$markercolorstext[$item['type']] ?? self::$markercolortextdefault
-                    )
-                ]);
-            }
-        }
-
-        if (!empty($params['mod'])) {
-            $linktoreset = router::report('activities', ['course' => $courseid]);
-            $tabletypes->add_show_more_row($linktoreset);
-        }
-
-        $tabledetails = new table();
-        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'table_header_hits'], 'lareport_activities');
-
+        
+        // Create plot at the top
         $x = [];
         $y = [];
         $texts = [];
+        $ticktexts = [];
         $markercolors = [];
         $sections = []; // [splitposition: int, name: string]
         $lastsectionid = -1;
@@ -171,12 +104,21 @@ class lareport_activities extends report_base {
         $i = 0;
         foreach ($cms as $cm) {
             $activity = $activities[$cm->id];
+            $maxhits = max($maxhits, (int) $activity->hits);
+            if (!isset($hitsbytypeassoc[$cm->modname])) {
+                $hitsbytypeassoc[$cm->modname] = 0;
+            }
+            $hitsbytypeassoc[$cm->modname] += $activity->hits;
+            
+            // dotted lines to separate sections
+            $activity = $activities[$cm->id];
             $section = $cm->get_section_info();
             if ($lastsectionid !== $section->id) {
                 $sections[] = [$i, $format->get_section_name($section)];
                 $lastsectionid = $section->id;
             }
-            $x[] = $cm->name;
+            $x[] = $i;
+            $ticktexts[] = $cm->name;
             $y[] = $activity->hits < $privacythreshold ? 0 : $activity->hits;
             $hitstext = $activity->hits < $privacythreshold ? "< {$privacythreshold}" : $activity->hits;
             $typestr = $modnameshumanreadable[$cm->modname];
@@ -185,58 +127,7 @@ class lareport_activities extends report_base {
             $i += 1;
         }
 
-        // Reorder to show most used activities.
-
-        usort($cms, function ($cm1, $cm2) use ($activities) {
-            return $activities[$cm2->id]->hits <=> $activities[$cm1->id]->hits;
-        });
-
-        $hiddentext = get_string('hiddenwithbrackets');
-        $headinttoptext = get_string('most_used_activities', 'lareport_activities');
-        foreach ($cms as $i => $cm) {
-            if ($i >= 5) { // Stop when some reports are shown.
-                break;
-            }
-            $activity = $activities[$cm->id];
-            $namecell = $cm->name;
-            $section = $cm->get_section_info();
-            if (!$cm->visible) {
-                $namecell = "<span class='dimmed_text'>{$namecell} {$hiddentext}</span>";
-            }
-            if ($activity->hits >= $privacythreshold) {
-                $tabledetails->add_row([
-                    $namecell,
-                    $modnameshumanreadable[$cm->modname],
-                    $format->get_section_name($section),
-                    table::fancyNumberCell(
-                        (int) $activity->hits,
-                        $maxhits,
-                        self::$markercolorstext[$cm->modname] ?? self::$markercolortextdefault
-                    )
-                ]);
-            }
-        }
-
-        $linktofulllist = router::report_page('activities', 'all', ['course' => $courseid]);
-        $tabledetails->add_show_more_row($linktofulllist);
-
-        $plot = new plot();
-        $plot->set_height(300);
-        $plot->show_toolbar(false);
-        $plot->add_series([
-            'type' => 'bar',
-            'x' => $x,
-            'y' => $y,
-            'text' => $texts,
-            'hoverinfo' => 'text',
-            'marker' => [
-                'color' => $markercolors
-            ]
-        ]);
-
-        $layout = new stdClass();
-        $layout->margin = ['l' => 80, 'r' => 80, 't' => 20, 'b' => 100];
-
+        // Create dividers for sections (dotted line areas)
         $shapes = [];
         $annotations = [];
         for ($i = 1; $i < count($sections); $i += 1) {
@@ -244,7 +135,7 @@ class lareport_activities extends report_base {
             $sectionnamefull = $sections[$i][1];
             $sectionname = $sectionnamefull;
             if (strlen($sectionname) > MAX_LENGTH_SECTION_NAMES) {
-                $sectionname = substr($sectionname, 0, MAX_LENGTH_SECTION_NAMES - 2) . '…';
+                $sectionname = mb_substr($sectionname, 0, MAX_LENGTH_SECTION_NAMES - 2) . '…';
             }
             $shapes[] = [ // dotted line to separate sections
                 'type' => 'line',
@@ -288,10 +179,132 @@ class lareport_activities extends report_base {
                 // 'clicktoshow' => 'onout' // hide when clicked on the plot
             ];
         }
+
+        // Create plot 
+        $plot = new plot();
+        $plot->set_height(300);
+        $plot->add_series([
+            'type' => 'bar',
+            'x' => $x,
+            'y' => $y,
+            'text' => $texts,
+            'hoverinfo' => 'text',
+            'marker' => [
+                'color' => $markercolors
+            ]
+        ]);
+
+        $layout = new stdClass();
+        $layout->margin = ['l' => 80, 'r' => 80, 't' => 20, 'b' => 100];
         $layout->shapes = $shapes;
         $layout->annotations = $annotations;
-
+        $layout->xaxis = [
+            'ticktext' => $ticktexts,
+            'tickvals' => $x
+        ];
         $plot->set_layout($layout);
+
+        // filter form in the top right
+        $filtervalue = $filtertext === null ? '' : htmlspecialchars($filtertext);
+        $filteractlangstr = get_string('filter_by_name', 'lareport_activities');
+        $filterlangstr = get_string('filter', 'lareport_activities');
+        $removefilterlink = '';
+        if ($filtertext !== null) {
+            $removefilterlang = get_string('remove_filter', 'lareport_activities');
+            $removefilterlink = " (<a href='?course={$courseid}'>{$removefilterlang}</a>)";
+        }
+        $filterprefix = '<form class="headingfloater" action="activities" method="get">
+        <div class="form-inline">
+            <label for="filterinput">' . $filteractlangstr . $removefilterlink . ':</label>
+            <div class="input-group">
+                <input type="text" class="form-control" name="filter" value="'. $filtervalue . '">
+                <div class="input-group-append"><button class="btn btn-secondary" type="submit">' . $filterlangstr . '</button></div>
+            </div>
+        </div><input type="hidden" name="course" value ="'.$courseid.'"/>
+        </form>';
+
+        if ($maxhits < $privacythreshold) {
+            $heading = self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix);
+            if (!empty($filtertext)) {
+                return [$heading,get_string('no_data_to_show_filter', 'lareport_activities')];
+            }
+            return [$heading,get_string('no_data_to_show', 'lareport_activities')];
+        }
+
+        // Table for each activity type
+        $hitsbytype = [];
+        $maxhitsbytype = 1;
+        foreach ($hitsbytypeassoc as $type => $hits) {
+            $hitsbytype[] = ['type' => $type, 'hits' => $hits];
+            $maxhitsbytype = max($maxhitsbytype, $hits);
+        }
+
+        usort($hitsbytype, function ($item1, $item2) {
+            return $item2['hits'] <=> $item1['hits'];
+        });
+
+        $tabletypes = new table();
+        $tabletypes->set_header_local(['activity_type', 'table_header_hits'], 'lareport_activities');
+
+        foreach ($hitsbytype as $item) {
+            $icon = $OUTPUT->pix_icon('icon', '', $item['type'], array('class' => 'iconlarge activityicon'));
+            $url = router::report('activities', ['course' => $courseid, 'mod' => $item['type']]);
+            $hits = ($privacythreshold === 0) ? (int) $item['hits'] : (floor(((int) $item['hits']) / $privacythreshold) * $privacythreshold);
+            $typestr = $modnameshumanreadable[$item['type']];
+            if ($hits >= $privacythreshold) {
+                $tabletypes->add_row([
+                    "{$icon} <a href='{$url}'>{$typestr}</a>",
+                    table::fancyNumberCell(
+                        $hits,
+                        $maxhitsbytype,
+                        self::$markercolorstext[$item['type']] ?? self::$markercolortextdefault
+                    )
+                ]);
+            }
+        }
+
+        if (!empty($params['mod'])) {
+            $linktoreset = router::report('activities', ['course' => $courseid]);
+            $tabletypes->add_show_more_row($linktoreset);
+        }
+
+        $tabledetails = new table();
+        $tabledetails->set_header_local(['activity_name', 'activity_type', 'section', 'table_header_hits'], 'lareport_activities');
+
+        // Reorder to show most used activities.
+
+        usort($cms, function ($cm1, $cm2) use ($activities) {
+            return $activities[$cm2->id]->hits <=> $activities[$cm1->id]->hits;
+        });
+
+        $hiddentext = get_string('hiddenwithbrackets');
+        $headinttoptext = get_string('most_used_activities', 'lareport_activities');
+        foreach ($cms as $i => $cm) {
+            if ($i >= 5) { // Stop when some reports are shown.
+                break;
+            }
+            $activity = $activities[$cm->id];
+            $namecell = $cm->name;
+            $section = $cm->get_section_info();
+            if (!$cm->visible) {
+                $namecell = "<span class='dimmed_text'>{$namecell} {$hiddentext}</span>";
+            }
+            if ($activity->hits >= $privacythreshold) {
+                $tabledetails->add_row([
+                    $namecell,
+                    $modnameshumanreadable[$cm->modname],
+                    $format->get_section_name($section),
+                    table::fancyNumberCell(
+                        (int) $activity->hits,
+                        $maxhits,
+                        self::$markercolorstext[$cm->modname] ?? self::$markercolortextdefault
+                    )
+                ]);
+            }
+        }
+
+        $linktofulllist = router::report_page('activities', 'all', ['course' => $courseid]);
+        $tabledetails->add_show_more_row($linktofulllist);
 
         return [
             self::heading(get_string('pluginname', 'lareport_activities'), true, $filterprefix),

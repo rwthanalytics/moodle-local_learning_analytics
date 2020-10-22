@@ -15,16 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version info for the Sections Report
+ * Strings for lalog_browser_os
  *
- * @package     local_learning_analytics
+ * @package     lalog_browser_os
  * @copyright   Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component = 'lareport_browser_os';
-
-$plugin->version = 2020021900;
-$plugin->requires = '2017111302';
+$string['pluginname'] = 'Browser und Betriebssystem Log';
+$string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';

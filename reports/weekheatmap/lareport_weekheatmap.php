@@ -55,6 +55,7 @@ class lareport_weekheatmap extends report_base {
         //     $timeformat = get_config(null, 'calendar_site_timeformat');
         // }
 
+        $maxvalue = 0;
         $hitsstr = get_string('hits', 'lareport_weekheatmap');
         $heatpoints = query_helper::query_heatmap($courseid);
         for ($d = 0; $d < 7; $d += 1) {
@@ -67,8 +68,10 @@ class lareport_weekheatmap extends report_base {
                 $text = $datapoint;
                 if ($datapoint < $privacythreshold) {
                     $text = '< ' . $privacythreshold;
+                    $datapoint = 0;
                 }
                 $daydata[] = $datapoint;
+                $maxvalue = max($datapoint, $maxvalue);
                 $hourstr = str_pad($h, 2, '0', STR_PAD_LEFT);
                 $x = "{$hourstr}:00 - {$hourstr}:59";
                 $xstrs[] = $x;
@@ -86,23 +89,26 @@ class lareport_weekheatmap extends report_base {
             'y' => $ystrs,
             'text' => $texts,
             'hoverinfo' => 'text',
-            'colorscale' => [ // reversed "YlGnBu"
-                [0,"rgb(255,255,217)"],
-                [.125,"rgb(237,248,217)"],
-                [.25,"rgb(199,233,180)"],
-                [.375,"rgb(127,205,187)"],
-                [.5,"rgb(65,182,196)"],
-                [.625,"rgb(29,145,192)"],
-                [.75,"rgb(34,94,168)"],
-                [.875,"rgb(37,52,148)"],
-                [1,"rgb(8,29,88)"],
-            ]
+            'colorscale' => [
+                [0,    "#F3F3F3"],
+                [.125, "#D4DFE8"],
+                [.25,  "#B6CBDE"],
+                [.375, "#97B7D3"],
+                [.5,   "#79A3C9"],
+                [.625, "#5B8FBE"],
+                [.75,  "#3C7BB4"],
+                [.875, "#1E67A9"],
+                [1,    "#00549F"], // RWTH-blue
+            ],
+            'xgap' => 3,
+            'ygap' => 3,
+            'zmin' => 0,
+            'zmax' => max(1, $maxvalue),
         ]);
         $layout = new stdClass();
         $layout->margin = [ 't' => 10, 'r' => 20, 'l' => 80, 'b' => 80 ];
         $plot->set_layout($layout);
-        $plot->set_height(450);
-
+        $plot->set_height(400);
         return [
             self::heading(get_string('pluginname', 'lareport_weekheatmap')),
             '<p>' . get_string('introduction', 'lareport_weekheatmap') . '</p>',

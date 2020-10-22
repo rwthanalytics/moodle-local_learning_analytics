@@ -1,5 +1,8 @@
 # CONTRIBUTING
 
+## Branches
+The `master` branch contains the latest release. The `dev` branch contains the development. Features are merged into `dev`, before `dev` gets merged into `master` right before the release happens. A special branch is the `demo` branch which will modify some code lines in the project to use fake data. The purpose of this is to have an easy way to create screenshots for documentation.
+
 ## Relase process
 
 - Check if there are any breaking changes that should be handled by a `upgrade.php` file
@@ -14,9 +17,16 @@
 - `git push --tags`
 
 
-## Development
+## Changelog
+Every changelog should be noted in the [CHANGELOG](./CHANGELOG.md) file. The logstore plugin has it's own changelog file.
 
-### JavaScript Development
+## Versioning
+- We'll release version 1 as soon as we want to publish the plugin in the plugin store.
+- Major release (1 -> 2): When the plugin structure changes or any *major* or breaking changes happen.
+- Minor release (1.1 -> 1.2): New features.
+- Patch release (1.1.0 -> 1.1.1): In case of bugs that are found outside of our normal release plan.
+
+## JavaScript Development
 
 - Follow the [steps in the Moodle docs](https://docs.moodle.org/dev/Javascript_Modules#How_do_I_write_a_Javascript_module_in_Moodle.3F).
 - Depending on the Node.js version, you are using you might want to [comment the lines that check the Node.js version](https://github.com/moodle/moodle/blob/800563e415f64d1cb36bbf9294dc94fdcd6feb84/Gruntfile.js#L41-L45).
