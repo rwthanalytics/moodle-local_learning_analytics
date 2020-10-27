@@ -5,9 +5,9 @@
   - [x] Check license
 - [x] Create "demo course" for screenshots/documentation purposes
   - [x] Constant date on dashboard page, with faked number of students, accesses, etc...
-- [ ] Make a nice README
+- [x] Make a nice README
   - [x] Add data privacy information and German data privacy note for Datenschutzerklärung
-  - [ ] Screenshots of pages
+  - [x] Screenshots of pages
   - [x] More information on data storage/use
 - [x] customfield rename to "course statistics"
 - [x] Heatmap
@@ -42,6 +42,7 @@
 -------------------
 
 ## For later
+- [ ] External database support
 - [ ] Tests
 - [ ] Ideas
   - [ ] Bring back course to compare?
@@ -156,7 +157,6 @@
 - [x] Logstore plugin: Make sure it also works on its own (without this plugin)
   - [x] Make sure it only loads `lalog` plugins if this plugin is installed
 - [x] Page that shows what kind of data is being tracked and whether one is being tracked => only anonymous data is being saved, not implemented
-- [x] External database support => no feedback from ITC (not needed I guess..)
 
 ## Logstore
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
