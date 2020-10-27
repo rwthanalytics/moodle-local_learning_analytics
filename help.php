@@ -42,8 +42,6 @@ if ($courseid == SITEID) {
 }
 
 $PAGE->set_context($context);
-$PAGE->set_heading(get_string('pluginname', 'local_learning_analytics'));
-$PAGE->set_pagelayout('course');
 
 // Set URL to main path of analytics.
 $url = new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', ['course' => $courseid]);
@@ -53,9 +51,13 @@ $PAGE->set_url($url);
 $course = get_course($courseid);
 $PAGE->set_course($course);
 
+// Header of page
+$PAGE->set_pagelayout('course');
+$PAGE->set_heading($course->fullname);
+
 // Set title of page.
 $coursename = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
-$title = $coursename . ': ' . get_string('learning_analytics', 'local_learning_analytics');
+$title = $coursename . ': ' . get_string('navigation_link', 'local_learning_analytics');
 $PAGE->set_title($title);
 
 $PAGE->navbar->add(

@@ -70,7 +70,7 @@ class table extends output_base {
             $textvalue = $value;
         }
         $width = round(100 * $value / $maxvalue);
-        return "${textvalue}<div class='bar'><div class='segment ${class}' style='width:${width}%'></div></div>";
+        return "${textvalue}<div class='bar' aria-hidden='true'><div class='segment ${class}' style='width:${width}%'></div></div>";
     }
 
     public static function fancynumbercellcolored(float $value, float $maxvalue, string $color, string $textvalue = null) : string {
@@ -78,7 +78,7 @@ class table extends output_base {
             $textvalue = $value;
         }
         $width = round(100 * $value / $maxvalue);
-        return "${textvalue}<div class='bar'><div class='segment' style='width:${width}%;background:${color}'></div></div>";
+        return "${textvalue}<div class='bar' aria-hidden='true'><div class='segment' style='width:${width}%;background:${color}'></div></div>";
     }
 
     /**
