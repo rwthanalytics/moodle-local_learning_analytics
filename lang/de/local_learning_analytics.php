@@ -70,7 +70,7 @@ Die dargestellen Statistiken sind live und enthalten sowohl selber erhobenen Dat
 $string['help_faq'] = 'Häufig gestellte Fragen';
 
 $string['help_faq_personal_data_question'] = 'Warum werden keine personalisierten Statistiken, wie z.B. die Klicks pro Nutzer angezeigt?';
-$string['help_faq_personal_data_answer'] = 'Aus Datenschutzgründen erhebt das Learning Analytics-Modul keine personalisierten Daten. Daher enthalten die meisten dargestellten Statistiken (z.B. die meist genutzten Aktivitäten) nur Information darüber wie oft eine Resource aufgerufen wurde, aber nicht von wie vielen Teilnehmer/innen.
+$string['help_faq_personal_data_answer'] = 'Aus Datenschutzgründen erhebt das Learning Analytics-Modul keine personalisierten Daten. Daher enthalten die meisten dargestellten Statistiken (z.B. die meist genutzten Aktivitäten) nur Information darüber wie oft eine Ressource aufgerufen wurde, aber nicht von wie vielen Teilnehmer/innen.
 Eine Ausnahme stellen die Statistiken zu Teilnehmer/innen und Tests/Aufgaben da, da hier auch Moodle-eigene Daten dargestellt werden.';
 
 $string['help_faq_week_start_question'] = 'Warum entspricht die erste Woche in der Darstellung im Dashboard nicht dem tatsächlichen Vorlesungsstart?';
@@ -83,13 +83,12 @@ Beide Quellen werden in der internen Moodle-Datenbank gespeichert.
 Bei der ersten Datenquelle handelt es sich um interne Moodle-Datensätze, wie z.B. die Anzahl an Teilnehmer/innen im Kurs (linke Box im Dashboard).
 Diese Datensätze lassen sich zum Teil auch auf anderen Moodle-Seiten einsehen und werden durch das Learning Analytics Angebot anders visualisiert.
 Bei der zweiten Datenquelle handelt es sich um Daten, die eigens für das Learning Analytics Angebot erhoben werden.
-Alle Daten werden anonymisiert gespeichert.
-Die erhobenen Daten erlauben keine Rückverfolgung zu einzelnen Nutzern.
+Alle Daten, die vom Learning Analytics Angebot erhoben werden, werden anonymisiert gespeichert und erlauben keine Rückverfolgung zu einzelnen Nutzern.
 Konkret werden bei jedem Aufruf in Moodle folgende Daten gespeichert:';
-$string['help_faq_data_storage_answer_list'] = 'Typ der Aktion (z.B. "Resource angesehen")
+$string['help_faq_data_storage_answer_list'] = 'Typ der Aktion (z.B. "Ressource angesehen")
 Uhrzeit (sekundengenau)
 Betroffener Kurs in dem die Aktion durchgeführt wurde
-Betroffener Kontext (z.B. die Resource die angesehen wurde)
+Betroffener Kontext (z.B. die Ressource die angesehen wurde)
 Betriebssystem und Browser (z.B. "Windows 10" und "Firefox"), detaillierte Browser- oder Betriebssystemversionen werden nicht gespeichert';
 
 $string['help_faq_privacy_threshold_question'] = 'Warum werden manche Werte als "< {$a}" angezeigt?';

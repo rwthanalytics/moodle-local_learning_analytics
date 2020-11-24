@@ -83,8 +83,7 @@ Both sources are stored in the internal Moodle database.
 The first data source is the internal Moodle database, such as the number of students in the course (left box in the dashboard).
 Some of these data sets can be viewed on other Moodle pages and are just visualized differently by the Learning Analytics service.
 The second data source is data that is collected specifically for the Learning Analytics service.
-All data is stored anonymously.
-The collected data does not allow to trace back to individual users.
+All data, collected by the Learning Analytics module, is stored anonymously and cannot be traced back to individual users.
 Specifically, the following data is stored with each request in Moodle:';
 $string['help_faq_data_storage_answer_list'] = 'Type of action (e.g. "Resource viewed")
 Time (exact to the second)
