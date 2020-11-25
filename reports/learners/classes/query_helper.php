@@ -77,17 +77,17 @@ SQL;
         $arraywithquestionsmarks = array_fill(0, count($studentrolenames), '?');
         $roleplaceholder = implode(',', $arraywithquestionsmarks);
 
+        $casevalue = "CASE WHEN co.startdate < {$coursebeforecutoff} THEN 1 WHEN co.startdate < {$courseparallelcutoff} THEN 2 ELSE 0 END";
+        $selectconcat = $DB->sql_concat($casevalue, "'-'", "co.{$groupbychoice}");
+        $coursename = ($groupbychoice === 'id') ? 'fullname' : $groupbychoice;
+
         $query = <<<SQL
             SELECT
-                co.id,
-                co.fullname,
-                co.startdate,
-                CASE
-                    WHEN co.startdate < {$coursebeforecutoff} THEN 1
-                    WHEN co.startdate < {$courseparallelcutoff} THEN 2
-                    ELSE 0
-                END AS beforeparallel,
-                COUNT(DISTINCT u.id) AS users
+                {$selectconcat} AS uniqueval,-- first row needs to be unique for moodle...
+                co.{$coursename} AS fullname,
+                {$casevalue} AS beforeparallel,
+                COUNT(DISTINCT u.id) AS users,
+                co.startdate
             FROM {user} u
             JOIN {user_enrolments} ue
                 ON ue.userid = u.id
@@ -114,13 +114,8 @@ SQL;
                 AND e.courseid = ?
                 AND co.startdate <> 0
                 AND co.visible = 1
-            GROUP BY co.{$groupbychoice}
-            HAVING COUNT(*) > ?
-            AND CASE
-                    WHEN co.startdate < {$coursebeforecutoff} THEN 1
-                    WHEN co.startdate < {$courseparallelcutoff} THEN 2
-                    ELSE 0
-                END <> 0
+            GROUP BY co.{$groupbychoice}, {$casevalue}
+            HAVING COUNT(*) > ? AND {$casevalue} <> 0
             ORDER BY users DESC;
 SQL;
 
