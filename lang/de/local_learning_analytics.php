@@ -58,7 +58,7 @@ $string['allow_dashboard_compare_description'] = 'Diese Option kann aktiviert we
 $string['navigation_position_beforekey_description'] = 'Erlaubt es die Position in der Navigation anzugeben, an der der Link zur Seite erscheinen soll. Standardmäßig, wir der Link vor dem ersten "section"-Link angezeigt. Beispielwert: <code>grades</code> um den Link über den Link zu den Bewertungen anzuzeigen. Um herauszufinden, wie der "key" eines Navigationslinks ist, können die Entwicklertools des Browsers genutzt werden. Hierzu einen Rechtsklick auf den gewünschten Link machen, <em>Untersuchen</em> auswählen und dann das Attribut <code>data-key</code> des entsprechenden <code>a</code>-Elementes nutzen.';
 $string['setting_student_rolenames_description'] = 'Falls die Rolle <code>student</code> nicht die passende Rolle für Studierende/Nutzer ist oder es mehrere Rollen gibt, die zutreffend sind, können hier die passenden Rollen angegeben werden. Falls mehrere Rollen zutreffen, sollte ein einzelnes Komma genutzt werden um die Rollen zu trennen. Beispiel: <code>student,customrole</code>';
 
-$string['setting_student_enrols_groupby_description'] = 'Für die Statistik "Vorher/Parallelgehört" kann durch die Option bestimmt werden, welche Kurse zusammengefasst werden sollen.';
+$string['setting_student_enrols_groupby_description'] = 'Für die Statistik "Vorher/Parallel gehört" kann durch die Option bestimmt werden, welche Kurse zusammengefasst werden sollen. Die Auswahl dieser Option legt auch den angezeigten Namen in der Tabelle fest.';
 
 // Help
 $string['help_title'] = 'Hilfe';

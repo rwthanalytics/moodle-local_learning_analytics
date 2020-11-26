@@ -58,7 +58,7 @@ $string['allow_dashboard_compare_description'] = 'Activate this options, to allo
 $string['navigation_position_beforekey_description'] = 'Allows to specify where in the course navigation the link to the page is added. By default, the link is added before the first "section" node. Example value: <code>grades</code> to be shown before the link to grades. You can find the key of a node in the navigation by using the developer tools. Right-click on a link in the navigation, press <em>Inspect</em> and check the attribute <code>data-key</code> of the corresponding <code>a</code> element.';
 $string['setting_student_rolenames_description'] = 'In case the role(s) for students/users in a course is not <code>student</code>, you can specify the corresponding role name. In case there are multiple roles that students have, use a single comma. Example: <code>student,customrole</code>';
 
-$string['setting_student_enrols_groupby_description'] = 'This option defines which courses are merged together in the "Previous/Parallel course.';
+$string['setting_student_enrols_groupby_description'] = 'This option defines which courses are merged together in the "Previous/Parallel course" page and which value is used to show the names.';
 
 // Help
 $string['help_title'] = 'Help';
