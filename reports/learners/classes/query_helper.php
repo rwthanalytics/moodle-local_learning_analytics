@@ -66,7 +66,7 @@ SQL;
         int $courseid, int $privacythreshold, array $studentrolenames, int $coursebeforecutoff, int $courseparallelcutoff,
         string $coursegroupby
     ) : array {
-        global $DB;
+        global $DB, $CFG;
 
         $groupbychoice = 'id';
         if ($coursegroupby === 'fullname' || $coursegroupby === 'shortname') {
@@ -81,13 +81,15 @@ SQL;
         $selectconcat = $DB->sql_concat($casevalue, "'-'", "co.{$groupbychoice}");
         $coursename = ($groupbychoice === 'id') ? 'fullname' : $groupbychoice;
 
+        $pgspecialcase = ($CFG->dbtype === 'pgsql') ? '' : ', co.startdate';
+
         $query = <<<SQL
             SELECT
                 {$selectconcat} AS uniqueval,-- first row needs to be unique for moodle...
                 co.{$coursename} AS fullname,
                 {$casevalue} AS beforeparallel,
-                COUNT(DISTINCT u.id) AS users,
-                co.startdate
+                COUNT(DISTINCT u.id) AS users
+                {$pgspecialcase}
             FROM {user} u
             JOIN {user_enrolments} ue
                 ON ue.userid = u.id
