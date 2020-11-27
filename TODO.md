@@ -42,6 +42,8 @@
 -------------------
 
 ## For later
+- [x] Fix Postgres problem of learners report
+- [x] Update customfield option in Course settings
 - [ ] External database support
 - [ ] Tests
 - [ ] Ideas

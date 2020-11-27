@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.14.0] - 2020-11-27
+### Changed
+- Minor text changes on the FAQ page
+- customfield values (name, description) changed
+### Fixed
+- Postgres: SQL Query for an option of the learners page not working
+
 ## [0.13.0] - 2020-10-22
 ### Added
 - Accessibility attributes added (`aria-*`)
