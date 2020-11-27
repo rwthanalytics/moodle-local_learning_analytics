@@ -44,7 +44,7 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2020101301, 'local', 'learning_analytics');
     }
 
-    if ($oldversion < 2020112600 && ($SITE->shortname === 'RWTHmoodle' || $SITE->shortname === 'L2PTest')) { // TODO set version correct
+    if ($oldversion < 2020112600 && ($SITE->shortname === 'RWTHmoodle' || $SITE->shortname === 'L2PTest')) {
         $statussetting = get_config('local_learning_analytics', 'status');
         $customfieldid = (int) get_config('local_learning_analytics', 'customfieldid');
         if ($statussetting === 'course_customfield' && !empty($customfieldid)) { // Update the text in RWTHmoodle
