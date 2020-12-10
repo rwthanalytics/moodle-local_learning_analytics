@@ -114,11 +114,11 @@ class lareport_quiz_assign extends report_base {
             if (!$cm->visible) {
                 $name = "<span class='dimmed_text'>{$name} {$hiddentext}</span>";
             }
-            if (isset($dbassignments[$assignid])) {
+            if (isset($dbassignments[$assignid])) { // there is at least one graded assignment
                 $assigninfo = $dbassignments[$assignid];
                 $rows[] = [$name, $assigninfo->handins, $assigninfo->grade];
                 $maxhandins = max($maxhandins, $assigninfo->handins);
-            } else {
+            } else { // there is no graded assignment
                 $rows[] = [$name, 0, 0, 0, 0];
             }
         }

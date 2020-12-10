@@ -65,7 +65,10 @@ SQL;
         SELECT
             a.id,
             COUNT(1) handins,
-            (AVG(gg.rawgrade)-gg.rawgrademin)/(gi.grademax-gg.rawgrademin) AS grade
+            COALESCE((AVG(gg.rawgrade)-gg.rawgrademin)/(gi.grademax-gg.rawgrademin), 1) AS grade
+            -- COALESCE is needed as some teachers define custom scales with just one value
+            -- which results in a division by zero and then returns null
+            -- in that case we return 1 (as there is just one value, which means people got full points)
         FROM {grade_items} gi
         JOIN {grade_grades} gg
             ON gg.itemid = gi.id
