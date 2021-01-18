@@ -63,14 +63,14 @@ $string['setting_student_enrols_groupby_description'] = 'Für die Statistik "Vor
 // Help
 $string['help_title'] = 'Hilfe';
 $string['help_take_tour'] = 'Interaktive Vorstellung starten';
-$string['help_text'] = 'Learning Analytics zeigt verschiedene Kennzahlen des Kurses.
+$string['help_text'] = 'Auf der Seite "Zugriffsstatistiken" des Learning Analytics-Angebotes werden verschiedene Kennzahlen des Kurses dargestellt.
 
-Die dargestellen Statistiken sind live und enthalten sowohl selber erhobenen Daten des Moduls als auch Moodle-eigene Daten. Alle vom Learning Analytics-Modul erhobenen Daten werden anonymisiert erhoben und erlauben keine Rückverfolgung zu einzelnen Nutzern.';
+Die dargestellten Statistiken sind live und enthalten sowohl selber erhobenen Daten als auch Moodle-eigene Daten. Alle vom Learning Analytics-Angebot erhobenen Daten werden anonymisiert erhoben und erlauben keine Rückverfolgung zu einzelnen Nutzern.';
 
 $string['help_faq'] = 'Häufig gestellte Fragen';
 
 $string['help_faq_personal_data_question'] = 'Warum werden keine personalisierten Statistiken, wie z.B. die Klicks pro Nutzer angezeigt?';
-$string['help_faq_personal_data_answer'] = 'Aus Datenschutzgründen erhebt das Learning Analytics-Modul keine personalisierten Daten. Daher enthalten die meisten dargestellten Statistiken (z.B. die meist genutzten Aktivitäten) nur Information darüber wie oft eine Ressource aufgerufen wurde, aber nicht von wie vielen Teilnehmer/innen.
+$string['help_faq_personal_data_answer'] = 'Aus Datenschutzgründen erhebt das Learning Analytics-Angebot keine personalisierten Daten. Daher enthalten die meisten dargestellten Statistiken (z.B. die meist genutzten Aktivitäten) nur Information darüber wie oft eine Resource aufgerufen wurde, aber nicht von wie vielen Teilnehmer/innen.
 Eine Ausnahme stellen die Statistiken zu Teilnehmer/innen und Tests/Aufgaben da, da hier auch Moodle-eigene Daten dargestellt werden.';
 
 $string['help_faq_week_start_question'] = 'Warum entspricht die erste Woche in der Darstellung im Dashboard nicht dem tatsächlichen Vorlesungsstart?';
@@ -81,9 +81,9 @@ $string['help_faq_data_storage_question'] = 'Welche Daten werden durch das Angeb
 $string['help_faq_data_storage_answer'] = 'Die dargestellten Daten stammen aus zwei Datenquellen.
 Beide Quellen werden in der internen Moodle-Datenbank gespeichert.
 Bei der ersten Datenquelle handelt es sich um interne Moodle-Datensätze, wie z.B. die Anzahl an Teilnehmer/innen im Kurs (linke Box im Dashboard).
-Diese Datensätze lassen sich zum Teil auch auf anderen Moodle-Seiten einsehen und werden durch das Learning Analytics Angebot anders visualisiert.
-Bei der zweiten Datenquelle handelt es sich um Daten, die eigens für das Learning Analytics Angebot erhoben werden.
-Alle Daten, die vom Learning Analytics Angebot erhoben werden, werden anonymisiert gespeichert und erlauben keine Rückverfolgung zu einzelnen Nutzern.
+Diese Datensätze lassen sich zum Teil auch auf anderen Moodle-Seiten einsehen und werden auf diesen Seiten anders visualisiert.
+Bei der zweiten Datenquelle handelt es sich um Daten, die eigens für die Darstellung der Zugriffsstatistiken erhoben werden.
+Alle Daten, die dafür erhoben werden, werden anonymisiert gespeichert und erlauben keine Rückverfolgung zu einzelnen Nutzern.
 Konkret werden bei jedem Aufruf in Moodle folgende Daten gespeichert:';
 $string['help_faq_data_storage_answer_list'] = 'Typ der Aktion (z.B. "Ressource angesehen")
 Uhrzeit (sekundengenau)
@@ -94,11 +94,11 @@ Betriebssystem und Browser (z.B. "Windows 10" und "Firefox"), detaillierte Brows
 $string['help_faq_privacy_threshold_question'] = 'Warum werden manche Werte als "< {$a}" angezeigt?';
 $string['help_faq_privacy_threshold_answer'] = 'Aus Datenschutzgründen werden aggregierte Daten erst dargestellt, wenn mindestens {$a} Datensätze vorhanden sind.';
 
-$string['help_faq_visibility_question'] = 'Wer kann auf die Learning Analytics-Statistiken zugreifen?';
+$string['help_faq_visibility_question'] = 'Wer kann auf die Zugriffsstatistiken zugreifen?';
 $string['help_faq_visibility_answer'] = 'Um größtmögliche Transparenz zu gewährleisten, können die angezeigten Daten sowohl von den Managern/Inhabern als auch von den Teilnehmer/innen des Kurses eingesehen werden.';
 
 $string['help_faq_developer_question'] = 'Durch wen wird das Angebot entwickelt und wo erhalte ich weitere Informationen?';
-$string['help_faq_developer_answer'] = 'Die Entwicklung des Learning Analytics Angebot geschieht durch das Center für Lehr- und Lernservices der RWTH Aachen University.
+$string['help_faq_developer_answer'] = 'Die Entwicklung des Learning Analytics-Angebotes geschieht durch das Center für Lehr- und Lernservices (CLS) der RWTH Aachen University.
 Die Entwicklung ist Open Source. Sie können die eingesetzten Algorithmen daher selber überprüfen. Auf den folgenden Seiten können Sie auf weitere Informationen zugreifen:';
 
 // Tour
