@@ -24,10 +24,11 @@
   - [x] Removes customfield
   - [x] Removes user tour
 - [ ] Add new reports to upgrade.php script
+  - [ ] Remove the la database entries instead?
 - [x] ~~Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)~~ => it's already in there
 
 ## WS 20/21 Before Moodle store
-- [ ] Wording: "Learning Analytics Angebot" / "Modul" / "Service"
+- [x] Wording: "Learning Analytics Angebot" / "Service"
 - [x] Test plugin with more multi-language content and check where to use `format_string` when printing activity names
 - [ ] Administration
   - [ ] Option: Start of the week: Sunday/Monday => respect Setting of Calender in Moodle
@@ -37,7 +38,11 @@
   - [x] Give graph meaningful aria labels
   - [x] Add aria-hidden to data that is not needed for screen readers
 - [x] Check Moodle guidelines => we should be fine, expect for some naming conventions, but we ignore them for now...
-- [ ] If customfield setting is used, add information to course backup / import (if that is even possible...)
+- [x] If customfield setting is used, add information to course backup / import (if that is even possible...) => This is done automatically (you can choose what to backup when you make the backup)
+
+## Ideas for reports (SS 2021?)
+- [ ] Plot enrolments over time on the participants page
+- [ ] Add time filter to activities page (and heatmap?)
 
 -------------------
 
