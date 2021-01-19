@@ -98,7 +98,7 @@ $string['help_faq_visibility_question'] = 'Who can access the Usage Statistics?'
 $string['help_faq_visibility_answer'] = 'To ensure maximum transparency, the displayed data can be viewed by the course owners as well as by the participants of the course.';
 
 $string['help_faq_developer_question'] = 'Who develops the service and where can I get further information?';
-$string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by the Center for teaching and learning services at RWTH Aachen University.
+$string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by the Center for Teaching and Learning Services at RWTH Aachen University.
 The development is Open Source. Therefore you can check the used algorithms yourself. On the following pages you can access further information:';
 
 // Tour
