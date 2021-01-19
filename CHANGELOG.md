@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.15.0] - 2021-01-19
+### Changed
+- Minor text changes on the FAQ page
+### Fixed
+- Test & Quiz pages showing error in very specific edge cases for quizzes and assignments
+
 ## [0.14.0] - 2020-11-27
 ### Changed
 - Minor text changes on the FAQ page
