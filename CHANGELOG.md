@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.16.0] - 2021-02-15
+### Removed
+- Subplugin `browser_os` removed
+### Changed
+- Minor language string changes
+
 ## [0.15.0] - 2021-01-19
 ### Changed
 - Minor text changes on the FAQ page
