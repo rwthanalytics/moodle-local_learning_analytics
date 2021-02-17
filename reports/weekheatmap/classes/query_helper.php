@@ -33,7 +33,7 @@ use context_course;
 
 class query_helper {
 
-    public static function query_heatmap(int $courseid): array {
+    public static function query_heatmap(int $courseid, int $startOfWeek): array {
         global $DB;
 
         $course = get_course($courseid);
@@ -41,6 +41,8 @@ class query_helper {
         $startdate->setTimestamp($course->startdate);
         $startdate->modify('Monday this week'); // Get start of week.
         $mondaytimestamp = $startdate->getTimestamp();
+        $calendarTimestamp = $mondaytimestamp + (86400 * ($startOfWeek - 1));
+
         // TODO Implement Daylight saving offeset
         // This does not work very well if daylight saving comes into play, then all old
         // dates will be shifted by 1 hour...
@@ -56,6 +58,6 @@ class query_helper {
         ORDER BY heatpoint
 SQL;
 
-        return $DB->get_records_sql($query, [$mondaytimestamp, $courseid]);
+        return $DB->get_records_sql($query, [$calendarTimestamp, $courseid]);
     }
 }

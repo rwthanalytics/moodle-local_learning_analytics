@@ -31,6 +31,8 @@ use lareport_weekheatmap\query_helper;
 use local_learning_analytics\router;
 use local_learning_analytics\settings;
 
+require_once('../../calendar/lib.php');
+
 class lareport_weekheatmap extends report_base {
 
     public function run(array $params): array {
@@ -43,7 +45,12 @@ class lareport_weekheatmap extends report_base {
         $xstrs = [];
         $texts = [];
 
-        $days = array('sunday', 'saturday', 'friday', 'thursday', 'wednesday', 'tuesday', 'monday');
+        $startOfWeek = calendar_get_starting_weekday();
+        $days = array('saturday', 'friday', 'thursday', 'wednesday', 'tuesday', 'monday', 'sunday');
+        for($i=0; $i<$startOfWeek; $i++) {
+            $days = array($days[6], $days[0], $days[1], $days[2], $days[3], $days[4], $days[5]);
+        }
+
         $ystrs = [];
         foreach ($days as $day) {
             $ystrs[] = get_string($day, 'calendar');
@@ -57,7 +64,7 @@ class lareport_weekheatmap extends report_base {
 
         $maxvalue = 0;
         $hitsstr = get_string('hits', 'lareport_weekheatmap');
-        $heatpoints = query_helper::query_heatmap($courseid);
+        $heatpoints = query_helper::query_heatmap($courseid, $startOfWeek);
         for ($d = 0; $d < 7; $d += 1) {
             // we need to start the plot at the bottom (sun -> sat -> fri -> ...)
             $startpos = (6 - $d) * 24;
