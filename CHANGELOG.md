@@ -1,6 +1,25 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.16.0] - 2021-02-15
+### Removed
+- Subplugin `browser_os` removed
+### Changed
+- Minor language string changes
+
+## [0.15.0] - 2021-01-19
+### Changed
+- Minor text changes on the FAQ page
+### Fixed
+- Test & Quiz pages showing error in very specific edge cases for quizzes and assignments
+
+## [0.14.0] - 2020-11-27
+### Changed
+- Minor text changes on the FAQ page
+- customfield values (name, description) changed
+### Fixed
+- Postgres: SQL Query for an option of the learners page not working
+
 ## [0.13.0] - 2020-10-22
 ### Added
 - Accessibility attributes added (`aria-*`)

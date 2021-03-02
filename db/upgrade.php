@@ -25,7 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 function xmldb_local_learning_analytics_upgrade($oldversion) {
-    global $DB, $CFG;
+    global $DB, $CFG, $SITE;
+	$dbman = $DB->get_manager();
 
     // Update TOUR to latest version
     if ($oldversion < 2020101301) { // always update this to the latest version when the usertour was changed
@@ -42,6 +43,15 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
         $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
         set_config('tourid', $tour->get_id(), 'local_learning_analytics');
         upgrade_plugin_savepoint(true, 2020101301, 'local', 'learning_analytics');
+    }
+
+    if ($oldversion < 2021021500) {
+        $table = new xmldb_table('lalog_browser_os');
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2021021500, 'local', 'learning_analytics');
     }
 
     return true;

@@ -39,8 +39,11 @@ class query_helper {
         $query = <<<SQL
         SELECT
             q.id,
-            AVG(qa.sumgrades)/q.sumgrades AS result,
-            AVG(case when qa.attempt=1 then qa.sumgrades else NULL end)/q.sumgrades AS firsttryresult,
+            COALESCE(AVG(qa.sumgrades)/q.sumgrades, 1) AS result,
+            COALESCE(AVG(case when qa.attempt=1 then qa.sumgrades else NULL end)/q.sumgrades, 1) AS firsttryresult,
+            -- COALESCE is needed as some teachers define quizzes with zero maximal points to reach
+            -- which results in a division by zero and then returns null
+            -- in that case we return 1
             COUNT(DISTINCT userid) AS users,
             COUNT(1) AS attempts
         FROM {grade_items} gi
@@ -66,7 +69,10 @@ SQL;
         SELECT
             a.id,
             COUNT(1) handins,
-            (AVG(gg.rawgrade)-gg.rawgrademin)/(gi.grademax-gg.rawgrademin) AS grade
+            COALESCE((AVG(gg.rawgrade)-gg.rawgrademin)/(gi.grademax-gg.rawgrademin), 1) AS grade
+            -- COALESCE is needed as some teachers define custom scales with just one value
+            -- which results in a division by zero and then returns null
+            -- in that case we return 1 (as there is just one value, which means people got full points)
         FROM {grade_items} gi
         JOIN {grade_grades} gg
             ON gg.itemid = gi.id

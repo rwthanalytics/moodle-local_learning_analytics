@@ -48,6 +48,7 @@ $string['not_available'] = 'N/A';
 $string['last_7_days'] = 'Last 7 days';
 $string['total'] = 'Total';
 $string['quiz_and_assignments'] = 'Attempts and submissions (last 7 days)';
+$string['quiz_less_than_text'] = 'Attempts/Submissions';
 $string['no_difference'] = 'No change';
 $string['compared_to_previous_week'] = 'Compared to the previous 7 days';
 

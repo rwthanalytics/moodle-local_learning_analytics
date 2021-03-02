@@ -24,20 +24,20 @@
 
 namespace local_learning_analytics;
 
-// Unfortunately, the customfields do not support language strings (as they are inserted into the database)
-// So, instead we have to use strings that are english/german
-const STRING_CATEGORY_NAME = 'Learning Analytics';
-const STRING_CATEGORY_DESCRIPTION = 'This category was automatically created by the Learning Analytics plugin (local_learning_analytics). You should not manually delete this.';
-
-// We use multilang strings here with an "invalid" divider in between. That way, if multilang strings are enabled, the corresponding language is used, otherwise
-// both languages (including the divider) will be shown.
-const STRING_FIELD_NAME = '<span lang="en" class="multilang">Enable Usage Statistics</span><span lang="invalid" class="multilang"> / </span><span lang="de" class="multilang">Zugriffsstatistiken aktivieren</span>';
-const STRING_FIELD_DESCRIPTION = '<span lang="en" class="multilang">Enabling adds the link "Usage Statistics" to your course navigation.</span><span lang="invalid" class="multilang"> / ' .
-    "\r\n" . '</span><span lang="de" class="multilang">Die Aktivierung fügt der Kursnavigation den Link "Zugriffsstatistiken" hinzu.</span>';
-
 defined('MOODLE_INTERNAL') || die;
 
 abstract class settings {
+
+    // Unfortunately, the customfields do not support language strings (as they are inserted into the database)
+    // So, instead we have to use strings that are english/german
+    const CUSTOMFIELD_CATEGORY_NAME = 'Learning Analytics';
+    const CUSTOMFIELD_CATEGORY_DESCRIPTION = 'This category was automatically created by the Learning Analytics plugin (local_learning_analytics). You should not manually delete this.';
+    
+    // We use multilang strings here with an "invalid" divider in between. That way, if multilang strings are enabled, the corresponding language is used, otherwise
+    // both languages (including the divider) will be shown.
+    const CUSTOMFIELD_FIELD_NAME = '<span lang="en" class="multilang">Enable Usage Statistics</span><span lang="invalid" class="multilang"> / </span><span lang="de" class="multilang">Zugriffsstatistiken aktivieren</span>';
+    const CUSTOMFIELD_FIELD_DESCRIPTION = '<span lang="en" class="multilang">Enabling adds the link "Usage Statistics" to your course navigation.</span><span lang="invalid" class="multilang"> / ' .
+        "\r\n" . '</span><span lang="de" class="multilang">Die Aktivierung fügt der Kursnavigation den Link "Zugriffsstatistiken" hinzu.</span>';
 
     const DEFAULTS = [
         'dataprivacy_threshold' => 10,
@@ -72,16 +72,16 @@ abstract class settings {
             // Create customfield category for courses
             $handler = \core_course\customfield\course_handler::create();
             $category = \core_customfield\category_controller::create(0, (object)[
-                'name' => STRING_CATEGORY_NAME,
-                'description' => STRING_CATEGORY_DESCRIPTION,
+                'name' => self::CUSTOMFIELD_CATEGORY_NAME,
+                'description' => self::CUSTOMFIELD_CATEGORY_DESCRIPTION,
             ], $handler);
             \core_customfield\api::save_category($category);
 
             // Create customfield entry (inside of category created above)
             $field = \core_customfield\field_controller::create(0, (object)[
-                'name' => STRING_FIELD_NAME,
+                'name' => self::CUSTOMFIELD_FIELD_NAME,
                 'shortname' => 'learning_analytics_enable',
-                'description' => STRING_FIELD_DESCRIPTION,
+                'description' => self::CUSTOMFIELD_FIELD_DESCRIPTION,
                 'type' => 'checkbox'
             ], $category);
             $formdata = \core_customfield\api::prepare_field_for_config_form($field);

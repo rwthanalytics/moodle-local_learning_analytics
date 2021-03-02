@@ -48,6 +48,7 @@ $string['not_available'] = 'Nicht verfügbar';
 $string['last_7_days'] = 'Der letzten 7 Tage';
 $string['total'] = 'Insgesamt';
 $string['quiz_and_assignments'] = 'Versuche und Abgaben der letzten 7 Tage';
+$string['quiz_less_than_text'] = 'Versuche/Abgaben';
 $string['no_difference'] = 'Kein Unterschied';
 $string['compared_to_previous_week'] = 'Verglichen mit den vorherigen 7 Tagen';
 

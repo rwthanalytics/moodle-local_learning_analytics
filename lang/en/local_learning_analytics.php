@@ -58,19 +58,19 @@ $string['allow_dashboard_compare_description'] = 'Activate this options, to allo
 $string['navigation_position_beforekey_description'] = 'Allows to specify where in the course navigation the link to the page is added. By default, the link is added before the first "section" node. Example value: <code>grades</code> to be shown before the link to grades. You can find the key of a node in the navigation by using the developer tools. Right-click on a link in the navigation, press <em>Inspect</em> and check the attribute <code>data-key</code> of the corresponding <code>a</code> element.';
 $string['setting_student_rolenames_description'] = 'In case the role(s) for students/users in a course is not <code>student</code>, you can specify the corresponding role name. In case there are multiple roles that students have, use a single comma. Example: <code>student,customrole</code>';
 
-$string['setting_student_enrols_groupby_description'] = 'This option defines which courses are merged together in the "Previous/Parallel course.';
+$string['setting_student_enrols_groupby_description'] = 'This option defines which courses are merged together in the "Previous/Parallel course" page and which value is used to show the names.';
 
 // Help
 $string['help_title'] = 'Help';
 $string['help_take_tour'] = 'Take the interactive tour';
-$string['help_text'] = 'Learning Analytics shows you the key metrics of your course.
+$string['help_text'] = 'The page "Usage Statistics" of the Learning Analytics service shows you the key metrics of your course.
 
-The Learning Analytics displays data that was collected by itself as well as data from the Moodle course itself. All collected data is collected fully anonymously and cannot be traced back to users.';
+The shown statistics are live and display data that was collected by the service as well as data from the Moodle course itself. All data collected by the Learning Analytics service is collected fully anonymously and cannot be traced back to users.';
 
 $string['help_faq'] = 'Frequently Asked Questions (FAQ)';
 
 $string['help_faq_personal_data_question'] = 'Why are no personalized statistics, like clicks per user, displayed?';
-$string['help_faq_personal_data_answer'] = 'For data privacy reasons, the Learning Analytics module does not collect personalized data. Therefore, most of the displayed statistics (e.g. the most used activities) only contain information about how often a resource was accessed, but not by how many participants.
+$string['help_faq_personal_data_answer'] = 'For data privacy reasons, the Learning Analytics service does not collect personalized data. Therefore, most of the displayed statistics (e.g. the most used activities) only contain information about how often a resource was accessed, but not by how many participants.
 An exception to this are the statistics about participants and quizzes/assignments, which also display Moodle internal data.';
 
 $string['help_faq_week_start_question'] = 'Why does the first week in the dashboard graph not correspond to the actual start of the lecture?';
@@ -81,10 +81,9 @@ $string['help_faq_data_storage_question'] = 'Which data is stored and displayed 
 $string['help_faq_data_storage_answer'] = 'The data presented is from two data sources.
 Both sources are stored in the internal Moodle database.
 The first data source is the internal Moodle database, such as the number of students in the course (left box in the dashboard).
-Some of these data sets can be viewed on other Moodle pages and are just visualized differently by the Learning Analytics service.
-The second data source is data that is collected specifically for the Learning Analytics service.
-All data is stored anonymously.
-The collected data does not allow to trace back to individual users.
+Some of these data sets can be viewed on other Moodle pages and are just visualized differently on these pages.
+The second data source is data that is collected specifically for presentation on the Usage Statistics page.
+All data collected for that purpose is stored anonymously and cannot be traced back to individual users.
 Specifically, the following data is stored with each request in Moodle:';
 $string['help_faq_data_storage_answer_list'] = 'Type of action (e.g. "Resource viewed")
 Time (exact to the second)
@@ -95,11 +94,11 @@ Operating system and browser (e.g. "Windows 10" and "Firefox"), detailed browser
 $string['help_faq_privacy_threshold_question'] = 'Why do some values shown as "< {$a}"?';
 $string['help_faq_privacy_threshold_answer'] = 'For data privacy reasons, aggregated data is only displayed if at least {$a} data points are present.';
 
-$string['help_faq_visibility_question'] = 'Who can access the Learning Analytics statistics?';
+$string['help_faq_visibility_question'] = 'Who can access the Usage Statistics?';
 $string['help_faq_visibility_answer'] = 'To ensure maximum transparency, the displayed data can be viewed by the course owners as well as by the participants of the course.';
 
-$string['help_faq_developer_question'] = 'Who develops the Learning Analytics service and where can I get further information?';
-$string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by the Center for teaching and learning services at RWTH Aachen University.
+$string['help_faq_developer_question'] = 'Who develops the service and where can I get further information?';
+$string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by the Center for Teaching and Learning Services at RWTH Aachen University.
 The development is Open Source. Therefore you can check the used algorithms yourself. On the following pages you can access further information:';
 
 // Tour
