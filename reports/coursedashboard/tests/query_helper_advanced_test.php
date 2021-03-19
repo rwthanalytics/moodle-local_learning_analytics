@@ -32,64 +32,46 @@ use local_learning_analytics\event\report_viewed;
 use local_learning_analytics\report_list;
 require_once(__DIR__ . '/../../../../../config.php');
 
-//use: vendor\bin\phpunit local_Learning_Analytics_reports_coursedashboard_testcase local\Learning_Analytics\reports\coursedashboard\tests\query_helper_advanced_test.php
+//use: navigate in cmd to your moodle folder and enter vendor\bin\phpunit local_Learning_Analytics_reports_coursedashboard_testcase local\Learning_Analytics\reports\coursedashboard\tests\query_helper_advanced_test.php
 class local_Learning_Analytics_reports_coursedashboard_testcase extends \advanced_testcase {
 
     public function test_weekly_activity() {
         global $DB, $PAGE;
         $this->resetAfterTest(true);
         $this->setAdminUser();
-        /*$this->preventResetByRollback();
-        set_config('enabled_stores', 'logstore_lanalytics_log', 'tool_log');
-        set_config('buffersize', 0, 'logstore_lanalytics_log');
-        get_log_manager(true);*/
 
         $category = $this->getDataGenerator()->create_category();
         $course = $this->getDataGenerator()->create_course(array('name'=>'testcourse', 'category'=>$category->id));
         $user = $this->getDataGenerator()->create_user();
         $this->getDataGenerator()->enrol_user($user->id, $course->id);
 
-        $date = new DateTime();
-        $date->modify('-1 week');
+        $date = time() - (7 * 24 * 60 * 60);
+        $tooearlydate = time() - (7 * 24 * 60 * 60 * 2);
 
-        $entry = [
-            'id' => 2,
+        $entry1 = [
+            'id' => 1,
             'eventid' => 30,
-            'timecreated' => $date->getTimestamp(),
+            'timecreated' => $tooearlydate,
             'courseid' => $course->id,
             'contextid' => 46,
             'device' => 3611
         ];
-        $DB->insert_record_raw('logstore_lanalytics_log', $entry, false, false, true);
+        $entry2 = [
+            'id' => 2,
+            'eventid' => 30,
+            'timecreated' => $date,
+            'courseid' => $course->id,
+            'contextid' => 46,
+            'device' => 3611
+        ];
 
-        /*$event = report_viewed::create(array(
-            'contextid' => $PAGE->context->id,
-            'objectid' => report_list::list['coursedashboard'],
-        ));
-        $event->add_record_snapshot('course', $course);
-        //$event->trigger();
-        $this->getDataGenerator()->create_event($event);*/
+        $DB->insert_record('logstore_lanalytics_log', $entry1, false, false, true);
+        $DB->insert_record('logstore_lanalytics_log', $entry2, false, false, true);
 
-        /*$query2 = <<<SQL
-        SELECT *
-        FROM {logstore_lanalytics_log} l        
-SQL;
-
-        var_dump($DB->get_record_sql($query2));*/
-        
-        //$testcourse = (int) $DB->get_record_select('course', 'id'>1, null,'id')->id;
         $testweekresult = query_helper::query_weekly_activity($course->id);
         $testweek = end($testweekresult);
-        //var_dump($testweekresult);
         $testweekclicks = $testweek->clicks;
 
-        $query = <<<SQL
-        SELECT COUNT(*) clicks
-        FROM {logstore_lanalytics_log} l
-SQL;
-
-        $manualresult = $DB->get_record_sql($query);
-
-        $this->assertEquals($testweekclicks, $manualresult->clicks);
+        $this->assertEquals(1, $testweekclicks);
     }
 }
