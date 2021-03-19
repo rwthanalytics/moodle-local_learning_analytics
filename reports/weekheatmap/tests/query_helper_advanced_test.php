@@ -45,33 +45,43 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $user = $this->getDataGenerator()->create_user();
         $this->getDataGenerator()->enrol_user($user->id, $course->id);
 
-        $date = time() - (7 * 24 * 60 * 60);
-        $tooearlydate = time() - (7 * 24 * 60 * 60 * 2);
+        $startdate = new \DateTime();
+        $startdate->setTimestamp($course->startdate);
+        $startdate->modify('Monday this week');
+        $mondaytimestamp = $startdate->getTimestamp();
 
-        $entry1 = [
-            'id' => 1,
-            'eventid' => 30,
-            'timecreated' => $tooearlydate,
-            'courseid' => $course->id,
-            'contextid' => 46,
-            'device' => 3611
-        ];
-        $entry2 = [
-            'id' => 2,
-            'eventid' => 30,
-            'timecreated' => $date,
-            'courseid' => $course->id,
-            'contextid' => 46,
-            'device' => 3611
-        ];
+        $counter = 1;
+        for($i=0; $i<168; $i++) {
+            $entry = [
+                'id' => $counter,
+                'eventid' => 30,
+                'timecreated' => $mondaytimestamp + $i * 60 * 60,
+                'courseid' => $course->id,
+                'contextid' => 46,
+                'device' => 3611
+            ];
+            $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+            $counter++;
 
-        $DB->insert_record('logstore_lanalytics_log', $entry1, false, false, true);
-        $DB->insert_record('logstore_lanalytics_log', $entry2, false, false, true);
+            if($i%2==0) {
+                $entry['id'] = $counter;
+                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+                $counter++;
+            }
+
+            if($i%3==0) {
+                $entry['id'] = $counter;
+                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+                $counter++;
+            }
+        }
 
         $testweekresult = query_helper::query_heatmap($course->id);
-        $testweek = end($testweekresult);
-        $testweekclicks = $testweek->clicks;
 
-        $this->assertEquals(1, $testweekclicks);
+        $this->assertEquals(3, $testweekresult[0]->value);
+        $this->assertEquals(2, $testweekresult[100]->value);
+        $this->assertEquals(2, $testweekresult[39]->value);
+        $this->assertEquals(1, $testweekresult[17]->value);
+        $this->assertEquals(false, array_key_exists(168, $testweekresult));
     }
 }
