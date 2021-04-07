@@ -43,6 +43,7 @@ $string['sessions'] = 'Sessions';
 $string['hits'] = 'Hits'; // "Aufrufe"
 
 // Settings
+$string['general_settings'] = 'General Settings';
 $string['setting_status_description'] = 'This value sets whether the user interface should be activated and whether a links should be shown in the navigation. By default, the link and page are visible if logging is enabled for the course. You can use this option, if you want to enabled logging in all courses, but only want to enable the user interface on specific courses.';
 $string['setting_status_option_show_if_enabled'] = 'Show navigation link if logging is enabled for the course';
 $string['setting_status_option_show_courseids'] = 'Show navigation link if course is specified below via course_ids';
