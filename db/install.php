@@ -22,20 +22,10 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_learning_analytics\report_list;
-
 defined('MOODLE_INTERNAL') || die();
 
 function xmldb_local_learning_analytics_install() {
     global $DB, $CFG;
-
-    foreach(report_list::list as $reportname => $reportid) {
-        $entry = [
-            'id' => $reportid,
-            'reportname' => $reportname
-        ];
-        $DB->insert_record_raw('local_learning_analytics_rep', $entry, false, false, true);
-    }
     
     $tourpath = $CFG->dirroot . '/local/learning_analytics/templates/usertour.json';
     $tourjson = file_get_contents($tourpath);

@@ -54,5 +54,15 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2021021500, 'local', 'learning_analytics');
     }
 
+    if ($oldversion < 2021042201) {
+        $table = new xmldb_table('local_learning_analytics_rep');
+
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2021042201, 'local', 'learning_analytics');
+    }
+
     return true;
 }
