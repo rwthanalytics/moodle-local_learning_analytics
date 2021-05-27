@@ -43,7 +43,15 @@ class lareport_weekheatmap extends report_base {
         $xstrs = [];
         $texts = [];
 
-        $days = array('sunday', 'saturday', 'friday', 'thursday', 'wednesday', 'tuesday', 'monday');
+        $calendar = \core_calendar\type_factory::get_calendar_instance();
+        $startOfWeek = $calendar->get_starting_weekday(); // 0 -> Sunday, 1 -> Monday
+
+        $days = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
+        if ($startOfWeek !== 0) {
+            $days = array_merge(array_slice($days, $startOfWeek), array_slice($days, 0, $startOfWeek));
+        }
+        $days = array_reverse($days);
+        
         $ystrs = [];
         foreach ($days as $day) {
             $ystrs[] = get_string($day, 'calendar');
@@ -60,11 +68,12 @@ class lareport_weekheatmap extends report_base {
         $heatpoints = query_helper::query_heatmap($courseid);
         for ($d = 0; $d < 7; $d += 1) {
             // we need to start the plot at the bottom (sun -> sat -> fri -> ...)
-            $startpos = (6 - $d) * 24;
+            $dbweekday = (6 + $startOfWeek - $d) % 7; // 0 (Sun) -> 6 (Sat) -> 5 (Fri) -> ...
             $daydata = [];
             $textdata = [];
             for ($h = 0; $h < 24; $h += 1) {
-                $datapoint = empty($heatpoints[$startpos + $h]) ? 0 : $heatpoints[$startpos + $h]->value;
+                $dbkey = $dbweekday . '-' . $h;
+                $datapoint = empty($heatpoints[$dbkey]) ? 0 : $heatpoints[$dbkey]->value;
                 $text = $datapoint;
                 if ($datapoint < $privacythreshold) {
                     $text = '< ' . $privacythreshold;

@@ -36,19 +36,10 @@ class query_helper {
     public static function query_heatmap(int $courseid): array {
         global $DB;
 
-        $course = get_course($courseid);
-        $startdate = new \DateTime();
-        $startdate->setTimestamp($course->startdate);
-        $startdate->modify('Monday this week'); // Get start of week.
-        $mondaytimestamp = $startdate->getTimestamp();
-        // TODO Implement Daylight saving offeset
-        // This does not work very well if daylight saving comes into play, then all old
-        // dates will be shifted by 1 hour...
-
-        // returns points between 0 - 167 (24*7 data points), where 0 => Mon,0-1am; 1 => Mon,1-2am; ...
+        // returns points where 0-0 => Sun,0-1am; 1 => Sun,1-2am; ...
         $query = <<<SQL
         SELECT
-            FLOOR(((l.timecreated - ?) % (60*60*24*7)) / (60*60)) AS heatpoint,
+            FROM_UNIXTIME(l.timecreated, '%w-%k') AS heatpoint,
             COUNT(1) AS value
         FROM {logstore_lanalytics_log} AS l
             WHERE l.courseid = ?
@@ -56,7 +47,7 @@ class query_helper {
         ORDER BY heatpoint
 SQL;
 
-        return $DB->get_records_sql($query, [$mondaytimestamp, $courseid]);
+        return $DB->get_records_sql($query, [$courseid]);
     }
 
     private static function click_count_helper(int $courseid, int $from, int $to = null) {
