@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.17.0] - TODO
+### Removed
+- Removed hardcoded report_list
+- Removed leftover code from "dashboard compare" option
+
 ## [0.16.0] - 2021-02-15
 ### Removed
 - Subplugin `browser_os` removed

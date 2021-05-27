@@ -41,7 +41,6 @@ abstract class settings {
 
     const DEFAULTS = [
         'dataprivacy_threshold' => 10,
-        'allow_dashboard_compare' => 0,
         'student_rolenames' => 'student',
     ];
 

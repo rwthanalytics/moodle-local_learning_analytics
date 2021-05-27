@@ -96,12 +96,5 @@ if ($hassiteconfig) {
                 'fullname' => 'course->fullname',
             ]
         ));
-
-        // $settings->add(new admin_setting_configcheckbox(
-        //     'local_learning_analytics/allow_dashboard_compare',
-        //     'allow_dashboard_compare',
-        //     get_string('allow_dashboard_compare_description', 'local_learning_analytics'),
-        //     0
-        // ));
     }
 }

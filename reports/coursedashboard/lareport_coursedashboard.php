@@ -34,7 +34,7 @@ class lareport_coursedashboard extends report_base {
     const X_MIN = -1;
     const X_MAX = 30;
 
-    private function activiyoverweeks(int $courseid, int $prevcourseid) : array {
+    private function activiyoverweeks(int $courseid) : array {
         $course = get_course($courseid);
 
         $date = new DateTime();
@@ -49,16 +49,11 @@ class lareport_coursedashboard extends report_base {
 
         $weeks = query_helper::query_weekly_activity($courseid);
 
-        $weekslastyear = [];
-        if ($prevcourseid !== -1) {
-            $weekslastyear = query_helper::query_weekly_activity($prevcourseid);
-        }
         $privacythreshold = settings::get_config('dataprivacy_threshold');
 
         $plot = new plot();
         $x = [];
         $yclicks = [];
-        $ylyclicks = [];
 
         $texts = [];
 
@@ -83,9 +78,6 @@ class lareport_coursedashboard extends report_base {
         foreach ($weeks as $week) {
             $ymax = max($ymax, $week->clicks);
         }
-        foreach ($weekslastyear as $weekly) {
-            $ymax = max($ymax, $weekly->clicks);
-        }
         $ymax = $ymax * 1.1;
 
         $xmin = self::X_MIN;
@@ -107,7 +99,6 @@ class lareport_coursedashboard extends report_base {
 
         for ($i = $xmin; $i <= $xmax; $i++) {
             $week = $weeks[$i] ?? new stdClass();
-            $weekly = $weekslastyear[$i] ?? new stdClass(); // weekly = "Week Last Year".
 
             $weeknumber = ($i <= 0) ? ($i - 1) : $i;
 
@@ -116,15 +107,9 @@ class lareport_coursedashboard extends report_base {
             $ticktext[] = $weeknumber;
 
             $clickcount = $week->clicks ?? 0;
-            $clickcountly = $weekly->clicks ?? 0;
             if ($clickcount < $privacythreshold) {
                 $clickcount = 0;
             }
-            if ($clickcountly < $privacythreshold) {
-                $clickcountly = 0;
-            }
-
-            $ylyclicks[] = $clickcountly;
 
             $startofweektimestamp = $date->getTimestamp();
             $date->modify('+6 days');
@@ -208,22 +193,6 @@ class lareport_coursedashboard extends report_base {
             ],
             'legendgroup' => 'a'
         ]);
-
-        // Compare course.
-        if (count($weekslastyear) !== 0) {
-            $plot->add_series([
-                'type' => 'scatter',
-                'mode' => 'lines+markers',
-                'name' => get_string('clicks_compare', 'lareport_coursedashboard'),
-                'x' => $x,
-                'y' => $ylyclicks,
-                'marker' => [ 'color' => 'rgb(31, 119, 180)' ],
-                'line' => [ 'color' => 'rgb(31, 119, 180)', 'dash' => 'dot' ],
-                'hoverinfo' => 'none',
-                'opacity' => 0.35,
-                'legendgroup' => 'b'
-            ]);
-        }
 
         $layout = new stdClass();
         $layout->margin = [
@@ -428,26 +397,8 @@ class lareport_coursedashboard extends report_base {
     public function run(array $params): array {
         global $PAGE, $DB, $OUTPUT;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css?2');
-        $showcompare = false; // settings::get_config('allow_dashboard_compare'); // disabled for now
 
         $courseid = $params['course'];
-
-        $comparetext = [];
-        $previd = -1;
-        if ($showcompare) {
-            $previd = query_helper::getCurrentprevcourse($courseid);
-            $setcomparelink = new moodle_url(
-                '/local/learning_analytics/index.php/reports/coursedashboard/set_previous_course',
-                ['course' => $courseid]
-            );
-    
-            $setcomparelinktext = 'Set course to compare';
-            if ($previd !== -1) {
-                $prevcourse = $DB->get_record('course', ['id' => $previd]);
-                $setcomparelinktext = "Comparing to: {$prevcourse->fullname}";
-            }
-            $comparetext = ["<div class='coursedashboard-compare'><a href='{$setcomparelink}'>{$setcomparelinktext}</a></div>"];
-        }
 
         $helpurl = new moodle_url('/local/learning_analytics/help.php', ['course' => $courseid]);
         $icon = \html_writer::link($helpurl,
@@ -457,8 +408,7 @@ class lareport_coursedashboard extends report_base {
 
         return array_merge(
             [self::heading(get_string('pluginname', 'lareport_coursedashboard'), true, $helpprefix)],
-            $this->activiyoverweeks($courseid, $previd),
-            $comparetext,
+            $this->activiyoverweeks($courseid),
             ["<div class='row reportboxes'>"],
             $this->registeredusercount($courseid),
             $this->clickcount($courseid),

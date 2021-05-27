@@ -29,7 +29,6 @@ $string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen D
 $string['registered_users'] = 'Teilnehmer/innen';
 $string['active_learners'] = 'Aktive Nutzer';
 $string['click_count'] = 'Aufrufe';
-$string['pagename_set_previous_course'] = 'Vergleichenden Kurs festlegen';
 $string['most_clicked_module'] = 'Meist genutzte Aktivitäten';
 $string['quiz_assign'] = 'Tests & Aufgaben';
 

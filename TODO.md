@@ -23,8 +23,8 @@
   - [x] Removes all data -> same
   - [x] Removes customfield
   - [x] Removes user tour
-- [ ] Add new reports to upgrade.php script
-  - [ ] Remove the la database entries instead?
+- [x] Add new reports to upgrade.php script -> table removed instead
+  - [x] Remove the la database entries instead?
 - [x] ~~Explain capability "learning_analytics:view_statistics" in README (by default students can view statistics)~~ => it's already in there
 
 ## WS 20/21 Before Moodle store
@@ -39,6 +39,13 @@
   - [x] Add aria-hidden to data that is not needed for screen readers
 - [x] Check Moodle guidelines => we should be fine, expect for some naming conventions, but we ignore them for now...
 - [x] If customfield setting is used, add information to course backup / import (if that is even possible...) => This is done automatically (you can choose what to backup when you make the backup)
+- [x] Fully remove "prevcourse" information
+  - [x] `allow_dashboard_compare`
+  - [x] `prevcourse`
+  - [x] `showcompare` flag
+  - [x] `previd` parameters
+  - [x] Language strings
+  - [x] Database table
 
 ## Ideas for reports (SS 2021?)
 - [ ] Plot enrolments over time on the participants page
@@ -51,8 +58,6 @@
 - [x] Update customfield option in Course settings
 - [ ] External database support
 - [ ] Tests
-- [ ] Ideas
-  - [ ] Bring back course to compare?
 - [x] Provide an option to allow or disable tracking teachers
 - [x] ~~"Consent-API"~~ Not until Moodle supports optional policies...
 - [ ] Remove any magic numbers and strings and use constants file
@@ -63,10 +68,7 @@
 ## For much later: API structure
 - [ ] Make reports to show configurable on dashboard
   - [ ] Each report should have a "small" stats to be shown on dashboard and a "report" page
-- [ ] Users of our plugin still have the `lalog_browser_os` table installed (RWTH + HRW)
-  - [ ] Plan: Get the data and then put uninstall routine into upgrade
-  - [ ] Remove this in a future upgrade?
-  - [ ] Rethink the current structure of sub plugins?
+- [x] Users of our plugin still have the `lalog_browser_os` table installed (RWTH + HRW) -> not anymore
 
 -------------------
 
@@ -169,6 +171,7 @@
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
 - [x] **Don't track teachers for now**
 - [x] Detect Moodle-API use
+- [ ] Add LICENSE file to root directory
 
 ## GDPR
 - [x] Create "Verfahrensverzeichnis"

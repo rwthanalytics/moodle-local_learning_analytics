@@ -28,17 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 
 class query_helper {
 
-    public static function getcurrentprevcourse(int $courseid): int {
-        global $DB;
-
-        $previd = $DB->get_record('local_learning_analytics_pre', ['courseid' => $courseid]);
-        if (isset($previd->prevcourseid)) {
-            return $previd->prevcourseid;
-        } else {
-            return -1;
-        }
-    }
-
     public static function query_weekly_activity(int $courseid) : array {
         global $DB;
 
