@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Removed leftover code from "dashboard compare" option
 ### Changed
 - The preview boxes of the dashboard are technically moved into subplugins making it easier to embed additional plugins into the dashboard
+- Changed maturity of the plugin from Beta to Stable
 ### Added
 - Option `setting_dashboard_boxes` to define the layout of the dashboard (width of shown boxes and which boxes are shown) and add subplugins of type `lareport`
 - `weekheatmap` respects user setting regarding the first day of the week
