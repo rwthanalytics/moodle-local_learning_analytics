@@ -173,6 +173,7 @@ The plugin has the following options:
 - `dataprivacy_threshold`: This value determines how many "data points" a "data set" needs to contain before the data is displayed. See the data privacy section below for more information. By default, the value is `10`.
 - `student_rolenames`: In case the role(s) for students/users in a course is not `student`, you can specify the corresponding role name. In case there are multiple roles that students have, use a single comma. Example: `student,customrole`. By default, the value is `student`.
 - `student_enrols_groupby`: Option to allow merging of multiple courses with the same `shortname` or `fullname` in the parallel/previously heard courses. By default, the value is `course->id` which will not merge any courses by comparing their name.
+- `setting_dashboard_boxes`: Determines which boxes are displayed in the dashboard, in which order and how big the boxes are. The specification is in the format `reportname:width`, separated by commas. A line has a maximum width of 12, after which it breaks. Example: `learners:8,activities:4` displays two boxes in the dashboard, where the first one is much wider than the second one. The value only needs to be changed if other subplugins are installed or if the layout of the dashboard needs to be changed.
 
 #### Option `course_customfield`
 <a name="customfield"></a>
