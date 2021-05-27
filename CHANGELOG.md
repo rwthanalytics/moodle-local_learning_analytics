@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file.
 - The preview boxes of the dashboard are technically moved into subplugins making it easier to embed additional plugins into the dashboard
 ### Added
 - Option `setting_dashboard_boxes` to define the layout of the dashboard (width of shown boxes and which boxes are shown) and add subplugins of type `lareport`
+- `weekheatmap` respects user setting regarding the first day of the week
+### Fixed
+- Wrong hours in `weekheatmap` report due to timezone shifts
 
 ## [0.16.0] - 2021-02-15
 ### Removed

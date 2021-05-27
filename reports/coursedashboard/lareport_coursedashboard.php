@@ -240,7 +240,7 @@ class lareport_coursedashboard extends report_base {
 
     public function run(array $params): array {
         global $PAGE, $DB, $OUTPUT, $CFG;
-        $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css?2');
+        $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css?3');
 
         $courseid = $params['course'];
 
