@@ -250,19 +250,20 @@ class lareport_coursedashboard extends report_base {
         );
         $helpprefix = "<div class='headingfloater'>{$icon}</div>";
 
-        $pluginman = \core_plugin_manager::instance();
-        $lareportplugins = $pluginman->get_present_plugins('lareport');
+
+        $previewboxes = settings::get_config('dashboard_boxes');
+        $splitpreviewkeys = explode(',', $previewboxes);
+
         $subpluginsboxes = [];
-        if ($lareportplugins !== null) {
-            foreach ($lareportplugins as $plugin) {
-                $component = $plugin->component;
-                $path = substr($component, 9);
-                $previewfile = "{$CFG->dirroot}/local/learning_analytics/reports/{$path}/classes/preview.php";
-                if (file_exists($previewfile)) {
-                    include_once($previewfile);
-                    $previewClass = "{$plugin->component}\\preview";
-                    $subpluginsboxes = array_merge($subpluginsboxes, ["<div class='col-lg-3'>"], $previewClass::content($params), ["</div>"]);
-                }
+        foreach ($splitpreviewkeys as $plugininfo) {
+            $pluginsplit = explode(':', $plugininfo);
+            $pluginkey = $pluginsplit[0];
+            $pluginsize = intval($pluginsplit[1]);
+            $previewfile = "{$CFG->dirroot}/local/learning_analytics/reports/{$pluginkey}/classes/preview.php";
+            if (file_exists($previewfile)) {
+                include_once($previewfile);
+                $previewClass = "lareport_{$pluginkey}\\preview";
+                $subpluginsboxes = array_merge($subpluginsboxes, ["<div class='col-lg-{$pluginsize}'>"], $previewClass::content($params), ["</div>"]);
             }
         }
 

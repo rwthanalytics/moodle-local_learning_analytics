@@ -41,6 +41,7 @@ abstract class settings {
 
     const DEFAULTS = [
         'dataprivacy_threshold' => 10,
+        'dashboard_boxes' => 'learners:3,weekheatmap:3,quiz_assign:3,activities:3',
         'student_rolenames' => 'student',
     ];
 

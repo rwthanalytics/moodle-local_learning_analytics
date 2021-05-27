@@ -58,6 +58,7 @@ $string['navigation_position_beforekey_description'] = 'Allows to specify where 
 $string['setting_student_rolenames_description'] = 'In case the role(s) for students/users in a course is not <code>student</code>, you can specify the corresponding role name. In case there are multiple roles that students have, use a single comma. Example: <code>student,customrole</code>';
 
 $string['setting_student_enrols_groupby_description'] = 'This option defines which courses are merged together in the "Previous/Parallel course" page and which value is used to show the names.';
+$string['setting_dashboard_boxes'] = 'Determines which boxes are displayed in the dashboard, in which order and how big the boxes are. The specification is in the format <code>reportname:width</code>, separated by commas. A line has a maximum width of 12, after which it breaks. Example: <code>learners:8,activities:4</code> displays two boxes in the dashboard, where the first one is much wider than the second one. In most cases, the value only needs to be changed if other subplugins are installed.';
 
 // Help
 $string['help_title'] = 'Help';

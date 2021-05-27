@@ -58,6 +58,7 @@ $string['navigation_position_beforekey_description'] = 'Erlaubt es die Position 
 $string['setting_student_rolenames_description'] = 'Falls die Rolle <code>student</code> nicht die passende Rolle für Studierende/Nutzer ist oder es mehrere Rollen gibt, die zutreffend sind, können hier die passenden Rollen angegeben werden. Falls mehrere Rollen zutreffen, sollte ein einzelnes Komma genutzt werden um die Rollen zu trennen. Beispiel: <code>student,customrole</code>';
 
 $string['setting_student_enrols_groupby_description'] = 'Für die Statistik "Vorher/Parallel gehört" kann durch die Option bestimmt werden, welche Kurse zusammengefasst werden sollen. Die Auswahl dieser Option legt auch den angezeigten Namen in der Tabelle fest.';
+$string['setting_dashboard_boxes'] = 'Bestimmt welche Boxen im Dashboard angezeigt werden, in welcher Reihenfolge und wie groß die Boxen sind. Die Angabe erfolgt im Format <code>reportname:breite</code>, getrennt durch Kommas. Eine Zeile hat eine maximale Breite von 12 Einheiten, anschließend wird umgebrochen. Beispiel: <code>learners:8,activities:4</code> zeigt zwei Boxen im Dashboard an, wobei die erste deutlich breiter ist als die zweite. Der Wert muss normalweise nur verändert werden, wenn weitere Subplugins genutzt werden.';
 
 // Help
 $string['help_title'] = 'Hilfe';

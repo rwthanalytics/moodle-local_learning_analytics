@@ -96,5 +96,14 @@ if ($hassiteconfig) {
                 'fullname' => 'course->fullname',
             ]
         ));
+
+        $settings->add(new admin_setting_configtext(
+            'local_learning_analytics/dashboard_boxes',
+            'dashboard_boxes',
+            get_string('setting_dashboard_boxes', 'local_learning_analytics'),
+            'learners:3,weekheatmap:3,quiz_assign:3,activities:3', // default value
+            PARAM_RAW,
+            60
+        ));
     }
 }
