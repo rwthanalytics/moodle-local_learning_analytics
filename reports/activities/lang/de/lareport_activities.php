@@ -26,6 +26,8 @@ $string['pluginname'] = 'Aktivitäten und Materialien';
 
 $string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
 
+$string['most_clicked_module'] = 'Meist genutzte Aktivitäten';
+
 $string['introduction'] = 'Die obige Darstellung zeigt die Zugriffe je Aktivität an.
 Die Sortierung richtet sich nach der Reihenfolge der Aktivitäten im Kurs.
 Die folgende Tabelle schlüsselt die Zugriffe je nach Aktivitätstypen auf.

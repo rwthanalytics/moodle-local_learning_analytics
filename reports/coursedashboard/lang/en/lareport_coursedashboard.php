@@ -26,12 +26,6 @@ $string['pluginname'] = 'Learning Analytics Dashboard';
 
 $string['privacy:metadata'] = 'This plugin does not store any personal data.';
 
-$string['registered_users'] = 'Participants';
-$string['active_learners'] = 'Active learners';
-$string['click_count'] = 'Hits';
-$string['most_clicked_module'] = 'Most used activities';
-$string['quiz_assign'] = 'Quizzes & Assignments';
-
 $string['clicks'] = 'hits';
 $string['sessions'] = 'Sessions';
 $string['learners'] = 'Learners';
@@ -40,14 +34,11 @@ $string['clicks_compare'] = 'Sessions (compared)';
 
 $string['week'] = 'Week';
 $string['parameter:course'] = 'Course';
-$string['parameter:prev_course'] = 'Previous course';
 
 $string['set'] = 'Set';
 $string['not_available'] = 'N/A';
 $string['last_7_days'] = 'Last 7 days';
 $string['total'] = 'Total';
-$string['quiz_and_assignments'] = 'Attempts and submissions (last 7 days)';
-$string['quiz_less_than_text'] = 'Attempts/Submissions';
 $string['no_difference'] = 'No change';
 $string['compared_to_previous_week'] = 'Compared to the previous 7 days';
 

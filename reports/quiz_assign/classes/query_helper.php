@@ -90,4 +90,55 @@ SQL;
 
         return $DB->get_records_sql($query, [$courseid]);
     }
+
+    private static function helper_quiz_and_assigments(int $courseid, int $from, int $to = null) {
+        global $DB;
+
+        // assignments
+        $assignquery = <<<SQL
+        SELECT
+            COUNT(1) AS handins
+        FROM {assign} AS a
+        JOIN {assign_submission} AS am
+            ON am.assignment = a.id
+        WHERE a.course = ?
+            AND am.status = 'submitted'
+            AND am.timecreated > ?
+            AND am.timecreated <= ?
+SQL;
+        $assignresult = $DB->get_record_sql($assignquery, [$courseid, $from, $to]);
+
+        // quizzes
+        $quizquery = <<<SQL
+        SELECT
+            COUNT(1) AS attempts
+        FROM {quiz} q
+        JOIN {quiz_attempts} qa
+            ON qa.quiz = q.id
+        WHERE q.course = ?
+            AND qa.state = 'finished'
+            AND qa.timefinish > ?
+            AND qa.timefinish <= ?
+SQL;
+        $quizresult = $DB->get_record_sql($quizquery, [$courseid, $from, $to]);
+
+        return $assignresult->handins + $quizresult->attempts;
+    }
+
+    public static function preview_quiz_and_assigments(int $courseid, $privacythreshold) {
+        global $DB;
+
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // Include today.
+        $today = $date->getTimestamp();
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+        $date->modify('-1 week');
+        $twoweeksago = $date->getTimestamp();
+
+        $previousweek = self::helper_quiz_and_assigments($courseid, $twoweeksago, $oneweekago);
+        $thisweek = self::helper_quiz_and_assigments($courseid, $oneweekago, $today);
+
+        return [$previousweek, $thisweek];
+    }
 }

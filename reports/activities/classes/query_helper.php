@@ -66,4 +66,37 @@ SQL;
 
         return $DB->get_records_sql($query, $valuesstatemt);
     }
+
+    public static function preview_query_most_clicked_activity(int $courseid, $privacythreshold) {
+        global $DB;
+
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // Include today.
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+
+        $query = <<<SQL
+        SELECT
+            cm.id AS cmid,
+            m.name as modname,
+            COUNT(*) AS hits
+        FROM {modules} m
+        JOIN {course_modules} cm
+            ON cm.course = ?
+        AND cm.module = m.id
+            LEFT JOIN {context} ctx
+        ON ctx.contextlevel = 70
+            AND ctx.instanceid = cm.id
+        LEFT JOIN {logstore_lanalytics_log} l
+            ON l.courseid = cm.course
+            AND l.contextid = ctx.id
+        WHERE l.timecreated > ?
+        GROUP BY cm.id, m.name
+        HAVING count(*) >= ?
+        ORDER BY hits DESC
+        LIMIT 3
+SQL;
+
+        return $DB->get_records_sql($query, [$courseid, $oneweekago, max(1, $privacythreshold)]);
+    }
 }

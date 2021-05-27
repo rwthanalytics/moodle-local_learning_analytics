@@ -238,164 +238,8 @@ class lareport_coursedashboard extends report_base {
         ];
     }
 
-    // Icons from: https://material.io/resources/icons/.
-    private static $icons = [
-        'registered_users' => '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110"viewBox="0 0 24 24">
-        <path d="M0 0h24v24H0z" fill="none"/><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8
-        0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0
-        2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29
-        0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>',
-        'active_learners' => '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0
-            14H3V5h18v12z"/>
-        </svg>',
-        'click_count' => '<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110" viewBox="0 0 24 24">
-            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
-            <path fill="none" d="M0 0h24v24H0z"/>
-        </svg>',
-        'most_clicked_module' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 0 28 28">
-            <rect fill="none" height="24" width="24"/><g><path d="M7.5,21H2V9h5.5V21z M14.75,3h-5.5v18h5.5V3z M22,11h-5.5v10H22V11z"/></g>
-        </svg>',
-        'quiz_assign' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 0 28 28">
-            <path d="M0 0h24v24H0z" fill="none"/>
-            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-        </svg>'
-    ];
-
-    private function boxoutputraw(string $titlekey, string $maintext, string $change, int $courseid, string $report = null) {
-        $icon = self::$icons[$titlekey];
-
-        $titlestr = get_string($titlekey, 'lareport_coursedashboard');
-        $titlearia = $titlestr;
-        if ($report !== null) {
-            $link = new moodle_url("/local/learning_analytics/index.php/reports/{$report}", ['course' => $courseid]);
-            $titlestr = "<a href='{$link}'>{$titlestr}</a>";
-        }
-        if ($change === '') {
-            $change = '&nbsp;';
-        }
-
-        $appendedtext = get_string('last_7_days', 'lareport_coursedashboard');
-        if ($titlekey === 'registered_users') {
-            $appendedtext = get_string('total', 'lareport_coursedashboard');
-        } else if ($titlekey === 'quiz_assign') {
-            $appendedtext = get_string('quiz_and_assignments', 'lareport_coursedashboard');
-        }
-        $comparedto = get_string('compared_to_previous_week', 'lareport_coursedashboard');
-        return "
-            <div class='col-lg-3'>
-                <div class='dashboardbox box-{$titlekey}'>
-                    <div class='dashboardbox-icon' aria-hidden='true'>
-                        {$icon}
-                    </div>
-                    <div id='{$titlekey}_section' class='dashboardbox-header' role='button' aria-controls='{$titlekey}_value'>{$titlestr}</div>
-                    <div class='dashboardbox-timespan' aria-hidden='true'>{$appendedtext}</div>
-                    <div id='{$titlekey}_value' class='dashboardbox-title' aria-label='{$titlearia} ({$appendedtext})' aria-describedby='{$titlekey}_section'>{$maintext}</div>
-                    <div class='dashboardbox-change' title='{$comparedto}'>{$change}</div>
-                </div>
-            </div>
-        ";
-    }
-
-    private function boxoutput(string $title, $value, int $diff, int $courseid, string $report = null) {
-        $difftriangle = '';
-        $difftext = $diff;
-        if ($diff === 0) {
-            $difftext = get_string('no_difference', 'lareport_coursedashboard');
-        } else if ($diff > 0) {
-            $difftext = '+' . $diff;
-            $difftriangle = '<span class="dashboardbox-change-up" aria-hidden="true">▲</span>';
-        } else {
-            $difftriangle = '<span class="dashboardbox-change-down" aria-hidden="true">▼</span>';
-        }
-
-        return $this->boxoutputraw($title, $value, "{$difftriangle} {$difftext}", $courseid, $report);
-    }
-
-    private function registeredusercount(int $courseid) : array {
-        $usercounts = query_helper::query_users($courseid);
-        $total = $usercounts[0] + $usercounts[1];
-        $diff = $usercounts[1];
-
-        return [
-            $this->boxoutput('registered_users', $total, $diff, $courseid, 'learners')
-        ];
-    }
-
-    private function clickcount(int $courseid) : array {
-        $counts = query_helper::query_click_count($courseid);
-
-        $linkedreport = 'weekheatmap';
-
-        $hits = $counts['hits'];
-        $hitsLast7Days = $hits[1];
-        $hitsdiff = $hits[1] - $hits[0];
-        $privacythreshold = settings::get_config('dataprivacy_threshold');
-        $strclicks = get_string('clicks', 'lareport_coursedashboard');
-        if ($hitsLast7Days < $privacythreshold) {
-            return [ $this->boxoutputraw('click_count', '-', "< {$privacythreshold} {$strclicks}", $courseid, $linkedreport) ];
-        }
-
-        return [ $this->boxoutput('click_count', $hitsLast7Days, $hitsdiff, $courseid, $linkedreport) ];
-    }
-
-    private function mostclickedactivity(int $courseid) : array {
-        $privacythreshold = settings::get_config('dataprivacy_threshold');
-        $strclicks = get_string('clicks', 'lareport_coursedashboard');
-        $modules = query_helper::query_most_clicked_activity($courseid, $privacythreshold);
-        if (count($modules) === 0) {
-            return [
-                $this->boxoutputraw(
-                    'most_clicked_module',
-                    '-',
-                    "< {$privacythreshold} {$strclicks}",
-                    $courseid,
-                    'activities'
-                )
-            ];
-        }
-
-        $modulerows = [];
-        foreach ($modules as $module) {
-            $mod = \context_module::instance($module->cmid);
-            $modtitle = $mod->get_context_name(false);
-            $modurl = $mod->get_url();
-            $modulerows[] = "<td class='c0'><a href='{$modurl}'>{$modtitle}</a></td><td class='c1'>{$module->hits} {$strclicks}</td>";
-        }
-
-        $link = new moodle_url("/local/learning_analytics/index.php/reports/activities", ['course' => $courseid]);
-        $titlestr = get_string('most_clicked_module', 'lareport_coursedashboard');
-        $last7days = get_string('last_7_days', 'lareport_coursedashboard');
-        $mergedrows = implode("</tr><tr>", $modulerows);
-        $icon = self::$icons['most_clicked_module'];
-        return ["<div class='col-lg-3'>
-            <div class='dashboardbox box-most_clicked_module'>
-                <div class='dashboardbox-icon' aria-hidden='true'>{$icon}</div>
-                <div id='activ_section' class='dashboardbox-header' aria-controls='activ_value'><a href='{$link}'>{$titlestr}</a></div>
-                <div class='dashboardbox-timespan' aria-hidden='true'>{$last7days}</div>
-                <table id='activ_value' class='dashboardbox-table' aria-label='{$titlestr} ($last7days})' aria-describedby='activ_section'><tr>{$mergedrows}</tr></table>
-            </div>
-        </div>"];
-    }
-
-    private function quiz_assign(int $courseid) : array {
-        $privacythreshold = settings::get_config('dataprivacy_threshold');
-        $counts = query_helper::query_quiz_and_assigments($courseid, $privacythreshold);
-
-        $hitsLast7Days = $counts[1];
-        $hitsdiff = $counts[1] - $counts[0];
-        $privacythreshold = settings::get_config('dataprivacy_threshold');
-        $quiz_not_enough_value = get_string('quiz_less_than_text', 'lareport_coursedashboard');
-        if ($hitsLast7Days < $privacythreshold) {
-            return [ $this->boxoutputraw('quiz_assign', '-', "< {$privacythreshold} {$quiz_not_enough_value}", $courseid, 'quiz_assign') ];
-        }
-
-        return [ $this->boxoutput('quiz_assign', $hitsLast7Days, $hitsdiff, $courseid, 'quiz_assign') ];
-    }
-
     public function run(array $params): array {
-        global $PAGE, $DB, $OUTPUT;
+        global $PAGE, $DB, $OUTPUT, $CFG;
         $PAGE->requires->css('/local/learning_analytics/reports/coursedashboard/static/styles.css?2');
 
         $courseid = $params['course'];
@@ -406,14 +250,27 @@ class lareport_coursedashboard extends report_base {
         );
         $helpprefix = "<div class='headingfloater'>{$icon}</div>";
 
+        $pluginman = \core_plugin_manager::instance();
+        $lareportplugins = $pluginman->get_present_plugins('lareport');
+        $subpluginsboxes = [];
+        if ($lareportplugins !== null) {
+            foreach ($lareportplugins as $plugin) {
+                $component = $plugin->component;
+                $path = substr($component, 9);
+                $previewfile = "{$CFG->dirroot}/local/learning_analytics/reports/{$path}/classes/preview.php";
+                if (file_exists($previewfile)) {
+                    include_once($previewfile);
+                    $previewClass = "{$plugin->component}\\preview";
+                    $subpluginsboxes = array_merge($subpluginsboxes, ["<div class='col-lg-3'>"], $previewClass::content($params), ["</div>"]);
+                }
+            }
+        }
+
         return array_merge(
             [self::heading(get_string('pluginname', 'lareport_coursedashboard'), true, $helpprefix)],
             $this->activiyoverweeks($courseid),
             ["<div class='row reportboxes'>"],
-            $this->registeredusercount($courseid),
-            $this->clickcount($courseid),
-            $this->quiz_assign($courseid),
-            $this->mostclickedactivity($courseid),
+            $subpluginsboxes,
             ["</div>"]
         );
     }

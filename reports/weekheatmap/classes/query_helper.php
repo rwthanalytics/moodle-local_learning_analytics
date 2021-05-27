@@ -58,4 +58,42 @@ SQL;
 
         return $DB->get_records_sql($query, [$mondaytimestamp, $courseid]);
     }
+
+    private static function click_count_helper(int $courseid, int $from, int $to = null) {
+        global $DB;
+
+        $query = <<<SQL
+        SELECT
+            COUNT(*) AS hits
+        FROM {logstore_lanalytics_log}
+        WHERE
+            courseid = ?
+            AND timecreated > ?
+            AND timecreated <= ?
+SQL;
+
+        $res = $DB->get_records_sql($query, [$courseid, $from, $to]);
+        return reset($res);
+    }
+
+    public static function preview_query_click_count(int $courseid) : array {
+
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // Include today.
+        $today = $date->getTimestamp();
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+        $date->modify('-1 week');
+        $twoweeksago = $date->getTimestamp();
+
+        $previousweek = self::click_count_helper($courseid, $twoweeksago, $oneweekago);
+        $thisweek = self::click_count_helper($courseid, $oneweekago, $today);
+
+        return [
+            'hits' => [
+                $previousweek->hits,
+                $thisweek->hits
+            ]
+        ];
+    }
 }

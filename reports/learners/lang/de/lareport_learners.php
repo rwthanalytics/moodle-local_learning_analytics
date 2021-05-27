@@ -31,6 +31,8 @@ $string['pagename_courseparticipation'] = 'Teilnehmer/innen - Vollständige List
 $string['introduction'] = 'Die folgenden Tabellen zeigen die Kurse, die von den Teilnehmer/innen des Kurses in der Vergangenheit gehört wurden (links) sowie die parallel zu diesem Kurs gehörten Kurse (rechts).
 Aus Datenschutzgründen, werden Kurse mit weniger als {$a} überschneidenen Teilnehmer/innen nicht anzeigt.';
 
+$string['registered_users'] = 'Teilnehmer/innen';
+
 $string['courses_heard_before'] = 'Bereits gehörte Kurse';
 $string['parallel_courses'] = 'Parallel gehörte Kurse';
 $string['coursename'] = 'Name des Kurses';

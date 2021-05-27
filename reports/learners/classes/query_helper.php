@@ -156,4 +156,37 @@ SQL;
 
         return $DB->get_records_sql($query, [$courseid]);
     }
+
+    // Returns array like [100, 50] meaning 100 students were already registered since last week
+    // and 50 more students join in the last days.
+    public static function preview_query_users(int $courseid) : array {
+        global $DB;
+
+        $date = new \DateTime();
+        $date->modify('-1 week');
+
+        $timestamp = $date->getTimestamp();
+
+        $query = <<<SQL
+        SELECT
+            CASE WHEN ue.timestart < {$timestamp} THEN 0 ELSE 1 END AS time,
+            COUNT(DISTINCT u.id) AS learners
+        FROM {user} u
+        JOIN {user_enrolments} ue
+            ON ue.userid = u.id
+        JOIN {enrol} e
+            ON e.id = ue.enrolid
+        WHERE u.deleted = 0
+            AND e.courseid = ?
+        GROUP BY time
+        ORDER BY time;
+SQL;
+
+        $res = $DB->get_records_sql($query, [$courseid]);
+
+        return [
+            $res[0]->learners ?? 0,
+            $res[1]->learners ?? 0
+        ];
+    }
 }

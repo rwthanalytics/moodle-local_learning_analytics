@@ -31,6 +31,8 @@ $string['pagename_courseparticipation'] = 'Learners - Full List';
 $string['introduction'] = 'The following tables show the courses heard by the participants of this course in the past (left) and the courses heard parallel to this course (right).
 For data privacy reasons, courses with less than {$a} overlapping participants will not be displayed.';
 
+$string['registered_users'] = 'Participants';
+
 $string['courses_heard_before'] = 'Courses heard before';
 $string['parallel_courses'] = 'Courses heard in parallel';
 $string['coursename'] = 'Course';

@@ -30,6 +30,10 @@ $string['quizzes'] = 'Quizzes';
 $string['assignments'] = 'Assignments';
 $string['data_privacy_note'] = 'For privacy reasons, results from less than {$a} participants are not shown.';
 
+$string['preview_quiz_assign'] = 'Quizzes & Assignments';
+$string['quiz_and_assignments'] = 'Attempts and submissions (last 7 days)';
+$string['quiz_less_than_text'] = 'attempts/submissions';
+
 // Intro
 $string['introduction'] = 'This page shows statistics regarding quizzes and assignments in the course.';
 $string['introduction_no_quizzes'] = 'Since this course does not contain any quizzes, only data for assignments is shown.';

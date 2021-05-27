@@ -30,6 +30,10 @@ $string['quizzes'] = 'Tests';
 $string['assignments'] = 'Aufgaben';
 $string['data_privacy_note'] = 'Aus Datenschutzgründen werden Ergebnisse von weniger als {$a} Teilnehmern nicht angezeigt.';
 
+$string['preview_quiz_assign'] = 'Tests & Aufgaben';
+$string['quiz_and_assignments'] = 'Versuche und Abgaben der letzten 7 Tage';
+$string['quiz_less_than_text'] = 'Versuche/Abgaben';
+
 // Intro
 $string['introduction'] = 'Diese Seite zeigt Statistiken über Tests und Aufgaben des Kurses.';
 $string['introduction_no_quizzes'] = 'Da dieser Kurs keine Tests enthält, werden nur Daten der Aufgaben angezeigt.';
