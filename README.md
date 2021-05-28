@@ -296,7 +296,7 @@ Checkout the [contributing guide](./CONTRIBUTING).
 
 ## Provided by
 
-<a href="https://cls.rwth-aachen.de/"><img src="https://cls.rwth-aachen.de/wp-content/uploads/2019/06/rwth_cls_de_rgb.png" alt="Center für Lern- und Lehrservices - RWTH Aachen University" height="80"></a>
+<a href="https://lfi.rwth-aachen.de/"><img src="https://files.lfi.rwth-aachen.de/learning-analytics/lfi.png" alt="Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University" height="80"></a> <a href="https://cls.rwth-aachen.de/"><img src="https://files.lfi.rwth-aachen.de/learning-analytics/cls.png" alt="Center für Lern- und Lehrservices - RWTH Aachen University" height="80"></a>
 
 ## License
 [GPL](./LICENSE)
