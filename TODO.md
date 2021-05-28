@@ -30,9 +30,8 @@
 ## WS 20/21 Before Moodle store
 - [x] Wording: "Learning Analytics Angebot" / "Service"
 - [x] Test plugin with more multi-language content and check where to use `format_string` when printing activity names
-- [ ] Administration
-  - [ ] Option: Start of the week: Sunday/Monday => respect Setting of Calender in Moodle
-  - [ ] Option: Number of weeks shown in dashboard
+- [x] Administration
+  - [x] Option: Start of the week: Sunday/Monday => respect Setting of Calender in Moodle
 - [x] Accessibility: Add alt texts to images/icons, add aria-labels where needed
   - [x] Check if color blindness is respected
   - [x] Give graph meaningful aria labels
@@ -66,8 +65,8 @@
 - [ ] Create a special class directory for pages (classes/pages) so that they don't get mixed up with other classes
 
 ## For much later: API structure
-- [ ] Make reports to show configurable on dashboard
-  - [ ] Each report should have a "small" stats to be shown on dashboard and a "report" page
+- [x] Make reports to show configurable on dashboard
+  - [x] Each report should have a "small" stats to be shown on dashboard and a "report" page
 - [x] Users of our plugin still have the `lalog_browser_os` table installed (RWTH + HRW) -> not anymore
 
 -------------------
@@ -171,7 +170,7 @@
 - [x] **Implement setting to only track specific courses** (as specified in `lanalytics/course_ids`)
 - [x] **Don't track teachers for now**
 - [x] Detect Moodle-API use
-- [ ] Add LICENSE file to root directory
+- [x] Add LICENSE file to root directory
 
 ## GDPR
 - [x] Create "Verfahrensverzeichnis"

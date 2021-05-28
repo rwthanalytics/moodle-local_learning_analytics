@@ -1,18 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.17.0] - TODO
+## [0.17.0] - 2021-05-28
+### Added
+- Option `setting_dashboard_boxes` to define the layout of the dashboard (width of shown boxes and which boxes are shown) and add subplugins of type `lareport`
+- `weekheatmap` respects user setting regarding the first day of the week
+### Fixed
+- Wrong hours in `weekheatmap` report due to timezone shifts
 ### Removed
 - Removed hardcoded report_list
 - Removed leftover code from "dashboard compare" option
 ### Changed
 - The preview boxes of the dashboard are technically moved into subplugins making it easier to embed additional plugins into the dashboard
 - Changed maturity of the plugin from Beta to Stable
-### Added
-- Option `setting_dashboard_boxes` to define the layout of the dashboard (width of shown boxes and which boxes are shown) and add subplugins of type `lareport`
-- `weekheatmap` respects user setting regarding the first day of the week
-### Fixed
-- Wrong hours in `weekheatmap` report due to timezone shifts
 
 ## [0.16.0] - 2021-02-15
 ### Removed
