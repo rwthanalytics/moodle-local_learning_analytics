@@ -240,7 +240,7 @@ This tables serves as a memory for devices per course. It uses the device from `
 
 Our Learning Analytics plugins were developed to log as little data as possible and to be as space-efficient as possible. A single table row needs 38 byte. Additionally, you should expect that you need roughly twice as much space after incorporating storage space for database indexes. All other (helper) tables are not worth mentioning and will need less than a few MB of space.
 
-Some real numbers: The plugin has been used for one semester (6 months) at the RWTH Aachen University. The RWTH has roughly 45,000 students. In total, about 40 million rows were inserted into the log table. The needed storage was around 2 GB.
+Some real numbers: The plugin has been used for multiple semesters at the RWTH Aachen University. The RWTH has roughly 45,000 students. In one year (two consecutive semesters), about 115 million rows were inserted into the log table. The needed storage was around 6.9 GB (including data and indices).
 
 ### Data Privacy
 This plugin was developed with data privacy in mind. It does not log any user ids. All data is logged anonymously. As this plugin logs no personal data, you don't need the consent of users to log the data.
