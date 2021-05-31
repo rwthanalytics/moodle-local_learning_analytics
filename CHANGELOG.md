@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.17.1] - 2021-05-31
+### Fixed
+- SQL query not working in Postgres in `weekheatmap` report
+
 ## [0.17.0] - 2021-05-28
 ### Added
 - Option `setting_dashboard_boxes` to define the layout of the dashboard (width of shown boxes and which boxes are shown) and add subplugins of type `lareport`
