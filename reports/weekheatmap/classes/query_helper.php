@@ -30,16 +30,26 @@ use local_learning_analytics\local\outputs\plot;
 use local_learning_analytics\local\outputs\table;
 use local_learning_analytics\report_base;
 use context_course;
+use \DateTime;
 
 class query_helper {
 
     public static function query_heatmap(int $courseid): array {
-        global $DB;
+        global $DB, $CFG;
 
-        // returns points where 0-0 => Sun,0-1am; 1 => Sun,1-2am; ...
+        $weekstatement = "FROM_UNIXTIME(l.timecreated, '%w-%k')";
+
+        if ($CFG->dbtype === 'pgsql') {
+            $date = new DateTime();        
+            $timezone = $date->getTimezone()->getName();
+            $weekstatement = "TO_CHAR(TO_TIMESTAMP(l.timecreated) at time zone '".$timezone."', 'D-HH24')";
+        }
+
+        // MySQL returns points where 0-00 => Sun,0-1am; 0-01 => Sun,1-2am; ...
+        // PG returns points where 1-00 => Sun,0-1am; 1-01 => ...
         $query = <<<SQL
         SELECT
-            FROM_UNIXTIME(l.timecreated, '%w-%k') AS heatpoint,
+            {$weekstatement} AS heatpoint,
             COUNT(1) AS value
         FROM {logstore_lanalytics_log} AS l
             WHERE l.courseid = ?
@@ -47,7 +57,25 @@ class query_helper {
         ORDER BY heatpoint
 SQL;
 
-        return $DB->get_records_sql($query, [$courseid]);
+        $records = $DB->get_records_sql($query, [$courseid]);
+
+        $returnrecords = [];
+        if ($CFG->dbtype === 'pgsql') {
+            foreach ($records as $row) {
+                $split = explode('-', $row->heatpoint);
+                $week = $split[0] - 1;
+                $hour = (int) $split[1]; // remove leading 0
+                $newheatpoint = $week . '-' . $hour;
+                $returnrecords[$newheatpoint] = (object) array(
+                    'heatpoint' => $newheatpoint,
+                    'value' => $row->value,
+                );
+            }
+        } else {
+            $returnrecords = $records;
+        }
+
+        return $returnrecords;
     }
 
     private static function click_count_helper(int $courseid, int $from, int $to = null) {
