@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.18.0] - 2021-06-04
+### Added
+- API added for subplugins to provide settings. For now the settings of the default subplugins will stay part of the general settings for compatibility reasons.
+
 ## [0.17.1] - 2021-05-31
 ### Fixed
 - SQL query not working in Postgres in `weekheatmap` report
