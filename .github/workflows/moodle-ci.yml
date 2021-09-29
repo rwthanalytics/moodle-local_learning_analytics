@@ -63,7 +63,7 @@ jobs:
   #end php tests
 
   #start moodle versions tests
-  test_otherdb:
+  test_moodle_versions:
     runs-on: ubuntu-18.04
 
     services:
