@@ -63,7 +63,7 @@ pgsql-tests:
 #end pgsql tests
 
 #start other db tests
-pgsql-tests:
+otherdb-tests:
   test:
     runs-on: ubuntu-18.04
 
