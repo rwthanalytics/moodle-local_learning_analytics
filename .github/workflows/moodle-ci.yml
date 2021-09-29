@@ -132,7 +132,7 @@ jobs:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
         ports:
-          - 32769:3306
+          - 8080:8080
 
     strategy:
       fail-fast: false
