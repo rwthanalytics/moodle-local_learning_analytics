@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 #start pgsql tests
 jobs:
-  test:
+  test_pgsql:
     runs-on: ubuntu-18.04
 
     services:
@@ -60,11 +60,10 @@ jobs:
       - name: PHPUnit tests
         if: ${{ always() }}
         run: moodle-plugin-ci phpunit
-#end pgsql tests
+  #end pgsql tests
 
-#start other db tests
-jobs:
-  test:
+  #start other db tests
+  test_otherdb:
     runs-on: ubuntu-18.04
 
     services:
