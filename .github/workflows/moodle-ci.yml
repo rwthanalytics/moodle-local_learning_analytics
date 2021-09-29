@@ -3,7 +3,7 @@ name: Moodle Plugin CI
 on: [push, pull_request]
 
 #start pgsql tests
-pgsql-tests:
+jobs:
   test:
     runs-on: ubuntu-18.04
 
@@ -63,7 +63,7 @@ pgsql-tests:
 #end pgsql tests
 
 #start other db tests
-otherdb-tests:
+jobs:
   test:
     runs-on: ubuntu-18.04
 
