@@ -2,7 +2,7 @@ name: Moodle Plugin CI
 
 on: [push, pull_request]
 
-#start pgsql tests
+#start php tests
 jobs:
   test_pgsql:
     runs-on: ubuntu-18.04
@@ -60,9 +60,9 @@ jobs:
       - name: PHPUnit tests
         if: ${{ always() }}
         run: moodle-plugin-ci phpunit
-  #end pgsql tests
+  #end php tests
 
-  #start other db tests
+  #start moodle versions tests
   test_otherdb:
     runs-on: ubuntu-18.04
 
@@ -80,7 +80,7 @@ jobs:
       fail-fast: false
       matrix:
         php: ['7.4']
-        moodle-branch: ['MOODLE_311_STABLE']
+        moodle-branch: ['MOODLE_311_STABLE', 'MOODLE_310_STABLE', 'MOODLE_39_STABLE']
         database: [mariadb]
 
     steps:
@@ -119,4 +119,4 @@ jobs:
       - name: PHPUnit tests
         if: ${{ always() }}
         run: moodle-plugin-ci phpunit
-#end other db tests
+#end moodle versions tests
