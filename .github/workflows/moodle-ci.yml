@@ -139,7 +139,7 @@ jobs:
       matrix:
         php: ['7.4']
         moodle-branch: ['MOODLE_311_STABLE']
-        database: [mysql]
+        database: [mysqli]
 
     steps:
       - name: Check out repository code
