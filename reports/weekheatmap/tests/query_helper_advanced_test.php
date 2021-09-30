@@ -37,7 +37,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
         $user = $datagenerator->create_user();
         $datagenerator->enrol_user($user->id, $course->id);
-        $startdatezone = new \DateTimeZone('Europe/Berlin');
+        $startdatezone = new \DateTimeZone('Asia/Taipei');
         $startdate = new DateTime("now", $startdatezone);
         $startdate->setTimestamp($course->startdate);
         $startdate->modify('Monday this week');
@@ -67,16 +67,17 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         }
         $testweekresult = query_helper::query_heatmap($course->id);
         var_dump($testweekresult);
-        $this->assertEquals(3, $testweekresult[get_arrayname(0)]->value);
-        $this->assertEquals(2, $testweekresult[get_arrayname(100)]->value);
-        $this->assertEquals(2, $testweekresult[get_arrayname(39)]->value);
-        $this->assertEquals(1, $testweekresult[get_arrayname(17)]->value);
-        $this->assertEquals(false, array_key_exists(168, $testweekresult));
-    }
 
-    private function get_arrayname($val) {
-        $returner = '' . floor($val/24) . '-' . floor($val%24);
-        var_dump($val . ' => ' . $returner);
-        return $returner;
+        $get_arrayname = function($val) {
+            $returner = '' . floor($val/24) . '-' . floor($val%24);
+            var_dump($val . ' => ' . $returner);
+            return $returner;
+        };
+
+        $this->assertEquals(3, $testweekresult[$get_arrayname(0)]->value);
+        $this->assertEquals(2, $testweekresult[$get_arrayname(100)]->value);
+        $this->assertEquals(2, $testweekresult[$get_arrayname(39)]->value);
+        $this->assertEquals(1, $testweekresult[$get_arrayname(17)]->value);
+        $this->assertEquals(false, array_key_exists(168, $testweekresult));
     }
 }
