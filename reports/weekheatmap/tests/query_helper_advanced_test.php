@@ -37,8 +37,8 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
         $user = $datagenerator->create_user();
         $datagenerator->enrol_user($user->id, $course->id);
-        $startdate = new \DateTime($course->startdate, core_date::get_user_timezone_object());
-        //$startdate->setTimestamp($course->startdate);
+        $startdate = new \DateTime('EUROPE');
+        $startdate->setTimestamp($course->startdate);
         $startdate->modify('Monday this week');
         $mondaytimestamp = $startdate->getTimestamp();
         $counter = 1;
@@ -74,7 +74,8 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
     }
 
     private function get_arrayname($val) {
-        $returner = 0;
-
+        $returner = '' . floor($val/24) . '-' . floor($val%24);
+        var_dump($val . ' => ' . $returner);
+        return $returner;
     }
 }
