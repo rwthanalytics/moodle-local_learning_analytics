@@ -37,8 +37,8 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
         $user = $datagenerator->create_user();
         $datagenerator->enrol_user($user->id, $course->id);
-        $startdate = new \DateTime();
-        $startdate->setTimestamp($course->startdate);
+        $startdate = new \DateTime($course->startdate, core_date::get_user_timezone_object());
+        //$startdate->setTimestamp($course->startdate);
         $startdate->modify('Monday this week');
         $mondaytimestamp = $startdate->getTimestamp();
         $counter = 1;
@@ -64,7 +64,6 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
                 $counter++;
             }
         }
-        var_dump($DB->get_records('logstore_lanalytics_log', []));
         $testweekresult = query_helper::query_heatmap($course->id);
         var_dump($testweekresult);
         $this->assertEquals(3, $testweekresult[0]->value);
@@ -72,5 +71,10 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $this->assertEquals(2, $testweekresult[39]->value);
         $this->assertEquals(1, $testweekresult[17]->value);
         $this->assertEquals(false, array_key_exists(168, $testweekresult));
+    }
+
+    private function get_arrayname($val) {
+        $returner = 0;
+
     }
 }
