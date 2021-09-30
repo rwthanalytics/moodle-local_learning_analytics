@@ -66,10 +66,10 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         }
         $testweekresult = query_helper::query_heatmap($course->id);
         var_dump($testweekresult);
-        $this->assertEquals(3, $testweekresult[0]->value);
-        $this->assertEquals(2, $testweekresult[100]->value);
-        $this->assertEquals(2, $testweekresult[39]->value);
-        $this->assertEquals(1, $testweekresult[17]->value);
+        $this->assertEquals(3, $testweekresult[get_arrayname(0)]->value);
+        $this->assertEquals(2, $testweekresult[get_arrayname(100)]->value);
+        $this->assertEquals(2, $testweekresult[get_arrayname(39)]->value);
+        $this->assertEquals(1, $testweekresult[get_arrayname(17)]->value);
         $this->assertEquals(false, array_key_exists(168, $testweekresult));
     }
 
