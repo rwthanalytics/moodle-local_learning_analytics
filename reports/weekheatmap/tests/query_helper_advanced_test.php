@@ -51,20 +51,20 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
                 'contextid' => 46,
                 'device' => 3611
             ];
-            $DB->insert_record('logstore_lanalytics', $entry, false, false, true);
+            $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
             $counter++;
             if($i%2==0) {
                 $entry['id'] = $counter;
-                $DB->insert_record('logstore_lanalytics', $entry, false, false, true);
+                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
                 $counter++;
             }
             if($i%3==0) {
                 $entry['id'] = $counter;
-                $DB->insert_record('logstore_lanalytics', $entry, false, false, true);
+                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
                 $counter++;
             }
         }
-        var_dump($DB->get_records('logstore_lanalytics', []));
+        var_dump($DB->get_records('logstore_lanalytics_log', []));
         $testweekresult = query_helper::query_heatmap($course->id);
         var_dump($testweekresult);
         $this->assertEquals(3, $testweekresult[0]->value);
