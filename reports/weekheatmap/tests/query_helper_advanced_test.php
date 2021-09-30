@@ -37,7 +37,8 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
         $user = $datagenerator->create_user();
         $datagenerator->enrol_user($user->id, $course->id);
-        $startdate = new \DateTime('EUROPE');
+        $startdatezone = new \DateTimeZone('Europe/Berlin');
+        $startdate = new DateTime("now", $startdatezone);
         $startdate->setTimestamp($course->startdate);
         $startdate->modify('Monday this week');
         $mondaytimestamp = $startdate->getTimestamp();
