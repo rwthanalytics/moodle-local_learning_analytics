@@ -26,7 +26,7 @@ require_once(__DIR__ . '/../../../../../config.php');
 class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_testcase {
 
     public function test_weekly_activity() {
-        global $DB, $PAGE;
+        global $DB, $PAGE, $FG;
         $this->resetAfterTest(true);
         $this->setAdminUser();
         $datagenerator = $this->getDataGenerator();
@@ -129,20 +129,18 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
                     'contextid' => 46,
                     'device' => 3611
                 ];
-                $entry['id'] = $counter;
                 $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
                 $counterOneWeeksAgo++;
             }
             if($i%3==0) {
                 $entry = [
-                    'id' => $counter,
+                    'id' => $counterTwoWeeksAgo+1,
                     'eventid' => 30,
                     'timecreated' => $twoweeksago + $i * 60 * 60,
                     'courseid' => $course->id,
                     'contextid' => 46,
                     'device' => 3611
                 ];
-                $entry['id'] = $counterTwoWeeksAgo+1;
                 $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
                 $counterTwoWeeksAgo++;
             }
