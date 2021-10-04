@@ -69,6 +69,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
 
         $get_arrayname = function($val) {
             global $CFG;
+            var_dump($CFG->gbtype);
             if($CFG->gbtype === 'mariadb') {
                 $myzone = new \DateTimeZone('Europe/Berlin');
                 $refzone = new \DateTimeZone('UTC');
@@ -111,7 +112,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $counterTwoWeeksAgo = 0;
         $counterOneWeeksAgo = 0;
         for($i=0; $i<99; $i++) {
-            var_dump("" . $counterThisWeek . " - " . $counterOneWeeksAgo . " - " . $counterTwoWeeksAgo);
+            var_dump("" . $counterThisWeek+1 . " - " . $counterOneWeeksAgo+1 . " - " . $counterTwoWeeksAgo+1);
             $entry = [
                 'id' => $counterThisWeek+1,
                 'eventid' => 30,
