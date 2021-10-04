@@ -68,16 +68,16 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $testweekresult = query_helper::query_heatmap($course->id);
 
         $get_arrayname = function($val) {
-            $myzone = new \DateTimeZone('Europe/Berlin');
-            $refzone = new \DateTimeZone('UTC');
-            $dateTimeMy = new DateTime("now", $myzone);
-            $dateTimeRef = new DateTime("now", $refzone);
-            var_dump($val);
-            $val = $val - (($dateTimeMy->getOffset() + $dateTimeRef->getOffset()) / 3600);
-            if($val<0) {
-                $val = $val + 168;
+            if($CFG->gbtype === 'mariadb') {
+                $myzone = new \DateTimeZone('Europe/Berlin');
+                $refzone = new \DateTimeZone('UTC');
+                $dateTimeMy = new DateTime("now", $myzone);
+                $dateTimeRef = new DateTime("now", $refzone);
+                $val = $val - (($dateTimeMy->getOffset() + $dateTimeRef->getOffset()) / 3600);
+                if($val<0) {
+                    $val = $val + 168;
+                }
             }
-            var_dump($val);
             $returner = '' . floor($val/24) . '-' . floor($val%24);
             return $returner;
         };
@@ -89,4 +89,67 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $this->assertEquals(false, array_key_exists(168, $testweekresult));
     }
 
+    public function test_preview_query_click_count() {
+        global $DB, $PAGE;
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+        $datagenerator = $this->getDataGenerator();
+        $this->preventResetByRollback();
+        set_config('enabled_stores', 'logstore_lanalytics', 'tool_log');
+        set_config('buffersize', 0, 'logstore_lanalytics');
+        $category = $datagenerator->create_category();
+        $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59);
+        $today = $date->getTimestamp();
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+        $date->modify('-1 week');
+        $twoweeksago = $date->getTimestamp();
+        $counterThisWeek = 0;
+        $counterTwoWeeksAgo = 0;
+        $counterOneWeeksAgo = 0;
+        for($i=0; $i<99; $i++) {
+            $entry = [
+                'id' => $counterThisWeek+1,
+                'eventid' => 30,
+                'timecreated' => $today + $i * 60 * 60,
+                'courseid' => $course->id,
+                'contextid' => 46,
+                'device' => 3611
+            ];
+            $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+            $counterThisWeek++;
+            if($i%2==0) {
+                $entry = [
+                    'id' => $counterOneWeeksAgo+1,
+                    'eventid' => 30,
+                    'timecreated' => $oneweekago + $i * 60 * 60,
+                    'courseid' => $course->id,
+                    'contextid' => 46,
+                    'device' => 3611
+                ];
+                $entry['id'] = $counter;
+                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+                $counterOneWeeksAgo++;
+            }
+            if($i%3==0) {
+                $entry = [
+                    'id' => $counter,
+                    'eventid' => 30,
+                    'timecreated' => $twoweeksago + $i * 60 * 60,
+                    'courseid' => $course->id,
+                    'contextid' => 46,
+                    'device' => 3611
+                ];
+                $entry['id'] = $counterTwoWeeksAgo+1;
+                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+                $counterTwoWeeksAgo++;
+            }
+        }
+        $testweekresult = query_helper::preview_query_click_count($course->id);
+        var_dump($testweekresult);
+
+        $this->assertEquals(1, 1);
+    }
 }
