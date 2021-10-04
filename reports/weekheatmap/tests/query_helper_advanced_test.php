@@ -70,13 +70,12 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
 
         $get_arrayname = function($val) {
             $myzone = new \DateTimeZone('Europe/Berlin');
-            $refzone = new \DateTimeZone('Ghana/Accra');
+            $refzone = new \DateTimeZone('UTC');
             $dateTimeMy = new DateTime("now", $myzone);
             $dateTimeRef = new DateTime("now", $refzone);
             $timeOffset = $dateTimeref->getOffset($dateTimeMy);
             var_dump($timeOffset);
             $returner = '' . floor($val/24) . '-' . floor($val%24);
-            var_dump($val . ' => ' . $returner);
             return $returner;
         };
 
