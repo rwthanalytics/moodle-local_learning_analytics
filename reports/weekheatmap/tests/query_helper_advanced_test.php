@@ -88,3 +88,4 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $this->assertEquals(1, $testweekresult[$get_arrayname(17)]->value);
         $this->assertEquals(false, array_key_exists(168, $testweekresult));
     }
+}
