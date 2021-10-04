@@ -99,4 +99,79 @@ SQL;
 
         $this->assertEquals(11, $testresult2[$instanceid2]->hits);
     }
+
+    public function test_preview_query_most_clicked_activity() {
+        global $DB, $PAGE;
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+
+        $datagenerator = $this->getDataGenerator();
+        $activitygenerator = $this->getDataGenerator()->get_plugin_generator('mod_forum');
+
+        $this->preventResetByRollback();
+        set_config('enabled_stores', 'logstore_lanalytics', 'tool_log');
+        set_config('buffersize', 0, 'logstore_lanalytics');
+
+        $user = $datagenerator->create_user();
+        $category = $datagenerator->create_category();
+        $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
+        $datagenerator->enrol_user($user->id, $course->id);
+
+        $forum = $activitygenerator->create_instance(array('course' => $course->id));
+
+        $instancequery = <<<SQL
+        SELECT
+            id
+        FROM {course_modules} AS cm
+        WHERE instance = ?
+SQL;
+
+        $contextquery = <<<SQL
+        SELECT
+            id
+        FROM {context} AS c
+        WHERE instanceid = ?
+SQL;
+
+        $logmanager = get_log_manager(true);
+        $contextinstance = $DB->get_record_sql($instancequery, [$forum->id]);
+        $instanceid = $contextinstance->id;
+        $context = $DB->get_record_sql($contextquery, [$instanceid]);
+        $contextid = $context->id;
+
+        for($i=0; $i<16; $i++) {
+            $event = report_viewed::create(array(
+                'contextid' => $contextid,
+                'objectid' => NULL
+            ));
+            $event->add_record_snapshot('forum', $forum);
+            $event->trigger();
+        }
+         
+        $testresult1 = query_helper::query_activities($course->id,"" , []);
+
+        $this->assertEquals(17, $testresult1[$instanceid]->hits);
+
+        //second tests
+        $activitygenerator = $this->getDataGenerator()->get_plugin_generator('mod_quiz');
+        $quiz = $activitygenerator->create_instance(array('course' => $course->id));
+
+        $contextinstance2 = $DB->get_record_sql($instancequery, [$quiz->id]);
+        $instanceid2 = $contextinstance2->id;
+        $context2 = $DB->get_record_sql($contextquery, [$instanceid2]);
+        $contextid2 = $context2->id;
+
+        for($i=0; $i<10; $i++) {
+            $event = report_viewed::create(array(
+                'contextid' => $contextid2,
+                'objectid' => NULL
+            ));
+            $event->add_record_snapshot('quiz', $quiz);
+            $event->trigger();
+        }
+        
+        $testresult2 = query_helper::query_activities($course->id,"" , []);
+
+        $this->assertEquals(11, $testresult2[$instanceid2]->hits);
+    }
 }
