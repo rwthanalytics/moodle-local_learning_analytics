@@ -66,16 +66,13 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             }
         }
         $testweekresult = query_helper::query_heatmap($course->id);
-        var_dump($testweekresult);
 
         $get_arrayname = function($val) {
             $myzone = new \DateTimeZone('Europe/Berlin');
             $refzone = new \DateTimeZone('UTC');
             $dateTimeMy = new DateTime("now", $myzone);
             $dateTimeRef = new DateTime("now", $refzone);
-            $timeOffset = $dateTimeMy->getOffset();
-            var_dump($timeOffset);
-            $val = $val-$dateTimeMy+$dateTimeRef;
+            $val = $val - ($dateTimeMy->getOffset() / 3600) + ($dateTimeRef->getOffset() / 3600);
             $returner = '' . floor($val/24) . '-' . floor($val%24);
             return $returner;
         };
