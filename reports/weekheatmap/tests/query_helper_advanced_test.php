@@ -68,17 +68,14 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $testweekresult = query_helper::query_heatmap($course->id);
 
         $get_arrayname = function($val) {
-            global $CFG;
-            if($CFG->gbtype === 'mariadb') {
-                $myzone = new \DateTimeZone('Europe/Berlin');
-                $refzone = new \DateTimeZone('UTC');
-                $dateTimeMy = new DateTime("now", $myzone);
-                $dateTimeRef = new DateTime("now", $refzone);
-                $val = $val - (($dateTimeMy->getOffset() + $dateTimeRef->getOffset()) / 3600);
-                if($val<0) {
-                    $val = $val + 168;
-                }
-            }
+            /*$myzone = new \DateTimeZone('Europe/Berlin');
+            $refzone = new \DateTimeZone('UTC');
+            $dateTimeMy = new DateTime("now", $myzone);
+            $dateTimeRef = new DateTime("now", $refzone);
+            $val = $val - (($dateTimeMy->getOffset() + $dateTimeRef->getOffset()) / 3600);
+            if($val<0) {
+                $val = $val + 168;
+            }*/
             $returner = '' . floor($val/24) . '-' . floor($val%24);
             return $returner;
         };
