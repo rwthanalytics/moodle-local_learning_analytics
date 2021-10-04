@@ -74,6 +74,9 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             $dateTimeRef = new DateTime("now", $refzone);
             var_dump($val);
             $val = $val - ($dateTimeMy->getOffset()) + ($dateTimeRef->getOffset());
+            if($val<0) {
+                $val = $val + 86400;
+            }
             var_dump($val);
             $returner = '' . floor($val/24) . '-' . floor($val%24);
             return $returner;
@@ -85,4 +88,3 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $this->assertEquals(1, $testweekresult[$get_arrayname(17)]->value);
         $this->assertEquals(false, array_key_exists(168, $testweekresult));
     }
-}
