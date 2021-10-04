@@ -72,7 +72,9 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             $refzone = new \DateTimeZone('UTC');
             $dateTimeMy = new DateTime("now", $myzone);
             $dateTimeRef = new DateTime("now", $refzone);
-            $val = $val - ($dateTimeMy->getOffset() / 3600) + ($dateTimeRef->getOffset() / 3600);
+            var_dump($val);
+            $val = $val - ($dateTimeMy->getOffset()) + ($dateTimeRef->getOffset());
+            var_dump($val);
             $returner = '' . floor($val/24) . '-' . floor($val%24);
             return $returner;
         };
