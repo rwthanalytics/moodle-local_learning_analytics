@@ -65,6 +65,13 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
                 $counter++;
             }
         }
+
+        $query = <<<SQL
+            SELECT *
+            FROM {logstore_lanalytics_log}
+SQL;
+
+        var_dump($DB->get_record_sql($query, []));
         $testweekresult = query_helper::query_heatmap($course->id);
 
         $get_arrayname = function($val) {
