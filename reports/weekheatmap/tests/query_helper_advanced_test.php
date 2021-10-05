@@ -67,6 +67,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             }
         }
 
+        var_dump($DB_>get_records('logstore_lanalytics_log'));
         $testweekresult = query_helper::query_heatmap($course->id);
 
         $get_arrayname = function($val) {
@@ -114,7 +115,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             $entry = [
                 'id' => $counterThisWeek,
                 'eventid' => 30,
-                'timecreated' => $today - $i * 60,
+                'timecreated' => $today - 40000,
                 'courseid' => $course->id,
                 'contextid' => 46,
                 'device' => 3611
@@ -125,7 +126,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
                 $entry = [
                     'id' => $counterOneWeeksAgo,
                     'eventid' => 30,
-                    'timecreated' => $oneweekago - $i * 60,
+                    'timecreated' => $oneweekago - 40000,
                     'courseid' => $course->id,
                     'contextid' => 46,
                     'device' => 3611
@@ -137,7 +138,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
                 $entry = [
                     'id' => $counterTwoWeeksAgo,
                     'eventid' => 30,
-                    'timecreated' => $twoweeksago - $i * 60,
+                    'timecreated' => $twoweeksago - 40000,
                     'courseid' => $course->id,
                     'contextid' => 46,
                     'device' => 3611
@@ -147,9 +148,6 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         }
         $testweekresult = query_helper::preview_query_click_count($course->id);
         var_dump($testweekresult);
-        var_dump($counterThisWeek);
-        var_dump($counterOneWeeksAgo);
-        var_dump($counterTwoWeeksAgo);
 
         $this->assertEquals(1, 1);
     }
