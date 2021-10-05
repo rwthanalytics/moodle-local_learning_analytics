@@ -155,7 +155,7 @@ SQL;
                 'eventid' => 30,
                 'timecreated' => $timestampAfter,
                 'courseid' => $course->id,
-                'contextid' => 46,
+                'contextid' => $contextid,
                 'device' => 3611
             ];
             $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
@@ -166,7 +166,7 @@ SQL;
                     'eventid' => 30,
                     'timecreated' => $counterBefore,
                     'courseid' => $course->id,
-                    'contextid' => 46,
+                    'contextid' => $contextid,
                     'device' => 3611
                 ];
                 $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
