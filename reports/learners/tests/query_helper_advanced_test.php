@@ -122,4 +122,31 @@ class local_Learning_Analytics_reports_learners_testcase extends \advanced_testc
         $testresult1 = query_helper::query_courseparticipation($course1id, $privacythreshold, $studentrolenames, $coursebeforecutoff, $courseparallelcutoff, $coursegroupby);
         $this->assertEquals(COUNT($testresult1), 12);
     }
+
+    public function test_localization() {
+        
+        global $DB, $PAGE;
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+
+        $datagenerator = $this->getDataGenerator();
+
+        $category = $datagenerator->create_category();
+        $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
+        $courseid = $course->id;
+        $type = 'lang';
+        for($i=0; $i<13; $i++) {
+            $user = $datagenerator->create_user();
+            $datagenerator->enrol_user($user->id, $course->id, 'student');
+        }
+        for($i=0; $i<15; $i++) {
+            $user = $datagenerator->create_user();
+            $datagenerator->enrol_user($user->id, $course->id, 'teacher');
+        }
+
+        $testresult1 = query_helper::query_localization($courseid, $type);
+        var_dump($testresult1);
+
+        $this->assertEquals(1, 1);
+    }
 }
