@@ -139,17 +139,43 @@ SQL;
         $context = $DB->get_record_sql($contextquery, [$instanceid]);
         $contextid = $context->id;
 
-        for($i=0; $i<16; $i++) {
-            $event = report_viewed::create(array(
-                'contextid' => $contextid,
-                'objectid' => NULL
-            ));
-            $event->add_record_snapshot('forum', $forum);
-            $event->trigger();
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // Include today.
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+        $timestampBefore = $oneweekago - 40000;
+        $timestampAfter = $oneweekago + 40000;
+
+        $counterAfter = 0;
+        $counterBefore = 0;
+        for($i=0; $i<100; $i++) {
+            $counterAfter++;
+            $entry = [
+                'id' => $counterAfter,
+                'eventid' => 30,
+                'timecreated' => $timestampAfter,
+                'courseid' => $course->id,
+                'contextid' => 46,
+                'device' => 3611
+            ];
+            $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+            if($i%3==0) {
+                $counterBefore++;
+                $entry = [
+                    'id' => $counterBefore,
+                    'eventid' => 30,
+                    'timecreated' => $counterBefore,
+                    'courseid' => $course->id,
+                    'contextid' => 46,
+                    'device' => 3611
+                ];
+                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+            }
         }
          
-        $testresult1 = query_helper::query_activities($course->id,"" , []);
+        $testresult1 = query_helper::preview_query_most_clicked_activity($course->id, 1);
+        var_dump($testresult1);
 
-        $this->assertEquals(17, $testresult1[$instanceid]->hits);
+        $this->assertEquals(100, $testresult1[$instanceid]->hits);
     }
 }

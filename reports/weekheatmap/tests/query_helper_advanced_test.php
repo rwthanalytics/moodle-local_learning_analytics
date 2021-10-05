@@ -42,7 +42,6 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $startdate->setTimestamp($course->startdate);
         $startdate->modify('Monday this week');
         $mondaytimestamp = $startdate->getTimestamp();
-        var_dump($mondaytimestamp);
         $counter = 1;
         for($i=0; $i<168; $i++) {
             $entry = [
@@ -67,7 +66,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             }
         }
 
-        var_dump($DB_>get_records('logstore_lanalytics_log'));
+        var_dump($DB->get_records('logstore_lanalytics_log'));
         $testweekresult = query_helper::query_heatmap($course->id);
 
         $get_arrayname = function($val) {
@@ -143,7 +142,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
                     'contextid' => 46,
                     'device' => 3611
                 ];
-                $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
+                //$DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
             }
         }
         $testweekresult = query_helper::preview_query_click_count($course->id);
