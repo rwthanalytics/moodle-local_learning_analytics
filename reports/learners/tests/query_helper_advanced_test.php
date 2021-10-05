@@ -118,73 +118,8 @@ class local_Learning_Analytics_reports_learners_testcase extends \advanced_testc
         $this->preventResetByRollback();
         set_config('enabled_stores', 'logstore_lanalytics', 'tool_log');
         set_config('buffersize', 0, 'logstore_lanalytics');
-        /*$logmanager = get_log_manager(true);
-        $context = context_course::instance($course1id);
-        $contextid = $context->id;
-        for($i=0; $i<12; $i++) {
-            $event = report_viewed::create(array(
-                'contextid' => $contextid,
-                'objectid' => NULL
-            ));
-            $event->add_record_snapshot('course', $PAGE->course);
-            $event->trigger();
-        }*/
 
-        //var_dump($DB->get_records('role', []));
-        
         $testresult1 = query_helper::query_courseparticipation($course1id, $privacythreshold, $studentrolenames, $coursebeforecutoff, $courseparallelcutoff, $coursegroupby);
         $this->assertEquals(COUNT($testresult1), 12);
-        /*
-        $onlybeforeparralel = 0;
-        $onlyparralel = 0;
-        $onlyafterparralel = 0;
-
-        foreach($testresult1 as $entry) {
-            if($entry->beforeparallel == 1) {
-                $onlybeforeparralel++;
-            }
-        }
-        foreach($testresult1 as $entry) {
-            if($entry->beforeparallel == 2) {
-                $onlyparralel++;
-            }
-        }
-        foreach($testresult1 as $entry) {
-            if($entry->beforeparallel == 0) {
-                $onlyafterparralel++;
-            }
-        }*/
-        /*function onlybeforeparallelfilter($var){
-            var_dump($var);
-            $retarray = [];
-            foreach($var as $entry) {
-                if($entry->beforeparallel == 1) {
-                    array_push($retarray, $entry);
-                }
-            }
-            return $retarray;
-        }
-        function onlyparallelfilter($var){
-            $retarray = [];
-            foreach($var as $entry) {
-                if($entry->beforeparallel == 2) {
-                    array_push($retarray, $entry);
-                }
-            }
-            return $retarray;
-        }
-        function onlyafterparallelfilter($var){
-            $retarray = [];
-            foreach($var as $entry) {
-                if($entry->beforeparallel == 0) {
-                    array_push($retarray, $entry);
-                }
-            }
-            return $retarray;
-        }
-
-        $onlybeforeparralel = array_filter($testresult1, "onlybeforeparallelfilter");
-        $onlyparralel = array_filter($testresult1, "onlyparallelfilter");
-        $onlyafterparralel = array_filter($testresult1, "onlyafterparallelfilter");*/
     }
 }
