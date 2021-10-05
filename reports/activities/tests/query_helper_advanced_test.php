@@ -151,27 +151,5 @@ SQL;
         $testresult1 = query_helper::query_activities($course->id,"" , []);
 
         $this->assertEquals(17, $testresult1[$instanceid]->hits);
-
-        //second tests
-        $activitygenerator = $this->getDataGenerator()->get_plugin_generator('mod_quiz');
-        $quiz = $activitygenerator->create_instance(array('course' => $course->id));
-
-        $contextinstance2 = $DB->get_record_sql($instancequery, [$quiz->id]);
-        $instanceid2 = $contextinstance2->id;
-        $context2 = $DB->get_record_sql($contextquery, [$instanceid2]);
-        $contextid2 = $context2->id;
-
-        for($i=0; $i<10; $i++) {
-            $event = report_viewed::create(array(
-                'contextid' => $contextid2,
-                'objectid' => NULL
-            ));
-            $event->add_record_snapshot('quiz', $quiz);
-            $event->trigger();
-        }
-        
-        $testresult2 = query_helper::query_activities($course->id,"" , []);
-
-        $this->assertEquals(11, $testresult2[$instanceid2]->hits);
     }
 }
