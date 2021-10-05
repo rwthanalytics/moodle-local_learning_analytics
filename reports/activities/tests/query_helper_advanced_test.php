@@ -148,7 +148,7 @@ SQL;
 
         $counterAfter = 0;
         $counterBefore = 0;
-        for($i=0; $i<100; $i++) {
+        for($i=0; $i<99; $i++) {
             $counterAfter++;
             $entry = [
                 'id' => $counterAfter,
@@ -174,7 +174,6 @@ SQL;
         }
          
         $testresult1 = query_helper::preview_query_most_clicked_activity($course->id, 1);
-        var_dump($testresult1);
 
         $this->assertEquals(100, $testresult1[$instanceid]->hits);
     }
