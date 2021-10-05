@@ -42,6 +42,7 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
         $startdate->setTimestamp($course->startdate);
         $startdate->modify('Monday this week');
         $mondaytimestamp = $startdate->getTimestamp();
+        var_dump($mondaytimestamp);
         $counter = 1;
         for($i=0; $i<168; $i++) {
             $entry = [
@@ -66,12 +67,6 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             }
         }
 
-        $query = <<<SQL
-            SELECT *
-            FROM {logstore_lanalytics_log}
-SQL;
-
-        var_dump($DB->get_record_sql($query, []));
         $testweekresult = query_helper::query_heatmap($course->id);
 
         $get_arrayname = function($val) {
@@ -115,8 +110,9 @@ SQL;
         $counterTwoWeeksAgo = 0;
         $counterOneWeeksAgo = 0;
         for($i=0; $i<99; $i++) {
+            $counterThisWeek++;
             $entry = [
-                'id' => $counterThisWeek+1,
+                'id' => $counterThisWeek,
                 'eventid' => 30,
                 'timecreated' => $today - $i * 60,
                 'courseid' => $course->id,
@@ -124,10 +120,10 @@ SQL;
                 'device' => 3611
             ];
             $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
-            $counterThisWeek++;
             if($i%2==0) {
+                $counterOneWeeksAgo++;
                 $entry = [
-                    'id' => $counterOneWeeksAgo+1,
+                    'id' => $counterOneWeeksAgo,
                     'eventid' => 30,
                     'timecreated' => $oneweekago - $i * 60,
                     'courseid' => $course->id,
@@ -135,11 +131,11 @@ SQL;
                     'device' => 3611
                 ];
                 $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
-                $counterOneWeeksAgo++;
             }
             if($i%3==0) {
+                $counterTwoWeeksAgo++;
                 $entry = [
-                    'id' => $counterTwoWeeksAgo+1,
+                    'id' => $counterTwoWeeksAgo,
                     'eventid' => 30,
                     'timecreated' => $twoweeksago - $i * 60,
                     'courseid' => $course->id,
@@ -147,11 +143,13 @@ SQL;
                     'device' => 3611
                 ];
                 $DB->insert_record('logstore_lanalytics_log', $entry, false, false, true);
-                $counterTwoWeeksAgo++;
             }
         }
         $testweekresult = query_helper::preview_query_click_count($course->id);
         var_dump($testweekresult);
+        var_dump($counterThisWeek);
+        var_dump($counterOneWeeksAgo);
+        var_dump($counterTwoWeeksAgo);
 
         $this->assertEquals(1, 1);
     }
