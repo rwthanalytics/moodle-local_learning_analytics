@@ -145,8 +145,7 @@ class local_Learning_Analytics_reports_learners_testcase extends \advanced_testc
         }
 
         $testresult1 = query_helper::query_localization($courseid, $type);
-        var_dump($testresult1);
 
-        $this->assertEquals(1, 1);
+        $this->assertEquals(13, $testresult1["en"]->users);
     }
 }
