@@ -165,7 +165,11 @@ class local_Learning_Analytics_reports_learners_testcase extends \advanced_testc
         $user = $datagenerator->create_user();
         $datagenerator->enrol_user($user->id, $course->id, 'student');
         var_dump((new DateTime())->getTimestamp());
-        var_dump($DB->get_records('user_enrolment'));
+        $query = <<<SQL
+            SELECT *
+            FROM {user_enrolments}
+SQL;
+        var_dump($DB->get_records_sql($query, []));
 
         $now = Carbon::now();
         Carbon::setTestNow($now);
