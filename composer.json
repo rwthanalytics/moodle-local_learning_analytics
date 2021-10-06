@@ -5,7 +5,8 @@
   "homepage": "https://git.rwth-aachen.de/laixmo/moodle-local_learning_analytics",
   "license": "GPL-3.0+",
   "require": {
-    "composer/installers": "*"
+    "composer/installers": "*",
+    "nesbot/carbon": "^2.53"
   },
   "extra": {
     "installer-name": "learning_analytics"
