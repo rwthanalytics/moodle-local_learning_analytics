@@ -148,4 +148,34 @@ class local_Learning_Analytics_reports_learners_testcase extends \advanced_testc
 
         $this->assertEquals(13, $testresult1["en"]->users);
     }
+
+    public function test_preview_query_users() {
+        
+        global $DB, $PAGE;
+        $this->resetAfterTest(true);
+        $this->setAdminUser();
+
+        $datagenerator = $this->getDataGenerator();
+
+        $category = $datagenerator->create_category();
+        $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
+        $courseid = $course->id;
+        $type = 'lang';
+        for($i=0; $i<13; $i++) {
+            $user = $datagenerator->create_user();
+            $datagenerator->enrol_user($user->id, $course->id, 'student');
+        }
+
+        $date = new \DateTime();
+        $date->modify('-1 week');
+
+        $timestamp = $date->getTimestamp() - 84000;
+
+        
+        $testresult1 = query_helper::preview_query_users($courseid);
+        var_dump($testresult1);
+
+        $this->assertEquals(13, $testresult1["1"]->learners);
+
+    }
 }
