@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use local_learning_analytics\event\report_viewed;
 use local_learning_analytics\report_list;
 use local_learning_analytics\settings;
-use Carbon\Carbon;
+use Carbon\Carbosdfn;
 require_once(__DIR__ . '/../../../../../config.php');
 
 //use: navigate in cmd to your moodle folder and enter vendor\bin\phpunit local_Learning_Analytics_reports_learners_testcase local\Learning_Analytics\reports\learners\tests\query_helper_advanced_test.php
