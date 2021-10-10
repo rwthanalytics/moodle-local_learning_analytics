@@ -16,14 +16,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-use lareport_activities\query_helper;
+use lareport_quiz_assign\query_helper;
 use PHPUnit\Framework\TestCase;
 use local_learning_analytics\event\report_viewed;
 use local_learning_analytics\report_list;
 require_once(__DIR__ . '/../../../../../config.php');
 
-//use: navigate in cmd to your moodle folder and enter vendor\bin\phpunit local_Learning_Analytics_reports_activities_testcase local\Learning_Analytics\reports\activities\tests\query_helper_advanced_test.php
-class local_Learning_Analytics_reports_activities_testcase extends \advanced_testcase {
+//use: navigate in cmd to your moodle folder and enter vendor\bin\phpunit local_Learning_Analytics_reports_quiz_assign_testcase local\Learning_Analytics\reports\quiz_assign\tests\query_helper_advanced_test.php
+class local_Learning_Analytics_reports_quiz_assign_testcase extends \advanced_testcase {
 
     public function test_query_quiz() {
         global $DB, $PAGE;
