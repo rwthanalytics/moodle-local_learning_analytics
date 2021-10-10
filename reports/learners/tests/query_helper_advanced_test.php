@@ -21,7 +21,6 @@ use PHPUnit\Framework\TestCase;
 use local_learning_analytics\event\report_viewed;
 use local_learning_analytics\report_list;
 use local_learning_analytics\settings;
-use Carbon\Carbosdfn;
 require_once(__DIR__ . '/../../../../../config.php');
 
 //use: navigate in cmd to your moodle folder and enter vendor\bin\phpunit local_Learning_Analytics_reports_learners_testcase local\Learning_Analytics\reports\learners\tests\query_helper_advanced_test.php
@@ -148,61 +147,5 @@ class local_Learning_Analytics_reports_learners_testcase extends \advanced_testc
         $testresult1 = query_helper::query_localization($courseid, $type);
 
         $this->assertEquals(13, $testresult1["en"]->users);
-    }
-
-    public function test_preview_query_users() {
-        
-        global $DB, $PAGE;
-        $this->resetAfterTest(true);
-        $this->setAdminUser();
-
-        $datagenerator = $this->getDataGenerator();
-
-        $category = $datagenerator->create_category();
-        $course = $datagenerator->create_course(array('name'=>'testcourse', 'category'=>$category->id));
-        $courseid = $course->id;
-
-        $user = $datagenerator->create_user();
-        $datagenerator->enrol_user($user->id, $course->id, 'student');
-        var_dump((new DateTime())->getTimestamp());
-        $query = <<<SQL
-            SELECT *
-            FROM {user_enrolments}
-SQL;
-        var_dump($DB->get_records_sql($query, []));
-
-        $now = Carbon::now();
-        Carbon::setTestNow($now);
-
-        var_dump((new DateTime())->getTimestamp());
-
-        for($i=0; $i<13; $i++) {
-            $user = $datagenerator->create_user();
-            $datagenerator->enrol_user($user->id, $course->id, 'student');
-        }
-
-        $date = new \DateTime();
-        $date->modify('-1 week');
-        $date->modify('-1 week');
-
-        $testDate = Carbon::create($date);
-        Carbon::setTestNow($testDate);
-
-        var_dump((new DateTime())->getTimestamp());
-
-        for($i=0; $i<13; $i++) {
-            $user = $datagenerator->create_user();
-            $datagenerator->enrol_user($user->id, $course->id, 'student');
-        }
-
-        Carbon::setTestNow();
-
-        var_dump((new DateTime())->getTimestamp());
-        
-        $testresult1 = query_helper::preview_query_users($courseid);
-        var_dump($testresult1);
-
-        $this->assertEquals(13, $testresult1[1]);
-
     }
 }
