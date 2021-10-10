@@ -57,7 +57,7 @@ SQL;
         foreach($quizids as $id) {
             $entry = [
                 'id' => $i,
-                'quiz' => $id,
+                'quiz' => $id->id,
                 'userid' => $user->id,
                 'attempt' => $i * 2,
                 'uniqueid' => $i,
@@ -80,7 +80,7 @@ SQL;
                 'itemname' => 'test',
                 'itemtype' => 'mod',
                 'itemmodule' => 'quiz',
-                'iteminstance' => $id,
+                'iteminstance' => $id->id,
                 'itemnumber' => 0,
                 'iteminfo' => NULL,
                 'idnumber' => NULL,
