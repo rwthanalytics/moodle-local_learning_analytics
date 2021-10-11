@@ -55,12 +55,11 @@ SQL;
         $quizids = $DB->get_records_sql($query);
         $i=1;
         foreach($quizids as $id) {
-            var_dump($i);
             $entry = [
                 'id' => $i,
                 'quiz' => $id->id,
                 'userid' => $user->id,
-                'attempt' => $i * 2,
+                'attempt' => 1,
                 'uniqueid' => $i,
                 'layout' => '1,0',
                 'currentpage' => 0,
@@ -111,7 +110,6 @@ SQL;
         }
 
         $testresult1 = query_helper::query_quiz($course->id);
-        var_dump($testresult1);
 
         $this->assertEquals(1, 1);
     }
@@ -171,7 +169,7 @@ SQL;
                 'blindmarking' => 0,
                 'hidegrader' => 0,
                 'revealidentities' => 0,
-                'attemptreopenmethod' => null,
+                'attemptreopenmethod' => 't',
                 'maxattempts' => -1,
                 'markingworkflow' => 0,
                 'sendstudentnotifications' => 1,
@@ -303,7 +301,7 @@ SQL;
                 'blindmarking' => 0,
                 'hidegrader' => 0,
                 'revealidentities' => 0,
-                'attemptreopenmethod' => null,
+                'attemptreopenmethod' => 't',
                 'maxattempts' => -1,
                 'markingworkflow' => 0,
                 'sendstudentnotifications' => 1,
