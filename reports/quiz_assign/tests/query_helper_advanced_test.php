@@ -54,8 +54,8 @@ SQL;
         $oneweekago = $date->getTimestamp();
         $quizids = $DB->get_records_sql($query);
         $i=1;
-        var_dump($i);
         foreach($quizids as $id) {
+            var_dump($i);
             $entry = [
                 'id' => $i,
                 'quiz' => $id->id,
@@ -133,25 +133,57 @@ SQL;
         $quiz2 = $activitygenerator->create_instance(array('course' => $course->id));
         $quiz3 = $activitygenerator->create_instance(array('course' => $course->id));
 
-        $instancequery = <<<SQL
+        $query = <<<SQL
         SELECT
             id
-        FROM {course_modules} AS cm
-        WHERE instance = ?
+        FROM {quiz}
 SQL;
 
-        $contextquery = <<<SQL
-        SELECT
-            id
-        FROM {context} AS c
-        WHERE instanceid = ?
-SQL;
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // Include today.
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+        $quizids = $DB->get_records_sql($query);
+        $i=1;
+        foreach($quizids as $id) {
+            $gientry = [
+                'id' => $i,
+                'courseid' => $course->id,
+                'categoryid' => NULL,
+                'itemname' => 'test',
+                'itemtype' => 'mod',
+                'itemmodule' => 'quiz',
+                'iteminstance' => $id->id,
+                'itemnumber' => 0,
+                'iteminfo' => NULL,
+                'idnumber' => NULL,
+                'calculation' => NULL,
+                'gradetype' => 1,
+                'grademax' => '10.00000',
+                'grademin' => '0.00000',
+                'scaleid' => NULL,
+                'outcomeid' => NULL,
+                'gradepass' => '0.00000',
+                'plusfactor' => '0.00000',
+                'aggregationcoef' => '0.00000',
+                'aggregationcoef2' => '0.00000',
+                'sortorder' => $i,
+                'display' => 0,
+                'deciamals' => NULL,
+                'hidden' => 0,
+                'locked' => 0,
+                'locktime' => 0,
+                'needsupdate' => 0,
+                'weightoverride' => 0,
+                'timecreated' => $oneweekago,
+                'timemodified' => $oneweekago + 200
+            ];
+            $DB->insert_record('grade_items', $gientry, false, false, true);
+            $i = $i + 1;
+        }
 
-        $logmanager = get_log_manager(true);
-        $contextinstance = $DB->get_record_sql($instancequery, [$quiz1->id]);
-        $instanceid = $contextinstance->id;
-        $context = $DB->get_record_sql($contextquery, [$instanceid]);
-        $contextid = $context->id;
+        //$testresult1 = query_helper::query_quiz($course->id);
+        //var_dump($testresult1);
 
         $this->assertEquals(1, 1);
     }
