@@ -229,8 +229,8 @@ SQL;
                 'informationformat' => 0,
                 'timecreated' => $oneweekago,
                 'timemodified' => $oneweekago + 200,
-                'aggregationstatus' => null,
-                'aggregationweight' => null
+                'aggregationstatus' => 0,
+                'aggregationweight' => 0
             ];
             $DB->insert_record('grade_grades', $ggentry, false, false, true);
             $i = $i + 1;
@@ -334,7 +334,7 @@ SQL;
                 'timefinish' => $oneweekago + 200,
                 'timemodified' => $oneweekago + 200,
                 'timemodifiedoffline' => 0,
-                'timecheckstate' => NULL,
+                'timecheckstate' => 0,
                 'sumgrades' => 1/$i
             ];
             $DB->insert_record('quiz_attempts', $qaentry, false, false, true);
