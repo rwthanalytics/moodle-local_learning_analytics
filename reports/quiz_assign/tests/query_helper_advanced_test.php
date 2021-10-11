@@ -212,7 +212,7 @@ SQL;
             $ggentry = [
                 'id' => $i,
                 'itemid' => $i,
-                'cuserid' => $user->id,
+                'userid' => $user->id,
                 'rawgrade' => $i * 2,
                 'rawgrademax' => '10.00000',
                 'rawgrademin' => '1.00000',
@@ -319,19 +319,7 @@ SQL;
                 'attemptnumber' => 0,
                 'latest' => 0
             ];
-            $asentryearlier = [
-                'id' => 100 + $i,
-                'assignment' => $i,
-                'userid' => $user->id,
-                'timecreated' => $twoweeksago + 1000,
-                'timemodified' => $twoweeksago + 1000,
-                'status' => 'submitted',
-                'groupid' => 0,
-                'attemptnumber' => 0,
-                'latest' => 0
-            ];
             $DB->insert_record('assign_submission', $asentry, false, false, true);
-            $DB->insert_record('assign_submission', $asentryearlier, false, false, true);
             $qaentry = [
                 'id' => $i,
                 'quiz' => $id->id,
