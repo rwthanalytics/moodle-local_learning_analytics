@@ -146,6 +146,38 @@ SQL;
         $quizids = $DB->get_records_sql($query);
         $i=1;
         foreach($quizids as $id) {
+            $aentry = [
+                'id' => $i,
+                'course' => $course->id,
+                'name' => 'test',
+                'intro' => null,
+                'introformat' => 0,
+                'alwaysshowdescription' => 0,
+                'nosubmissions' => 0,
+                'submissiondrafts' => 0,
+                'sendnotifications' => 0,
+                'sendlatenotifications' => 0,
+                'duedate' => 0,
+                'allowsubmissionsfromdate' => 0,
+                'grade' => '1.00000',
+                'timemodified' => $oneweekago + 200,
+                'requiresubmissionstatement' => 0,
+                'completionsubmit' => 0,
+                'cutoffdate' => 0,
+                'gradingduedate' => 0,
+                'teamsubmission' => 0,
+                'requireallteammemberssubmit' => 0,
+                'teamsubmissiongroupingid' => 0,
+                'blindmarking' => 0,
+                'hidegrader' => 0,
+                'revealidentities' => 0,
+                'attemptreopenmethod' => null,
+                'maxattempts' => -1,
+                'markingworkflow' => 0,
+                'sendstudentnotifications' => 1,
+                'preventsubmissionnotingroup' => 0
+            ];
+            $DB->insert_record('assign', $aentry, false, false, true);
             $gientry = [
                 'id' => $i,
                 'courseid' => $course->id,
@@ -153,7 +185,7 @@ SQL;
                 'itemname' => 'test',
                 'itemtype' => 'mod',
                 'itemmodule' => 'quiz',
-                'iteminstance' => $id->id,
+                'iteminstance' => $i,
                 'itemnumber' => 0,
                 'iteminfo' => NULL,
                 'idnumber' => NULL,
@@ -179,11 +211,35 @@ SQL;
                 'timemodified' => $oneweekago + 200
             ];
             $DB->insert_record('grade_items', $gientry, false, false, true);
+            $ggentry = [
+                'id' => $i,
+                'itemid' => $i,
+                'cuserid' => $user->id,
+                'rawgrade' => $i * 2,
+                'rawgrademax' => '10.00000',
+                'rawgrademin' => '1.00000',
+                'rawscaleid' => $i,
+                'usermodified' => $oneweekago + 200,
+                'finalgrade' => '2.00000',
+                'hidden' => 0,
+                'locked' => 0,
+                'locktime' => 0,
+                'exported' => 0,
+                'feedback' => null,
+                'feedbackformat' => 0,
+                'information' => null,
+                'informationformat' => 0,
+                'timecreated' => $oneweekago,
+                'timemodified' => $oneweekago + 200,
+                'aggregationstatus' => null,
+                'aggregationweight' => null
+            ];
+            $DB->insert_record('grade_grades', $ggentry, false, false, true);
             $i = $i + 1;
         }
 
-        //$testresult1 = query_helper::query_quiz($course->id);
-        //var_dump($testresult1);
+        $testresult1 = query_helper::query_assignment($course->id);
+        var_dump($testresult1);
 
         $this->assertEquals(1, 1);
     }
