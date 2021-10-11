@@ -54,6 +54,7 @@ SQL;
         $oneweekago = $date->getTimestamp();
         $quizids = $DB->get_records_sql($query);
         $i=1;
+        var_dump($i);
         foreach($quizids as $id) {
             $entry = [
                 'id' => $i,
@@ -106,7 +107,7 @@ SQL;
                 'timemodified' => $oneweekago + 200
             ];
             $DB->insert_record('grade_items', $gientry, false, false, true);
-            $i++;
+            $i = $i + 1;
         }
 
         $testresult1 = query_helper::query_quiz($course->id);
