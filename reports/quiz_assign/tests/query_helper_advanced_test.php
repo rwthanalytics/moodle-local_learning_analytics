@@ -150,7 +150,7 @@ SQL;
                 'id' => $i,
                 'course' => $course->id,
                 'name' => 'test',
-                'intro' => null,
+                'intro' => 'test',
                 'introformat' => 0,
                 'alwaysshowdescription' => 0,
                 'nosubmissions' => 0,
@@ -261,25 +261,102 @@ SQL;
         $quiz2 = $activitygenerator->create_instance(array('course' => $course->id));
         $quiz3 = $activitygenerator->create_instance(array('course' => $course->id));
 
-        $instancequery = <<<SQL
+        $query = <<<SQL
         SELECT
             id
-        FROM {course_modules} AS cm
-        WHERE instance = ?
+        FROM {quiz}
 SQL;
 
-        $contextquery = <<<SQL
-        SELECT
-            id
-        FROM {context} AS c
-        WHERE instanceid = ?
-SQL;
+        $date = new \DateTime();
+        $date->setTime(23, 59, 59); // Include today.
+        $today = $date->getTimestamp();
+        $date->modify('-1 week');
+        $oneweekago = $date->getTimestamp();
+        $date->modify('-1 week');
+        $twoweeksago = $date->getTimestamp();
 
-        $logmanager = get_log_manager(true);
-        $contextinstance = $DB->get_record_sql($instancequery, [$quiz1->id]);
-        $instanceid = $contextinstance->id;
-        $context = $DB->get_record_sql($contextquery, [$instanceid]);
-        $contextid = $context->id;
+        $quizids = $DB->get_records_sql($query);
+        $i=1;
+        foreach($quizids as $id) {
+            $aentry = [
+                'id' => $i,
+                'course' => $course->id,
+                'name' => 'test',
+                'intro' => 'test',
+                'introformat' => 0,
+                'alwaysshowdescription' => 0,
+                'nosubmissions' => 0,
+                'submissiondrafts' => 0,
+                'sendnotifications' => 0,
+                'sendlatenotifications' => 0,
+                'duedate' => 0,
+                'allowsubmissionsfromdate' => 0,
+                'grade' => '1.00000',
+                'timemodified' => $oneweekago + 200,
+                'requiresubmissionstatement' => 0,
+                'completionsubmit' => 0,
+                'cutoffdate' => 0,
+                'gradingduedate' => 0,
+                'teamsubmission' => 0,
+                'requireallteammemberssubmit' => 0,
+                'teamsubmissiongroupingid' => 0,
+                'blindmarking' => 0,
+                'hidegrader' => 0,
+                'revealidentities' => 0,
+                'attemptreopenmethod' => null,
+                'maxattempts' => -1,
+                'markingworkflow' => 0,
+                'sendstudentnotifications' => 1,
+                'preventsubmissionnotingroup' => 0
+            ];
+            $DB->insert_record('assign', $aentry, false, false, true);
+            $asentry = [
+                'id' => $i,
+                'assignment' => $i,
+                'userid' => $user->id,
+                'timecreated' => $oneweekago + 1000,
+                'timemodified' => $oneweekago + 1000,
+                'status' => 'submitted',
+                'groupid' => 0,
+                'attemptnumber' => 0,
+                'latest' => 0
+            ];
+            $asentryearlier = [
+                'id' => 100 + $i,
+                'assignment' => $i,
+                'userid' => $user->id,
+                'timecreated' => $twoweeksago + 1000,
+                'timemodified' => $twoweeksago + 1000,
+                'status' => 'submitted',
+                'groupid' => 0,
+                'attemptnumber' => 0,
+                'latest' => 0
+            ];
+            $DB->insert_record('assign_submission', $asentry, false, false, true);
+            $DB->insert_record('assign_submission', $asentryearlier, false, false, true);
+            $qaentry = [
+                'id' => $i,
+                'quiz' => $id->id,
+                'userid' => $user->id,
+                'attempt' => $i * 2,
+                'uniqueid' => $i,
+                'layout' => '1,0',
+                'currentpage' => 0,
+                'preview' => 1,
+                'state' => 'finished',
+                'timestart' => $oneweekago,
+                'timefinish' => $oneweekago + 200,
+                'timemodified' => $oneweekago + 200,
+                'timemodifiedoffline' => 0,
+                'timecheckstate' => NULL,
+                'sumgrades' => 1/$i
+            ];
+            $DB->insert_record('quiz_attempts', $qaentry, false, false, true);
+            $i = $i + 1;
+        }
+
+        $testresult1 = query_helper::preview_quiz_and_assigments($course->id, 1);
+        var_dump($testresult1);
 
         $this->assertEquals(1, 1);
     }
