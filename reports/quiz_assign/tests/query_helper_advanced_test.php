@@ -109,9 +109,9 @@ SQL;
             $i = $i + 1;
         }
 
-        $DB->set_field('quiz', 'sumgrades', '10.00000', ['id' => array_pop($quizids)->id]);
-        $DB->set_field('quiz', 'sumgrades', '10.00000', ['id' => array_pop($quizids)->id]);
-        $DB->set_field('quiz', 'sumgrades', '10.00000', ['id' => array_pop($quizids)->id]);
+        $DB->set_field('quiz', 'sumgrades', 1, ['id' => array_pop($quizids)->id]);
+        $DB->set_field('quiz', 'sumgrades', 1, ['id' => array_pop($quizids)->id]);
+        $DB->set_field('quiz', 'sumgrades', 1, ['id' => array_pop($quizids)->id]);
 
         $testresult1 = query_helper::query_quiz($course->id);
 
