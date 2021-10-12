@@ -114,7 +114,7 @@ SQL;
         $quizid = array_pop($quizids)->id;
         $entry = [
             'id' => 4,
-            'quiz' => $quizidid,
+            'quiz' => $quizid,
             'userid' => $user->id,
             'attempt' => 1,
             'uniqueid' => 4,
