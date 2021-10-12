@@ -81,10 +81,15 @@ class local_Learning_Analytics_reports_weekheatmap_testcase extends \advanced_te
             return $returner;
         };
 
-        //$this->assertEquals(3, $testweekresult[$get_arrayname(0)]->value);
-        //$this->assertEquals(2, $testweekresult[$get_arrayname(100)]->value);
-        //$this->assertEquals(2, $testweekresult[$get_arrayname(39)]->value);
-        //$this->assertEquals(1, $testweekresult[$get_arrayname(17)]->value);
+        $query = <<<SQL
+        SELECT timecreated
+        FROM {logstore_lanalytics_log}
+SQL;
+        var_dump($DB->get_records_sql($query, []));
+        $this->assertEquals(3, $testweekresult[$get_arrayname(0)]->value);
+        $this->assertEquals(2, $testweekresult[$get_arrayname(100)]->value);
+        $this->assertEquals(2, $testweekresult[$get_arrayname(39)]->value);
+        $this->assertEquals(1, $testweekresult[$get_arrayname(17)]->value);
         $this->assertEquals(false, array_key_exists(168, $testweekresult));
     }
 

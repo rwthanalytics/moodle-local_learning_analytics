@@ -111,7 +111,30 @@ SQL;
 
         $DB->set_field('quiz', 'sumgrades', '10.00000', ['id' => array_pop($quizids)->id]);
 
+        $ququery = <<<SQL
+        SELECT *
+        FROM {quiz}
+SQL;
+
+        $qaquery = <<<SQL
+        SELECT *
+        FROM {quiz_attempts}
+SQL;
+
+        $giquery = <<<SQL
+        SELECT *
+        FROM {grade_items}
+SQL;
+
+
+        var_dump("QU-1:");
+        var_dump($DB->get_records_sql($ququery, []));
+        var_dump("QA-1:");
+        var_dump($DB->get_records_sql($qaquery, []));
+        var_dump("GI-1");
+        var_dump($DB->get_records_sql($giquery, []));
         $testresult1 = query_helper::query_quiz($course->id);
+        var_dump($testresult1);
 
         $this->assertEquals(2, array_pop($testresult1)->attempts);
         $this->assertEquals(2, array_pop($testresult1)->attempts);
