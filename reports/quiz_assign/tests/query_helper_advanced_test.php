@@ -109,6 +109,8 @@ SQL;
             $i = $i + 1;
         }
 
+        $DB->set_field('quiz', 'sumgrades', '10.00000', ['sumgrades' => array_pop($quizids)->id]);
+
         $ququery = <<<SQL
         SELECT *
         FROM {quiz}
