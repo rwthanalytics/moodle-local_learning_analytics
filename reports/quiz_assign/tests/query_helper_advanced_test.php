@@ -109,6 +109,20 @@ SQL;
             $i = $i + 1;
         }
 
+        $qquery = <<<SQL
+        SELECT *
+        FROM {quiz_attempts}
+SQL;
+
+        $giquery = <<<SQL
+        SELECT *
+        FROM {grade_items}
+SQL;
+
+        var_dump("Q-1:");
+        var_dump($DB->get_records_sql($qquery, []));
+        var_dump("GI-1");
+        var_dump($DB->get_records_sql($giquery, []));
         $testresult1 = query_helper::query_quiz($course->id);
 
         $this->assertEquals(1, 1);
@@ -176,6 +190,21 @@ SQL;
                 'preventsubmissionnotingroup' => 0
             ];
             $DB->insert_record('assign', $aentry, false, false, true);
+            $i++;
+        }
+
+        $refquery1 = <<<SQL
+        SELECT
+            id
+        FROM {assign} As a
+        WHERE a.name = 'test'
+SQL;
+
+        $assignids = $DB->get_records_sql($refquery1, []);
+
+        $i = 1;
+
+        foreach($assignids as $assignid) {
             $gientry = [
                 'id' => $i,
                 'courseid' => $course->id,
@@ -183,7 +212,7 @@ SQL;
                 'itemname' => 'test',
                 'itemtype' => 'mod',
                 'itemmodule' => 'quiz',
-                'iteminstance' => $i,
+                'iteminstance' => $assignid->id,
                 'itemnumber' => 0,
                 'iteminfo' => NULL,
                 'idnumber' => NULL,
@@ -209,9 +238,24 @@ SQL;
                 'timemodified' => $oneweekago + 200
             ];
             $DB->insert_record('grade_items', $gientry, false, false, true);
+            $i++;
+        }
+
+        $refquery2 = <<<SQL
+        SELECT
+            id
+        FROM {grade_items} As gi
+        WHERE gi.itemname = 'test'
+SQL;
+
+        $giids = $DB->get_records_sql($refquery2, []);
+
+        $i = 1;
+
+        foreach($giids as $giid) {
             $ggentry = [
                 'id' => $i,
-                'itemid' => $i,
+                'itemid' => $giid->id,
                 'userid' => $user->id,
                 'rawgrade' => $i * 2,
                 'rawgrademax' => '10.00000',
@@ -233,7 +277,7 @@ SQL;
                 'aggregationweight' => 0
             ];
             $DB->insert_record('grade_grades', $ggentry, false, false, true);
-            $i = $i + 1;
+            $i++;
         }
 
         $aquery = <<<SQL
