@@ -341,9 +341,72 @@ SQL;
             $i = $i + 1;
         }
 
+        $aentry = [
+            'id' => $i,
+            'course' => $course->id,
+            'name' => 'test',
+            'intro' => 'test',
+            'introformat' => 0,
+            'alwaysshowdescription' => 0,
+            'nosubmissions' => 0,
+            'submissiondrafts' => 0,
+            'sendnotifications' => 0,
+            'sendlatenotifications' => 0,
+            'duedate' => 0,
+            'allowsubmissionsfromdate' => 0,
+            'grade' => '1.00000',
+            'timemodified' => $twoweeksago + 200,
+            'requiresubmissionstatement' => 0,
+            'completionsubmit' => 0,
+            'cutoffdate' => 0,
+            'gradingduedate' => 0,
+            'teamsubmission' => 0,
+            'requireallteammemberssubmit' => 0,
+            'teamsubmissiongroupingid' => 0,
+            'blindmarking' => 0,
+            'hidegrader' => 0,
+            'revealidentities' => 0,
+            'attemptreopenmethod' => 't',
+            'maxattempts' => -1,
+            'markingworkflow' => 0,
+            'sendstudentnotifications' => 1,
+            'preventsubmissionnotingroup' => 0
+        ];
+        $DB->insert_record('assign', $aentry, false, false, true);
+        $asentry = [
+            'id' => $i,
+            'assignment' => $i,
+            'userid' => $user->id,
+            'timecreated' => $twoweeksago + 1000,
+            'timemodified' => $twoweeksago + 1000,
+            'status' => 'submitted',
+            'groupid' => 0,
+            'attemptnumber' => 0,
+            'latest' => 0
+        ];
+        $DB->insert_record('assign_submission', $asentry, false, false, true);
+        $qaentry = [
+            'id' => $i,
+            'quiz' => $id->id,
+            'userid' => $user->id,
+            'attempt' => $i * 2,
+            'uniqueid' => $i,
+            'layout' => '1,0',
+            'currentpage' => 0,
+            'preview' => 1,
+            'state' => 'finished',
+            'timestart' => $twoweeksago,
+            'timefinish' => $twoweeksago + 200,
+            'timemodified' => $twoweeksago + 200,
+            'timemodifiedoffline' => 0,
+            'timecheckstate' => 0,
+            'sumgrades' => 1/$i
+        ];
+        $DB->insert_record('quiz_attempts', $qaentry, false, false, true);
+
         $testresult1 = query_helper::preview_quiz_and_assigments($course->id, 1);
         var_dump($testresult1);
 
-        $this->assertEquals(1, 1);
+        $this->assertEquals([1, 3], $testresult1);
     }
 }
