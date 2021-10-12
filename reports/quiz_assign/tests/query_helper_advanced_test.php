@@ -243,12 +243,12 @@ SQL;
 
         $giquery = <<<SQL
         SELECT *
-        FROM {assign}
+        FROM {grade_items}
 SQL;
 
         $ggquery = <<<SQL
         SELECT *
-        FROM {assign}
+        FROM {grade_grades}
 SQL;
 
         var_dump("A:");
