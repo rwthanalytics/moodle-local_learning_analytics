@@ -109,6 +109,11 @@ SQL;
             $i = $i + 1;
         }
 
+        $ququery = <<<SQL
+        SELECT *
+        FROM {quiz}
+SQL;
+
         $qquery = <<<SQL
         SELECT *
         FROM {quiz_attempts}
@@ -119,6 +124,9 @@ SQL;
         FROM {grade_items}
 SQL;
 
+
+        var_dump("QU-1:");
+        var_dump($DB->get_records_sql($ququery, []));
         var_dump("Q-1:");
         var_dump($DB->get_records_sql($qquery, []));
         var_dump("GI-1");
