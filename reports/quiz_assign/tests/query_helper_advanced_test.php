@@ -111,59 +111,6 @@ SQL;
 
         $DB->set_field('quiz', 'sumgrades', '10.00000', ['id' => array_pop($quizids)->id]);
 
-        $quizid = array_pop($quizids)->id;
-        $entry = [
-            'id' => 4,
-            'quiz' => $quizid,
-            'userid' => $user->id,
-            'attempt' => 1,
-            'uniqueid' => 4,
-            'layout' => '1,0',
-            'currentpage' => 0,
-            'preview' => 1,
-            'state' => 'finished',
-            'timestart' => $oneweekago,
-            'timefinish' => $oneweekago + 200,
-            'timemodified' => $oneweekago + 200,
-            'timemodifiedoffline' => 0,
-            'timecheckstate' => NULL,
-            'sumgrades' => 1/4
-        ];
-        $DB->insert_record('quiz_attempts', $entry, false, false, true);
-        $gientry = [
-            'id' => 4,
-            'courseid' => $course->id,
-            'categoryid' => NULL,
-            'itemname' => 'test',
-            'itemtype' => 'mod',
-            'itemmodule' => 'quiz',
-            'iteminstance' => $quizid,
-            'itemnumber' => 0,
-            'iteminfo' => NULL,
-            'idnumber' => NULL,
-            'calculation' => NULL,
-            'gradetype' => 1,
-            'grademax' => '10.00000',
-            'grademin' => '0.00000',
-            'scaleid' => NULL,
-            'outcomeid' => NULL,
-            'gradepass' => '0.00000',
-            'plusfactor' => '0.00000',
-            'aggregationcoef' => '0.00000',
-            'aggregationcoef2' => '0.00000',
-            'sortorder' => 4,
-            'display' => 0,
-            'deciamals' => NULL,
-            'hidden' => 0,
-            'locked' => 0,
-            'locktime' => 0,
-            'needsupdate' => 0,
-            'weightoverride' => 0,
-            'timecreated' => $oneweekago,
-            'timemodified' => $oneweekago + 200
-        ];
-        $DB->insert_record('grade_items', $gientry, false, false, true);
-
         $ququery = <<<SQL
         SELECT *
         FROM {quiz}
@@ -190,7 +137,7 @@ SQL;
         var_dump($testresult1);
 
         $this->assertEquals(2, array_pop($testresult1)->attempts);
-        $this->assertEquals(3, array_pop($testresult1)->attempts);
+        $this->assertEquals(2, array_pop($testresult1)->attempts);
         $this->assertEquals(2, array_pop($testresult1)->attempts);
     }
 
