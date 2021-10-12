@@ -134,6 +134,7 @@ SQL;
         var_dump("GI-1");
         var_dump($DB->get_records_sql($giquery, []));
         $testresult1 = query_helper::query_quiz($course->id);
+        var_dump($testresult1);
 
         $this->assertEquals(1, 1);
     }
