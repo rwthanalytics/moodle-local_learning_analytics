@@ -236,6 +236,27 @@ SQL;
             $i = $i + 1;
         }
 
+        $aquery = <<<SQL
+        SELECT *
+        FROM {assign}
+SQL;
+
+        $giquery = <<<SQL
+        SELECT *
+        FROM {assign}
+SQL;
+
+        $ggquery = <<<SQL
+        SELECT *
+        FROM {assign}
+SQL;
+
+        var_dump("A:");
+        var_dump($DB->get_records_sql($aquery, []));
+        var_dump("GI");
+        var_dump($DB->get_records_sql($giquery, []));
+        var_dump("GG");
+        var_dump($DB->get_records_sql($ggquery, []));
         $testresult1 = query_helper::query_assignment($course->id);
         var_dump($testresult1);
 
@@ -405,7 +426,6 @@ SQL;
         $DB->insert_record('quiz_attempts', $qaentry, false, false, true);
 
         $testresult1 = query_helper::preview_quiz_and_assigments($course->id, 1);
-        var_dump($testresult1);
 
         $this->assertEquals([1, 3], $testresult1);
     }
