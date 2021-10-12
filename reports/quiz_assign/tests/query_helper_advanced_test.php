@@ -295,16 +295,11 @@ SQL;
         FROM {grade_grades}
 SQL;
 
-        var_dump("A:");
-        var_dump($DB->get_records_sql($aquery, []));
-        var_dump("GI");
-        var_dump($DB->get_records_sql($giquery, []));
-        var_dump("GG");
-        var_dump($DB->get_records_sql($ggquery, []));
         $testresult1 = query_helper::query_assignment($course->id);
-        var_dump($testresult1);
 
-        $this->assertEquals(1, 1);
+        $this->assertEquals(5/9, array_pop($testresult1)->grade);
+        $this->assertEquals(3/9, array_pop($testresult1)->grade);
+        $this->assertEquals(1/9, array_pop($testresult1)->grade);
     }
 
     public function test_preview_quiz_and_assigments() {
