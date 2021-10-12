@@ -109,7 +109,7 @@ SQL;
             $i = $i + 1;
         }
 
-        $qquery = <<<SQL
+        /*$qquery = <<<SQL
         SELECT *
         FROM {quiz_attempts}
 SQL;
@@ -122,7 +122,7 @@ SQL;
         var_dump("Q-1:");
         var_dump($DB->get_records_sql($qquery, []));
         var_dump("GI-1");
-        var_dump($DB->get_records_sql($giquery, []));
+        var_dump($DB->get_records_sql($giquery, []));*/
         $testresult1 = query_helper::query_quiz($course->id);
 
         $this->assertEquals(1, 1);
@@ -211,7 +211,7 @@ SQL;
                 'categoryid' => NULL,
                 'itemname' => 'test',
                 'itemtype' => 'mod',
-                'itemmodule' => 'quiz',
+                'itemmodule' => 'assign',
                 'iteminstance' => $assignid->id,
                 'itemnumber' => 0,
                 'iteminfo' => NULL,
