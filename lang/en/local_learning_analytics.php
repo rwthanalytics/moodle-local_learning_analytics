@@ -125,3 +125,5 @@ By clicking on the link you can view details of the course activities.';
 $string['tour_more_information'] = 'The interactive tour is now complete. We hope we could give you a good overview of the features.
 
 More answers to frequently asked questions can be found on the help page.';
+
+$string['learning_analytics:view_statistics'] = 'Access usage statistics in courses';

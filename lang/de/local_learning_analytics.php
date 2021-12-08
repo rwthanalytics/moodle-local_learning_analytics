@@ -125,3 +125,5 @@ Durch einen Klick auf den Link lassen sich Details zu den Aktivitäten des Kurse
 $string['tour_more_information'] = 'Die interaktive Tour ist hiermit beendet. Wir hoffen wir konnten einen guten Überblick über die Funktionen verschaffen.
 
 Weitere Antworten zu häufig gestellten Fragen finden sich auf der Hilfeseite.';
+
+$string['learning_analytics:view_statistics'] = 'Anzeige von Zugriffsstatistiken in Kursen';
