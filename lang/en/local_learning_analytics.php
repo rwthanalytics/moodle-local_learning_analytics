@@ -98,6 +98,11 @@ $string['help_faq_privacy_threshold_answer'] = 'For data privacy reasons, aggreg
 $string['help_faq_visibility_question'] = 'Who can access the Usage Statistics?';
 $string['help_faq_visibility_answer'] = 'To ensure maximum transparency, the displayed data can be viewed by the course owners as well as by the participants of the course.';
 
+$string['help_faq_datapoints_question'] = 'Why are the number of hits so different for different types of materials?';
+$string['help_faq_datapoints_answer'] = 'The shown numbers indicate the number of hits/accesses. These can vary greatly depending on the material type.
+For example, only one hit is logged when a PDF is downloaded.
+However, in the case of a test where the questions are spread over several pages, there will also be several hits logged in the course of a single test run.';
+
 $string['help_faq_developer_question'] = 'Who develops the service and where can I get further information?';
 $string['help_faq_developer_answer'] = 'The Learning Analytics service is developed by the Center for Teaching and Learning Services at RWTH Aachen University.
 The development is Open Source. Therefore you can check the used algorithms yourself. On the following pages you can access further information:';

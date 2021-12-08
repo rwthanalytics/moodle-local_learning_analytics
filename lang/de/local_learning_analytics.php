@@ -98,6 +98,11 @@ $string['help_faq_privacy_threshold_answer'] = 'Aus Datenschutzgründen werden a
 $string['help_faq_visibility_question'] = 'Wer kann auf die Zugriffsstatistiken zugreifen?';
 $string['help_faq_visibility_answer'] = 'Um größtmögliche Transparenz zu gewährleisten, können die angezeigten Daten sowohl von den Managern/Inhabern als auch von den Teilnehmer/innen des Kurses eingesehen werden.';
 
+$string['help_faq_datapoints_question'] = 'Warum sind die Zugriffszahlen so unterschiedlich für verschiedene Typen von Materialien?';
+$string['help_faq_datapoints_answer'] = 'Die dargestellten Zahlen zeigen die Anzahl an Zugriffe an. Diese können je nach Materialtyp stark variieren.
+So wird beim Download eines PDFs nur ein Zugriff gespeichert.
+Bei einem Test, dessen Fragen auf mehrere Seiten verteilt sind, wird es dagegen zu mehreren Zugriffen bei einem einzigen Testdurchlauf kommen.';
+
 $string['help_faq_developer_question'] = 'Durch wen wird das Angebot entwickelt und wo erhalte ich weitere Informationen?';
 $string['help_faq_developer_answer'] = 'Die Entwicklung des Learning Analytics-Angebotes geschieht durch das Center für Lehr- und Lernservices (CLS) der RWTH Aachen University.
 Die Entwicklung ist Open Source. Sie können die eingesetzten Algorithmen daher selber überprüfen. Auf den folgenden Seiten können Sie auf weitere Informationen zugreifen:';
