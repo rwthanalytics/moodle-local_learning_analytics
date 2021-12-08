@@ -35,9 +35,15 @@ function local_learning_analytics_extend_navigation(global_navigation $navigatio
 
     // Only extend navigation inside courses.
     if (isset($COURSE->id) && $COURSE->id !== SITEID) {
+        // first check if user has the capability assigned
+        if (!has_capability('local/learning_analytics:view_statistics', $PAGE->context)) {
+            return;
+        }
+
+        // then check if the settings of the plugin
+        
         // status: 'show_if_enabled', 'show_courseids', 'show_always', 'hide_link', 'disable'
         $statussetting = get_config('local_learning_analytics', 'status');
-    
         if ($statussetting === 'course_customfield') {
             $customfieldid = (int) get_config('local_learning_analytics', 'customfieldid');
             if (!$customfieldid) { // setup went wrong, this should not happen in reality
