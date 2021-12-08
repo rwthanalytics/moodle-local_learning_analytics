@@ -16,6 +16,15 @@ The `master` branch contains the latest release. The `dev` branch contains the d
 - `git push`
 - `git push --tags`
 
+### Update files on Moodle Plugin store
+- Go to the `developer zone`: https://moodle.org/plugins/local_learning_analytics/devzone
+  - Click `Add a new version` below `Releasing a new version`
+- Click on `Release` next to the github window (make sure the correct version is listed)
+  - Moodle will now download the ZIP
+- Make sure `Rename root directory` in advanced settings
+- Select supported Moodle versions
+- Click `Continue`
+- No need to do anything on the next screen -> Just press `Release`
 
 ## Changelog
 Every changelog should be noted in the [CHANGELOG](./CHANGELOG.md) file. The logstore plugin has it's own changelog file.
