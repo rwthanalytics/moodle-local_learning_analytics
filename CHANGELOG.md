@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.19.0] - 2022-01-04
+### Fixed
+- Fixed customfield setting: Hardcoded language strings are replaced with strings from the language files.
+- Minor spelling and UI fixes in the FAQ.
+
 ## [0.18.1] - 2021-12-08
 ### Changed
 - FAQ improved (one question/answer added)
