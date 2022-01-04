@@ -45,10 +45,20 @@ if ($ADMIN->fulltree) {
         $statuschoices['course_customfield'] = get_string('setting_status_course_customfield', 'local_learning_analytics');
     }
 
+    $statusDescription = get_string('setting_status_description', 'local_learning_analytics');
+    $statussetting = get_config('local_learning_analytics', 'status');
+    if ($statussetting === 'course_customfield') {
+        $customfieldid = (int) get_config('local_learning_analytics', 'customfieldid');
+        $cfrenderer = $PAGE->get_renderer('local_learning_analytics');
+        $customfieldinfo = $cfrenderer->render_from_template('local_learning_analytics/admin_customfield_info', [
+            'customfieldid' => $customfieldid
+        ]);
+        $statusDescription .= $customfieldinfo;
+    }
     $settingstatus = new admin_setting_configselect(
         'local_learning_analytics/status',
         'status',
-        get_string('setting_status_description', 'local_learning_analytics'),
+        $statusDescription,
         'show_if_enabled', // default value
         $statuschoices
     );

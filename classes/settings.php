@@ -28,17 +28,6 @@ defined('MOODLE_INTERNAL') || die;
 
 abstract class settings {
 
-    // Unfortunately, the customfields do not support language strings (as they are inserted into the database)
-    // So, instead we have to use strings that are english/german
-    const CUSTOMFIELD_CATEGORY_NAME = 'Learning Analytics';
-    const CUSTOMFIELD_CATEGORY_DESCRIPTION = 'This category was automatically created by the Learning Analytics plugin (local_learning_analytics). You should not manually delete this.';
-    
-    // We use multilang strings here with an "invalid" divider in between. That way, if multilang strings are enabled, the corresponding language is used, otherwise
-    // both languages (including the divider) will be shown.
-    const CUSTOMFIELD_FIELD_NAME = '<span lang="en" class="multilang">Enable Usage Statistics</span><span lang="invalid" class="multilang"> / </span><span lang="de" class="multilang">Zugriffsstatistiken aktivieren</span>';
-    const CUSTOMFIELD_FIELD_DESCRIPTION = '<span lang="en" class="multilang">Enabling adds the link "Usage Statistics" to your course navigation.</span><span lang="invalid" class="multilang"> / ' .
-        "\r\n" . '</span><span lang="de" class="multilang">Die Aktivierung fügt der Kursnavigation den Link "Zugriffsstatistiken" hinzu.</span>';
-
     const DEFAULTS = [
         'dataprivacy_threshold' => 10,
         'dashboard_boxes' => 'learners:3,weekheatmap:3,quiz_assign:3,activities:3',
@@ -51,6 +40,44 @@ abstract class settings {
             return self::DEFAULTS[$configkey];
         }
         return $value;
+    }
+
+    // This function is used to get a language string in the language of the Moodle page (not of the user who is doing the change)
+    // This is used by customfields, as they do not support language strings (as they are inserted into the database)
+    private static function site_lang_string($langkey) {
+        $pagelanguage = get_config('core', 'lang'); // read the site default language
+        if (!$pagelanguage) { // default to english
+            $pagelanguage = 'en';
+        }
+        // this will always fall back to english in case no other language string exist
+        return get_string_manager()->get_string($langkey, 'local_learning_analytics', null, $pagelanguage);
+    }
+
+    // If the multilang-filter is activated, this will concat the languages with "invalid" dividers in between.
+    // That way, if multilang strings are disabled later, both languages (including the divider) will be shown.
+    // If the multilang-filter is not activated, this will simply return the language string in the language
+    // of the page.
+    private static function multilang_string($langkey) {
+        $stringfilters = filter_get_string_filters();
+        $isMultilangEnabled = isset($stringfilters['multilang']); // checks if the filter is applied to content and headers
+        if ($isMultilangEnabled) {
+            $strmanager = get_string_manager();
+            $translations = $strmanager->get_list_of_translations();
+            // used to see if the returned value is actually the "default" (english) translation
+            $defaultCheck = $strmanager->get_string('customfield_field_description', 'local_learning_analytics', null, 'en');
+            $values = [];
+            foreach ($translations as $langKey => $langName) {
+                $langValue = $strmanager->get_string('customfield_field_description', 'local_learning_analytics', null, $langKey);
+                if ($langValue === $defaultCheck && $langKey !== 'en') { // skip over non-existing strings (that fall back to English)
+                    continue;
+                }
+                $value = $strmanager->get_string($langkey, 'local_learning_analytics', null, $langKey);
+                $values[] = "<span lang=\"{$langKey}\" class=\"multilang\">{$value}</span>";
+            }
+            return implode('<span lang="invalid" class="multilang"> / </span>', $values);
+        } else {
+            return self::site_lang_string($langkey);
+        }
     }
 
     public static function statusupdated() {
@@ -72,16 +99,16 @@ abstract class settings {
             // Create customfield category for courses
             $handler = \core_course\customfield\course_handler::create();
             $category = \core_customfield\category_controller::create(0, (object)[
-                'name' => self::CUSTOMFIELD_CATEGORY_NAME,
-                'description' => self::CUSTOMFIELD_CATEGORY_DESCRIPTION,
+                'name' => self::site_lang_string('customfield_category_name'),
+                'description' => self::site_lang_string('customfield_category_description'),
             ], $handler);
             \core_customfield\api::save_category($category);
 
             // Create customfield entry (inside of category created above)
             $field = \core_customfield\field_controller::create(0, (object)[
-                'name' => self::CUSTOMFIELD_FIELD_NAME,
+                'name' => self::multilang_string('customfield_field_name'),
                 'shortname' => 'learning_analytics_enable',
-                'description' => self::CUSTOMFIELD_FIELD_DESCRIPTION,
+                'description' => self::multilang_string('customfield_field_description'),
                 'type' => 'checkbox'
             ], $category);
             $formdata = \core_customfield\api::prepare_field_for_config_form($field);

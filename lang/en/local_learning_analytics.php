@@ -132,3 +132,16 @@ $string['tour_more_information'] = 'The interactive tour is now complete. We hop
 More answers to frequently asked questions can be found on the help page.';
 
 $string['learning_analytics:view_statistics'] = 'Access usage statistics in courses';
+
+// custom field
+$string['customfield_category_name'] = 'Learning Analytics';
+$string['customfield_category_description'] = 'This category was automatically created by the Learning Analytics plugin (local_learning_analytics). You should not manually delete this.';
+$string['customfield_field_name'] = 'Enable Usage Statistics';
+$string['customfield_field_description'] = 'Enabling adds the link "Usage Statistics" to your course navigation.';
+// custom field admin information
+$string['admin_customfield_info'] = 'You can change the name of the option in the course settings yourself, by renaming them on the following pages:';
+$string['admin_customfield_category'] = 'Rename the category';
+$string['admin_customfield_category_hint'] = 'click on the pencil icon next to the category to rename';
+$string['admin_customfield_option'] = 'Rename the option';
+$string['admin_customfield_option_hint'] = 'you may only change the name and description text';
+$string['admin_customfield_no_manual_delete'] = 'Do not delete the category or the option. You may only rename them. If you want to remove the option change the status above instead.';

@@ -132,3 +132,16 @@ $string['tour_more_information'] = 'Die interaktive Tour ist hiermit beendet. Wi
 Weitere Antworten zu häufig gestellten Fragen finden sich auf der Hilfeseite.';
 
 $string['learning_analytics:view_statistics'] = 'Anzeige von Zugriffsstatistiken in Kursen';
+
+// custom field
+$string['customfield_category_name'] = 'Learning Analytics';
+$string['customfield_category_description'] = 'Diese Kategorie wurde automatisch durch das Learning Analytics Plugin erstellt (local_learning_analytics). Sie sollten diese Kategorie nicht manuell löschen.';
+$string['customfield_field_name'] = 'Zugriffsstatistiken aktivieren';
+$string['customfield_field_description'] = 'Die Aktivierung fügt der Kursnavigation den Link "Zugriffsstatistiken" hinzu.';
+// custom field admin information
+$string['admin_customfield_info'] = 'Den Namen der Option in den Kurseinstellungen können Sie selbst ändern, indem Sie diese auf den folgenden Seiten umbenennen:';
+$string['admin_customfield_category'] = 'Umbenennen der Kategorie';
+$string['admin_customfield_category_hint'] = 'durch Klick auf das Stift-Symbol kann die Kategorie umbenannt werden';
+$string['admin_customfield_option'] = 'Umbenennen der Option';
+$string['admin_customfield_option_hint'] = 'nur der name und die Beschreibung dürfen verändert werden';
+$string['admin_customfield_no_manual_delete'] = 'Sie dürfen die Kategorie oder die Option nicht löschen. Sie dürfen sie nur umbenennen. Wenn Sie die Option entfernen möchten, ändern Sie stattdessen den obigen Status.';
