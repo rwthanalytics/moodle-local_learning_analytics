@@ -29,8 +29,8 @@ $string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen D
 $string['learning_analytics'] = 'Learning Analytics';
 $string['navigationlink'] = 'Zugriffsstatistiken';
 
-$string['subplugintype_lareport'] = 'L.A. Report';
-$string['subplugintype_lareport_plural'] = 'L.A. Reports';
+$string['subplugintype_lareport'] = 'L.A. Bericht';
+$string['subplugintype_lareport_plural'] = 'L.A. Berichte';
 $string['subplugintype_lalog'] = 'L.A. Log';
 $string['subplugintype_lalog_plural'] = 'L.A. Logs';
 
@@ -38,8 +38,8 @@ $string['subplugintype_lalog_plural'] = 'L.A. Logs';
 $string['show_full_list'] = 'Mehr anzeigen';
 
 // Terms also used by subplugins
-$string['learners'] = 'Learners';
-$string['sessions'] = 'Sessions';
+$string['learners'] = 'Lernende';
+$string['sessions'] = 'Sitzungen';
 $string['hits'] = 'Aufrufe'; // "Aufrufe"
 
 // Settings
@@ -70,7 +70,7 @@ Die dargestellten Statistiken sind live und enthalten sowohl selber erhobenen Da
 
 $string['help_faq'] = 'Häufig gestellte Fragen';
 
-$string['help_faq_personal_data_question'] = 'Warum werden keine personalisierten Statistiken, wie z.B. die Klicks pro Nutzer angezeigt?';
+$string['help_faq_personal_data_question'] = 'Warum werden keine personalisierten Statistiken angezeigt, wie z.B. die Klicks pro Nutzer?';
 $string['help_faq_personal_data_answer'] = 'Aus Datenschutzgründen erhebt das Learning Analytics-Angebot keine personalisierten Daten. Daher enthalten die meisten dargestellten Statistiken (z.B. die meist genutzten Aktivitäten) nur Information darüber wie oft eine Resource aufgerufen wurde, aber nicht von wie vielen Teilnehmer/innen.
 Eine Ausnahme stellen die Statistiken zu Teilnehmer/innen und Tests/Aufgaben da, da hier auch Moodle-eigene Daten dargestellt werden.';
 
@@ -92,7 +92,7 @@ Betroffener Kurs in dem die Aktion durchgeführt wurde
 Betroffener Kontext (z.B. die Ressource die angesehen wurde)
 Betriebssystem und Browser (z.B. "Windows 10" und "Firefox"), detaillierte Browser- oder Betriebssystemversionen werden nicht gespeichert';
 
-$string['help_faq_privacy_threshold_question'] = 'Warum werden manche Werte als "< {$a}" angezeigt?';
+$string['help_faq_privacy_threshold_question'] = 'Warum werden einige Werte als "< {$a}" angezeigt?';
 $string['help_faq_privacy_threshold_answer'] = 'Aus Datenschutzgründen werden aggregierte Daten erst dargestellt, wenn mindestens {$a} Datensätze vorhanden sind.';
 
 $string['help_faq_visibility_question'] = 'Wer kann auf die Zugriffsstatistiken zugreifen?';
@@ -103,7 +103,7 @@ $string['help_faq_datapoints_answer'] = 'Die dargestellten Zahlen zeigen die Anz
 So wird beim Download eines PDFs nur ein Zugriff gespeichert.
 Bei einem Test, dessen Fragen auf mehrere Seiten verteilt sind, wird es dagegen zu mehreren Zugriffen bei einem einzigen Testdurchlauf kommen.';
 
-$string['help_faq_developer_question'] = 'Durch wen wird das Angebot entwickelt und wo erhalte ich weitere Informationen?';
+$string['help_faq_developer_question'] = 'Wer entwickelt das Angebot und wo kann ich weitere Informationen erhalten?';
 $string['help_faq_developer_answer'] = 'Die Entwicklung des Learning Analytics-Angebotes geschieht durch das Center für Lehr- und Lernservices (CLS) der RWTH Aachen University.
 Die Entwicklung ist Open Source. Sie können die eingesetzten Algorithmen daher selber überprüfen. Auf den folgenden Seiten können Sie auf weitere Informationen zugreifen:';
 
@@ -129,7 +129,7 @@ Durch einen Klick auf den Link lassen sich Details zu den Aktivitäten des Kurse
 
 $string['tour_more_information'] = 'Die interaktive Tour ist hiermit beendet. Wir hoffen wir konnten einen guten Überblick über die Funktionen verschaffen.
 
-Weitere Antworten zu häufig gestellten Fragen finden sich auf der Hilfeseite.';
+Weitere Antworten auf häufig gestellte Fragen finden Sie auf der Hilfeseite.';
 
 $string['learning_analytics:view_statistics'] = 'Anzeige von Zugriffsstatistiken in Kursen';
 
