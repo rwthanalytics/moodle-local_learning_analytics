@@ -3,7 +3,8 @@
 This project offers a privacy-friendly Learning Analytics solution for Moodle. The plugins integrate into Moodle courses and offer statistics to teachers and students.
 
 <p align="center">
-  <img src="https://files.lfi.rwth-aachen.de/learning-analytics/2020-10-21-preview.gif" height="300">
+  <a href="https://moodle.org/plugins/local_learning_analytics"><img src="https://files.lfi.rwth-aachen.de/learning-analytics/2020-10-21-preview.gif" height="300"></a>
+  <big><a href="https://moodle.org/plugins/local_learning_analytics">Download the plugin from the Moodle plugins directory</a></big>
 </p>
 
 This Learning Analytics solution consists of two plugins.
