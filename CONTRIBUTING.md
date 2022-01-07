@@ -24,7 +24,22 @@ The `master` branch contains the latest release. The `dev` branch contains the d
 - Make sure `Rename root directory` in advanced settings
 - Select supported Moodle versions
 - Click `Continue`
-- No need to do anything on the next screen -> Just press `Release`
+  - No need to do anything on the next screen
+  - Just press `Release`
+- In case there were new language strings introduced:
+  - Go back to the devzone: https://moodle.org/plugins/local_learning_analytics/devzone
+    - Scroll down to `Registration of the plugin strings in AMOS`
+    - The language strings will be submitted to AMOS
+    - Wait until `Pending` becomes `Successful` (~2min)
+  - Go to the translation page of the plugin: https://lang.moodle.org/local/amos/view.php?t=1641550540&v=l&l=de&c=local_learning_analytics&s&d
+    - Click `Go to the stage`
+    - Click `Import translated strings from file`
+    - Select latest tested Moodle version, `German` as language and upload the language file
+    - Click `Import`
+  - Click `Send strings to language pack maintainers`
+    - Enter `Updated to latest version` as subject
+    - Click `Submit to maintainers`
+    - It will take about 1h to 1d until the pack is approved
 
 ## Changelog
 Every changelog should be noted in the [CHANGELOG](./CHANGELOG.md) file. The logstore plugin has it's own changelog file.
