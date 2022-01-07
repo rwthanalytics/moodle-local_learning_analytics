@@ -28,23 +28,6 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
     global $DB, $CFG, $SITE;
 	$dbman = $DB->get_manager();
 
-    // Update TOUR to latest version
-    if ($oldversion < 2020101301) { // always update this to the latest version when the usertour was changed
-        // Remove old tour first (if there is one)
-        $tourid = (int) get_config('local_learning_analytics', 'tourid');
-        if ($tourid !== 0) { // delete any old tours before updating the tour
-            $oldtour = \tool_usertours\tour::instance($tourid);
-            $oldtour->remove(); // delete old tour
-        }
-        
-        // Then add the tour
-        $tourpath = $CFG->dirroot . '/local/learning_analytics/templates/usertour.json';
-        $tourjson = file_get_contents($tourpath);
-        $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
-        set_config('tourid', $tour->get_id(), 'local_learning_analytics');
-        upgrade_plugin_savepoint(true, 2020101301, 'local', 'learning_analytics');
-    }
-
     if ($oldversion < 2021021500) {
         $table = new xmldb_table('lalog_browser_os');
         if ($dbman->table_exists($table)) {
@@ -72,6 +55,23 @@ function xmldb_local_learning_analytics_upgrade($oldversion) {
         }
 
         upgrade_plugin_savepoint(true, 2021052700, 'local', 'learning_analytics');
+    }
+
+    // Update TOUR to latest version
+    if ($oldversion < 2022010700) { // always update this to the latest version when the usertour was changed
+        // Remove old tour first (if there is one)
+        $tourid = (int) get_config('local_learning_analytics', 'tourid');
+        if ($tourid !== 0) { // delete any old tours before updating the tour
+            $oldtour = \tool_usertours\tour::instance($tourid);
+            $oldtour->remove(); // delete old tour
+        }
+        
+        // Then add the tour
+        $tourpath = $CFG->dirroot . '/local/learning_analytics/templates/usertour.json';
+        $tourjson = file_get_contents($tourpath);
+        $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
+        set_config('tourid', $tour->get_id(), 'local_learning_analytics');
+        upgrade_plugin_savepoint(true, 2022010700, 'local', 'learning_analytics');
     }
 
     return true;

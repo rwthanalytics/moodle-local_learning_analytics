@@ -27,7 +27,7 @@ $string['pluginname'] = 'Learning Analytics';
 $string['privacy:metadata'] = 'This plugin does not store any personal data.';
 
 $string['learning_analytics'] = 'Learning Analytics';
-$string['navigation_link'] = 'Usage Statistics';
+$string['navigationlink'] = 'Usage Statistics';
 
 $string['subplugintype_lareport'] = 'L.A. Report';
 $string['subplugintype_lareport_plural'] = 'L.A. Reports';
@@ -48,7 +48,7 @@ $string['setting_status_description'] = 'This value sets whether the user interf
 $string['setting_status_option_show_if_enabled'] = 'Show navigation link if logging is enabled for the course';
 $string['setting_status_option_show_courseids'] = 'Show navigation link if course is specified below via course_ids';
 $string['setting_status_option_show_always'] = 'Show navigation link for all courses, even if logging is disabled for the course (only enable this, if you already logged data before)';
-$string['setting_status_option_hide_link'] = 'Hide navigation link but keep the page enabled for all courses (only if you know the link, you can access the page)';
+$string['setting_status_option_hidelink'] = 'Hide navigation link but keep the page enabled for all courses (only if you know the link, you can access the page)';
 $string['setting_status_option_disable'] = 'Hide navigation link and disable the page for all courses';
 $string['setting_status_course_customfield'] = 'Add option to the course settings so that teachers can enable it on their own';
 
@@ -116,7 +116,7 @@ $string['tour_dashboard_boxes'] = 'In the bottom area, important key figures of 
 
 In addition, each box contains a link through which further information is available.';
 $string['tour_box_learners'] = 'The first indicator shows the total number of participants. Below the large number, the change from the previous week is shown.';
-$string['tour_box_learners_link'] = 'Click on the link to view more information about the participants.';
+$string['tour_box_learnerslink'] = 'Click on the link to view more information about the participants.';
 $string['tour_box_hits'] = 'This indicator shows the number of actions within the last 7 days. Below you can see the changes over the previous 7 days.
 
 By clicking on the link you can open a heat map, which visualizes the number of actions over the whole semester.';

@@ -38,7 +38,7 @@ if ($ADMIN->fulltree) {
     $statuschoices['show_if_enabled'] = get_string('setting_status_option_show_if_enabled', 'local_learning_analytics');
     $statuschoices['show_courseids'] = get_string('setting_status_option_show_courseids', 'local_learning_analytics');
     $statuschoices['show_always'] = get_string('setting_status_option_show_always', 'local_learning_analytics');
-    $statuschoices['hide_link'] = get_string('setting_status_option_hide_link', 'local_learning_analytics');
+    $statuschoices['hide_link'] = get_string('setting_status_option_hidelink', 'local_learning_analytics');
     $statuschoices['disable'] = get_string('setting_status_option_disable', 'local_learning_analytics');
     if ($CFG->version >= 2019052000) {
         // Moodle 3.7 supports custom course settings

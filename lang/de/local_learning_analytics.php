@@ -27,7 +27,7 @@ $string['pluginname'] = 'Learning Analytics';
 $string['privacy:metadata'] = 'Dieses Plugin speichert keine personenbezogenen Daten.';
 
 $string['learning_analytics'] = 'Learning Analytics';
-$string['navigation_link'] = 'Zugriffsstatistiken';
+$string['navigationlink'] = 'Zugriffsstatistiken';
 
 $string['subplugintype_lareport'] = 'L.A. Report';
 $string['subplugintype_lareport_plural'] = 'L.A. Reports';
@@ -48,7 +48,7 @@ $string['setting_status_description'] = 'Der Wert bestimmt ob das User Interface
 $string['setting_status_option_show_if_enabled'] = 'Navigationslink zeigen, wenn Logging für den Kurs aktiviert ist';
 $string['setting_status_option_show_courseids'] = 'Navigationslink zeigen, wenn der Kurs in course_ids (nächste Option) definiert ist';
 $string['setting_status_option_show_always'] = 'Navigationslink in allen Kursen zeigen, selbst wenn das Loggen deaktiviert ist (nützlich falls Daten zuvor bereits geloggt wurden)';
-$string['setting_status_option_hide_link'] = 'Navigationslink nicht anzeigen, aber die Seite selber aktivieren (wer den Link kennt, kann weiterhin die Seite nutzen)';
+$string['setting_status_option_hidelink'] = 'Navigationslink nicht anzeigen, aber die Seite selber aktivieren (wer den Link kennt, kann weiterhin die Seite nutzen)';
 $string['setting_status_option_disable'] = 'Navigationslink nicht anzeigen und die Seite selber in allen Kursen deaktivieren';
 $string['setting_status_course_customfield'] = 'Eintrag in den Kurseinstellungen hinzufügen, so dass die Kursinhaber selber entscheiden können';
 
@@ -116,7 +116,7 @@ $string['tour_dashboard_boxes'] = 'Im unteren Bereich werden wichtige Kennzahlen
 
 Darüber hinaus enthält jede Box einen Link durch den weiterführende Informationen angezeigt werden können.';
 $string['tour_box_learners'] = 'Die erste Anzeige gibt die Gesamtzahl an eingeschriebenen Teilnehmer/innen wieder. Unterhalb der großen Zahl, ist die Veränderung zur Vorwoche dargstellt.';
-$string['tour_box_learners_link'] = 'Durch einen Klick auf den Link werden weiterführende Informationen zu den Teilnehmer/innen angezeigt.';
+$string['tour_box_learnerslink'] = 'Durch einen Klick auf den Link werden weiterführende Informationen zu den Teilnehmer/innen angezeigt.';
 $string['tour_box_hits'] = 'Diese Darstellung stellt die Anzahl an Aufrufen innerhalb der letzten 7 Tage dar. Unterhalb ist die Veränderungen du den vorherigen 7 Tagen angegeben.
 
 Durch einen Klick auf den Link lässt sich eine Heatmap aufrufen, welche die Anzahl an Aufrufen über das gesamte Semester visualisiert.';
@@ -143,5 +143,5 @@ $string['admin_customfield_info'] = 'Den Namen der Option in den Kurseinstellung
 $string['admin_customfield_category'] = 'Umbenennen der Kategorie';
 $string['admin_customfield_category_hint'] = 'durch Klick auf das Stift-Symbol kann die Kategorie umbenannt werden';
 $string['admin_customfield_option'] = 'Umbenennen der Option';
-$string['admin_customfield_option_hint'] = 'nur der name und die Beschreibung dürfen verändert werden';
+$string['admin_customfield_option_hint'] = 'nur der Name und die Beschreibung dürfen verändert werden';
 $string['admin_customfield_no_manual_delete'] = 'Sie dürfen die Kategorie oder die Option nicht löschen. Sie dürfen sie nur umbenennen. Wenn Sie die Option entfernen möchten, ändern Sie stattdessen den obigen Status.';

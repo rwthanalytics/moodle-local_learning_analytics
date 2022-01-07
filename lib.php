@@ -110,7 +110,7 @@ function local_learning_analytics_extend_navigation(global_navigation $navigatio
         }
         if ($node) {
             $node->add_node(navigation_node::create(
-                    get_string('navigation_link', 'local_learning_analytics'),
+                    get_string('navigationlink', 'local_learning_analytics'),
                     new moodle_url('/local/learning_analytics/index.php/reports/coursedashboard', array('course' => $COURSE->id)),
                     navigation_node::TYPE_CUSTOM,
                     null, 'learning_analytics',

@@ -112,7 +112,7 @@ $PAGE->set_heading($course->fullname);
 
 // title of page.
 $coursename = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
-$title = $coursename . ': ' . get_string('navigation_link', 'local_learning_analytics');
+$title = $coursename . ': ' . get_string('navigationlink', 'local_learning_analytics');
 $PAGE->set_title($title);
 
 $resultinghtml = router::run($_SERVER['REQUEST_URI']);

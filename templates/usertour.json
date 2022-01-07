@@ -41,7 +41,7 @@
         },
         {
             "title": "tour_title,local_learning_analytics",
-            "content": "tour_box_learners_link,local_learning_analytics",
+            "content": "tour_box_learnerslink,local_learning_analytics",
             "targettype": "0",
             "targetvalue": ".dashboardbox.box-registered_users .dashboardbox-header a",
             "sortorder": "4",
