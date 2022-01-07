@@ -57,8 +57,6 @@ A few icons are used in the course dashboard.
 <summary>View license</summary>
 <p>
 
-### Plotly.js
-
 ```
 
                                  Apache License
