@@ -34,15 +34,20 @@ use \DateTime;
 
 class query_helper {
 
-    public static function query_heatmap(int $courseid): array {
+    public static function query_heatmap(int $courseid, int $maxtimecreated = null): array {
         global $DB, $CFG;
 
         $weekstatement = "FROM_UNIXTIME(l.timecreated, '%w-%k')";
+        $limitstatement = '';
 
         if ($CFG->dbtype === 'pgsql') {
             $date = new DateTime();        
             $timezone = $date->getTimezone()->getName();
             $weekstatement = "TO_CHAR(TO_TIMESTAMP(l.timecreated) at time zone '".$timezone."', 'D-HH24')";
+        }
+
+        if ($maxtimecreated !== null) {
+            $limitstatement = "AND timecreated <= {$maxtimecreated}";
         }
 
         // MySQL returns points where 0-00 => Sun,0-1am; 0-01 => Sun,1-2am; ...
@@ -52,30 +57,38 @@ class query_helper {
             {$weekstatement} AS heatpoint,
             COUNT(1) AS value
         FROM {logstore_lanalytics_log} AS l
-            WHERE l.courseid = ?
+            WHERE l.courseid = ? {$limitstatement}
         GROUP BY heatpoint
         ORDER BY heatpoint
 SQL;
 
-        $records = $DB->get_records_sql($query, [$courseid]);
+        $dbrecords = $DB->get_records_sql($query, [$courseid]);
 
-        $returnrecords = [];
+        $records = [];
         if ($CFG->dbtype === 'pgsql') {
-            foreach ($records as $row) {
+            foreach ($dbrecords as $row) {
                 $split = explode('-', $row->heatpoint);
                 $week = $split[0] - 1;
                 $hour = (int) $split[1]; // remove leading 0
                 $newheatpoint = $week . '-' . $hour;
-                $returnrecords[$newheatpoint] = (object) array(
+                $records[$newheatpoint] = (object) array(
                     'heatpoint' => $newheatpoint,
                     'value' => $row->value,
                 );
             }
         } else {
-            $returnrecords = $records;
+            $records = $dbrecords;
         }
 
-        return $returnrecords;
+        $ar = [];
+        for ($d = 0; $d < 7; $d += 1) {
+            for ($h = 0; $h < 24; $h += 1) {
+                $key = $d . '-' . $h;
+                $ar[$d * 24 + $h] = empty($records[$key]) ? 0 : (int) $records[$key]->value;
+            }
+        }
+
+        return $ar;
     }
 
     private static function click_count_helper(int $courseid, int $from, int $to = null) {

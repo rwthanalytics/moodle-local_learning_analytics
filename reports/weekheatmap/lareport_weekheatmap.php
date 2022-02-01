@@ -33,7 +33,7 @@ use local_learning_analytics\settings;
 
 class lareport_weekheatmap extends report_base {
 
-    public function run(array $params): array {
+    public function run(array $params, $archive = null): array {
         global $USER, $OUTPUT, $DB;
         $courseid = $params['course'];
         $privacythreshold = settings::get_config('dataprivacy_threshold');
@@ -72,8 +72,11 @@ class lareport_weekheatmap extends report_base {
             $daydata = [];
             $textdata = [];
             for ($h = 0; $h < 24; $h += 1) {
-                $dbkey = $dbweekday . '-' . $h;
-                $datapoint = empty($heatpoints[$dbkey]) ? 0 : $heatpoints[$dbkey]->value;
+                $index = $dbweekday * 24 + $h;
+                $datapoint = $heatpoints[$index];
+                if ($archive) {
+                    $datapoint += $archive[$index];
+                }
                 $text = $datapoint;
                 if ($datapoint < $privacythreshold) {
                     $text = '< ' . $privacythreshold;
