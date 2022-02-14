@@ -23,6 +23,10 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
+if (!$hassiteconfig) {
+    return;
+}
+
 // Empty $settings to prevent a single settings page from being created by lib/classes/plugininfo/block.php
 // because we will create several settings pages now.
 $settings = null;
@@ -111,7 +115,7 @@ if ($ADMIN->fulltree) {
             'fullname' => 'course->fullname',
         ]
     ));
-    
+
     $settings->add(new admin_setting_configtext(
         'local_learning_analytics/dashboard_boxes',
         'dashboard_boxes',
