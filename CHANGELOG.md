@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.19.2] - 2022-02-15
+### Fixed
+- Added missing check in settings file
+
 ## [0.19.1] - 2022-01-07
 ### Fixed
 - Fixes missing language strings in Moodle AMOS (#4) by removing `_link` suffix from language strings
