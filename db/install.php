@@ -26,10 +26,11 @@ defined('MOODLE_INTERNAL') || die();
 
 function xmldb_local_learning_analytics_install() {
     global $DB, $CFG;
-    
+
     $tourpath = $CFG->dirroot . '/local/learning_analytics/templates/usertour.json';
     $tourjson = file_get_contents($tourpath);
-    $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
-    set_config('tourid', $tour->get_id(), 'local_learning_analytics');
-
+    if (!PHPUNIT_TEST) {
+        $tour = \tool_usertours\manager::import_tour_from_json($tourjson);
+        set_config('tourid', $tour->get_id(), 'local_learning_analytics');
+    }
 }
