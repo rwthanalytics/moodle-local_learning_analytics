@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.20.0] - NEXT
+### Fixed
+- Added compatibility for Moodle 4 so that the plugin is listed in the course navigation bar
+- Fixed minor CSS/Moodle 4 incompatibility
+
 ## [0.19.2] - 2022-02-15
 ### Fixed
 - Added missing check in settings file
