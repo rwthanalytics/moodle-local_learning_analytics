@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Added compatibility for Moodle 4 so that the plugin is listed in the course navigation bar
 - Fixed minor CSS/Moodle 4 incompatibility
+- Accepted pull request #17 to make sure unit tests don't fail
 
 ## [0.19.2] - 2022-02-15
 ### Fixed
