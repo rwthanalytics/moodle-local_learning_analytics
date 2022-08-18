@@ -121,6 +121,7 @@ The logstore has the following options:
 - `course_ids`: To be used with the `log_scope` option `include` or `exclude` to only track specific courses. Example: `10,153,102`.
 - `tracking_roles`: Define which roles should be tracked (whitelist) unless specified via `nontracking_roles`. This is useful if you only want to track specific roles (like students or guests). By default, all roles are tracked. Example: `student,guest`. See [Role Tracking](#roletracking) for more information.
 - `nontracking_roles`: Define which roles should *not* be tracked. This is useful if you don't want to track specific roles (like managers or teachers). By default, no roles are ignored. Example: `teacher,editingteacher,manager`. See [Role Tracking](#roletracking) for more information.
+- `loglifetime`: How long the logs of the course activities are kept. Logs older than this time period will be automatically deleted. It is best to keep the logs as long as possible, in case you need them. However, if you have a busy server and are experiencing performance issues, you may want to reduce the lifetime of the logs. Values below 6 months are not recommended, as the statistics may not work properly.
 - `buffersize`: Same as `buffersize` of other loggers. In case a single page fires more than one event, this is the number of events that will be buffered before writing them to database. Defaults to `50`.
 
 #### Logging everything vs. only a few courses
