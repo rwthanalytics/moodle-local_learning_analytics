@@ -35,8 +35,8 @@ To keep documentation in one place, you find all documentation in this repositor
   - [Changelog](#changelog)
   - [Third-party libraries and resources](#third-party-libraries-and-resources)
   - [Contributing](#contributing)
-- [Provided by](#provided-by)
-- [License](#license)
+- [Citing in Papers](#citing-in-papers)
+- [Provided by & License](#provided-by--license)
 
 ## Installation
 
@@ -298,9 +298,38 @@ See [CREDITS](./CREDITS.md) for more information including full licenses.
 ### Contributing
 Checkout the [contributing guide](./CONTRIBUTING).
 
-## Provided by
+## Citing in Papers
+
+The *Learning Analytics for Moodle* plugins were developed by Thomas Dondorf at [RWTH Aachen University](https://www.rwth-aachen.de/) in the context of his PhD dissertation:
+
+> [Learning Analytics for Moodle: Facilitating the Adoption of Data Privacy Friendly Learning Analytics in Higher Education](https://publications.rwth-aachen.de/record/844544)
+
+If you use this project as part of your research or want to reference it, please use the following BibTex:
+
+```
+@phdthesis{Dondorf:844544,
+    author       = {Dondorf, Thomas}, 
+    othercontributors = {Nacken, Heribert and Persike, Malte},
+    title        = {{L}earning Analytics for {Moodle}: Facilitating the Adoption of Data Privacy Friendly Learning Analytics in Higher Education},
+    school       = {Rheinisch-Westfälische Technische Hochschule Aachen},
+    type         = {Dissertation},
+    address      = {Aachen},
+    publisher    = {RWTH Aachen University},
+    reportid     = {RWTH-2022-04002},
+    year         = {2022},
+    doi          = {10.18154/RWTH-2022-04002},
+    url          = {https://publications.rwth-aachen.de/record/844544},
+}
+```
+
+Sample:
+
+> Dondorf, T. (2022). Learning Analytics for Moodle: Facilitating the Adoption of Data Privacy Friendly Learning Analytics in Higher Education (Dissertation). Rheinisch-Westfälische Technische Hochschule Aachen, Aachen. https://doi.org/10.18154/RWTH-2022-04002
+
+## Provided by & License
+
+The plugins are provided by:
 
 <a href="https://lfi.rwth-aachen.de/"><img src="https://files.lfi.rwth-aachen.de/learning-analytics/lfi.png" alt="Lehr- und Forschungsgebiet Ingenieurhydrologie - RWTH Aachen University" height="80"></a> <a href="https://cls.rwth-aachen.de/"><img src="https://files.lfi.rwth-aachen.de/learning-analytics/cls.png" alt="Center für Lern- und Lehrservices - RWTH Aachen University" height="80"></a>
 
-## License
-[GPL](./LICENSE)
+The software is licensed under the [GPL](./LICENSE).
