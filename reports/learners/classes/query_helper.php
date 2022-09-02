@@ -83,6 +83,12 @@ SQL;
 
         $pgspecialcase = ($CFG->dbtype === 'pgsql') ? '' : ', co.startdate';
 
+        # T-SQL (which is SQL Server's syntax) must have all selected columns contained in the GROUP BY clause
+        if ($CFG->dbtype === 'sqlsrv')
+            $group_by = "co.{$groupbychoice}, {$coursename}, {$casevalue}, co.startdate";
+        else
+            $group_by = "co.{$groupbychoice}, {$casevalue}";
+
         $query = <<<SQL
             SELECT
                 {$selectconcat} AS uniqueval,-- first row needs to be unique for moodle...
@@ -116,7 +122,7 @@ SQL;
                 AND e.courseid = ?
                 AND co.startdate <> 0
                 AND co.visible = 1
-            GROUP BY co.{$groupbychoice}, {$casevalue}
+            GROUP BY {$group_by}
             HAVING COUNT(*) > ? AND {$casevalue} <> 0
             ORDER BY users DESC;
 SQL;
@@ -160,16 +166,23 @@ SQL;
     // Returns array like [100, 50] meaning 100 students were already registered since last week
     // and 50 more students join in the last days.
     public static function preview_query_users(int $courseid) : array {
-        global $DB;
+        global $CFG, $DB;
 
         $date = new \DateTime();
         $date->modify('-1 week');
 
         $timestamp = $date->getTimestamp();
+        $case = "CASE WHEN ue.timestart < {$timestamp} THEN 0 ELSE 1 END";
+
+        # T-SQL (which is SQL Server's syntax) cannot GROUP BY column aliases
+        if ($CFG->dbtype === 'sqlsrv')
+            $group_by = $case;
+        else
+            $group_by = 'time';
 
         $query = <<<SQL
         SELECT
-            CASE WHEN ue.timestart < {$timestamp} THEN 0 ELSE 1 END AS time,
+            {$case} AS time,
             COUNT(DISTINCT u.id) AS learners
         FROM {user} u
         JOIN {user_enrolments} ue
@@ -178,7 +191,7 @@ SQL;
             ON e.id = ue.enrolid
         WHERE u.deleted = 0
             AND e.courseid = ?
-        GROUP BY time
+        GROUP BY {$group_by}
         ORDER BY time;
 SQL;
 

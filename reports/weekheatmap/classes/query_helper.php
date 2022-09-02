@@ -38,11 +38,16 @@ class query_helper {
         global $DB, $CFG;
 
         $weekstatement = "FROM_UNIXTIME(l.timecreated, '%w-%k')";
+        $group_by = 'heatpoint';
 
         if ($CFG->dbtype === 'pgsql') {
             $date = new DateTime();        
             $timezone = $date->getTimezone()->getName();
             $weekstatement = "TO_CHAR(TO_TIMESTAMP(l.timecreated) at time zone '".$timezone."', 'D-HH24')";
+        } elseif ($CFG->dbtype === 'sqlsrv') {
+            # T-SQL (which is SQL Server's syntax) cannot GROUP BY column aliases
+            $weekstatement = "CONCAT(DATEPART(weekday, DATEADD(SECOND, l.timecreated, '1970-01-01')) - 1, '-', DATEPART(hour, DATEADD(SECOND, l.timecreated + 3600, '1970-01-01')))";
+            $group_by = $weekstatement;
         }
 
         // MySQL returns points where 0-00 => Sun,0-1am; 0-01 => Sun,1-2am; ...
@@ -53,7 +58,7 @@ class query_helper {
             COUNT(1) AS value
         FROM {logstore_lanalytics_log} AS l
             WHERE l.courseid = ?
-        GROUP BY heatpoint
+        GROUP BY {$group_by}
         ORDER BY heatpoint
 SQL;
 
