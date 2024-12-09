@@ -101,9 +101,11 @@ function local_learning_analytics_extend_navigation(global_navigation $navigatio
         $beforekey = null;
         if ($settingbeforekey === false || $settingbeforekey === '') {
             // Find first section node, and add our node before that (to be the last non-section node)
-            $children = $node->children->type(navigation_node::TYPE_SECTION);
-            if (count($children) !== 0) {
-                $beforekey = reset($children)->key;
+            if (is_object($node->children)) {
+                $children = $node->children->type(navigation_node::TYPE_SECTION);
+                if (count($children) !== 0) {
+                    $beforekey = reset($children)->key;
+                }
             }
         } else { // use setting
             $beforekey = $settingbeforekey;
