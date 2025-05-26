@@ -71,6 +71,7 @@ class lareport_weekheatmap extends report_base {
             $dbweekday = (6 + $startOfWeek - $d) % 7; // 0 (Sun) -> 6 (Sat) -> 5 (Fri) -> ...
             $daydata = [];
             $textdata = [];
+            $xstrs = [];
             for ($h = 0; $h < 24; $h += 1) {
                 $dbkey = $dbweekday . '-' . $h;
                 $datapoint = empty($heatpoints[$dbkey]) ? 0 : $heatpoints[$dbkey]->value;

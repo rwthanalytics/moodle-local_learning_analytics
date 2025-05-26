@@ -6,6 +6,11 @@ define(['core/ajax', 'jquery'], function (ajax, $) {
         paths: {
             'local_learning_analytics/plotly': M.cfg.wwwroot + '/local/learning_analytics/js/plotly.min',
         },
+        shim: {
+            'local_learning_analytics/plotly': {
+                exports: 'Plotly'
+            }
+        }
     });
 
     var outputs = {
