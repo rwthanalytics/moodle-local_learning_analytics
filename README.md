@@ -42,7 +42,7 @@ To keep documentation in one place, you find all documentation in this repositor
 
 Requirements:
 
-- Moodle: Version 3.2 or higher (currently testing with 3.6 and 3.9)
+- Moodle: Version 4.4 or higher (currently testing with 4.4, 4.5 and 5.0)
 - Database: MySQL/MariaDB or Postgres (other database types have not been tested)
 
 ### Download

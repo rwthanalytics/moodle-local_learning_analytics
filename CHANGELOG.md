@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.21.0] - 2025-05-26
+### Fixed
+- Added compatibility for Moodle 5. Updated the thirdparty library plotly.
+- Small bugfixes.
+
 ## [0.20.0] - 2022-08-01
 ### Fixed
 - Added compatibility for Moodle 4 so that the plugin is listed in the course navigation bar
