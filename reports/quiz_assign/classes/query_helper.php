@@ -34,7 +34,13 @@ use context_course;
 class query_helper {
 
     public static function query_quiz(int $courseid): array {
-        global $DB;
+        global $CFG, $DB;
+
+        # T-SQL (which is SQL Server's syntax) must have all selected columns contained in the GROUP BY clause
+        if ($CFG->dbtype === 'sqlsrv')
+            $group_by = 'q.id, q.sumgrades';
+        else
+            $group_by = 'q.id';
 
         $query = <<<SQL
         SELECT
@@ -55,7 +61,7 @@ class query_helper {
         WHERE gi.courseid = ?
             AND gi.itemtype = 'mod'
             AND gi.itemmodule = 'quiz'
-        GROUP BY q.id
+        GROUP BY {$group_by}
 SQL;
 
         return $DB->get_records_sql($query, [$courseid]);

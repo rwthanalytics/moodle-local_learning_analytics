@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 class query_helper {
 
     public static function query_weekly_activity(int $courseid) : array {
-        global $DB;
+        global $CFG, $DB;
 
         $course = get_course($courseid);
 
@@ -38,14 +38,21 @@ class query_helper {
         $startdate->modify('Monday this week'); // Get start of week.
 
         $mondaytimestamp = $startdate->format('U');
+        $week = "(FLOOR((l.timecreated - {$mondaytimestamp}) / (7 * 60 * 60 * 24)) + 1)";
+
+        # T-SQL (which is SQL Server's syntax) cannot GROUP BY column aliases
+        if ($CFG->dbtype === 'sqlsrv')
+            $group_by = $week;
+        else
+            $group_by = 'week';
 
         $query = <<<SQL
-        SELECT (FLOOR((l.timecreated - {$mondaytimestamp}) / (7 * 60 * 60 * 24)) + 1)
+        SELECT {$week}
         AS WEEK,
         COUNT(*) clicks
         FROM {logstore_lanalytics_log} l
         WHERE l.courseid = ?
-        GROUP BY week
+        GROUP BY {$group_by}
         ORDER BY week;
 SQL;
 
