@@ -1,0 +1,122 @@
+name: Moodle Plugin CI
+
+on: [push, pull_request]
+
+#start pgsql test
+jobs:
+  test_pgsql:
+    runs-on: ubuntu-18.04
+
+    services:
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_USER: 'postgres'
+          POSTGRES_HOST_AUTH_METHOD: 'trust'
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4']
+        moodle-branch: ['MOODLE_311_STABLE']
+        database: [pgsql]
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          path: plugin
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ matrix.extensions }}
+          ini-values: max_input_vars=5000
+          coverage: none
+
+      - name: Initialise moodle-plugin-ci
+        run: |
+          composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
+          echo $(cd ci/bin; pwd) >> $GITHUB_PATH
+          echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
+          sudo locale-gen en_AU.UTF-8
+          echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
+      - name: Install moodle-plugin-ci
+        run: |
+          moodle-plugin-ci add-plugin rwthanalytics/moodle-logstore_lanalytics
+          moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
+        env:
+          DB: ${{ matrix.database }}
+          MOODLE_BRANCH: ${{ matrix.moodle-branch }}
+
+      - name: PHP Lint
+        if: ${{ always() }}
+        run: moodle-plugin-ci phplint
+
+      - name: PHPUnit tests
+        if: ${{ always() }}
+        run: moodle-plugin-ci phpunit
+  #end pgsql test
+
+  #start moodle mariadb matrix tests
+  test_mariadb:
+    runs-on: ubuntu-18.04
+
+    services:
+      mariadb:
+        image: mariadb:10.5
+        env:
+          MYSQL_USER: 'root'
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.3', '7.4']
+        moodle-branch: ['MOODLE_311_STABLE', 'MOODLE_310_STABLE', 'MOODLE_39_STABLE']
+        database: [mariadb]
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          path: plugin
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ matrix.extensions }}
+          ini-values: max_input_vars=5000
+          coverage: none
+
+      - name: Initialise moodle-plugin-ci
+        run: |
+          composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
+          echo $(cd ci/bin; pwd) >> $GITHUB_PATH
+          echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
+          sudo locale-gen en_AU.UTF-8
+          echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
+      - name: Install moodle-plugin-ci
+        run: |
+          moodle-plugin-ci add-plugin rwthanalytics/moodle-logstore_lanalytics
+          moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
+        env:
+          DB: ${{ matrix.database }}
+          MOODLE_BRANCH: ${{ matrix.moodle-branch }}
+
+      - name: PHP Lint
+        if: ${{ always() }}
+        run: moodle-plugin-ci phplint
+
+      - name: PHPUnit tests
+        if: ${{ always() }}
+        run: moodle-plugin-ci phpunit
+#end moodle mariadb matrix tests
