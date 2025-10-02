@@ -24,7 +24,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($hassiteconfig) {
-    
+
     // Empty $settings to prevent a single settings page from being created by lib/classes/plugininfo/block.php
     // because we will create several settings pages now.
     $settings = null;
@@ -106,7 +106,7 @@ if ($hassiteconfig) {
             'local_learning_analytics/student_enrols_groupby',
             'student_enrols_groupby',
             get_string('setting_student_enrols_groupby_description', 'local_learning_analytics'),
-            'course.id', // default value
+            'id', // default value
             [
                 'id' => 'course->id',
                 'shortname' => 'course->shortname',
